@@ -1,0 +1,12 @@
+Package: dpl
+Title: Deep learning engine for tidymodels
+Version: 0.0.0.1000
+Authors@R: 
+    person("David", "Díaz", , "daviddrsch@gmail.com", role = c("aut", "cre"))
+Description: Functions to integrate custom neurla networks with tidymodels
+ workflows.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
