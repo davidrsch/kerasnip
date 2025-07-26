@@ -13,6 +13,7 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="A Bridge Between Keras and Tidymodels">
 <meta name="description" content="Provides a seamless bridge between keras and the tidymodels ecosystem. It allows for the dynamic creation of parsnip model specifications for Keras models.">
 <meta property="og:description" content="Provides a seamless bridge between keras and the tidymodels ecosystem. It allows for the dynamic creation of parsnip model specifications for Keras models.">
+<meta property="og:image" content="https://davidrsch.github.io/kerasnip/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +43,9 @@
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/davidrsch/kerasnip"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
@@ -51,8 +55,10 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="kerasnip">kerasnip<a class="anchor" aria-label="anchor" href="#kerasnip"></a>
-</h1></div>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="kerasnip">kerasnip<a class="anchor" aria-label="anchor" href="#kerasnip"></a>
+</h1>
+</div>
 <!-- badges: start -->
 
 <p>The goal of <code>kerasnip</code> is to provide a seamless bridge between the <code>keras</code> and <code>tidymodels</code> ecosystems. It allows for the dynamic creation of <code>parsnip</code> model specifications for Keras models, making them fully compatible with <code>tidymodels</code> workflows.</p>
