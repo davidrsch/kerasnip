@@ -5,9 +5,20 @@ template:
 reference:
   - title: "Core Functions"
     desc: >
-      The main function for generating custom model specifications.
+      Functions for generating and managing custom model specifications.
     contents:
       - create_keras_spec
+      - remove_keras_spec
+
+  - title: "Registration Helpers"
+    desc: >
+      Functions for registering custom Keras components like loss functions,
+      optimizers, and metrics.
+    contents:
+      - register_keras_loss
+      - register_keras_metric
+      - register_keras_optimizer
+      - keras_objects
 
 articles:
   - title: "Getting Started"

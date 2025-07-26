@@ -13,3 +13,4 @@ known optimizers (keras defaults + custom registered).}
 \description{
 Dials Parameter for Keras Optimizers
 }
+\keyword{internal}

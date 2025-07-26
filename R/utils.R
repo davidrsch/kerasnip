@@ -77,6 +77,7 @@ get_keras_object <- function(
 #' Dials Parameter for Keras Optimizers
 #' @param values A character vector of possible optimizers. Defaults to all
 #'   known optimizers (keras defaults + custom registered).
+#' @keywords internal
 #' @export
 optimizer_function <- function(values = NULL) {
   if (is.null(values)) {
@@ -96,6 +97,7 @@ optimizer_function <- function(values = NULL) {
 #' Dials Parameter for Keras Loss Functions
 #' @param values A character vector of possible loss functions. Defaults to all
 #'   known losses (keras defaults + custom registered).
+#' @keywords internal
 #' @export
 loss_function_keras <- function(values = NULL) {
   if (is.null(values)) {

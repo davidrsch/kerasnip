@@ -13,3 +13,4 @@ known losses (keras defaults + custom registered).}
 \description{
 Dials Parameter for Keras Loss Functions
 }
+\keyword{internal}
