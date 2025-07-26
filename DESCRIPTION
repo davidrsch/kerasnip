@@ -19,7 +19,7 @@ Imports:
     purrr
 Suggests: 
     testthat (>= 3.0.0),
-    modeldata
+    modeldata,
     tidymodels,
     tune,
     dials,
