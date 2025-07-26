@@ -1,14 +1,32 @@
-Package: dpl
-Title: Deep learning engine for tidymodels
-Version: 0.0.0.1000
+Package: kerasnip
+Title: A Bridge Between Keras and Tidymodels
+Version: 0.0.0.9000
 Authors@R: 
     person("David", "Díaz", , "daviddrsch@gmail.com", role = c("aut", "cre"))
-Description: Functions to integrate custom neurla networks with tidymodels
-    workflows.
+Description: Provides a seamless bridge between 'keras' and the 'tidymodels'
+    ecosystem. It allows for the dynamic creation of 'parsnip' model
+    specifications for Keras models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Imports:
+    abind,
+    parsnip (>= 1.0.0),
+    rlang,
+    keras3,    
+    tibble,    
+    purrr
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    modeldata
+    tidymodels,
+    tune,
+    dials,
+    workflows,
+    recipes,
+    rsample,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
 Config/testthat/edition: 3
