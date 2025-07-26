@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(dpl)
+library(kerasnip)
 
-test_check("dpl")
+test_check("kerasnip")
