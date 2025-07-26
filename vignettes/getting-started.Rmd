@@ -18,7 +18,7 @@ This new function behaves just like any other parsnip model (e.g., `rand_forest(
 We’ll start by loading kerasnip:
 
 ```{r load-kerasnip}
-library(dplyr)
+library(kerasnip)
 ```
 
 ## Example 1: Building and Fitting a Basic MLP
