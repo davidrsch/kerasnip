@@ -15,10 +15,12 @@ The `keras` package allows for building deep learning models layer-by-layer, whi
 
 This new function behaves just like any other parsnip model (e.g., `rand_forest()` or `linear_reg()`), making it easy to integrate into workflows and tune with tune.
 
-We’ll start by loading kerasnip:
+We’ll start by loading `kerasnip`, `tidymodels` and `keras3`:
 
 ```{r load-kerasnip}
 library(kerasnip)
+library(tidymodels)
+library(keras3)
 ```
 
 ## Example 1: Building and Fitting a Basic MLP
