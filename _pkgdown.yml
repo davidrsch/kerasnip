@@ -1,6 +1,5 @@
 url: https://davidrsch.github.io/kerasnip/
 template:
-  package: tidytemplate
   bootstrap: 5
 
 reference:
@@ -32,4 +31,12 @@ development:
 
 navbar:
   structure:
+    left: [intro, reference, articles, news]
     right: [search, github]
+  components:
+    intro:
+      text: "Get started"
+      href: articles/getting-started.html
+    github:
+      icon: fa-github
+      href: https://github.com/davidrsch/kerasnip
