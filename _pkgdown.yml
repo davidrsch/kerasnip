@@ -1,0 +1,28 @@
+url: https://davidrsch.github.io/kerasnip/
+template:
+  bootstrap: 5
+
+reference:
+  - title: "Core Functions"
+    desc: >
+      The main function for generating custom model specifications.
+    contents:
+      - create_keras_spec
+
+articles:
+  - title: "Getting Started"
+    navbar: ~
+    contents:
+      - getting-started
+
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [github]
+  components:
+    intro:
+      text: "Get started"
+      href: articles/getting-started.html
+    github:
+      icon: fa-github
+      href: https://github.com/davidrsch/kerasnip

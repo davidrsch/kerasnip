@@ -1,1 +1,11 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.github$
+^README\.Rmd$
 ^LICENSE\.md$
+^NEWS\.md$
+^_pkgdown\.yml$
+^docs$
+^renv$
+^renv.lock$
+^air\.toml$
