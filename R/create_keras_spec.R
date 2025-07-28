@@ -117,7 +117,7 @@ create_keras_spec <- function(
   register_core_model(model_name, mode)
   register_model_args(model_name, args_info$parsnip_names)
   register_fit_predict(model_name, mode, layer_blocks)
-  register_update_method(model_name, args_info$parsnip_names)
+  register_update_method(model_name, args_info$parsnip_names, env = env)
 
   env_poke(env, model_name, spec_fun)
   invisible(NULL)

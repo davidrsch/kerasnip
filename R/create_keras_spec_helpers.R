@@ -529,8 +529,9 @@ register_fit_predict <- function(model_name, mode, layer_blocks) {
 #' @param model_name The name of the new model.
 #' @param parsnip_names A character vector of all argument names.
 #' @return Invisibly returns `NULL`. Called for its side effects.
+#' @param env The environment in which to create the update method.
 #' @noRd
-register_update_method <- function(model_name, parsnip_names) {
+register_update_method <- function(model_name, parsnip_names, env) {
   # Build function signature
   update_args_list <- c(
     list(object = rlang::missing_arg(), parameters = rlang::expr(NULL)),
@@ -572,6 +573,8 @@ register_update_method <- function(model_name, parsnip_names) {
     body = update_body
   )
   method_name <- paste0("update.", model_name)
-  rlang::env_poke(environment(), method_name, update_func)
-  registerS3method("update", model_name, update_func, envir = environment())
+  # Poke the function into the target environment (e.g., .GlobalEnv) so that
+  # S3 dispatch can find it.
+  rlang::env_poke(env, method_name, update_func)
+  registerS3method("update", model_name, update_func, envir = env)
 }
