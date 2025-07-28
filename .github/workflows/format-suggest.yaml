@@ -44,3 +44,4 @@ jobs:
           level: error
           fail_level: error
           tool_name: air
+          reviewdog_version: latest
