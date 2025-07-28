@@ -211,7 +211,8 @@ generic_keras_fit_impl <- function(
 
   # Resolve metrics: user‐supplied or default
   metrics_arg <- resolve_default(user_compile_args$metrics, default_metrics)
-  # *** Wrap metrics_arg as a list of strings ***
+  # Keras' `compile()` can handle a single string or a list/vector of strings.
+  # This correctly passes along either the default string or a user-provided vector.
   final_compile_args$metrics <- metrics_arg
 
   # Add any other user-provided compile arguments (e.g., `weighted_metrics`)
