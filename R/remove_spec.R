@@ -29,23 +29,35 @@
 #' !exists("my_temp_model")
 #' }
 remove_keras_spec <- function(model_name, env = parent.frame()) {
-  spec_found <- FALSE
-  if (exists(model_name, envir = env, inherits = FALSE)) {
-    obj <- get(model_name, envir = env)
-    if (is.function(obj)) {
-      remove(list = model_name, envir = env)
-      spec_found <- TRUE
-    }
+  # 1. Remove the spec + update fn from the user env
+  if (
+    exists(model_name, envir = env, inherits = FALSE) &&
+      is.function(get(model_name, envir = env))
+  ) {
+    remove(list = model_name, envir = env)
+  }
+  update_fn <- paste0("update.", model_name)
+  if (exists(update_fn, envir = env, inherits = FALSE)) {
+    remove(list = update_fn, envir = env)
   }
 
-  # Also remove the associated update method
-  update_method_name <- paste0("update.", model_name)
-  # The update method is in the package namespace. `environment()` inside a
-  # package function returns the package namespace.
-  pkg_env <- environment()
-  if (exists(update_method_name, envir = pkg_env, inherits = FALSE)) {
-    remove(list = update_method_name, envir = pkg_env)
+  # 2. Nuke every parsnip object whose name starts with model_name
+  model_env <- parsnip:::get_model_env()
+  all_regs <- ls(envir = model_env)
+  to_kill <- grep(paste0("^", model_name), all_regs, value = TRUE)
+  if (length(to_kill)) {
+    rm(list = to_kill, envir = model_env)
+    message(
+      "Removed from parsnip registry objects: ",
+      paste(to_kill, collapse = ", ")
+    )
   }
 
-  invisible(spec_found)
+  # 3. Remove the entry in get_model_env()$models
+  if ("models" %in% all_regs && model_name %in% model_env$models) {
+    model_env$models <- model_env$models[-which(model_name == model_env$models)]
+    message("Removed '", model_name, "' from parsnip:::get_model_env()$models")
+  }
+
+  invisible(TRUE)
 }
