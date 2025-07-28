@@ -2,13 +2,13 @@
 name: "\U0001F41B Bug Report"
 about: Report a bug in the package. Please include a reproducible example using the
   reprex package.
-title: 'BUG: '
+title: 'Bug report: '
 labels: ''
 assignees: ''
 
 ---
 
-** Description**
+**Description**
 
 Clearly describe the problem.
 
