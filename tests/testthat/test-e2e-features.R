@@ -27,7 +27,7 @@ test_that("E2E: Customizing main arguments works", {
     epochs = 2,
     compile_optimizer = "sgd",
     compile_loss = "mae",
-    compile_metrics = c("mean_squared_error")
+    compile_metrics = c("mean_squared_error", "root_mean_squared_error")
   ) |>
     parsnip::set_engine("keras")
 
@@ -52,6 +52,7 @@ test_that("E2E: Customizing main arguments works", {
   expect_true(grepl("mae", compiled_loss))
   expect_true(grepl("sgd", tolower(compiled_optimizer)))
   expect_true("mean_squared_error" %in% compiled_metrics)
+  expect_true("root_mean_squared_error" %in% compiled_metrics)
 })
 
 test_that("E2E: Customizing fit arguments works", {
