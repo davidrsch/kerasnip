@@ -62,7 +62,7 @@
 #' @return A `parsnip` model fit object.
 #' @keywords internal
 #' @export
-generic_keras_fit_impl <- function(
+generic_sequential_fit <- function(
   x,
   y,
   layer_blocks,
