@@ -176,80 +176,27 @@ generic_sequential_fit <- function(
   }
 
   # --- 3. Model Compilation ---
-  # Collect all arguments starting with "compile_" from `...`
-  compile_arg_names <- names(all_args)[startsWith(names(all_args), "compile_")]
-  user_compile_args <- all_args[compile_arg_names]
-  names(user_compile_args) <- sub("^compile_", "", names(user_compile_args))
-
-  # --- 3a. Resolve and Finalize Compile Arguments ---
-  final_compile_args <- list()
-
-  # Determine the final optimizer object, ensuring `learn_rate` is applied.
-  optimizer_arg <- resolve_default(user_compile_args$optimizer, NULL)
-  if (!is.null(optimizer_arg)) {
-    if (is.character(optimizer_arg)) {
-      # Resolve string to object, passing the learn_rate
-      final_compile_args$optimizer <- get_keras_object(
-        optimizer_arg,
-        "optimizer",
-        learning_rate = learn_rate
-      )
-    } else {
-      # User passed a pre-constructed optimizer object, use it as is.
-      # We assume they have configured the learning rate within it.
-      final_compile_args$optimizer <- optimizer_arg
-    }
-  } else {
-    # No optimizer provided, use the default (Adam) with the learn_rate.
-    final_compile_args$optimizer <- keras3::optimizer_adam(
-      learning_rate = learn_rate
-    )
-  }
-
-  # Resolve loss: use user-provided, otherwise default. Resolve string if needed.
-  loss_arg <- resolve_default(user_compile_args$loss, default_loss)
-  if (is.character(loss_arg)) {
-    final_compile_args$loss <- get_keras_object(loss_arg, "loss")
-  } else {
-    final_compile_args$loss <- loss_arg
-  }
-
-  # Resolve metrics: user‐supplied or default
-  metrics_arg <- resolve_default(user_compile_args$metrics, default_metrics)
-  # Keras' `compile()` can handle a single string or a list/vector of strings.
-  # This correctly passes along either the default string or a user-provided vector.
-  final_compile_args$metrics <- metrics_arg
-
-  # Add any other user-provided compile arguments (e.g., `weighted_metrics`)
-  other_args <- user_compile_args[
-    !names(user_compile_args) %in% c("optimizer", "loss", "metrics")
-  ]
-  final_compile_args <- c(final_compile_args, other_args)
-
-  # --- 3b. Compile the Model ---
-  rlang::exec(keras3::compile, model, !!!final_compile_args)
+  compile_args <- collect_compile_args(
+    all_args,
+    learn_rate,
+    default_loss,
+    default_metrics
+  )
+  rlang::exec(keras3::compile, model, !!!compile_args)
 
   # --- 4. Model Fitting ---
-  # Collect all arguments starting with "fit_" from `...`
-  fit_arg_names <- names(all_args)[startsWith(names(all_args), "fit_")]
-  user_fit_args <- all_args[fit_arg_names]
-  names(user_fit_args) <- sub("^fit_", "", names(user_fit_args))
-
-  # Combine with core fitting arguments
-  final_fit_args <- c(
-    list(
-      x = x_proc,
-      y = y_mat,
-      epochs = epochs,
-      batch_size = batch_size,
-      validation_split = validation_split,
-      verbose = verbose
-    ),
-    user_fit_args
+  fit_args <- collect_fit_args(
+    x_proc,
+    y_mat,
+    epochs,
+    batch_size,
+    validation_split,
+    verbose,
+    all_args
   )
 
   # Fit the model using the constructed arguments
-  history <- rlang::exec(keras3::fit, model, !!!final_fit_args)
+  history <- rlang::exec(keras3::fit, model, !!!fit_args)
 
   # --- 5. Return value ---
   # Per parsnip extension guidelines, the fit function should return a list
@@ -257,6 +204,7 @@ generic_sequential_fit <- function(
   # classification, it should also include an element `lvl` with the factor levels.
   list(
     fit = model, # The raw Keras model object
+    history = history, # The training history
     lvl = class_levels # Factor levels for classification, NULL for regression
   )
 }
