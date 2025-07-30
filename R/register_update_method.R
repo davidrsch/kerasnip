@@ -1,13 +1,27 @@
 #' Register the `update()` S3 Method
 #'
+#' @description
 #' Creates and registers an `update()` S3 method for the new model specification.
-#' This method allows users to modify the model's parameters after it has been
-#' created, which is essential for tuning with `dials` and `tune`.
+#' This method is essential for tuning with `dials` and `tune`, as it allows
+#' the tuning machinery to modify model parameters after the spec has been created.
 #'
-#' @param model_name The name of the new model.
-#' @param parsnip_names A character vector of all argument names.
+#' @details
+#' This function uses `rlang` metaprogramming to dynamically construct a complete
+#' `update.{{model_name}}` function. The process involves:
+#' \enumerate{
+#'   \item Building a function signature that includes `object`, `parameters`,
+#'     `...`, `fresh`, and all the tunable parameters from `parsnip_names`.
+#'   \item Creating a function body that captures all the arguments into quosures
+#'     and passes them to `parsnip::update_spec()`.
+#'   \item Registering this new function as an S3 method for the generic
+#'     `update()` in the specified environment, so S3 dispatch can find it.
+#' }
+#'
+#' @param model_name The name of the new model specification (e.g., "my_mlp").
+#' @param parsnip_names A character vector of all argument names that the
+#'   `update()` method should be able to modify.
+#' @param env The environment in which to create the `update()` S3 method.
 #' @return Invisibly returns `NULL`. Called for its side effects.
-#' @param env The environment in which to create the update method.
 #' @noRd
 register_update_method <- function(model_name, parsnip_names, env) {
   # Build function signature

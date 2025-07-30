@@ -1,16 +1,27 @@
 #' Register Fit and Prediction Methods with Parsnip
 #'
-#' Defines how to fit the custom Keras model and how to generate predictions
-#' for both regression and classification modes. It links the model to the
-#' generic fitting implementation (`generic_sequential_fit`) and sets up
-#' the appropriate prediction post-processing.
+#' @description
+#' This function registers the methods that `parsnip` will use to fit the model
+#' and generate predictions.
+#'
+#' @details
+#' This function makes calls to `parsnip::set_fit()` and `parsnip::set_pred()`:
+#' - `set_fit()`: Links the model specification to the appropriate generic
+#'   fitting engine (`generic_sequential_fit()` or `generic_functional_fit()`).
+#'   It also passes the user's `layer_blocks` list as a default argument to
+#'   the fitting function.
+#' - `set_pred()`: Defines how to generate predictions for different types
+#'   ("numeric", "class", "prob"). It specifies the underlying `predict()`
+#'   method and the post-processing functions (`keras_postprocess_*`) needed
+#'   to format the output into a standardized `tidymodels` tibble.
 #'
 #' @param model_name The name of the new model.
 #' @param mode The model mode ("regression" or "classification").
 #' @param layer_blocks The named list of layer block functions, which is passed
 #'   as a default argument to the fit function.
+#' @param functional A logical. If `TRUE`, registers `generic_functional_fit` as
+#'   the fitting engine. Otherwise, registers `generic_sequential_fit`.
 #' @return Invisibly returns `NULL`. Called for its side effects.
-#' @param functional A logical, if TRUE uses `generic_functional_fit` to fit, otherwise `generic_keras_fit_impl`. Defaults to FALSE.
 #' @noRd
 register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
   # Fit method
@@ -87,9 +98,13 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
 
 #' Post-process Keras Numeric Predictions
 #'
-#' Formats raw numeric predictions from a Keras model into a tibble with a
-#' standardized `.pred` column.
+#' @description
+#' Formats raw numeric predictions from a Keras model into a tibble with the
+#' standardized `.pred` column, as required by `tidymodels`.
 #'
+#' @details
+#' This function simply takes the matrix output from `keras3::predict()` and
+#' converts it to a single-column tibble.
 #' @param results A matrix of numeric predictions from `predict()`.
 #' @param object The `parsnip` model fit object.
 #' @return A tibble with a `.pred` column.
@@ -100,9 +115,13 @@ keras_postprocess_numeric <- function(results, object) {
 
 #' Post-process Keras Probability Predictions
 #'
-#' Formats raw probability predictions from a Keras model into a tibble
-#' with class-specific column names.
+#' @description
+#' Formats raw probability predictions from a Keras model into a tibble with
+#' class-specific column names (e.g., `.pred_class1`, `.pred_class2`).
 #'
+#' @details
+#' This function retrieves the original factor levels from `object$fit$lvl`
+#' (which was stored by the fitting engine) and uses them to name the columns.
 #' @param results A matrix of probability predictions from `predict()`.
 #' @param object The `parsnip` model fit object.
 #' @return A tibble with named columns for each class probability.
@@ -115,9 +134,14 @@ keras_postprocess_probs <- function(results, object) {
 
 #' Post-process Keras Class Predictions
 #'
-#' Converts raw probability predictions from a Keras model into factor-based
-#' class predictions.
+#' @description
+#' Converts raw probability predictions from a Keras model into a single
+#' `.pred_class` column of factor predictions.
 #'
+#' @details
+#' For multiclass models, it finds the class with the highest probability
+#' (`which.max`). For binary models, it applies a 0.5 threshold. It uses the
+#' levels stored in `object$fit$lvl` to ensure the output factor is correct.
 #' @param results A matrix of probability predictions from `predict()`.
 #' @param object The `parsnip` model fit object.
 #' @return A tibble with a `.pred_class` column containing factor predictions.

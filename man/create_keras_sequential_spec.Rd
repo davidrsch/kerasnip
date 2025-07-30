@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_keras_sequential_spec.R
 \name{create_keras_sequential_spec}
 \alias{create_keras_sequential_spec}
-\title{Create a Custom Keras Model Specification for Tidymodels}
+\title{Create a Custom Keras Sequential Model Specification for Tidymodels}
 \usage{
 create_keras_sequential_spec(
   model_name,
@@ -17,10 +17,10 @@ create_keras_sequential_spec(
 specification function (e.g., "custom_cnn"). This should be a valid R
 function name.}
 
-\item{layer_blocks}{A named list of functions. Each function defines a "block"
-of Keras layers. The function must take a Keras model object as its first
-argument and return the modified model. Other arguments to the function
-will become tunable parameters in the final model specification.}
+\item{layer_blocks}{A named, ordered list of functions. Each function defines
+a "block" of Keras layers. The function must take a Keras model object as
+its first argument and return the modified model. Other arguments to the
+function will become tunable parameters in the final model specification.}
 
 \item{mode}{A character string, either "regression" or "classification".}
 
@@ -32,42 +32,48 @@ environment (\code{parent.frame()}).}
 }
 \value{
 Invisibly returns \code{NULL}. Its primary side effect is to create a new
-model specification function (e.g., \code{dynamic_mlp()}) in the specified
+model specification function (e.g., \code{my_mlp()}) in the specified
 environment and register the model with \code{parsnip} so it can be used within
 the \code{tidymodels} framework.
 }
 \description{
 This function acts as a factory to generate a new \code{parsnip} model
-specification based on user-defined blocks of Keras layers. This allows for
-creating complex, tunable architectures that integrate seamlessly with the
-\code{tidymodels} ecosystem.
+specification based on user-defined blocks of Keras layers using the
+Sequential API. This is the ideal choice for creating models that are a
+simple, linear stack of layers. For models with complex, non-linear
+topologies, see \code{\link[=create_keras_functional_spec]{create_keras_functional_spec()}}.
 }
 \details{
-The user is responsible for defining the entire model architecture by providing
-an ordered list of layer block functions.
-\enumerate{
-\item The first block function must initialize the model (e.g., with
-\code{keras_model_sequential()}). It can accept an \code{input_shape} argument,
-which will be provided automatically by the fitting engine.
-\item Subsequent blocks add hidden layers.
-\item The final block should add the output layer. For classification, it can
-accept a \code{num_classes} argument, which is provided automatically.
-}
+This function generates all the boilerplate needed to create a custom,
+tunable \code{parsnip} model specification that uses the Keras Sequential API.
 
-The \code{create_keras_sequential_spec()} function will inspect the arguments of your
-\code{layer_blocks} functions (ignoring \code{input_shape} and \code{num_classes})
-and make them available as arguments in the generated model specification,
-prefixed with the block's name (e.g.,
-\code{dense_units}).
-
-It also automatically creates arguments like \code{num_dense} to control how many
-times each block is repeated. In addition, common training parameters such as
-\code{epochs}, \code{learn_rate}, \code{validation_split}, and \code{verbose} are added to the
-specification.
+The function inspects the arguments of your \code{layer_blocks} functions
+(ignoring special arguments like \code{input_shape} and \code{num_classes})
+and makes them available as arguments in the generated model specification,
+prefixed with the block's name (e.g., \code{dense_units}).
 
 The new model specification function and its \code{update()} method are created in
 the environment specified by the \code{env} argument.
 }
+\section{Model Architecture (Sequential API)}{
+
+\code{kerasnip} builds the model by applying the functions in \code{layer_blocks} in
+the order they are provided. Each function receives the Keras model built by
+the previous function and returns a modified version.
+\enumerate{
+\item The \strong{first block} must initialize the model (e.g., with
+\code{keras_model_sequential()}). It can accept an \code{input_shape} argument,
+which \code{kerasnip} will provide automatically during fitting.
+\item \strong{Subsequent blocks} add layers to the model.
+\item The \strong{final block} should add the output layer. For classification, it
+can accept a \code{num_classes} argument, which is provided automatically.
+}
+
+A key feature of this function is the automatic creation of \verb{num_\{block_name\}}
+arguments (e.g., \code{num_hidden}). This allows you to control how many times
+each block is repeated, making it easy to tune the depth of your network.
+}
+
 \examples{
 \dontrun{
 if (requireNamespace("keras3", quietly = TRUE)) {
@@ -102,6 +108,7 @@ model_name = "my_mlp",
 )
 
 # 3. Use the newly created specification function!
+# Note the new arguments `num_hidden` and `hidden_units`.
 model_spec <- my_mlp(
   num_hidden = 2,
   hidden_units = 64,
@@ -114,5 +121,6 @@ print(model_spec)
 }
 }
 \seealso{
-\code{\link[=remove_keras_spec]{remove_keras_spec()}}, \code{\link[parsnip:add_on_exports]{parsnip::new_model_spec()}}
+\code{\link[=remove_keras_spec]{remove_keras_spec()}}, \code{\link[parsnip:add_on_exports]{parsnip::new_model_spec()}},
+\code{\link[=create_keras_functional_spec]{create_keras_functional_spec()}}
 }

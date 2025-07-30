@@ -1,13 +1,46 @@
 #' Generate Roxygen Documentation for a Dynamic Spec Function
 #'
-#' Constructs a detailed Roxygen comment block as a string, which can be
-#' attached to the dynamically created model specification function.
+#' @description
+#' This internal helper constructs a complete Roxygen comment block as a single
+#' string. This string is then attached to the dynamically created model
+#' specification function, making it self-documenting.
 #'
-#' @param model_name The name of the model.
-#' @param layer_blocks The list of layer block functions.
-#' @param all_args A named list of all arguments for the function signature.
-#' @param functional A logical indicating if the model is functional or sequential.
-#' @return A single string containing the full Roxygen documentation.
+#' @details
+#' The function assembles the documentation in a structured way:
+#' \itemize{
+#'   \item \strong{Title & Description:} A title is generated from the `model_name`,
+#'     and the description indicates which `kerasnip` function created it.
+#'   \item \strong{Parameters (`@param`):} It documents several groups of parameters:
+#'     \itemize{
+#'       \item Block-specific hyperparameters (e.g., `dense_units`), introspecting
+#'         `layer_blocks` to find default values.
+#'       \item Architecture parameters (e.g., `num_dense`).
+#'       \item Global training parameters (e.g., `epochs`, `learn_rate`).
+#'       \item Compilation override parameters (e.g., `compile_loss`).
+#'     }
+#'   \item \strong{Sections (`@section`):} It creates dedicated sections for:
+#'     \itemize{
+#'       \item \strong{Model Architecture:} Explains how the model is built, with
+#'         different content for the Sequential vs. Functional API (controlled
+#'         by the `functional` flag).
+#'       \item \strong{Model Fitting:} Explains how to pass arguments to
+#'         `keras3::fit()` using the `fit_` prefix.
+#'       \item \strong{Model Compilation:} Explains the default compilation
+#'         behavior and how to override it using the `compile_` prefix.
+#'     }
+#'   \item \strong{Other Tags:} Adds `@seealso` to link to relevant `kerasnip`
+#'     functions and `@export` to make the generated function available to users.
+#' }
+#'
+#' @param model_name A character string for the model's name, used to generate the documentation title.
+#' @param layer_blocks The named list of user-provided layer block functions. This is
+#'   introspected to find default values for block-specific parameters.
+#' @param all_args A named list of all arguments for the new function's signature,
+#'   used to determine which `@param` tags to generate.
+#' @param functional A logical. If `TRUE`, generates documentation specific to
+#'   the Functional API. If `FALSE`, generates documentation for the Sequential API.
+#' @return A single string containing the full Roxygen documentation, ready to be
+#'   attached to a function using `comment()`.
 #' @noRd
 generate_roxygen_docs <- function(
   model_name,
@@ -133,7 +166,10 @@ generate_roxygen_docs <- function(
   # Add ... param
   param_docs <- c(
     param_docs,
-    "@param ... Additional arguments passed to `parsnip::new_model_spec()`."
+    paste0(
+      "@param ... Additional arguments passed to the Keras engine. This is commonly used for arguments to `keras3::fit()` (prefixed with `fit_`). ",
+      "See the 'Model Fitting' and 'Model Compilation' sections for details."
+    )
   )
 
   # Sections

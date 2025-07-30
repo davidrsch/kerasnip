@@ -22,9 +22,18 @@ keras_losses
 keras_metrics
 }
 \description{
-These vectors contain the names of optimizers, losses, and metrics
-discovered from the installed \code{keras3} package at load time. This ensures
-that \code{kerasnip} is always up-to-date with your Keras version.
+These exported vectors contain the names of optimizers, losses, and metrics
+discovered from the installed \code{keras3} package when \code{kerasnip} is loaded.
+This ensures that \code{kerasnip} is always up-to-date with your Keras version.
+}
+\details{
+These objects are primarily used to provide the default \code{values} for the
+\code{dials} parameter functions, \code{\link[=optimizer_function]{optimizer_function()}} and \code{\link[=loss_function_keras]{loss_function_keras()}}.
+This allows for tab-completion and validation of optimizer and loss names
+when tuning models.
+
+The discovery process in \code{.onLoad()} scrapes the \code{keras3} namespace for
+functions matching \verb{optimizer_*}, \verb{loss_*}, and \verb{metric_*} patterns.
 }
 \keyword{datasets}
 \keyword{internal}

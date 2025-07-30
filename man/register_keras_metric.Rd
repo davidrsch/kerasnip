@@ -12,5 +12,14 @@ register_keras_metric(name, metric_fn)
 \item{metric_fn}{The metric function.}
 }
 \description{
-Register a Custom Keras Metric
+Allows users to register a custom metric function so it can be used by name
+within \code{kerasnip} model specifications.
+}
+\details{
+Registered metrics are stored in an internal environment. When a model is
+compiled, \code{kerasnip} will first check this internal registry for a metric
+matching the provided name before checking the \code{keras3} package.
+}
+\seealso{
+\code{\link[=register_keras_optimizer]{register_keras_optimizer()}}, \code{\link[=register_keras_loss]{register_keras_loss()}}
 }

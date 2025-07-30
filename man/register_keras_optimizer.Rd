@@ -9,8 +9,32 @@ register_keras_optimizer(name, optimizer_fn)
 \arguments{
 \item{name}{The name to register the optimizer under (character).}
 
-\item{optimizer_fn}{The optimizer function (e.g., a custom function or a partially applied keras optimizer).}
+\item{optimizer_fn}{The optimizer function. It should return a Keras
+optimizer object.}
 }
 \description{
-Register a Custom Keras Optimizer
+Allows users to register a custom optimizer function so it can be used by
+name within \code{kerasnip} model specifications and tuned with \code{dials}.
+}
+\details{
+Registered optimizers are stored in an internal environment. When a model is
+compiled, \code{kerasnip} will first check this internal registry for an optimizer
+matching the provided name before checking the \code{keras3} package.
+
+The \code{optimizer_fn} can be a simple function or a partially applied function
+using \code{purrr::partial()}. This is useful for creating versions of Keras
+optimizers with specific settings.
+}
+\examples{
+if (requireNamespace("keras3", quietly = TRUE)) {
+  # Register a custom version of Adam with a different default beta_1
+  my_adam <- purrr::partial(keras3::optimizer_adam, beta_1 = 0.8)
+  register_keras_optimizer("my_adam", my_adam)
+
+  # Now "my_adam" can be used as a string in a model spec, e.g.,
+  # my_model_spec(compile_optimizer = "my_adam")
+}
+}
+\seealso{
+\code{\link[=register_keras_loss]{register_keras_loss()}}, \code{\link[=register_keras_metric]{register_keras_metric()}}
 }

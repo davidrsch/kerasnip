@@ -2,41 +2,61 @@
 % Please edit documentation in R/remove_spec.R
 \name{remove_keras_spec}
 \alias{remove_keras_spec}
-\title{Remove a Keras Model Specification}
+\title{Remove a Keras Model Specification and its Registrations}
 \usage{
 remove_keras_spec(model_name, env = parent.frame())
 }
 \arguments{
 \item{model_name}{A character string giving the name of the model
-specification function to remove.}
+specification function to remove (e.g., "my_mlp").}
 
-\item{env}{The environment from which to remove the function. Defaults to
-the calling environment (\code{parent.frame()}), which is typically where
-\code{create_keras_sequential_spec()} would have created the function.}
+\item{env}{The environment from which to remove the function and its \code{update()}
+method. Defaults to the calling environment (\code{parent.frame()}).}
 }
 \value{
-Invisibly returns \code{TRUE} if the function was found and removed,
-and \code{FALSE} otherwise.
+Invisibly returns \code{TRUE} after attempting to remove the objects.
 }
 \description{
-This function removes a model specification function that was previously
-created by \code{create_keras_sequential_spec()} from an environment.
+This function completely removes a model specification that was previously
+created by \code{\link[=create_keras_sequential_spec]{create_keras_sequential_spec()}} or \code{\link[=create_keras_functional_spec]{create_keras_functional_spec()}}.
+It cleans up both the function in the user's environment and all associated
+registrations within the \code{parsnip} package.
+}
+\details{
+This function is essential for cleanly unloading a dynamically created model.
+It performs three main actions:
+\enumerate{
+\item It removes the model specification function (e.g., \code{my_mlp()}) and its
+corresponding \code{update()} method from the specified environment.
+\item It searches \code{parsnip}'s internal model environment for all objects
+whose names start with the \code{model_name} and removes them. This purges
+the fit methods, argument definitions, and other registrations.
+\item It removes the model's name from \code{parsnip}'s master list of models.
+}
+This function uses the un-exported \code{parsnip:::get_model_env()} to perform
+the cleanup, which may be subject to change in future \code{parsnip} versions.
 }
 \examples{
 \dontrun{
-# First, create a dummy spec
-dense_block <- function(model, units = 16) {
-  model |> keras3::layer_dense(units = units)
+if (requireNamespace("keras3", quietly = TRUE)) {
+  # First, create a dummy spec
+  input_block <- function(model, input_shape) keras3::keras_model_sequential(input_shape = input_shape)
+  dense_block <- function(model, units = 16) model |> keras3::layer_dense(units = units)
+  create_keras_sequential_spec("my_temp_model", list(input = input_block, dense = dense_block), "regression")
+
+  # Check it exists in the environment and in parsnip
+  exists("my_temp_model")
+  "my_temp_model" \%in\% parsnip::show_engines("my_temp_model")$model
+
+  # Now remove it
+  remove_keras_spec("my_temp_model")
+
+  # Check it's gone
+  !exists("my_temp_model")
+  !"my_temp_model" \%in\% parsnip::show_engines(NULL)$model
 }
-create_keras_sequential_spec("my_temp_model", list(dense = dense_block), "regression")
-
-# Check it exists
-exists("my_temp_model")
-
-# Now remove it
-remove_keras_spec("my_temp_model")
-
-# Check it's gone
-!exists("my_temp_model")
 }
+}
+\seealso{
+\code{\link[=create_keras_sequential_spec]{create_keras_sequential_spec()}}, \code{\link[=create_keras_functional_spec]{create_keras_functional_spec()}}
 }

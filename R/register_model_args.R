@@ -1,11 +1,28 @@
-#' Register Model Arguments with Parsnip
+#' Register Model Arguments with Parsnip and Dials
 #'
+#' @description
 #' Registers each model argument with `parsnip` and maps it to a corresponding
-#' `dials` parameter function for tuning. This allows `tidymodels` to know
-#' about the tunable parameters of the custom model.
+#' `dials` parameter function. This is a crucial step that makes the model's
+#' parameters visible to the `tidymodels` ecosystem for tuning.
 #'
-#' @param model_name The name of the new model.
-#' @param parsnip_names A character vector of all argument names.
+#' @details
+#' This function iterates through each argument name discovered by
+#' `collect_spec_args()` and calls `parsnip::set_model_arg()`.
+#'
+#' The mapping from a `kerasnip` argument to a `dials` function is determined
+#' by the following logic:
+#' \itemize{
+#'   \item Arguments starting with `num_` (e.g., `num_dense`) are mapped to
+#'     `dials::num_terms()`.
+#'   \item Other arguments are mapped based on their suffix (e.g., `dense_units`
+#'     is mapped based on `units`). The internal `keras_dials_map` object
+#'     contains common mappings like `units` -> `dials::hidden_units()`.
+#'   \item Arguments for `compile_loss` and `compile_optimizer` are mapped to
+#'     custom `dials` parameter functions within `kerasnip`.
+#' }
+#'
+#' @param model_name The name of the new model specification.
+#' @param parsnip_names A character vector of all argument names to be registered.
 #' @return Invisibly returns `NULL`. Called for its side effects.
 #' @noRd
 register_model_args <- function(model_name, parsnip_names) {
