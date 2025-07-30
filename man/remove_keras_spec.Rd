@@ -12,7 +12,7 @@ specification function to remove.}
 
 \item{env}{The environment from which to remove the function. Defaults to
 the calling environment (\code{parent.frame()}), which is typically where
-\code{create_keras_spec()} would have created the function.}
+\code{create_keras_sequential_spec()} would have created the function.}
 }
 \value{
 Invisibly returns \code{TRUE} if the function was found and removed,
@@ -20,7 +20,7 @@ and \code{FALSE} otherwise.
 }
 \description{
 This function removes a model specification function that was previously
-created by \code{create_keras_spec()} from an environment.
+created by \code{create_keras_sequential_spec()} from an environment.
 }
 \examples{
 \dontrun{
@@ -28,7 +28,7 @@ created by \code{create_keras_spec()} from an environment.
 dense_block <- function(model, units = 16) {
   model |> keras3::layer_dense(units = units)
 }
-create_keras_spec("my_temp_model", list(dense = dense_block), "regression")
+create_keras_sequential_spec("my_temp_model", list(dense = dense_block), "regression")
 
 # Check it exists
 exists("my_temp_model")

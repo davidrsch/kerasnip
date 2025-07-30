@@ -1,13 +1,13 @@
 #' Remove a Keras Model Specification
 #'
 #' This function removes a model specification function that was previously
-#' created by `create_keras_spec()` from an environment.
+#' created by `create_keras_sequential_spec()` from an environment.
 #'
 #' @param model_name A character string giving the name of the model
 #'   specification function to remove.
 #' @param env The environment from which to remove the function. Defaults to
 #'   the calling environment (`parent.frame()`), which is typically where
-#'   `create_keras_spec()` would have created the function.
+#'   `create_keras_sequential_spec()` would have created the function.
 #' @return Invisibly returns `TRUE` if the function was found and removed,
 #'   and `FALSE` otherwise.
 #' @export
@@ -17,7 +17,7 @@
 #' dense_block <- function(model, units = 16) {
 #'   model |> keras3::layer_dense(units = units)
 #' }
-#' create_keras_spec("my_temp_model", list(dense = dense_block), "regression")
+#' create_keras_sequential_spec("my_temp_model", list(dense = dense_block), "regression")
 #'
 #' # Check it exists
 #' exists("my_temp_model")

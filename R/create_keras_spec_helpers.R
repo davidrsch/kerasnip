@@ -66,3 +66,40 @@ collect_spec_args <- function(
 
   list(all_args = all_args, parsnip_names = parsnip_names)
 }
+
+#' Internal Implementation for Creating Keras Specifications
+#'
+#' This is the core logic for both `create_keras_sequential_spec` and
+#' `create_keras_functional_spec`. It is not intended for direct use.
+#'
+#' @inheritParams create_keras_sequential_spec
+#' @param functional A logical, if `TRUE`, registers the model to be fit with
+#'   the Functional API (`generic_functional_fit`). Otherwise, uses the
+#'   Sequential API (`generic_sequential_fit`).
+#'
+#' @noRd
+create_keras_spec_impl <- function(
+  model_name,
+  layer_blocks,
+  mode,
+  functional,
+  env
+) {
+  args_info <- collect_spec_args(layer_blocks)
+  spec_fun <- build_spec_function(
+    model_name,
+    mode,
+    args_info$all_args,
+    args_info$parsnip_names,
+    layer_blocks,
+    functional = functional
+  )
+
+  register_core_model(model_name, mode)
+  register_model_args(model_name, args_info$parsnip_names)
+  register_fit_predict(model_name, mode, layer_blocks, functional = functional)
+  register_update_method(model_name, args_info$parsnip_names, env = env)
+
+  rlang::env_poke(env, model_name, spec_fun)
+  invisible(NULL)
+}

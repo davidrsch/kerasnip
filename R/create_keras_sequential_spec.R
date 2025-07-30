@@ -30,7 +30,7 @@
 #' 3. The final block should add the output layer. For classification, it can
 #' accept a \code{num_classes} argument, which is provided automatically.
 #'
-#' The \code{create_keras_spec()} function will inspect the arguments of your
+#' The \code{create_keras_sequential_spec()} function will inspect the arguments of your
 #' \code{layer_blocks} functions (ignoring \code{input_shape} and \code{num_classes})
 #' and make them available as arguments in the generated model specification,
 #' prefixed with the block's name (e.g.,
@@ -75,7 +75,7 @@
 #' }
 #'
 #' # 2. Create the spec, providing blocks in the correct order.
-#' create_keras_spec(
+#' create_keras_sequential_spec(
 #' model_name = "my_mlp",
 #'   layer_blocks = list(
 #'     input = input_block,
@@ -97,7 +97,7 @@
 #' print(model_spec)
 #' }
 #' }
-create_keras_spec <- function(
+create_keras_sequential_spec <- function(
   model_name,
   layer_blocks,
   mode = c("regression", "classification"),
@@ -105,20 +105,11 @@ create_keras_spec <- function(
   env = parent.frame()
 ) {
   mode <- arg_match(mode)
-  args_info <- collect_spec_args(layer_blocks)
-  spec_fun <- build_spec_function(
+  create_keras_spec_impl(
     model_name,
+    layer_blocks,
     mode,
-    args_info$all_args,
-    args_info$parsnip_names,
-    layer_blocks
+    functional = FALSE,
+    env
   )
-
-  register_core_model(model_name, mode)
-  register_model_args(model_name, args_info$parsnip_names)
-  register_fit_predict(model_name, mode, layer_blocks)
-  register_update_method(model_name, args_info$parsnip_names, env = env)
-
-  env_poke(env, model_name, spec_fun)
-  invisible(NULL)
 }

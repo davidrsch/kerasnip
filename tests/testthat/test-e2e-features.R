@@ -11,7 +11,7 @@ test_that("E2E: Customizing main arguments works", {
     model |> keras3::layer_dense(units = 1)
   }
 
-  create_keras_spec(
+  create_keras_sequential_spec(
     model_name = "e2e_mlp_feat",
     layer_blocks = list(
       input = input_block_feat,
@@ -68,7 +68,7 @@ test_that("E2E: Customizing fit arguments works", {
     model |> keras3::layer_dense(units = 1)
   }
 
-  create_keras_spec(
+  create_keras_sequential_spec(
     model_name = "e2e_mlp_fit",
     layer_blocks = list(
       input = input_block_fit,
@@ -109,7 +109,7 @@ test_that("E2E: Setting num_blocks = 0 works", {
     model |> keras3::layer_dense(units = 1)
   }
 
-  create_keras_spec(
+  create_keras_sequential_spec(
     model_name = "e2e_mlp_zero",
     layer_blocks = list(
       input = input_block_zero,
@@ -132,7 +132,7 @@ test_that("E2E: Error handling for reserved names works", {
   )
 
   expect_error(
-    create_keras_spec("bad_spec", bad_blocks),
+    create_keras_sequential_spec("bad_spec", bad_blocks),
     regexp = "`compile` and `optimizer` are protected names"
   )
 })

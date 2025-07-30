@@ -13,7 +13,7 @@ test_that("E2E: Regression spec generation, fitting, and prediction works", {
     model |> keras3::layer_dense(units = 1)
   }
 
-  create_keras_spec(
+  create_keras_sequential_spec(
     model_name = "e2e_mlp_reg",
     layer_blocks = list(
       input = input_block_reg,

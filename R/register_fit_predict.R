@@ -10,8 +10,9 @@
 #' @param layer_blocks The named list of layer block functions, which is passed
 #'   as a default argument to the fit function.
 #' @return Invisibly returns `NULL`. Called for its side effects.
+#' @param functional A logical, if TRUE uses `generic_functional_fit` to fit, otherwise `generic_keras_fit_impl`. Defaults to FALSE.
 #' @noRd
-register_fit_predict <- function(model_name, mode, layer_blocks) {
+register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
   # Fit method
   parsnip::set_fit(
     model = model_name,
@@ -20,7 +21,14 @@ register_fit_predict <- function(model_name, mode, layer_blocks) {
     value = list(
       interface = "data.frame",
       protect = c("x", "y"),
-      func = c(pkg = "kerasnip", fun = "generic_sequential_fit"),
+      func = c(
+        pkg = "kerasnip",
+        fun = if (functional) {
+          "generic_functional_fit"
+        } else {
+          "generic_sequential_fit"
+        }
+      ),
       defaults = list(layer_blocks = layer_blocks)
     )
   )
