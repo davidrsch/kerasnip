@@ -87,12 +87,30 @@ generate_roxygen_docs <- function(
     block_params <- setdiff(block_params, "learn_rate")
   }
   if (length(block_params) > 0) {
+    # Sort block names by length descending to handle overlapping names
+    # (e.g., "dense" and "dense_layer")
+    sorted_block_names <- names(layer_blocks)[
+      order(nchar(names(layer_blocks)), decreasing = TRUE)
+    ]
+
     param_docs <- c(
       param_docs,
       purrr::map_chr(block_params, function(p) {
-        parts <- strsplit(p, "_", fixed = TRUE)[[1]]
-        block_name <- parts[1]
-        param_name <- paste(parts[-1], collapse = "_")
+        # Find the block name that is a prefix for this parameter.
+        # The `Find` function returns the first match, and since we sorted
+        # block names by length, it will find the longest possible match.
+        block_name <- Find(
+          function(bn) startsWith(p, paste0(bn, "_")),
+          sorted_block_names
+        )
+
+        if (is.null(block_name)) {
+          # This should not happen if collect_spec_args is correct, but as a
+          # fallback, we avoid an error.
+          return(paste0("@param ", p, " A model parameter."))
+        }
+
+        param_name <- sub(paste0(block_name, "_"), "", p, fixed = TRUE)
         block_fn <- layer_blocks[[block_name]]
         default_val <- rlang::fn_fmls(block_fn)[[param_name]]
         default_str <- if (
