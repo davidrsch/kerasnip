@@ -17,8 +17,10 @@
 #'   \item Other arguments are mapped based on their suffix (e.g., `dense_units`
 #'     is mapped based on `units`). The internal `keras_dials_map` object
 #'     contains common mappings like `units` -> `dials::hidden_units()`.
-#'   \item Arguments for `compile_loss` and `compile_optimizer` are mapped to
-#'     custom `dials` parameter functions within `kerasnip`.
+#'   \item Arguments for `compile_loss` and `compile_optimizer` are mapped to custom
+#'     `dials` parameter functions (`loss_function_keras()` and `optimizer_function()`)
+#'     that are part of the `kerasnip` package itself. The function correctly
+#'     sets the `pkg` for these to `kerasnip`.
 #' }
 #'
 #' @param model_name The name of the new model specification.
@@ -43,9 +45,9 @@ register_model_args <- function(model_name, parsnip_names) {
     "dropout",
     "learn_rate",
     "learn_rate",
+    "fit_epochs",
     "epochs",
-    "epochs",
-    "batch_size",
+    "fit_batch_size",
     "batch_size",
     "compile_loss", # parsnip arg
     "loss_function_keras", # dials function from kerasnip
@@ -54,7 +56,7 @@ register_model_args <- function(model_name, parsnip_names) {
   )
 
   # We now allow optimizer to be tuned. Metrics are for tracking, not training.
-  non_tunable <- c("verbose")
+  non_tunable <- c("fit_verbose")
 
   for (arg in parsnip_names) {
     if (arg %in% non_tunable) {

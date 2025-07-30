@@ -4,17 +4,7 @@
 \alias{generic_sequential_fit}
 \title{Generic Keras Sequential API Model Fitting Implementation}
 \usage{
-generic_sequential_fit(
-  x,
-  y,
-  layer_blocks,
-  epochs = 10,
-  batch_size = 32,
-  learn_rate = 0.01,
-  validation_split = 0.2,
-  verbose = 0,
-  ...
-)
+generic_sequential_fit(x, y, layer_blocks, ...)
 }
 \arguments{
 \item{x}{A data frame or matrix of predictors.}
@@ -23,19 +13,6 @@ generic_sequential_fit(
 
 \item{layer_blocks}{A named list of layer block functions. This is passed
 internally from the \code{parsnip} model specification.}
-
-\item{epochs}{An integer for the number of training iterations.}
-
-\item{batch_size}{An integer for the number of samples per gradient update.
-This is a tunable parameter and is passed to \code{keras3::fit()}.}
-
-\item{learn_rate}{A double for the learning rate, used to configure the
-default Adam optimizer.}
-
-\item{validation_split}{The proportion of the training data to use for
-the validation set.}
-
-\item{verbose}{An integer for the verbosity of the fitting process (0, 1, or 2).}
 
 \item{...}{Additional arguments passed down from the model specification. These
 can include:
@@ -52,6 +29,19 @@ prefixed with \code{compile_} (e.g., \code{compile_loss = "mae"},
 prefixed with \code{fit_} (e.g., \code{fit_callbacks = list(...)},
 \code{fit_class_weight = list(...)}).
 }}
+
+\item{epochs}{An integer for the number of training iterations.}
+
+\item{learn_rate}{A double for the learning rate, used to configure the
+default Adam optimizer.}
+
+\item{batch_size}{An integer for the number of samples per gradient update.
+This is a tunable parameter and is passed to \code{keras3::fit()}.}
+
+\item{validation_split}{The proportion of the training data to use for
+the validation set.}
+
+\item{verbose}{An integer for the verbosity of the fitting process (0, 1, or 2).}
 }
 \value{
 A list containing the fitted model and other metadata. This list is

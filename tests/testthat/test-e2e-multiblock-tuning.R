@@ -21,8 +21,11 @@ test_that("E2E: Multi-block model tuning works", {
     model |> keras3::layer_dense(units = num_classes, activation = "softmax")
   }
 
+  model_name <- "mb_mt"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
   create_keras_sequential_spec(
-    model_name = "mb_mt",
+    model_name = model_name,
     layer_blocks = list(
       input = input_block_mb,
       start = starting_layers,
@@ -37,7 +40,7 @@ test_that("E2E: Multi-block model tuning works", {
     start_layer1_units = tune(),
     start_layer2_units = tune(),
     end_units = tune(),
-    epochs = 1
+    fit_epochs = 1
   ) |>
     set_engine("keras")
 

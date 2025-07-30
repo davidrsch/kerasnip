@@ -12,7 +12,7 @@
 #'   (assumed to be the `model` object), to find tunable hyperparameters.
 #'
 #' For **functional models** (`functional = TRUE`):
-#' - It does **not** create `num_{block_name}` arguments.
+#' - It creates `num_{block_name}` arguments to control block repetition.
 #' - It inspects the arguments of each block function. Arguments whose names
 #'   match other block names are considered graph connections (inputs) and are
 #'   ignored. The remaining arguments are treated as tunable hyperparameters.
@@ -30,21 +30,11 @@
 #' @noRd
 collect_spec_args <- function(
   layer_blocks,
-  functional,
-  global_args = c(
-    "epochs",
-    "batch_size",
-    "learn_rate",
-    "validation_split",
-    "verbose",
-    "compile_loss",
-    "compile_optimizer",
-    "compile_metrics"
-  )
+  functional
 ) {
-  if (any(c("compile", "optimizer") %in% names(layer_blocks))) {
+  if (any(c("compile", "fit", "optimizer") %in% names(layer_blocks))) {
     stop(
-      "`compile` and `optimizer` are protected names and cannot be used as layer block names.",
+      "`compile`, `fit` and `optimizer` are protected names and cannot be used as layer block names.",
       call. = FALSE
     )
   }
@@ -90,8 +80,25 @@ collect_spec_args <- function(
     }
   }
 
-  # global training parameters
-  for (g in global_args) {
+  # Add global training and compile parameters dynamically
+  # These are discovered from keras3::fit and keras3::compile in zzz.R
+  fit_params <- if (length(keras_fit_arg_names) > 0) {
+    paste0("fit_", keras_fit_arg_names)
+  } else {
+    character()
+  }
+  compile_params <- if (length(keras_compile_arg_names) > 0) {
+    paste0("compile_", keras_compile_arg_names)
+  } else {
+    character()
+  }
+
+  # learn_rate is a special convenience argument for the default optimizer
+  special_params <- "learn_rate"
+
+  dynamic_global_args <- c(special_params, fit_params, compile_params)
+
+  for (g in dynamic_global_args) {
     all_args[[g]] <- rlang::zap()
     parsnip_names <- c(parsnip_names, g)
   }

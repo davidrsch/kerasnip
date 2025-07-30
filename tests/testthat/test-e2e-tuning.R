@@ -12,8 +12,11 @@ test_that("E2E: Tuning works with a generated spec", {
     model |> keras3::layer_dense(units = num_classes, activation = "softmax")
   }
 
+  model_name <- "e2e_mlp_class_tune"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
   create_keras_sequential_spec(
-    model_name = "e2e_mlp_class_tune",
+    model_name = model_name,
     layer_blocks = list(
       input = input_block_tune,
       dense = dense_block_tune,
@@ -25,7 +28,7 @@ test_that("E2E: Tuning works with a generated spec", {
   tune_spec <- e2e_mlp_class_tune(
     num_dense = tune(),
     dense_units = tune(),
-    epochs = 1
+    fit_epochs = 1
   ) |>
     set_engine("keras")
 

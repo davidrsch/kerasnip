@@ -70,20 +70,22 @@ generate_roxygen_docs <- function(
 
   # Group args for structured documentation
   num_params <- arg_names[startsWith(arg_names, "num_")]
+  fit_params <- arg_names[startsWith(arg_names, "fit_")]
   compile_params <- arg_names[startsWith(arg_names, "compile_")]
-  global_params <- c(
-    "epochs",
-    "batch_size",
-    "learn_rate",
-    "validation_split",
-    "verbose"
-  )
+  # `learn_rate` is a special top-level convenience argument
+  special_params <- "learn_rate"
+
   block_params <- setdiff(
     arg_names,
-    c(num_params, compile_params, global_params)
+    c(num_params, fit_params, compile_params, special_params)
   )
 
   # Document block-specific params
+  if ("learn_rate" %in% block_params) {
+    # This can happen if a user names a block `learn` and it has a `rate` param.
+    # It's an edge case, but we should not document it twice.
+    block_params <- setdiff(block_params, "learn_rate")
+  }
   if (length(block_params) > 0) {
     param_docs <- c(
       param_docs,
@@ -135,40 +137,46 @@ generate_roxygen_docs <- function(
     )
   }
 
-  # Document global params
-  global_param_desc <- list(
-    epochs = "The total number of iterations to train the model.",
-    batch_size = "The number of samples per gradient update.",
-    learn_rate = "The learning rate for the default Adam optimizer. This is ignored if `compile_optimizer` is provided as a pre-built object.",
-    validation_split = "The proportion of the training data to be used as a validation set.",
-    verbose = "The level of verbosity for model fitting (0, 1, or 2)."
-  )
+  # Document special `learn_rate` param
   param_docs <- c(
     param_docs,
-    purrr::map_chr(global_params, function(p) {
-      paste0("@param ", p, " ", global_param_desc[[p]])
-    })
+    "@param learn_rate The learning rate for the default Adam optimizer. This is ignored if `compile_optimizer` is provided as a pre-built Keras optimizer object."
   )
 
   # Document compile params
-  compile_param_desc <- list(
-    compile_loss = "The loss function for compiling the model. Can be a string (e.g., 'mse') or a Keras loss object. Overrides the default.",
-    compile_optimizer = "The optimizer for compiling the model. Can be a string (e.g., 'sgd') or a Keras optimizer object. Overrides the default.",
-    compile_metrics = "A character vector of metrics to monitor during training (e.g., `c('mae', 'mse')`). Overrides the default."
-  )
-  param_docs <- c(
-    param_docs,
-    purrr::map_chr(compile_params, function(p) {
-      paste0("@param ", p, " ", compile_param_desc[[p]])
-    })
-  )
+  if (length(compile_params) > 0) {
+    param_docs <- c(
+      param_docs,
+      purrr::map_chr(compile_params, function(p) {
+        paste0(
+          "@param ",
+          p,
+          " Argument to `keras3::compile()`. See the 'Model Compilation' section."
+        )
+      })
+    )
+  }
+
+  # Document fit params
+  if (length(fit_params) > 0) {
+    param_docs <- c(
+      param_docs,
+      purrr::map_chr(fit_params, function(p) {
+        paste0(
+          "@param ",
+          p,
+          " Argument to `keras3::fit()`. See the 'Model Fitting' section."
+        )
+      })
+    )
+  }
 
   # Add ... param
   param_docs <- c(
     param_docs,
     paste0(
-      "@param ... Additional arguments passed to the Keras engine. This is commonly used for arguments to `keras3::fit()` (prefixed with `fit_`). ",
-      "See the 'Model Fitting' and 'Model Compilation' sections for details."
+      "@param ... Additional arguments passed to the Keras engine. Use this for arguments to `keras3::fit()` or `keras3::compile()` ",
+      "that are not exposed as top-level arguments."
     )
   )
 
@@ -178,7 +186,8 @@ generate_roxygen_docs <- function(
       "#' @section Model Architecture (Functional API):",
       "#' The Keras model is constructed using the Functional API. Each layer block function's arguments",
       "#' determine its inputs. For example, a block `function(input_a, input_b, ...)` will be connected",
-      "#' to the outputs of the `input_a` and `input_b` blocks.",
+      "#' to the outputs of the `input_a` and `input_b` blocks. You can also repeat a block by setting",
+      "#' the `num_{block_name}` argument, provided the block has a single input tensor.",
       "#' The first block in `layer_blocks` is assumed to be the input layer and should not have inputs from other layers."
     )
     see_also_fit <- "generic_functional_fit()"
@@ -213,7 +222,7 @@ generate_roxygen_docs <- function(
     "#' @section Model Fitting:",
     "#' The model is fit using `keras3::fit()`. You can pass any argument to this function by prefixing it with `fit_`.",
     "#' For example, to add Keras callbacks, you can pass `fit_callbacks = list(callback_early_stopping())`.",
-    "#' The `epochs` and `batch_size` arguments are also passed to `fit()`."
+    "#' Common arguments include `fit_epochs`, `fit_batch_size`, and `fit_validation_split`."
   )
 
   # Other tags

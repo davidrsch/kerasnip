@@ -12,8 +12,11 @@ test_that("E2E: Classification spec generation, fitting, and prediction works", 
     model |> keras3::layer_dense(units = num_classes, activation = "softmax")
   }
 
+  model_name <- "e2e_mlp_class"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
   create_keras_sequential_spec(
-    model_name = "e2e_mlp_class",
+    model_name = model_name,
     layer_blocks = list(
       input = input_block_class,
       dense = dense_block_class,
@@ -25,7 +28,7 @@ test_that("E2E: Classification spec generation, fitting, and prediction works", 
   spec <- e2e_mlp_class(
     num_dense = 2,
     dense_units = 8,
-    epochs = 2
+    fit_epochs = 2
   ) |>
     set_engine("keras")
 

@@ -1,3 +1,11 @@
 utils::globalVariables(
-  c("object", "new_data", "engine", "fresh", "parameters")
+  c(
+    "object",
+    "new_data",
+    "engine",
+    "fresh",
+    "parameters",
+    "keras_fit_arg_names",
+    "keras_compile_arg_names"
+  )
 )

@@ -27,9 +27,9 @@ discovered from the installed \code{keras3} package when \code{kerasnip} is load
 This ensures that \code{kerasnip} is always up-to-date with your Keras version.
 }
 \details{
-These objects are primarily used to provide the default \code{values} for the
-\code{dials} parameter functions, \code{\link[=optimizer_function]{optimizer_function()}} and \code{\link[=loss_function_keras]{loss_function_keras()}}.
-This allows for tab-completion and validation of optimizer and loss names
+These objects are primarily used to provide the default \code{values} for the \code{dials}
+parameter functions, \code{\link[=optimizer_function]{optimizer_function()}} and \code{\link[=loss_function_keras]{loss_function_keras()}}. This
+allows for tab-completion in IDEs and validation of optimizer and loss names
 when tuning models.
 
 The discovery process in \code{.onLoad()} scrapes the \code{keras3} namespace for

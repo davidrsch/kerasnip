@@ -11,8 +11,11 @@ test_that("E2E: Customizing main arguments works", {
     model |> keras3::layer_dense(units = 1)
   }
 
+  model_name <- "e2e_mlp_feat"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
   create_keras_sequential_spec(
-    model_name = "e2e_mlp_feat",
+    model_name = model_name,
     layer_blocks = list(
       input = input_block_feat,
       dense = dense_block_feat,
@@ -24,7 +27,7 @@ test_that("E2E: Customizing main arguments works", {
   # Main arguments (like compile_*) should be set in the spec function,
   # not in set_engine().
   spec <- e2e_mlp_feat(
-    epochs = 2,
+    fit_epochs = 2,
     compile_optimizer = "sgd",
     compile_loss = "mae",
     compile_metrics = c("mean_squared_error", "root_mean_squared_error")
@@ -68,8 +71,11 @@ test_that("E2E: Customizing fit arguments works", {
     model |> keras3::layer_dense(units = 1)
   }
 
+  model_name <- "e2e_mlp_fit"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
   create_keras_sequential_spec(
-    model_name = "e2e_mlp_fit",
+    model_name = model_name,
     layer_blocks = list(
       input = input_block_fit,
       dense = dense_block_fit,
@@ -109,8 +115,11 @@ test_that("E2E: Setting num_blocks = 0 works", {
     model |> keras3::layer_dense(units = 1)
   }
 
+  model_name <- "e2e_mlp_zero"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
   create_keras_sequential_spec(
-    model_name = "e2e_mlp_zero",
+    model_name = model_name,
     layer_blocks = list(
       input = input_block_zero,
       dense = dense_block_zero,
@@ -119,20 +128,23 @@ test_that("E2E: Setting num_blocks = 0 works", {
     mode = "regression"
   )
 
-  spec <- e2e_mlp_zero(num_dense = 0, epochs = 2) |>
+  spec <- e2e_mlp_zero(num_dense = 0, fit_epochs = 2) |>
     parsnip::set_engine("keras")
   # This should fit a model with only an input and output layer
   expect_no_error(parsnip::fit(spec, mpg ~ ., data = mtcars))
 })
 
 test_that("E2E: Error handling for reserved names works", {
+  model_name <- "bad_spec"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
   bad_blocks <- list(
     compile = function(model) model, # "compile" is a reserved name
     dense = function(model, u = 1) model |> keras3::layer_dense(units = u)
   )
 
   expect_error(
-    create_keras_sequential_spec("bad_spec", bad_blocks),
-    regexp = "`compile` and `optimizer` are protected names"
+    create_keras_sequential_spec(model_name, bad_blocks),
+    regexp = "`compile`, `fit` and `optimizer` are protected names"
   )
 })

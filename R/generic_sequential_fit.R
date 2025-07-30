@@ -71,28 +71,13 @@ generic_sequential_fit <- function(
   x,
   y,
   layer_blocks,
-  epochs = 10,
-  batch_size = 32,
-  learn_rate = 0.01,
-  validation_split = 0.2,
-  verbose = 0,
   ...
 ) {
-  # --- 0. Resolve arguments ---
-  # Parsnip passes "zapped" arguments for user-unspecified args.
-  # This helper replaces them with the function's defaults.
-  resolve_default <- function(x, default) {
-    if (inherits(x, "rlang_zap")) default else x
-  }
-  fmls <- rlang::fn_fmls(sys.function())
-  epochs <- resolve_default(epochs, fmls$epochs)
-  batch_size <- resolve_default(batch_size, fmls$batch_size)
-  learn_rate <- resolve_default(learn_rate, fmls$learn_rate)
-  validation_split <- resolve_default(validation_split, fmls$validation_split)
-  verbose <- resolve_default(verbose, fmls$verbose)
-
-  # --- 1. Data & Input Shape Preparation ---
+  # --- 0. Argument & Data Preparation ---
   all_args <- list(...)
+  learn_rate <- all_args$learn_rate %||% 0.01
+  verbose <- all_args$verbose %||% 0
+
   # Handle both standard tabular data (matrix) and list-columns of arrays
   # (for images/sequences) that come from recipes.
   if (is.data.frame(x) && ncol(x) == 1 && is.list(x[[1]])) {
@@ -188,9 +173,6 @@ generic_sequential_fit <- function(
   fit_args <- collect_fit_args(
     x_proc,
     y_mat,
-    epochs,
-    batch_size,
-    validation_split,
     verbose,
     all_args
   )
