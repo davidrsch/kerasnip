@@ -106,6 +106,117 @@ collect_spec_args <- function(
   list(all_args = all_args, parsnip_names = parsnip_names)
 }
 
+#' Remap Layer Block Arguments for Model Specification
+#'
+#' @description
+#' Creates a wrapper function around a Keras layer block to rename its
+#' arguments. This is a powerful helper for defining the `layer_blocks` in
+#' [create_keras_functional_spec()] and [create_keras_sequential_spec()],
+#' allowing you to connect reusable blocks into a model graph without writing
+#' verbose anonymous functions.
+#'
+#' @details
+#' `inp_spec()` makes your model definitions cleaner and more readable. It
+#' handles the metaprogramming required to create a new function with the
+#' correct argument names, while preserving the original block's hyperparameters
+#' and their default values.
+#'
+#' The function supports two modes of operation based on `input_map`:
+#' 1.  **Single Input Renaming**: If `input_map` is a single character string,
+#'     the wrapper function renames the *first* argument of the `block` function
+#'     to the provided string. This is the common case for blocks that take a
+#'     single tensor input.
+#' 2.  **Multiple Input Mapping**: If `input_map` is a named character vector,
+#'     it provides an explicit mapping from new argument names (the names of the
+#'     vector) to the original argument names in the `block` function (the values
+#'     of the vector). This is used for blocks with multiple inputs, like a
+#'     concatenation layer.
+#'
+#' @param block A function that defines a Keras layer or a set of layers. The
+#'   first arguments should be the input tensor(s).
+#' @param input_map A single character string or a named character vector that
+#'   specifies how to rename/remap the arguments of `block`.
+#'
+#' @return A new function (a closure) that wraps the `block` function with
+#'   renamed arguments, ready to be used in a `layer_blocks` list.
+#'
+#' @export
+#' @examples
+#' \dontrun{
+#' # --- Example Blocks ---
+#' # A standard dense block with one input tensor and one hyperparameter.
+#' dense_block <- function(tensor, units = 16) {
+#'   tensor |> keras3::layer_dense(units = units, activation = "relu")
+#' }
+#'
+#' # A block that takes two tensors as input.
+#' concat_block <- function(input_a, input_b) {
+#'   keras3::layer_concatenate(list(input_a, input_b))
+#' }
+#'
+#' # An output block with one input.
+#' output_block <- function(tensor) {
+#'   tensor |> keras3::layer_dense(units = 1)
+#' }
+#'
+#' # --- Usage ---
+#' layer_blocks <- list(
+#'   main_input = keras3::layer_input,
+#'   path_a = inp_spec(dense_block, "main_input"),
+#'   path_b = inp_spec(dense_block, "main_input"),
+#'   concatenated = inp_spec(
+#'     concat_block,
+#'     c(path_a = "input_a", path_b = "input_b")
+#'   ),
+#'   output = inp_spec(output_block, "concatenated")
+#' )
+#' }
+inp_spec <- function(block, input_map) {
+  new_fun <- function() {}
+  original_formals <- formals(block)
+  original_names <- names(original_formals)
+
+  if (length(original_formals) == 0) {
+    stop("The 'block' function must have at least one argument.")
+  }
+
+  new_formals <- original_formals
+
+  if (
+    is.character(input_map) &&
+      is.null(names(input_map)) &&
+      length(input_map) == 1
+  ) {
+    # Case 1: Single string, rename first argument
+    names(new_formals)[1] <- input_map
+  } else if (is.character(input_map) && !is.null(names(input_map))) {
+    # Case 2: Named vector for mapping
+    if (!all(input_map %in% original_names)) {
+      missing_args <- input_map[!input_map %in% original_names]
+      stop(paste(
+        "Argument(s)",
+        paste(shQuote(missing_args), collapse = ", "),
+        "not found in the block function."
+      ))
+    }
+    for (new_name in names(input_map)) {
+      old_name <- input_map[[new_name]]
+      names(new_formals)[original_names == old_name] <- new_name
+    }
+  } else {
+    stop("`input_map` must be a single string or a named character vector.")
+  }
+
+  formals(new_fun) <- new_formals
+
+  call_args <- lapply(names(new_formals), as.symbol)
+  names(call_args) <- original_names
+
+  body(new_fun) <- as.call(c(list(as.symbol("block")), call_args))
+  environment(new_fun) <- environment()
+  new_fun
+}
+
 #' Internal Implementation for Creating Keras Specifications
 #'
 #' @description
