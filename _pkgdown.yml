@@ -25,6 +25,7 @@ articles:
     navbar: ~
     contents:
       - getting-started
+      - functional-api
 
 development:
   mode: auto
