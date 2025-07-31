@@ -13,8 +13,11 @@ test_that("E2E: Regression spec generation, fitting, and prediction works", {
     model |> keras3::layer_dense(units = 1)
   }
 
-  create_keras_spec(
-    model_name = "e2e_mlp_reg",
+  model_name <- "e2e_mlp_reg"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_sequential_spec(
+    model_name = model_name,
     layer_blocks = list(
       input = input_block_reg,
       dense = dense_block_reg,
@@ -26,7 +29,7 @@ test_that("E2E: Regression spec generation, fitting, and prediction works", {
   spec <- e2e_mlp_reg(
     num_dense = 2,
     dense_units = 8,
-    epochs = 2,
+    fit_epochs = 2,
     learn_rate = 0.01
   ) |>
     set_engine("keras")

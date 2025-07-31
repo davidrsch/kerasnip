@@ -10,17 +10,53 @@
 .kerasnip_custom_objects$metrics <- list()
 
 #' Register a Custom Keras Optimizer
+#'
+#' @description
+#' Allows users to register a custom optimizer function so it can be used by
+#' name within `kerasnip` model specifications and tuned with `dials`.
+#'
+#' @details
+#' Registered optimizers are stored in an internal environment. When a model is
+#' compiled, `kerasnip` will first check this internal registry for an optimizer
+#' matching the provided name before checking the `keras3` package.
+#'
+#' The `optimizer_fn` can be a simple function or a partially applied function
+#' using `purrr::partial()`. This is useful for creating versions of Keras
+#' optimizers with specific settings.
+#'
 #' @param name The name to register the optimizer under (character).
-#' @param optimizer_fn The optimizer function (e.g., a custom function or a partially applied keras optimizer).
+#' @param optimizer_fn The optimizer function. It should return a Keras
+#'   optimizer object.
+#' @seealso [register_keras_loss()], [register_keras_metric()]
 #' @export
+#' @examples
+#' if (requireNamespace("keras3", quietly = TRUE)) {
+#'   # Register a custom version of Adam with a different default beta_1
+#'   my_adam <- purrr::partial(keras3::optimizer_adam, beta_1 = 0.8)
+#'   register_keras_optimizer("my_adam", my_adam)
+#'
+#'   # Now "my_adam" can be used as a string in a model spec, e.g.,
+#'   # my_model_spec(compile_optimizer = "my_adam")
+#' }
 register_keras_optimizer <- function(name, optimizer_fn) {
   .kerasnip_custom_objects$optimizers[[name]] <- optimizer_fn
   invisible()
 }
 
 #' Register a Custom Keras Loss
+#'
+#' @description
+#' Allows users to register a custom loss function so it can be used by name
+#' within `kerasnip` model specifications and tuned with `dials`.
+#'
+#' @details
+#' Registered losses are stored in an internal environment. When a model is
+#' compiled, `kerasnip` will first check this internal registry for a loss
+#' matching the provided name before checking the `keras3` package.
+#'
 #' @param name The name to register the loss under (character).
 #' @param loss_fn The loss function.
+#' @seealso [register_keras_optimizer()], [register_keras_metric()]
 #' @export
 register_keras_loss <- function(name, loss_fn) {
   .kerasnip_custom_objects$losses[[name]] <- loss_fn
@@ -28,15 +64,44 @@ register_keras_loss <- function(name, loss_fn) {
 }
 
 #' Register a Custom Keras Metric
+#'
+#' @description
+#' Allows users to register a custom metric function so it can be used by name
+#' within `kerasnip` model specifications.
+#'
+#' @details
+#' Registered metrics are stored in an internal environment. When a model is
+#' compiled, `kerasnip` will first check this internal registry for a metric
+#' matching the provided name before checking the `keras3` package.
+#'
 #' @param name The name to register the metric under (character).
 #' @param metric_fn The metric function.
+#' @seealso [register_keras_optimizer()], [register_keras_loss()]
 #' @export
 register_keras_metric <- function(name, metric_fn) {
   .kerasnip_custom_objects$metrics[[name]] <- metric_fn
   invisible()
 }
 
-#' Internal helper to retrieve a Keras object by name
+#' Internal helper to retrieve a Keras object by name from the registry
+#'
+#' @description
+#' Resolves a string name into a Keras object (optimizer, loss, or metric)
+#' by searching in a specific order.
+#'
+#' @details
+#' The lookup order is:
+#' 1.  User-registered custom objects via `register_keras_*()`.
+#' 2.  Standard Keras constructors in the `keras3` package (e.g., `optimizer_adam`).
+#' 3.  If not found, the original string is returned, assuming Keras can handle it.
+#'
+#' For optimizers, it also passes along any `...` arguments (like `learning_rate`)
+#' to the constructor function.
+#'
+#' @param name The string name of the object.
+#' @param type The type of object ("optimizer", "loss", or "metric").
+#' @param ... Additional arguments passed to the optimizer constructor.
+#' @return A Keras object or a string name.
 #' @noRd
 get_keras_object <- function(
   name,

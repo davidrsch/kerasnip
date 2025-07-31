@@ -10,7 +10,7 @@ test_that("E2E: Model spec removal works", {
     model |> keras3::layer_dense(units = 1)
   }
 
-  create_keras_spec(
+  create_keras_sequential_spec(
     model_name = model_name,
     layer_blocks = list(input = input_block, output = output_block),
     mode = "regression"

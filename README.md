@@ -19,12 +19,9 @@ pak::pak("davidrsch/kerasnip")
 
 ## Example
 
-### Example: Building a Sequential MLP from Layer Blocks
+### Example 1: Building a Sequential MLP
 
-This example shows the core `kerasnip` workflow for building a model from modular "layer blocks". We will:
-1. Define reusable blocks of Keras layers.
-2. Create a model specification from these blocks.
-3. Fit the model with a fixed architecture.
+This example shows the core workflow for building a simple, linear stack of layers using `create_keras_sequential_spec()`.
 
 ```r
 library(kerasnip)
@@ -32,41 +29,38 @@ library(tidymodels)
 library(keras3)
 
 # 1. Define Keras layer blocks
-# Each block is a function that takes a Keras model object and adds layers.
-# The first block in the sequence is responsible for initializing the model.
-mlp_input_block <- function(model, input_shape) {
+# The first block initializes the model.
+input_block <- function(model, input_shape) {
   keras_model_sequential(input_shape = input_shape)
 }
-
-mlp_dense_block <- function(model, units = 32) {
-  model |>
-    layer_dense(units = units, activation = "relu")
+# Subsequent blocks add layers.
+dense_block <- function(model, units = 32) {
+  model |> layer_dense(units = units, activation = "relu")
 }
-
-mlp_output_block <- function(model) {
+# The final block creates the output layer.
+output_block <- function(model) {
   model |>
     layer_dense(units = 1)
 }
 
 # 2. Create a spec from the layer blocks
 # This creates a new model function, `basic_mlp()`, in your environment.
-create_keras_spec(
+create_keras_sequential_spec(
   model_name = "basic_mlp",
   layer_blocks = list(
-    input = mlp_input_block,
-    dense = mlp_dense_block,
-    output = mlp_output_block
+    input = input_block,
+    dense = dense_block,
+    output = output_block
   ),
   mode = "regression"
 )
 
-# 3. Use the generated spec to define and fit a model
-# We can set the number of dense layers (`num_dense`) and their parameters
-# (`dense_units`).
+# 3. Use the generated spec to define a model.
+# We can set the number of dense layers (`num_dense`) and their parameters (`dense_units`).
 spec <- basic_mlp(
   num_dense = 2,
   dense_units = 64,
-  epochs = 50,
+  fit_epochs = 10,
   learn_rate = 0.01
 ) |>
   set_engine("keras")
@@ -75,27 +69,70 @@ spec <- basic_mlp(
 rec <- recipe(mpg ~ ., data = mtcars) |>
   step_normalize(all_numeric_predictors())
 
-wf <- workflow() |>
-  add_recipe(rec) |>
-  add_model(spec)
+wf <- workflow(rec, spec)
 
 set.seed(123)
 fit_obj <- fit(wf, data = mtcars)
 
 # 5. Make predictions
-predictions <- predict(fit_obj, new_data = mtcars[1:5, ])
-print(predictions)
+predict(fit_obj, new_data = mtcars[1:5, ])
 #> # A tibble: 5 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.6
-#> 2  20.9
-#> 3  26.1
-#> 4  19.7
-#> 5  17.8
+#> 1  21.3
+#> 2  21.3
+#> 3  22.8
+#> 4  21.4
+#> 5  18.7
 ```
 
-### Example: Tuning a Sequential MLP Architecture
+### Example 2: Building a Functional "Fork-Join" Model
+
+For complex, non-linear architectures, use `create_keras_functional_spec()`. This example builds a model where the input is forked into two paths, which are then concatenated.
+
+```r
+library(kerasnip)
+library(tidymodels)
+library(keras3)
+
+# 1. Define blocks. For the functional API, blocks are nodes in a graph.
+input_block <- function(input_shape) layer_input(shape = input_shape)
+path_block <- function(tensor, units = 16) tensor |> layer_dense(units = units)
+concat_block <- function(input_a, input_b) layer_concatenate(list(input_a, input_b))
+output_block <- function(tensor) layer_dense(tensor, units = 1)
+
+# 2. Create the spec. The graph is defined by block names and their arguments.
+create_keras_functional_spec(
+  model_name = "forked_mlp",
+  layer_blocks = list(
+    main_input = input_block,
+    path_a = inp_spec(path_block, "main_input"),
+    path_b = inp_spec(path_block, "main_input"),
+    concatenated = inp_spec(concat_block, c(path_a = "input_a", path_b = "input_b")),
+    # The output block must be named 'output'.
+    output = inp_spec(output_block, "concatenated")
+  ),
+  mode = "regression"
+)
+
+# 3. Use the new spec. Arguments are prefixed with their block name.
+spec <- forked_mlp(path_a_units = 16, path_b_units = 8, fit_epochs = 10) |>
+  set_engine("keras")
+
+# Fit and predict as usual
+set.seed(123)
+fit(spec, mpg ~ ., data = mtcars) |>
+  predict(new_data = mtcars[1:5, ])
+#> # A tibble: 5 × 1
+#>   .pred
+#>   <dbl>
+#> 1  19.4
+#> 2  19.5
+#> 3  21.9
+#> 4  18.6
+#> 5  17.9
+```
+### Example 3: Tuning a Sequential MLP Architecture
 
 This example demonstrates how to tune the number of dense layers and the rate of a final dropout layer, showcasing how to tune both architecture and block hyperparameters simultaneously.
 
@@ -105,30 +142,27 @@ library(tidymodels)
 library(keras3)
 
 # 1. Define Keras layer blocks for a tunable MLP
-mlp_input_block <- function(model, input_shape) {
+input_block <- function(model, input_shape) {
   keras_model_sequential(input_shape = input_shape)
 }
-
-tunable_dense_block <- function(model, units = 32) {
+dense_block <- function(model, units = 32) {
   model |> layer_dense(units = units, activation = "relu")
 }
-
-tunable_dropout_block <- function(model, rate = 0.2) {
+dropout_block <- function(model, rate = 0.2) {
   model |> layer_dropout(rate = rate)
 }
-
-mlp_output_block <- function(model) {
+output_block <- function(model) {
   model |> layer_dense(units = 1)
 }
 
 # 2. Create a spec from the layer blocks
-create_keras_spec(
+create_keras_sequential_spec(
   model_name = "tunable_mlp",
   layer_blocks = list(
-    input = mlp_input_block,
-    dense = tunable_dense_block,
-    dropout = tunable_dropout_block,
-    output = mlp_output_block
+    input = input_block,
+    dense = dense_block,
+    dropout = dropout_block,
+    output = output_block
   ),
   mode = "regression"
 )
@@ -139,17 +173,15 @@ tune_spec <- tunable_mlp(
   dense_units = tune(),
   num_dropout = 1,
   dropout_rate = tune(),
-  epochs = 20
+  fit_epochs = 10
 ) |>
   set_engine("keras")
 
-# 4. Set up a tuning workflow
+# 4. Set up and run a tuning workflow
 rec <- recipe(mpg ~ ., data = mtcars) |>
   step_normalize(all_numeric_predictors())
 
-wf_tune <- workflow() |>
-  add_recipe(rec) |>
-  add_model(tune_spec)
+wf_tune <- workflow(rec, tune_spec)
 
 # Define the tuning grid.
 params <- extract_parameter_set_dials(wf_tune) |>
@@ -167,7 +199,8 @@ folds <- vfold_cv(mtcars, v = 3)
 tune_res <- tune_grid(
   wf_tune,
   resamples = folds,
-  grid = grid
+  grid = grid,
+  control = control_grid(verbose = FALSE)
 )
 
 # 6. Show the best architecture

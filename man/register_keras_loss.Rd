@@ -12,5 +12,14 @@ register_keras_loss(name, loss_fn)
 \item{loss_fn}{The loss function.}
 }
 \description{
-Register a Custom Keras Loss
+Allows users to register a custom loss function so it can be used by name
+within \code{kerasnip} model specifications and tuned with \code{dials}.
+}
+\details{
+Registered losses are stored in an internal environment. When a model is
+compiled, \code{kerasnip} will first check this internal registry for a loss
+matching the provided name before checking the \code{keras3} package.
+}
+\seealso{
+\code{\link[=register_keras_optimizer]{register_keras_optimizer()}}, \code{\link[=register_keras_metric]{register_keras_metric()}}
 }

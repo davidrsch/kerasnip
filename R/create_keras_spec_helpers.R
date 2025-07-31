@@ -1,87 +1,40 @@
-#' Post-process Keras Numeric Predictions
-#'
-#' Formats raw numeric predictions from a Keras model into a tibble with a
-#' standardized `.pred` column.
-#'
-#' @param results A matrix of numeric predictions from `predict()`.
-#' @param object The `parsnip` model fit object.
-#' @return A tibble with a `.pred` column.
-#' @noRd
-keras_postprocess_numeric <- function(results, object) {
-  tibble::tibble(.pred = as.vector(results))
-}
-
-#' Post-process Keras Probability Predictions
-#'
-#' Formats raw probability predictions from a Keras model into a tibble
-#' with class-specific column names.
-#'
-#' @param results A matrix of probability predictions from `predict()`.
-#' @param object The `parsnip` model fit object.
-#' @return A tibble with named columns for each class probability.
-#' @noRd
-keras_postprocess_probs <- function(results, object) {
-  # The levels are now nested inside the fit object
-  colnames(results) <- object$fit$lvl
-  tibble::as_tibble(results)
-}
-
-#' Post-process Keras Class Predictions
-#'
-#' Converts raw probability predictions from a Keras model into factor-based
-#' class predictions.
-#'
-#' @param results A matrix of probability predictions from `predict()`.
-#' @param object The `parsnip` model fit object.
-#' @return A tibble with a `.pred_class` column containing factor predictions.
-#' @noRd
-keras_postprocess_classes <- function(results, object) {
-  # The levels are now nested inside the fit object
-  lvls <- object$fit$lvl
-  if (ncol(results) == 1) {
-    # Binary classification
-    pred_class <- ifelse(results[, 1] > 0.5, lvls[2], lvls[1])
-    pred_class <- factor(pred_class, levels = lvls)
-  } else {
-    # Multiclass classification
-    pred_class_int <- apply(results, 1, which.max)
-    pred_class <- lvls[pred_class_int]
-    pred_class <- factor(pred_class, levels = lvls)
-  }
-  tibble::tibble(.pred_class = pred_class)
-}
-
 #' Discover and Collect Model Specification Arguments
 #'
-#' Introspects the provided layer block functions to generate a list of
-#' arguments for the new model specification. This includes arguments for
-#' block repetition (`num_*`), block-specific hyperparameters (`block_*`),
-#' and global training parameters.
+#' @description
+#' This internal helper introspects the user-provided `layer_blocks` functions
+#' to generate a complete list of arguments for the new model specification.
+#' The logic for discovering arguments differs for sequential and functional models.
+#'
+#' @details
+#' For **sequential models** (`functional = FALSE`):
+#' - It creates `num_{block_name}` arguments to control block repetition.
+#' - It inspects the arguments of each block function, skipping the first
+#'   (assumed to be the `model` object), to find tunable hyperparameters.
+#'
+#' For **functional models** (`functional = TRUE`):
+#' - It creates `num_{block_name}` arguments to control block repetition.
+#' - It inspects the arguments of each block function. Arguments whose names
+#'   match other block names are considered graph connections (inputs) and are
+#'   ignored. The remaining arguments are treated as tunable hyperparameters.
+#'
+#' In both cases, it also adds global training parameters (like `epochs`) and
+#' filters out special engine-supplied arguments (`input_shape`, `num_classes`).
 #'
 #' @param layer_blocks A named list of functions defining Keras layer blocks.
+#' @param functional A logical. If `TRUE`, uses discovery logic for the
+#'   Functional API. If `FALSE`, uses logic for the Sequential API.
 #' @param global_args A character vector of global arguments to add to the
 #'   specification (e.g., "epochs").
 #' @return A list containing two elements:
-#'   - `all_args`: A named list of arguments for the new function signature,
-#'     initialized with `rlang::zap()`.
-#'   - `parsnip_names`: A character vector of all argument names for `parsnip`.
+#'
 #' @noRd
 collect_spec_args <- function(
   layer_blocks,
-  global_args = c(
-    "epochs",
-    "batch_size",
-    "learn_rate",
-    "validation_split",
-    "verbose",
-    "compile_loss",
-    "compile_optimizer",
-    "compile_metrics"
-  )
+  functional
 ) {
-  if (any(c("compile", "optimizer") %in% names(layer_blocks))) {
+  if (any(c("compile", "fit", "optimizer") %in% names(layer_blocks))) {
     stop(
-      "`compile` and `optimizer` are protected names and cannot be used as layer block names.",
+      "`compile`, `fit` and `optimizer` are protected names and cannot be used as layer block names.",
       call. = FALSE
     )
   }
@@ -89,30 +42,63 @@ collect_spec_args <- function(
   all_args <- list()
   parsnip_names <- character()
 
+  block_names <- names(layer_blocks)
+
   # block repetition counts (e.g., num_dense)
-  for (block in names(layer_blocks)) {
-    num_name <- paste0("num_", block)
+  for (block_name in block_names) {
+    num_name <- paste0("num_", block_name)
     all_args[[num_name]] <- rlang::zap()
     parsnip_names <- c(parsnip_names, num_name)
   }
 
   # These args are passed by the fit engine, not set by the user in the spec
   engine_args <- c("input_shape", "num_classes")
-  # block-specific parameters (skip first 'model' formal)
-  for (block in names(layer_blocks)) {
-    fmls_to_process <- rlang::fn_fmls(layer_blocks[[block]])[-1]
-    # Filter out arguments that are provided by the fitting engine
-    for (arg in names(fmls_to_process[
-      !names(fmls_to_process) %in% engine_args
-    ])) {
-      full <- paste0(block, "_", arg)
+  # Discover block-specific hyperparameters
+  for (block_name in block_names) {
+    block_fmls <- rlang::fn_fmls(layer_blocks[[block_name]])
+
+    if (isTRUE(functional)) {
+      # For functional models, hyperparameters are arguments that are NOT
+      # names of other blocks (which are graph connections).
+      hyperparam_names <- setdiff(
+        names(block_fmls),
+        c(block_names, engine_args)
+      )
+    } else {
+      # For sequential models, hyperparameters are all args except the first
+      # ('model') and special engine args.
+      fmls_to_process <- if (length(block_fmls) > 0) block_fmls[-1] else list()
+      hyperparam_names <- names(fmls_to_process)[
+        !names(fmls_to_process) %in% engine_args
+      ]
+    }
+
+    for (arg in hyperparam_names) {
+      full <- paste0(block_name, "_", arg)
       all_args[[full]] <- rlang::zap()
       parsnip_names <- c(parsnip_names, full)
     }
   }
 
-  # global training parameters
-  for (g in global_args) {
+  # Add global training and compile parameters dynamically
+  # These are discovered from keras3::fit and keras3::compile in zzz.R
+  fit_params <- if (length(keras_fit_arg_names) > 0) {
+    paste0("fit_", keras_fit_arg_names)
+  } else {
+    character()
+  }
+  compile_params <- if (length(keras_compile_arg_names) > 0) {
+    paste0("compile_", keras_compile_arg_names)
+  } else {
+    character()
+  }
+
+  # learn_rate is a special convenience argument for the default optimizer
+  special_params <- "learn_rate"
+
+  dynamic_global_args <- c(special_params, fit_params, compile_params)
+
+  for (g in dynamic_global_args) {
     all_args[[g]] <- rlang::zap()
     parsnip_names <- c(parsnip_names, g)
   }
@@ -120,461 +106,152 @@ collect_spec_args <- function(
   list(all_args = all_args, parsnip_names = parsnip_names)
 }
 
-#' Generate Roxygen Documentation for a Dynamic Spec Function
+#' Remap Layer Block Arguments for Model Specification
 #'
-#' Constructs a detailed Roxygen comment block as a string, which can be
-#' attached to the dynamically created model specification function.
+#' @description
+#' Creates a wrapper function around a Keras layer block to rename its
+#' arguments. This is a powerful helper for defining the `layer_blocks` in
+#' [create_keras_functional_spec()] and [create_keras_sequential_spec()],
+#' allowing you to connect reusable blocks into a model graph without writing
+#' verbose anonymous functions.
 #'
-#' @param model_name The name of the model.
-#' @param layer_blocks The list of layer block functions.
-#' @param all_args A named list of all arguments for the function signature.
-#' @return A single string containing the full Roxygen documentation.
-#' @noRd
-generate_roxygen_docs <- function(model_name, layer_blocks, all_args) {
-  # Title and Description
-  title <- paste(
-    gsub("_", " ", tools::toTitleCase(model_name)),
-    "Model Specification"
-  )
-  desc <- paste0(
-    "Defines a `parsnip` model specification for a Keras model built with ",
-    "custom layer blocks. This function was generated by `kerasnip::create_keras_spec()`."
-  )
+#' @details
+#' `inp_spec()` makes your model definitions cleaner and more readable. It
+#' handles the metaprogramming required to create a new function with the
+#' correct argument names, while preserving the original block's hyperparameters
+#' and their default values.
+#'
+#' The function supports two modes of operation based on `input_map`:
+#' 1.  **Single Input Renaming**: If `input_map` is a single character string,
+#'     the wrapper function renames the *first* argument of the `block` function
+#'     to the provided string. This is the common case for blocks that take a
+#'     single tensor input.
+#' 2.  **Multiple Input Mapping**: If `input_map` is a named character vector,
+#'     it provides an explicit mapping from new argument names (the names of the
+#'     vector) to the original argument names in the `block` function (the values
+#'     of the vector). This is used for blocks with multiple inputs, like a
+#'     concatenation layer.
+#'
+#' @param block A function that defines a Keras layer or a set of layers. The
+#'   first arguments should be the input tensor(s).
+#' @param input_map A single character string or a named character vector that
+#'   specifies how to rename/remap the arguments of `block`.
+#'
+#' @return A new function (a closure) that wraps the `block` function with
+#'   renamed arguments, ready to be used in a `layer_blocks` list.
+#'
+#' @export
+#' @examples
+#' \dontrun{
+#' # --- Example Blocks ---
+#' # A standard dense block with one input tensor and one hyperparameter.
+#' dense_block <- function(tensor, units = 16) {
+#'   tensor |> keras3::layer_dense(units = units, activation = "relu")
+#' }
+#'
+#' # A block that takes two tensors as input.
+#' concat_block <- function(input_a, input_b) {
+#'   keras3::layer_concatenate(list(input_a, input_b))
+#' }
+#'
+#' # An output block with one input.
+#' output_block <- function(tensor) {
+#'   tensor |> keras3::layer_dense(units = 1)
+#' }
+#'
+#' # --- Usage ---
+#' layer_blocks <- list(
+#'   main_input = keras3::layer_input,
+#'   path_a = inp_spec(dense_block, "main_input"),
+#'   path_b = inp_spec(dense_block, "main_input"),
+#'   concatenated = inp_spec(
+#'     concat_block,
+#'     c(path_a = "input_a", path_b = "input_b")
+#'   ),
+#'   output = inp_spec(output_block, "concatenated")
+#' )
+#' }
+inp_spec <- function(block, input_map) {
+  new_fun <- function() {}
+  original_formals <- formals(block)
+  original_names <- names(original_formals)
 
-  # Parameters
-  param_docs <- c()
-  arg_names <- names(all_args)
-
-  # Group args for structured documentation
-  num_params <- arg_names[startsWith(arg_names, "num_")]
-  compile_params <- arg_names[startsWith(arg_names, "compile_")]
-  global_params <- c(
-    "epochs",
-    "batch_size",
-    "learn_rate",
-    "validation_split",
-    "verbose"
-  )
-  block_params <- setdiff(
-    arg_names,
-    c(num_params, compile_params, global_params)
-  )
-
-  # Document block-specific params
-  if (length(block_params) > 0) {
-    param_docs <- c(
-      param_docs,
-      purrr::map_chr(block_params, function(p) {
-        parts <- strsplit(p, "_", fixed = TRUE)[[1]]
-        block_name <- parts[1]
-        param_name <- paste(parts[-1], collapse = "_")
-        block_fn <- layer_blocks[[block_name]]
-        default_val <- rlang::fn_fmls(block_fn)[[param_name]]
-        default_str <- if (
-          !is.null(default_val) && !rlang::is_missing(default_val)
-        ) {
-          paste0(
-            " Defaults to `",
-            deparse(default_val, width.cutoff = 500L),
-            "`."
-          )
-        } else {
-          ""
-        }
-        paste0(
-          "@param ",
-          p,
-          " The `",
-          param_name,
-          "` for the '",
-          block_name,
-          "' block.",
-          default_str
-        )
-      })
-    )
+  if (length(original_formals) == 0) {
+    stop("The 'block' function must have at least one argument.")
   }
 
-  # Document architecture params
-  if (length(num_params) > 0) {
-    param_docs <- c(
-      param_docs,
-      purrr::map_chr(num_params, function(p) {
-        block_name <- sub("num_", "", p)
-        paste0(
-          "@param ",
-          p,
-          " The number of times to repeat the '",
-          block_name,
-          "' block. Defaults to 1."
-        )
-      })
-    )
-  }
+  new_formals <- original_formals
 
-  # Document global params
-  global_param_desc <- list(
-    epochs = "The total number of iterations to train the model.",
-    batch_size = "The number of samples per gradient update.",
-    learn_rate = "The learning rate for the default Adam optimizer. This is ignored if `compile_optimizer` is provided as a pre-built object.",
-    validation_split = "The proportion of the training data to be used as a validation set.",
-    verbose = "The level of verbosity for model fitting (0, 1, or 2)."
-  )
-  param_docs <- c(
-    param_docs,
-    purrr::map_chr(global_params, function(p) {
-      paste0("@param ", p, " ", global_param_desc[[p]])
-    })
-  )
-
-  # Document compile params
-  compile_param_desc <- list(
-    compile_loss = "The loss function for compiling the model. Can be a string (e.g., 'mse') or a Keras loss object. Overrides the default.",
-    compile_optimizer = "The optimizer for compiling the model. Can be a string (e.g., 'sgd') or a Keras optimizer object. Overrides the default.",
-    compile_metrics = "A character vector of metrics to monitor during training (e.g., `c('mae', 'mse')`). Overrides the default."
-  )
-  param_docs <- c(
-    param_docs,
-    purrr::map_chr(compile_params, function(p) {
-      paste0("@param ", p, " ", compile_param_desc[[p]])
-    })
-  )
-
-  # Add ... param
-  param_docs <- c(
-    param_docs,
-    "@param ... Additional arguments passed to `parsnip::new_model_spec()`."
-  )
-
-  # Sections
-  architecture_section <- c(
-    "#' @section Model Architecture:",
-    "#' The Keras model is constructed by sequentially applying the layer blocks in the order they were provided to `create_keras_spec()`.",
-    "#' You can control the number of times each block is repeated by setting the `num_{block_name}` argument (e.g., `num_dense = 2`).",
-    "#' This allows for dynamically creating deeper or more complex architectures during tuning."
-  )
-
-  compilation_section <- c(
-    "#' @section Model Compilation:",
-    "#' The model is compiled with a default optimizer, loss function, and metric based on the model's mode. You can override these defaults by providing arguments prefixed with `compile_`.",
-    "#' \\itemize{",
-    "#'   \\item \\strong{Optimizer}: Defaults to `keras3::optimizer_adam()` using the `learn_rate` argument. Override with `compile_optimizer` (e.g., `\"sgd\"` or `keras3::optimizer_sgd(...)`).",
-    "#'   \\item \\strong{Loss}: Defaults to `\"mean_squared_error\"` for regression and `\"categorical_crossentropy\"` or `\"binary_crossentropy\"` for classification. Override with `compile_loss`.",
-    "#'   \\item \\strong{Metrics}: Defaults to `\"mean_absolute_error\"` for regression and `\"accuracy\"` for classification. Override with `compile_metrics` (e.g., `c(\"mae\", \"mape\")`).",
-    "#' }",
-    "#' For more details, see the documentation for `kerasnip::generic_keras_fit_impl`."
-  )
-
-  fitting_section <- c(
-    "#' @section Model Fitting:",
-    "#' The model is fit using `keras3::fit()`. You can pass any argument to this function by prefixing it with `fit_`.",
-    "#' For example, to add Keras callbacks, you can pass `fit_callbacks = list(callback_early_stopping())`.",
-    "#' The `epochs` and `batch_size` arguments are also passed to `fit()`."
-  )
-
-  # Other tags
-  other_tags <- c(
-    "#' @seealso [create_keras_spec()], [generic_keras_fit_impl()]",
-    "#' @export"
-  )
-
-  # Combine all parts
-  paste(
-    c(
-      paste0("#' ", title),
-      "#'",
-      paste0("#' ", desc),
-      "#'",
-      paste0("@", param_docs),
-      architecture_section,
-      fitting_section,
-      compilation_section,
-      other_tags
-    ),
-    collapse = "\n"
-  )
-}
-
-#' Build the Model Specification Function
-#'
-#' Uses metaprogramming to construct the new model specification function
-#' (e.g., `dynamic_mlp()`). This function will capture user-provided arguments
-#' and package them into a `parsnip::new_model_spec()` call.
-#'
-#' @param model_name The name of the model specification function to create.
-#' @param mode The model mode ("regression" or "classification").
-#' @param all_args A named list of arguments for the function signature, as
-#'   generated by `collect_spec_args()`.
-#' @param parsnip_names A character vector of all argument names.
-#' @return A new function that serves as the `parsnip` model specification.
-#' @noRd
-build_spec_function <- function(
-  model_name,
-  mode,
-  all_args,
-  parsnip_names,
-  layer_blocks
-) {
-  quos_exprs <- purrr::map(
-    parsnip_names,
-    ~ rlang::expr(rlang::enquo(!!rlang::sym(.x)))
-  )
-  names(quos_exprs) <- parsnip_names
-
-  body <- rlang::expr({
-    # Capture both explicit args and ... to pass to the fit impl
-    # Named arguments are captured into a list of quosures.
-    main_args <- rlang::list2(!!!quos_exprs)
-    # ... arguments are captured into a separate list of quosures.
-    dot_args <- rlang::enquos(...)
-    args <- c(main_args, dot_args)
-    parsnip::new_model_spec(
-      !!model_name,
-      args = args,
-      eng_args = NULL,
-      mode = !!mode,
-      method = NULL,
-      engine = NULL
-    )
-  })
-
-  # Add ... to the function signature to capture any other compile arguments
-  fn_args <- c(all_args, list(... = rlang::missing_arg()))
-
-  fn <- rlang::new_function(args = fn_args, body = body)
-
-  docs <- generate_roxygen_docs(model_name, layer_blocks, all_args)
-  comment(fn) <- docs
-  fn
-}
-
-#' Register Core Model Information with Parsnip
-#'
-#' Sets up the basic model definition with `parsnip`, including its mode,
-#' engine, dependencies, and data encoding requirements.
-#'
-#' @param model_name The name of the new model.
-#' @param mode The model mode ("regression" or "classification").
-#' @return Invisibly returns `NULL`. Called for its side effects.
-#' @noRd
-register_core_model <- function(model_name, mode) {
-  parsnip::set_new_model(model_name)
-  parsnip::set_model_mode(model_name, mode)
-  parsnip::set_model_engine(model_name, mode, "keras")
-  parsnip::set_dependency(model_name, "keras", "keras3")
-
-  parsnip::set_encoding(
-    model = model_name,
-    eng = "keras",
-    mode = mode,
-    options = list(
-      predictor_indicators = "traditional",
-      compute_intercept = TRUE,
-      remove_intercept = TRUE,
-      allow_sparse_x = FALSE
-    )
-  )
-}
-
-#' Register Model Arguments with Parsnip
-#'
-#' Registers each model argument with `parsnip` and maps it to a corresponding
-#' `dials` parameter function for tuning. This allows `tidymodels` to know
-#' about the tunable parameters of the custom model.
-#'
-#' @param model_name The name of the new model.
-#' @param parsnip_names A character vector of all argument names.
-#' @return Invisibly returns `NULL`. Called for its side effects.
-#' @noRd
-register_model_args <- function(model_name, parsnip_names) {
-  keras_dials_map <- tibble::tribble(
-    ~keras_arg,
-    ~dials_fun,
-    "units",
-    "hidden_units",
-    "filters",
-    "hidden_units",
-    "kernel_size",
-    "kernel_size",
-    "pool_size",
-    "pool_size",
-    "dropout",
-    "dropout",
-    "rate",
-    "dropout",
-    "learn_rate",
-    "learn_rate",
-    "epochs",
-    "epochs",
-    "batch_size",
-    "batch_size",
-    "compile_loss", # parsnip arg
-    "loss_function_keras", # dials function from kerasnip
-    "compile_optimizer", # parsnip arg
-    "optimizer_function" # dials function from kerasnip
-  )
-
-  # We now allow optimizer to be tuned. Metrics are for tracking, not training.
-  non_tunable <- c("verbose")
-
-  for (arg in parsnip_names) {
-    if (arg %in% non_tunable) {
-      next
+  if (
+    is.character(input_map) &&
+      is.null(names(input_map)) &&
+      length(input_map) == 1
+  ) {
+    # Case 1: Single string, rename first argument
+    names(new_formals)[1] <- input_map
+  } else if (is.character(input_map) && !is.null(names(input_map))) {
+    # Case 2: Named vector for mapping
+    if (!all(input_map %in% original_names)) {
+      missing_args <- input_map[!input_map %in% original_names]
+      stop(paste(
+        "Argument(s)",
+        paste(shQuote(missing_args), collapse = ", "),
+        "not found in the block function."
+      ))
     }
-
-    if (startsWith(arg, "num_")) {
-      dials_fun <- "num_terms"
-    } else {
-      base_arg <- sub(".*_", "", arg)
-      idx <- match(base_arg, keras_dials_map$keras_arg)
-      dials_fun <- if (!is.na(idx)) keras_dials_map$dials_fun[idx] else arg
+    for (new_name in names(input_map)) {
+      old_name <- input_map[[new_name]]
+      names(new_formals)[original_names == old_name] <- new_name
     }
-
-    parsnip::set_model_arg(
-      model = model_name,
-      eng = "keras",
-      parsnip = arg,
-      original = arg,
-      func = list(pkg = "dials", fun = dials_fun),
-      has_submodel = FALSE
-    )
-  }
-}
-
-#' Register Fit and Prediction Methods with Parsnip
-#'
-#' Defines how to fit the custom Keras model and how to generate predictions
-#' for both regression and classification modes. It links the model to the
-#' generic fitting implementation (`generic_keras_fit_impl`) and sets up
-#' the appropriate prediction post-processing.
-#'
-#' @param model_name The name of the new model.
-#' @param mode The model mode ("regression" or "classification").
-#' @param layer_blocks The named list of layer block functions, which is passed
-#'   as a default argument to the fit function.
-#' @return Invisibly returns `NULL`. Called for its side effects.
-#' @noRd
-register_fit_predict <- function(model_name, mode, layer_blocks) {
-  # Fit method
-  parsnip::set_fit(
-    model = model_name,
-    eng = "keras",
-    mode = mode,
-    value = list(
-      interface = "data.frame",
-      protect = c("x", "y"),
-      func = c(pkg = "kerasnip", fun = "generic_keras_fit_impl"),
-      defaults = list(layer_blocks = layer_blocks)
-    )
-  )
-
-  # Regression prediction
-  if (mode == "regression") {
-    parsnip::set_pred(
-      model = model_name,
-      eng = "keras",
-      mode = "regression",
-      type = "numeric",
-      value = list(
-        pre = NULL,
-        post = keras_postprocess_numeric,
-        func = c(fun = "predict"),
-        args = list(
-          object = rlang::expr(object$fit$fit),
-          x = rlang::expr(as.matrix(new_data))
-        )
-      )
-    )
   } else {
-    # Classification predictions
-    parsnip::set_pred(
-      model = model_name,
-      eng = "keras",
-      mode = "classification",
-      type = "class",
-      value = list(
-        pre = NULL,
-        post = keras_postprocess_classes,
-        func = c(fun = "predict"),
-        args = list(
-          object = rlang::expr(object$fit$fit),
-          x = rlang::expr(as.matrix(new_data))
-        )
-      )
-    )
-    parsnip::set_pred(
-      model = model_name,
-      eng = "keras",
-      mode = "classification",
-      type = "prob",
-      value = list(
-        pre = NULL,
-        post = keras_postprocess_probs,
-        func = c(fun = "predict"),
-        args = list(
-          object = rlang::expr(object$fit$fit),
-          x = rlang::expr(as.matrix(new_data))
-        )
-      )
-    )
+    stop("`input_map` must be a single string or a named character vector.")
   }
+
+  formals(new_fun) <- new_formals
+
+  call_args <- lapply(names(new_formals), as.symbol)
+  names(call_args) <- original_names
+
+  body(new_fun) <- as.call(c(list(as.symbol("block")), call_args))
+  environment(new_fun) <- environment()
+  new_fun
 }
 
-#' Register the `update()` S3 Method
+#' Internal Implementation for Creating Keras Specifications
 #'
-#' Creates and registers an `update()` S3 method for the new model specification.
-#' This method allows users to modify the model's parameters after it has been
-#' created, which is essential for tuning with `dials` and `tune`.
+#' @description
+#' This is the core implementation for both `create_keras_sequential_spec()` and
+#' `create_keras_functional_spec()`. It orchestrates the argument collection,
+#' function building, and `parsnip` registration steps.
 #'
-#' @param model_name The name of the new model.
-#' @param parsnip_names A character vector of all argument names.
-#' @return Invisibly returns `NULL`. Called for its side effects.
-#' @param env The environment in which to create the update method.
+#' @inheritParams create_keras_sequential_spec
+#' @param functional A logical, if `TRUE`, registers the model to be fit with
+#'   the Functional API (`generic_functional_fit`). Otherwise, uses the
+#'   Sequential API (`generic_sequential_fit`).
+#'
 #' @noRd
-register_update_method <- function(model_name, parsnip_names, env) {
-  # Build function signature
-  update_args_list <- c(
-    list(object = rlang::missing_arg(), parameters = rlang::expr(NULL)),
-    purrr::map(parsnip_names, ~ rlang::expr(NULL)),
-    list(... = rlang::missing_arg(), fresh = rlang::expr(FALSE))
-  )
-  names(update_args_list)[3:(2 + length(parsnip_names))] <- parsnip_names
-
-  # Create a list of expressions like `arg_name = rlang::enquo(arg_name)`
-  args_enquo_exprs <- purrr::map(
-    parsnip_names,
-    ~ rlang::expr(rlang::enquo(!!rlang::sym(.x)))
-  )
-  names(args_enquo_exprs) <- parsnip_names
-
-  # Create the expression that builds this list inside the function body
-  args_enquo_list_expr <- rlang::expr(
-    args <- rlang::list2(!!!args_enquo_exprs)
+create_keras_spec_impl <- function(
+  model_name,
+  layer_blocks,
+  mode,
+  functional,
+  env
+) {
+  args_info <- collect_spec_args(layer_blocks, functional = functional)
+  spec_fun <- build_spec_function(
+    model_name,
+    mode,
+    args_info$all_args,
+    args_info$parsnip_names,
+    layer_blocks,
+    functional = functional
   )
 
-  # Create the call to `parsnip::update_spec`
-  update_spec_call <- rlang::expr(
-    parsnip::update_spec(
-      object = object,
-      parameters = parameters,
-      args_enquo_list = args,
-      fresh = fresh,
-      cls = !!model_name,
-      ...
-    )
-  )
+  register_core_model(model_name, mode)
+  register_model_args(model_name, args_info$parsnip_names)
+  register_fit_predict(model_name, mode, layer_blocks, functional = functional)
+  register_update_method(model_name, args_info$parsnip_names, env = env)
 
-  # Combine them into the final body
-  update_body <- rlang::call2("{", args_enquo_list_expr, update_spec_call)
-
-  # Create and register the S3 method
-  update_func <- rlang::new_function(
-    args = update_args_list,
-    body = update_body
-  )
-  method_name <- paste0("update.", model_name)
-  # Poke the function into the target environment (e.g., .GlobalEnv) so that
-  # S3 dispatch can find it.
-  rlang::env_poke(env, method_name, update_func)
-  registerS3method("update", model_name, update_func, envir = env)
+  rlang::env_poke(env, model_name, spec_fun)
+  invisible(NULL)
 }
