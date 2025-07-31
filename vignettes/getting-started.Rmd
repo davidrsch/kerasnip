@@ -9,7 +9,7 @@ vignette: >
 
 ## The Core Idea: From Keras Layers to Tidymodels Specs
 
-The `keras` package allows for building deep learning models layer-by-layer, which is a powerful and flexible approach. However, the `tidymodels` ecosystem is designed around declarative model specifications, where you define what model you want and which of its parameters you want to tune, rather than building it imperatively.
+The `keras3` package allows for building deep learning models layer-by-layer, which is a powerful and flexible approach. However, the `tidymodels` ecosystem is designed around declarative model specifications, where you define what model you want and which of its parameters you want to tune, rather than building it imperatively.
 
 `kerasnip` bridges this gap with a simple but powerful concept: layer blocks. You define the components of your neural network (e.g., an input block, a dense block, a dropout block) as simple R functions. `kerasnip` then uses these blocks as building materials to create a brand new parsnip model specification function for you.
 
@@ -59,10 +59,10 @@ We need three blocks:
 
 ### Step 2: Create the Model Specification
 
-Now, we use `create_keras_spec()` to generate a new model function, which we'll call `basic_mlp()`. We provide our layer blocks in the order they should be assembled.
+Now, we use `create_keras_sequential_spec()` to generate a new model function, which we'll call `basic_mlp()`. We provide our layer blocks in the order they should be assembled.
 
 ```{r create-spec}
-create_keras_spec(
+create_keras_sequential_spec(
   model_name = "basic_mlp",
   layer_blocks = list(
     input = mlp_input_block,
@@ -83,7 +83,7 @@ We can now use `basic_mlp()` like any other parsnip model. Let's define a model 
 spec <- basic_mlp(
   num_dense = 2,
   dense_units = 64,
-  epochs = 50,
+  fit_epochs = 50,
   learn_rate = 0.01 
 ) |>
   set_engine("keras")
@@ -133,7 +133,7 @@ tunable_dropout_block <- function(model, rate = 0.2) {
     layer_dropout(rate = rate)
 }
 
-create_keras_spec(
+create_keras_sequential_spec(
   model_name = "tunable_mlp",
   layer_blocks = list(
     input = mlp_input_block,
@@ -155,7 +155,7 @@ tune_spec <- tunable_mlp(
   dense_units = tune(),
   num_dropout = 1,
   dropout_rate = tune(),
-  epochs = 20 # Use fewer epochs for faster tuning 
+  fit_epochs = 20
 ) |>
   set_engine("keras")
 
@@ -226,7 +226,7 @@ Here is an example of using these arguments to specify a different loss function
 adv_spec <- basic_mlp(
   num_dense = 2,
   dense_units = 32,
-  epochs = 100,
+  fit_epochs = 100,
   # Arguments for keras3::compile()
   compile_loss = "mae",
   # Arguments for keras3::fit()
