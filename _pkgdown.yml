@@ -7,7 +7,9 @@ reference:
     desc: >
       Functions for generating and managing custom model specifications.
     contents:
-      - create_keras_spec
+      - create_keras_sequential_spec
+      - create_keras_functional_spec
+      - inp_spec
       - remove_keras_spec
 
   - title: "Registration Helpers"
