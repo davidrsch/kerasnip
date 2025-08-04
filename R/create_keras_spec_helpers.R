@@ -199,10 +199,11 @@ inp_spec <- function(block, input_map) {
         "not found in the block function."
       ))
     }
-    for (new_name in names(input_map)) {
-      old_name <- input_map[[new_name]]
-      names(new_formals)[original_names == old_name] <- new_name
-    }
+    # Use match() for a more concise, vectorized replacement of names
+    new_names <- original_names
+    match_indices <- match(input_map, original_names)
+    new_names[match_indices] <- names(input_map)
+    names(new_formals) <- new_names
   } else {
     stop("`input_map` must be a single string or a named character vector.")
   }
