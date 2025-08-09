@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Getting Started with kerasnip • kerasnip</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -239,17 +244,17 @@ with our model spec in a workflow.</p>
 <p>Predictions work just as you’d expect in <code>tidymodels</code>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## 1/1 - 0s - 38ms/step</span></span></code></pre>
+<pre><code><span><span class="co">## 1/1 - 0s - 42ms/step</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 1</span></span></span>
 <span><span class="co">##   .pred</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>  18.1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>  16.8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>  23.7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>  18.1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>  17.0</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>  19.7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  18.2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>  24.4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  18.3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>  17.9</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -389,30 +394,30 @@ combination of architectural parameters.</p>
 <span>  grid <span class="op">=</span> <span class="va">grid</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu">control_grid</span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
 <span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## 1/1 - 0s - 37ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 42ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 42ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 44ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
+<pre><code><span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 43ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 43ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 42ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 42ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 42ms/step</span></span></code></pre>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 41ms/step</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="step-5-analyze-the-results">Step 5: Analyze the Results<a class="anchor" aria-label="anchor" href="#step-5-analyze-the-results"></a>
@@ -423,11 +428,11 @@ combination of architectural parameters.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 9</span></span></span>
 <span><span class="co">##   num_dense dense_units dropout_rate .metric .estimator  mean     n std_err</span></span>
 <span><span class="co">##       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>         3          64          0.1 rmse    standard    4.81     3   0.252</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>         3          64          0.5 rmse    standard    6.44     3   0.414</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>         1          64          0.1 rmse    standard    8.46     3   0.833</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>         1          64          0.5 rmse    standard   10.7      3   0.902</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>         3           8          0.5 rmse    standard   13.3      3   3.65 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>         3          64          0.1 rmse    standard    4.14     3   0.236</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>         3          64          0.5 rmse    standard    4.49     3   0.756</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>         1          64          0.1 rmse    standard   10.9      3   0.472</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>         1          64          0.5 rmse    standard   10.9      3   1.10 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>         3           8          0.5 rmse    standard   15.4      3   2.86 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: .config &lt;chr&gt;</span></span></span></code></pre>
 <p>The results show that <code>tune</code> has successfully tested
 different network depths (<code>num_dense</code>), widths
