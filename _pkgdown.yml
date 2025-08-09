@@ -3,6 +3,7 @@ template:
   includes:
     in_header: >
       <!-- Future google search metadata tag -->
+      <meta name="google-site-verification" content="kphyQu6n4JhBUuoLZxnJpD9dbw9q5FLwqXb9AkI2fhU" />
   bootstrap: 5
   bslib:
     primary: "#BF281B"
