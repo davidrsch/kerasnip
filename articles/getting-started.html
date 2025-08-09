@@ -11,12 +11,13 @@
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started with kerasnip">
+<!-- Future google search metadata tag --><meta name="google-site-verification" content="kphyQu6n4JhBUuoLZxnJpD9dbw9q5FLwqXb9AkI2fhU">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
@@ -29,15 +30,8 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item"><a class="nav-link" href="../articles/getting-started.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../guides/getting-started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started with kerasnip</a></li>
-    <li><a class="dropdown-item" href="../articles/functional-api.html">Building Functional Models with kerasnip</a></li>
-  </ul>
-</li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -245,17 +239,17 @@ with our model spec in a workflow.</p>
 <p>Predictions work just as you’d expect in <code>tidymodels</code>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## 1/1 - 0s - 37ms/step</span></span></code></pre>
+<pre><code><span><span class="co">## 1/1 - 0s - 38ms/step</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 1</span></span></span>
 <span><span class="co">##   .pred</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>  20.4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>  18.8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>  24.5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>  18.5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>  17.4</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>  18.1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  16.8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>  23.7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  18.1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>  17.0</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -395,28 +389,28 @@ combination of architectural parameters.</p>
 <span>  grid <span class="op">=</span> <span class="va">grid</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu">control_grid</span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
 <span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
+<pre><code><span><span class="co">## 1/1 - 0s - 37ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 42ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 42ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 44ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 42ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
-<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 41ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 42ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 33ms/step</span></span>
+<span><span class="co">## 1/1 - 0s - 40ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 34ms/step</span></span>
 <span><span class="co">## 1/1 - 0s - 42ms/step</span></span></code></pre>
 </div>
@@ -429,11 +423,11 @@ combination of architectural parameters.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 9</span></span></span>
 <span><span class="co">##   num_dense dense_units dropout_rate .metric .estimator  mean     n std_err</span></span>
 <span><span class="co">##       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>         3          64          0.1 rmse    standard    4.50     3   0.701</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>         3          64          0.5 rmse    standard    5.45     3   0.698</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>         1          64          0.1 rmse    standard   10.8      3   1.02 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>         1          64          0.5 rmse    standard   12.6      3   1.03 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>         3           8          0.1 rmse    standard   15.0      3   3.64 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>         3          64          0.1 rmse    standard    4.81     3   0.252</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>         3          64          0.5 rmse    standard    6.44     3   0.414</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>         1          64          0.1 rmse    standard    8.46     3   0.833</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>         1          64          0.5 rmse    standard   10.7      3   0.902</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>         3           8          0.5 rmse    standard   13.3      3   3.65 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: .config &lt;chr&gt;</span></span></span></code></pre>
 <p>The results show that <code>tune</code> has successfully tested
 different network depths (<code>num_dense</code>), widths
