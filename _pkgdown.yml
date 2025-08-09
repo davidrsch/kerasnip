@@ -1,6 +1,25 @@
 url: https://davidrsch.github.io/kerasnip/
 template:
+  includes:
+    in_header: >
+      <!-- Future google search metadata tag -->
   bootstrap: 5
+  bslib:
+    primary: "#BF281B"
+    danger: "white"
+    navbar-light-color: "white"
+    navbar-light-brand-color: "white"
+    navbar-light-brand-hover-color: "white"
+    code_font: "monospace"
+
+guides:
+  - title: "Getting Started"
+    navbar: ~
+    contents:
+      - getting-started
+      - functional-api
+
+# examples:
 
 reference:
   - title: "Core Functions"
@@ -22,24 +41,19 @@ reference:
       - register_keras_optimizer
       - keras_objects
 
-articles:
-  - title: "Getting Started"
-    navbar: ~
-    contents:
-      - getting-started
-      - functional-api
-
 development:
   mode: auto
 
 navbar:
+  bg: primary
+  type: light
   structure:
-    left: [intro, reference, articles, news]
+    left: [intro, guides, examples, reference, news]
     right: [search, github]
   components:
     intro:
-      text: "Get started"
-      href: articles/getting-started.html
+      text: "Getting started"
+      href: guides/getting-started.html
     github:
       icon: fa-github
       href: https://github.com/davidrsch/kerasnip
