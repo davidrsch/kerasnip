@@ -2,6 +2,8 @@
 
 export(create_keras_functional_spec)
 export(create_keras_sequential_spec)
+export(extract_keras_history)
+export(extract_keras_summary)
 export(generic_functional_fit)
 export(generic_sequential_fit)
 export(inp_spec)

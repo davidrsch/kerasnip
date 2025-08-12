@@ -32,3 +32,29 @@ keras_evaluate <- function(object, x, y = NULL, ...) {
   keras_model <- object$fit$fit
   keras3::evaluate(keras_model, x = x_proc, y = y_proc, ...)
 }
+
+#' Extract Keras Model Summary
+#'
+#' @description
+#' Extracts and returns the summary of a Keras model fitted with `kerasnip`.
+#'
+#' @param object A `model_fit` object produced by a `kerasnip` specification.
+#' @param ... Additional arguments passed on to `keras3::summary()`.
+#'
+#' @return A character vector, where each element is a line of the model summary.
+#' @export
+extract_keras_summary <- function(object, ...) {
+  object$fit$fit
+}
+
+#' Extract Keras Training History
+#'
+#' @description
+#' Extracts and returns the training history of a Keras model fitted with `kerasnip`.
+#'
+#' @param object A `model_fit` object produced by a `kerasnip` specification.
+#' @return A `keras_training_history` containing the training history (metrics per epoch).
+#' @export
+extract_keras_history <- function(object) {
+  object$fit$history
+}
