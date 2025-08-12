@@ -148,3 +148,121 @@ test_that("E2E: Error handling for reserved names works", {
     regexp = "`compile`, `fit` and `optimizer` are protected names"
   )
 })
+
+test_that("E2E: extract_keras_summary works", {
+  skip_if_no_keras()
+
+  # Reuse model setup from previous tests
+  input_block_feat <- function(model, input_shape) {
+    keras3::keras_model_sequential(input_shape = input_shape)
+  }
+  dense_block_feat <- function(model, units = 16) {
+    model |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  output_block_feat <- function(model) {
+    model |> keras3::layer_dense(units = 1)
+  }
+
+  model_name <- "e2e_mlp_summary_test"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_sequential_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      input = input_block_feat,
+      dense = dense_block_feat,
+      output = output_block_feat
+    ),
+    mode = "regression"
+  )
+
+  spec <- e2e_mlp_summary_test(fit_epochs = 1) |>
+    parsnip::set_engine("keras")
+
+  fit_obj <- parsnip::fit(spec, mpg ~ ., data = mtcars)
+
+  summary_output <- extract_keras_summary(fit_obj)
+
+  expect_type(summary_output, "closure")
+  expect_true(any(grepl("Layer ", summary_output)))
+  expect_true(any(grepl("Output Shape", summary_output)))
+  expect_true(any(grepl("Param #", summary_output)))
+})
+
+test_that("E2E: extract_keras_history works", {
+  skip_if_no_keras()
+
+  # Reuse model setup from previous tests
+  input_block_feat <- function(model, input_shape) {
+    keras3::keras_model_sequential(input_shape = input_shape)
+  }
+  dense_block_feat <- function(model, units = 16) {
+    model |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  output_block_feat <- function(model) {
+    model |> keras3::layer_dense(units = 1)
+  }
+
+  model_name <- "e2e_mlp_history_test"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_sequential_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      input = input_block_feat,
+      dense = dense_block_feat,
+      output = output_block_feat
+    ),
+    mode = "regression"
+  )
+
+  epochs_to_train <- 2
+  spec <- e2e_mlp_history_test(fit_epochs = epochs_to_train) |>
+    parsnip::set_engine("keras")
+
+  fit_obj <- parsnip::fit(spec, mpg ~ ., data = mtcars)
+
+  history_output <- extract_keras_history(fit_obj)
+
+  expect_s3_class(history_output, "keras_training_history")
+})
+
+test_that("E2E: keras_evaluate works", {
+  skip_if_no_keras()
+
+  # Reuse model setup from previous tests
+  input_block_eval <- function(model, input_shape) {
+    keras3::keras_model_sequential(input_shape = input_shape)
+  }
+  dense_block_eval <- function(model, units = 16) {
+    model |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  output_block_eval <- function(model) {
+    model |> keras3::layer_dense(units = 1)
+  }
+
+  model_name <- "e2e_mlp_evaluate_test"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_sequential_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      input = input_block_eval,
+      dense = dense_block_eval,
+      output = output_block_eval
+    ),
+    mode = "regression"
+  )
+
+  spec <- e2e_mlp_evaluate_test(fit_epochs = 1) |>
+    parsnip::set_engine("keras")
+
+  fit_obj <- parsnip::fit(spec, mpg ~ ., data = mtcars)
+
+  # Evaluate the model
+  eval_output <- keras_evaluate(fit_obj, x = mtcars[, -1], y = mtcars$mpg)
+
+  expect_true(class(eval_output) == "list")
+  expect_true("loss" %in% names(eval_output))
+  expect_true("mean_absolute_error" %in% names(eval_output))
+})
