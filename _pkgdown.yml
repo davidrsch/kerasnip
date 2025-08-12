@@ -42,6 +42,15 @@ reference:
       - register_keras_optimizer
       - keras_objects
 
+  - title: "Model Inspection and Evaluation"
+    desc: >
+      Functions for summarizing, evaluating, and extracting information
+      from trained Keras models.
+    contents:
+      - extract_keras_history
+      - extract_keras_summary
+      - keras_evaluate
+
 development:
   mode: auto
 
