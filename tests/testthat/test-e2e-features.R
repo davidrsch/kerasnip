@@ -102,14 +102,19 @@ test_that("E2E: Customizing fit arguments works", {
   expect_lt(length(fit_obj$fit$history$metrics$loss), 5)
 })
 
-test_that("E2E: Setting num_blocks = 0 works", {
+test_that("E2E: Setting num_blocks = 0 works for sequential models", {
   skip_if_no_keras()
 
   input_block_zero <- function(model, input_shape) {
     keras3::keras_model_sequential(input_shape = input_shape)
   }
   dense_block_zero <- function(model, units = 16) {
-    model |> keras3::layer_dense(units = units, activation = "relu")
+    model |>
+      keras3::layer_dense(
+        units = units,
+        activation = "relu",
+        name = "i_should_not_exist"
+      )
   }
   output_block_zero <- function(model) {
     model |> keras3::layer_dense(units = 1)
@@ -128,10 +133,18 @@ test_that("E2E: Setting num_blocks = 0 works", {
     mode = "regression"
   )
 
-  spec <- e2e_mlp_zero(num_dense = 0, fit_epochs = 2) |>
+  spec <- e2e_mlp_zero(num_dense = 0, fit_epochs = 1) |>
     parsnip::set_engine("keras")
-  # This should fit a model with only an input and output layer
-  expect_no_error(parsnip::fit(spec, mpg ~ ., data = mtcars))
+
+  fit_obj <- parsnip::fit(spec, mpg ~ ., data = mtcars)
+
+  # Check that the dense layer is NOT in the model
+  keras_model <- fit_obj |> extract_keras_summary()
+  expect_equal(length(keras_model$layers), 1) # Output layers only
+
+  # Check layer names explicitly
+  layer_names <- sapply(keras_model$layers, function(l) l$name)
+  expect_false("i_should_not_exist" %in% layer_names)
 })
 
 test_that("E2E: Error handling for reserved names works", {

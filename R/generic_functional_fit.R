@@ -128,7 +128,15 @@ generic_functional_fit <- function(
 
     # --- Get Repetition Count ---
     num_repeats_arg <- paste0("num_", block_name)
-    num_repeats <- all_args[[num_repeats_arg]] %||% 1
+    num_repeats_val <- all_args[[num_repeats_arg]]
+
+    # If num_repeats_val is NULL or zapped, default to 1.
+    # Otherwise, use the value provided by the user.
+    if (is.null(num_repeats_val) || inherits(num_repeats_val, "rlang_zap")) {
+      num_repeats <- 1
+    } else {
+      num_repeats <- as.integer(num_repeats_val)
+    }
 
     # --- Get Hyperparameters for this block ---
     # Hyperparameters are formals that are NOT other block names (graph connections)

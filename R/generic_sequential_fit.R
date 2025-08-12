@@ -118,7 +118,14 @@ generic_sequential_fit <- function(
 
     num_repeats_arg <- paste0("num_", block_name)
     num_repeats_val <- all_args[[num_repeats_arg]]
-    num_repeats <- num_repeats_val %||% 1
+
+    # If num_repeats_val is NULL or zapped, default to 1.
+    # Otherwise, use the value provided by the user.
+    if (is.null(num_repeats_val) || inherits(num_repeats_val, "rlang_zap")) {
+      num_repeats <- 1
+    } else {
+      num_repeats <- as.integer(num_repeats_val)
+    }
 
     # Get the arguments for this specific block from `...`
     block_arg_names <- names(block_fmls)[-1] # Exclude 'model'
