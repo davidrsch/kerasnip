@@ -220,6 +220,11 @@ process_x <- function(x) {
 #' @importFrom keras3 to_categorical
 #' @noRd
 process_y <- function(y, is_classification = NULL, class_levels = NULL) {
+  # If y is a data frame/tibble, extract the first column
+  if (is.data.frame(y)) {
+    y <- y[[1]]
+  }
+
   if (is.null(is_classification)) {
     is_classification <- is.factor(y)
   }
