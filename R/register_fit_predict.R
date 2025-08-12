@@ -57,7 +57,7 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = rlang::expr(as.matrix(new_data))
+          x = rlang::expr(process_x(new_data)$x_proc)
         )
       )
     )
@@ -74,7 +74,7 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = rlang::expr(as.matrix(new_data))
+          x = rlang::expr(process_x(new_data)$x_proc)
         )
       )
     )
@@ -89,7 +89,7 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = rlang::expr(as.matrix(new_data))
+          x = rlang::expr(process_x(new_data)$x_proc)
         )
       )
     )
