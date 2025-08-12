@@ -78,39 +78,32 @@ generic_sequential_fit <- function(
   learn_rate <- all_args$learn_rate %||% 0.01
   verbose <- all_args$verbose %||% 0
 
-  # Handle both standard tabular data (matrix) and list-columns of arrays
-  # (for images/sequences) that come from recipes.
-  if (is.data.frame(x) && ncol(x) == 1 && is.list(x[[1]])) {
-    # Assumes a single predictor column containing a list of arrays.
-    # We stack them into a single higher-dimensional array.
-    x_proc <- do.call(abind::abind, c(x[[1]], list(along = 0)))
-  } else {
-    x_proc <- as.matrix(x)
-  }
+  # Process x input
+  x_processed <- process_x(x)
+  x_proc <- x_processed$x_proc
+  input_shape <- x_processed$input_shape
 
-  # Determine the correct input shape for the Keras model.
-  input_shape <- if (length(dim(x_proc)) > 2) dim(x_proc)[-1] else ncol(x_proc)
+  # Process y input
+  y_processed <- process_y(y)
+  y_mat <- y_processed$y_proc
+  is_classification <- y_processed$is_classification
+  class_levels <- y_processed$class_levels
+  num_classes <- y_processed$num_classes
 
   # Determine default compile arguments based on mode
-  is_classification <- is.factor(y)
-  if (is_classification) {
-    class_levels <- levels(y)
-    num_classes <- length(class_levels)
-    y_mat <- keras3::to_categorical(
-      as.numeric(y) - 1,
-      num_classes = num_classes
-    )
-    default_loss <- if (num_classes > 2) {
+  default_loss <- if (is_classification) {
+    if (num_classes > 2) {
       "categorical_crossentropy"
     } else {
       "binary_crossentropy"
     }
-    default_metrics <- "accuracy"
   } else {
-    class_levels <- NULL
-    y_mat <- as.matrix(y)
-    default_loss <- "mean_squared_error"
-    default_metrics <- "mean_absolute_error"
+    "mean_squared_error"
+  }
+  default_metrics <- if (is_classification) {
+    "accuracy"
+  } else {
+    "mean_absolute_error"
   }
 
   # --- 2. Dynamic Model Architecture Construction ---
