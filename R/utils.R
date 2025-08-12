@@ -175,3 +175,74 @@ loss_function_keras <- function(values = NULL) {
     finalize = NULL
   )
 }
+
+#' Process Predictor Input for Keras
+#'
+#' @description
+#' Preprocesses predictor data (`x`) into a format suitable for Keras models.
+#' Handles both tabular data and list-columns of arrays (e.g., for images).
+#'
+#' @param x A data frame or matrix of predictors.
+#' @return A list containing:
+#'   - `x_proc`: The processed predictor data (matrix or array).
+#'   - `input_shape`: The determined input shape for the Keras model.
+#' @noRd
+process_x <- function(x) {
+  if (is.data.frame(x) && ncol(x) == 1 && is.list(x[[1]])) {
+    # Assumes a single predictor column containing a list of arrays.
+    # We stack them into a single higher-dimensional array.
+    x_proc <- do.call(abind::abind, c(x[[1]], list(along = 0)))
+  } else {
+    x_proc <- as.matrix(x)
+  }
+  input_shape <- if (length(dim(x_proc)) > 2) dim(x_proc)[-1] else ncol(x_proc)
+  list(x_proc = x_proc, input_shape = input_shape)
+}
+
+#' Process Outcome Input for Keras
+#'
+#' @description
+#' Preprocesses outcome data (`y`) into a format suitable for Keras models.
+#' Handles both regression (numeric) and classification (factor) outcomes,
+#' including one-hot encoding for classification.
+#'
+#' @param y A vector of outcomes.
+#' @param is_classification Logical, optional. If `TRUE`, treats `y` as
+#'   classification. If `FALSE`, treats as regression. If `NULL` (default),
+#'   it's determined from `is.factor(y)`.
+#' @param class_levels Character vector, optional. The factor levels for
+#'   classification outcomes. If `NULL` (default), determined from `levels(y)`.
+#' @return A list containing:
+#'   - `y_proc`: The processed outcome data (matrix or one-hot encoded array).
+#'   - `is_classification`: Logical, indicating if `y` was treated as classification.
+#'   - `num_classes`: Integer, the number of classes for classification, or `NULL`.
+#'   - `class_levels`: Character vector, the factor levels for classification, or `NULL`.
+#' @importFrom keras3 to_categorical
+#' @noRd
+process_y <- function(y, is_classification = NULL, class_levels = NULL) {
+  if (is.null(is_classification)) {
+    is_classification <- is.factor(y)
+  }
+
+  y_proc <- NULL
+  num_classes <- NULL
+  if (is_classification) {
+    if (is.null(class_levels)) {
+      class_levels <- levels(y)
+    }
+    num_classes <- length(class_levels)
+    y_factored <- factor(y, levels = class_levels)
+    y_proc <- keras3::to_categorical(
+      as.numeric(y_factored) - 1,
+      num_classes = num_classes
+    )
+  } else {
+    y_proc <- as.matrix(y)
+  }
+  list(
+    y_proc = y_proc,
+    is_classification = is_classification,
+    num_classes = num_classes,
+    class_levels = class_levels
+  )
+}
