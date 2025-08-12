@@ -7,13 +7,36 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+# Suppress verbose Keras output for the vignette 
+options(keras.fit_verbose = 0)
+set.seed(123)
+```
+
 ## The Core Idea: From Keras Layers to Tidymodels Specs
 
-The `keras3` package allows for building deep learning models layer-by-layer, which is a powerful and flexible approach. However, the `tidymodels` ecosystem is designed around declarative model specifications, where you define what model you want and which of its parameters you want to tune, rather than building it imperatively.
+The `keras3` package allows for building deep learning models layer-by-layer, which is a powerful and flexible approach. However, the `tidymodels` ecosystem is designed around declarative model specifications, where you define *what* model you want and which of its parameters you want to tune, rather than building it imperatively.
 
-`kerasnip` bridges this gap with a simple but powerful concept: layer blocks. You define the components of your neural network (e.g., an input block, a dense block, a dropout block) as simple R functions. `kerasnip` then uses these blocks as building materials to create a brand new parsnip model specification function for you.
+`kerasnip` bridges this gap with a simple but powerful concept: **layer blocks**. You define the components of your neural network (e.g., an input block, a dense block, a dropout block) as simple R functions. `kerasnip` then uses these blocks as building materials to create a brand new `parsnip` model specification function for you.
 
-This new function behaves just like any other parsnip model (e.g., `rand_forest()` or `linear_reg()`), making it easy to integrate into workflows and tune with tune.
+This new function behaves just like any other `parsnip` model (e.g., `rand_forest()` or `linear_reg()`), making it easy to integrate into `tidymodels` workflows.
+
+## Installation
+
+You can install the development version of `kerasnip` from GitHub. You will also need `keras3` and a backend (like TensorFlow).
+
+``` r
+# install.packages("pak")
+pak::pak("davidrsch/kerasnip")
+pak::pak("rstudio/keras3")
+
+# Install the backend
+keras3::install_keras()
+```
 
 We’ll start by loading `kerasnip`, `tidymodels` and `keras3`:
 
@@ -23,221 +46,282 @@ library(tidymodels)
 library(keras3)
 ```
 
-## Example 1: Building and Fitting a Basic MLP
+## A `kerasnip` MNIST Example
 
-Let's start by building a simple Multi-Layer Perceptron (MLP) for a regression task using the `mtcars` dataset.
+Let's replicate the standard Keras introductory example, an MLP on the MNIST dataset, but using the `kerasnip` workflow. This will show how to translate a standard Keras model into a reusable, modular `parsnip` specification.
 
-### Step 1: Define the Layer Blocks
+### Preparing the Data
 
-We need three blocks:
+This step is identical to any other Keras model. We load the MNIST dataset, reshape the predictors, and convert the outcome to a factor for `tidymodels`.
 
--   1\. An input block to initialize the model and define the input shape. `kerasnip` will automatically pass the input_shape argument during fitting.
+```{r prepare-data}
+mnist <- dataset_mnist()
+x_train <- mnist$train$x
+y_train <- mnist$train$y
+x_test <- mnist$test$x
+y_test <- mnist$test$y
 
--   2\. A dense block for our hidden layers. We'll give it a units argument so we can control the number of neurons.
+# Reshape
+x_train <- array_reshape(x_train, c(nrow(x_train), 784))
+x_test <- array_reshape(x_test, c(nrow(x_test), 784))
+# Rescale
+x_train <- x_train / 255
+x_test <- x_test / 255
 
--   3\. An output block for the final prediction. For regression, this is typically a single neuron with a linear activation.
+# Convert outcomes to factors for tidymodels
+# kerasnip will handle y convertion internally using keras3::to_categorical()
+y_train_factor <- factor(y_train)
+y_test_factor <- factor(y_test)
 
-    ```{r define-blocks}
-    # 1. The input block must initialize the model. 
-    # input_shape is passed automatically by the fit engine. 
-    mlp_input_block <- function(model, input_shape) {
-      keras_model_sequential(input_shape = input_shape) 
-    }
+# For tidymodels, it's best to work with data frames
+# Use I() to keep the matrix structure of x within the data frame
+train_df <- data.frame(x = I(x_train), y = y_train_factor)
+test_df <- data.frame(x = I(x_test), y = y_test_factor)
+```
 
-    # 2. A block for hidden layers. units will become a tunable parameter. 
-    mlp_dense_block <- function(model, units = 32) {
-      model |>
-        layer_dense(units = units, activation = "relu") 
-    }
+### Defining the Model with Reusable Blocks
 
-    # 3. The output block for a regression model. 
-    mlp_output_block <- function(model) {
-      model |>
-        layer_dense(units = 1) 
-    } 
-    ```
+The original Keras example interleaves `layer_dense()` and `layer_dropout()`. With `kerasnip`, we can encapsulate this pattern into a single, reusable block. This makes the overall architecture cleaner and more modular.
 
-### Step 2: Create the Model Specification
+```{r define-blocks}
+# An input block to initialize the model.
+mlp_input_block <- function(model, input_shape) {
+  keras_model_sequential(input_shape = input_shape)
+}
 
-Now, we use `create_keras_sequential_spec()` to generate a new model function, which we'll call `basic_mlp()`. We provide our layer blocks in the order they should be assembled.
+# A reusable "module" that combines a dense layer and a dropout layer.
+# This pattern can now be repeated easily.
+# default values for parameters must be set
+dense_dropout_block <- function(model, units=128, rate=0.1) {
+  model |>
+    layer_dense(units = units, activation = "relu") |>
+    layer_dropout(rate = rate)
+}
+
+# The output block for classification.
+mlp_output_block <- function(model, num_classes) {
+  model |> layer_dense(units = num_classes, activation = "softmax")
+}
+```
+
+Now, we use `create_keras_sequential_spec()` to generate our `parsnip` model function.
 
 ```{r create-spec}
 create_keras_sequential_spec(
-  model_name = "basic_mlp",
+  model_name = "mnist_mlp",
   layer_blocks = list(
     input = mlp_input_block,
-    dense = mlp_dense_block,
+    hidden_1 = dense_dropout_block,
+    hidden_2 = dense_dropout_block,
     output = mlp_output_block
   ),
-  mode = "regression" 
-) 
+  mode = "classification"
+)
 ```
 
-This function call has a side-effect: a new function `basic_mlp()` is now available in our environment! Notice its arguments: `kerasnip`automatically created `num_dense` (to control the number of dense layers) and `dense_units` (from the units argument in our `mlp_dense_block`).
+### Building and Fitting the Model
 
-### Step 3: Use the Spec in a Workflow
-
-We can now use `basic_mlp()` like any other parsnip model. Let's define a model with two hidden layers, each with 64 units, and train it for 50 epochs.
+We can now use our new `mnist_mlp()` function. To replicate the `keras3` example, we want to repeat our `hidden` block twice with different parameters. `kerasnip` makes this easy: we set `num_hidden = 2` and pass vectors for the `hidden_units` and `hidden_rate` arguments. `kerasnip` will supply the first value to the first instance of the block, the second value to the second instance, and so on.
 
 ```{r use-spec}
-spec <- basic_mlp(
-  num_dense = 2,
-  dense_units = 64,
-  fit_epochs = 50,
-  learn_rate = 0.01 
+mlp_spec <- mnist_mlp(
+  hidden_1_units = 256,
+  hidden_1_rate = 0.4,
+  hidden_2_rate = 0.3,
+  hidden_2_units =  128,
+  compile_loss = "categorical_crossentropy",
+  compile_optimizer = optimizer_rmsprop(),
+  compile_metrics = c("accuracy"),
+  fit_epochs = 30,
+  fit_batch_size = 128,
+  fit_validation_split = 0.2
 ) |>
   set_engine("keras")
 
-print(spec) 
+# Fit the model
+mlp_fit <- fit(mlp_spec, y ~ x, data = train_df)
+keras_model <- mlp_fit$fit$fit
+training_history <- mlp_fit$fit$history
 ```
 
-We'll use a simple recipe to normalize the predictors and combine it with our model spec in a workflow.
-
-```{r fit-model}
-# Suppress verbose Keras output for the vignette 
-options(keras.fit_verbose = 0) 
- 
-rec <- recipe(mpg ~ ., data = mtcars) |>
-  step_normalize(all_numeric_predictors())
-
-wf <- workflow() |>
-  add_recipe(rec) |>
-  add_model(spec)
-
-set.seed(123) 
-fit_obj <- fit(wf, data = mtcars) 
+```{r model-summarize}
+summary(keras_model)
 ```
 
-### Step 4: Make Predictions
+```{r model-plot}
+plot(keras_model, show_shapes = TRUE)
+```
 
-Predictions work just as you'd expect in `tidymodels`.
+```{r model-fit-history}
+plot(training_history)
+```
 
-```{r predict}
-predictions <- predict(fit_obj, new_data = mtcars[1:5, ]) 
-print(predictions)
+Evaluate the model’s performance on the test data: Evaluate method missing
+
+```{r model-evaluate}
+# keras_model |> evaluate(x_test, y_test)
+```
+
+Generate predictions on new data:
+
+```{r model-predict}
+probs <- keras_model |> predict(x_test)
+```
+
+```{r show-predictions}
+max.col(probs) - 1L
 ```
 
 ## Example 2: Tuning the Model Architecture
 
-The real power of `kerasnip` comes from its ability to tune not just *hyperparameters* (like learning rate or dropout), but the *architecture* of the network itself.
+Now we’ll showcase the main strength of `kerasnip`: tuning the network architecture itself. We can treat the number of layers, and the parameters of those layers, as hyperparameters to be optimized by `tune`.
 
-Let's create a more complex *tunable* specification where we let `tune` find the optimal number of dense layers, the number of units in those layers, and the rate for a final dropout layer.
+Using the `mnist_mlp` spec we just created, let's define a tunable model.
 
-### Step 1: Define Blocks and Create a New Spec
-
-First, we'll define an additional block for dropout and then create a new model specification, `tunable_mlp`, that includes it.
-
-```{r define-tunable-blocks}
-tunable_dropout_block <- function(model, rate = 0.2) {
-  model |>
-    layer_dropout(rate = rate)
-}
-
-create_keras_sequential_spec(
-  model_name = "tunable_mlp",
-  layer_blocks = list(
-    input = mlp_input_block,
-    dense = mlp_dense_block,
-    dropout = tunable_dropout_block,
-    output = mlp_output_block
-  ),
-  mode = "regression"
-)
-```
-
-### Step 2: Define a Tunable Specification
-
-We use our new `tunable_mlp()` function, passing `tune()` to the arguments we want to optimize. We will have one dropout layer before the output.
-
-```{r tune-spec}
-tune_spec <- tunable_mlp(
-  num_dense = tune(),
-  dense_units = tune(),
-  num_dropout = 1,
-  dropout_rate = tune(),
-  fit_epochs = 20
+```{r tune-spec-mnist}
+# Define a tunable specification
+tune_spec <- mnist_mlp(
+  num_hidden_1 = tune(),
+  hidden_1_units = tune(),
+  hidden_1_rate = tune(),
+  num_hidden2 = 0,
+  compile_loss = "categorical_crossentropy",
+  compile_optimizer = optimizer_rmsprop(),
+  compile_metrics = c("accuracy"),
+  fit_epochs = 30,
+  fit_batch_size = 128,
+  fit_validation_split = 0.2
 ) |>
   set_engine("keras")
 
-print(tune_spec)
+# Create a workflow
+tune_wf <- workflow(y ~ x, tune_spec)
 ```
 
-### Step 3: Set up the Tuning Grid
+Next, we define the search space for our tunable parameters using `dials`.
 
-We create a `workflow` as before. Then, we can use helper functions from `dials` to define the search space for our parameters.
-
-```{r setup-tuning}
-tune_wf <- workflow() |>
-  add_recipe(rec) |>
-  add_model(tune_spec)
-
-# Define the tuning grid. 
-# `num_terms()` is the dials function for `num_*` parameters.
-# `hidden_units()` is the dials function for `*_units` parameters.
+```{r create-grid-mnist}
+# Define the tuning grid
 params <- extract_parameter_set_dials(tune_wf) |>
   update(
-    num_dense = dials::num_terms(c(1, 3)),
-    dense_units = dials::hidden_units(c(8, 64)),
-    dropout_rate = dials::dropout(c(0.1, 0.5))
+    num_hidden_1 = dials::num_terms(c(1, 3)),
+    hidden_1_units = dials::hidden_units(c(64, 256)),
+    hidden_1_rate = dials::dropout(c(0.2, 0.4))
   )
-grid <- grid_regular(params, levels = 2) 
-print(grid) 
+grid <- grid_regular(params, levels = 3)
+grid
 ```
 
-### Step 4: Run the Tuning
+```{r run-tuning-mnist, cache=TRUE}
+folds <- vfold_cv(train_df, v = 3)
 
-We use `tune_grid()` with resamples to evaluate each combination of architectural parameters.
-
-```{r run-tuning, cache=TRUE}
-set.seed(456) 
-folds <- vfold_cv(mtcars, v = 3) 
- 
-# The control argument is used to prevent saving predictions, which 
-# can be large for Keras models. 
 tune_res <- tune_grid(
   tune_wf,
   resamples = folds,
   grid = grid,
-  control = control_grid(save_pred = FALSE) 
-) 
+  metrics = metric_set(accuracy),
+  control = control_grid(save_pred = FALSE, save_workflow = TRUE)
+)
 ```
 
-### Step 5: Analyze the Results
+Finally, we can inspect the results to find which architecture performed the best. First, a summary table:
 
-We can now see which architecture performed best.
-
-```{r show-best}
-show_best(tune_res, metric = "rmse")
+```{r show-best-mnist}
+# Show the summary table of the best models
+show_best(tune_res, metric = "accuracy")
 ```
 
-The results show that `tune` has successfully tested different network depths (`num_dense`), widths (`dense_units`), and dropout rates to find the best-performing combination. This demonstrates how `kerasnip` seamlessly integrates complex architectural tuning into the standard `tidymodels` workflow.
+Now, let's visualize the top 5 models from the tuning results in detail.
 
-## Advanced Customization
+```{r extract-top-models}
+# Get the top 5 results to iterate through
+top_5_results <- show_best(tune_res, metric = "accuracy") |> 
+  select(all_of(names(grid)), .config)
 
-`kerasnip` provides a clean API for passing arguments directly to Keras's `compile()` and `fit()` methods.
+finalize_fit_tops <- function(parameters, workflow) {
+  finalize_workflow(x = workflow, parameters = parameters) |>
+    fit(train_df)
+}
 
--   **Compile Arguments**: Pass any argument to `keras3::compile()` by prefixing it with `compile_`. For example, to change the loss function you would use `compile_loss = "mae"`.
--   **Fit Arguments**: Pass any argument to `keras3::fit()` by prefixing it with `fit_`. For example, to set a validation split and add a callback, you would use `fit_validation_split = 0.2` and `fit_callbacks = list(...)`.
+fited_tops <- 1:5 |>
+  map(\(x) finalize_fit_tops(parameters = top_5_results[x,], tune_wf))
 
-Here is an example of using these arguments to specify a different loss function, a validation split, and an early stopping callback.
+get_models <- function(fited_model){
+  fited_model$fit$fit$fit$fit
+}
 
-```{r advanced-customization}
+models <- fited_tops |> map(get_models)
 
-adv_spec <- basic_mlp(
-  num_dense = 2,
-  dense_units = 32,
-  fit_epochs = 100,
-  # Arguments for keras3::compile()
-  compile_loss = "mae",
-  # Arguments for keras3::fit()
-  fit_validation_split = 0.2,
-  fit_callbacks = list(
-    keras3::callback_early_stopping(patience = 5)
-  )
-) |>
-  set_engine("keras")
+get_fit_histories <- function(fited_model){
+  fited_model$fit$fit$fit$history
+}
 
-print(adv_spec)
+fit_histories <- fited_tops |> map(get_fit_histories)
+
+summary(models[[1]])
+plot(models[[1]], show_shapes = TRUE)
+plot(fit_histories[[1]])
 ```
 
-This system gives you full control over the Keras training process while keeping the model specification function signature clean and focused on the *tunable* parameters.
+### Top 5 Model Summaries
+
+```{r tops-summary, results='asis'}
+# Loop through each model and print its summary
+for (i in 1:length(models)) {
+  if (i == 1) {
+    cat("::: {.grid}")
+  } else if (i%%2 == 0) {
+    cat("::: {.grid}")
+    cat("::: {.g-col-6}")
+  } else {
+    cat("::: {.g-col-6}")
+  }
+  cat(paste0("\n\n#### Rank ", i, " Model Summary\n\n"))
+  capture.output(summary(models[[i]])) |> cat(sep="\n")
+  if (i == 1 || i%%2 != 0) {
+    cat(":::")
+  } else {
+    cat(":::")
+    cat(":::")
+  }
+}
+```
+
+### Top 5 Model Architectures
+
+```{r tops-models-plot, fig.height=20}
+# Use par(mfrow) to create a grid for the base plots
+mat <- matrix(
+  c(1, 1, 2, 3, 4, 5),
+  nrow = 3,
+  ncol = 2,
+  byrow = TRUE
+)
+
+layout(mat = mat)
+
+for (i in 1:length(models)) {
+  plot(models[[i]], show_shapes = TRUE)
+  title(paste0("Rank ", i, " Model"))
+}
+```
+
+### Top 5 Training Histories
+
+```{r tops-models-fit-history, fig.height=12}
+# The history plots are ggplots, so we use patchwork to combine them
+library(patchwork)
+
+design <- "A#
+BC
+DE"
+
+plot_list <- purrr::map(1:length(fit_histories), \(i) {
+  plot(fit_histories[[i]]) + labs(title = paste("Rank", i, "History"))
+})
+
+# Combine all plots into a single image
+wrap_plots(plot_list, design = design)
+```
+
+This result shows that `tune` has tested various network depths (`num_hidden`), widths (`hidden_units`), and dropout rates, successfully finding the best-performing combination within the search space. This demonstrates how `kerasnip` integrates complex architectural tuning directly into the standard `tidymodels` framework.
