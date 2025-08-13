@@ -186,7 +186,8 @@ loss_function_keras <- function(values = NULL) {
 #' @return A list containing:
 #'   - `x_proc`: The processed predictor data (matrix or array).
 #'   - `input_shape`: The determined input shape for the Keras model.
-#' @noRd
+#' @keywords internal
+#' @export
 process_x <- function(x) {
   if (is.data.frame(x) && ncol(x) == 1 && is.list(x[[1]])) {
     # Assumes a single predictor column containing a list of arrays.
@@ -218,7 +219,8 @@ process_x <- function(x) {
 #'   - `num_classes`: Integer, the number of classes for classification, or `NULL`.
 #'   - `class_levels`: Character vector, the factor levels for classification, or `NULL`.
 #' @importFrom keras3 to_categorical
-#' @noRd
+#' @keywords internal
+#' @export
 process_y <- function(y, is_classification = NULL, class_levels = NULL) {
   # If y is a data frame/tibble, extract the first column
   if (is.data.frame(y)) {
