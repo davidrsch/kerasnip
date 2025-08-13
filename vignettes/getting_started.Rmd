@@ -187,7 +187,7 @@ mlp_fit |>
 ```{r model-plot}
 mlp_fit |> 
   extract_keras_summary() |> 
-  plot(show_shapes = TRUE)
+  plot()
 ```
 
 ```{r model-fit-history}
