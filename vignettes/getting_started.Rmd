@@ -27,10 +27,10 @@ This new function behaves just like any other `parsnip` model (e.g., `rand_fores
 
 ## Installation
 
-You can install the development version of `kerasnip` from GitHub. You will also need `keras3` and a backend (like TensorFlow).
+You can install the development version of `kerasnip` from GitHub. You will also need `keras3`.
 
-```{r}
-# install.packages("pak")
+```{r, eval=FALSE}
+install.packages("pak")
 pak::pak("davidrsch/kerasnip")
 pak::pak("rstudio/keras3")
 
