@@ -182,3 +182,57 @@ test_that("E2E: Functional spec tuning (including repetition) works", {
   expect_s3_class(metrics, "tbl_df")
   expect_true(all(c("num_dense_path", "dense_path_units") %in% names(metrics)))
 })
+
+test_that("E2E: Block repetition works for functional models", {
+  skip_if_no_keras()
+
+  input_block <- function(input_shape) keras3::layer_input(shape = input_shape)
+  dense_block <- function(tensor, units = 8) {
+    tensor |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  output_block <- function(tensor) keras3::layer_dense(tensor, units = 1)
+
+  model_name <- "e2e_func_repeat"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      main_input = input_block,
+      dense_path = inp_spec(dense_block, "main_input"),
+      output = inp_spec(output_block, "dense_path")
+    ),
+    mode = "regression"
+  )
+
+  # --- Test with 1 repetition ---
+  spec_1 <- e2e_func_repeat(num_dense_path = 1, fit_epochs = 1) |>
+    set_engine("keras")
+  fit_1 <- fit(spec_1, mpg ~ ., data = mtcars)
+  model_1_layers <- fit_1 |>
+    extract_keras_summary() |>
+    pluck("layers")
+
+  # Expect 3 layers: Input, Dense, Output
+  expect_equal(length(model_1_layers), 3)
+
+  # --- Test with 2 repetitions ---
+  spec_2 <- e2e_func_repeat(num_dense_path = 2, fit_epochs = 1) |>
+    set_engine("keras")
+  fit_2 <- fit(spec_2, mpg ~ ., data = mtcars)
+  model_2_layers <- fit_2 |>
+    extract_keras_summary() |>
+    pluck("layers")
+  # Expect 4 layers: Input, Dense, Dense, Output
+  expect_equal(length(model_2_layers), 4)
+
+  # --- Test with 0 repetitions ---
+  spec_3 <- e2e_func_repeat(num_dense_path = 0, fit_epochs = 1) |>
+    set_engine("keras")
+  fit_3 <- fit(spec_3, mpg ~ ., data = mtcars)
+  model_3_layers <- fit_3 |>
+    extract_keras_summary() |>
+    pluck("layers")
+  # Expect 2 layers: Input, Output
+  expect_equal(length(model_3_layers), 2)
+})

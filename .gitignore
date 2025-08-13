@@ -7,3 +7,4 @@ docs
 .httr-oauth
 .DS_Store
 .quarto
+vignettes/*_cache
