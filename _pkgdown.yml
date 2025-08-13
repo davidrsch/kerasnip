@@ -63,7 +63,7 @@ navbar:
   components:
     intro:
       text: "Getting started"
-      href: arcticles/getting_started.html
+      href: articles/getting_started.html
     guides:
       text: "Guides"
       menu:
