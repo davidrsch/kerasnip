@@ -38,6 +38,9 @@ jobs:
           extra-packages: any::pkgdown, local::.
           needs: website
 
+      - name: Install Graphviz
+        run: sudo apt-get update && sudo apt-get install -y graphviz
+
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
