@@ -184,11 +184,13 @@ mlp_fit |>
   extract_keras_summary()
 ```
 
-```{r model-plot}
+```{r model-plot eval=FALSE}
 mlp_fit |> 
   extract_keras_summary() |> 
-  plot()
+  plot(show_shapes = TRUE)
 ```
+
+![model](images/model_plot_shapes_gs.png){fig-alt="A picture showing the model shape"}
 
 ```{r model-fit-history}
 mlp_fit |> 
