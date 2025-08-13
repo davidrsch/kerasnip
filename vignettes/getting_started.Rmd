@@ -281,7 +281,9 @@ grid
 ```
 
 ```{r run-tuning-mnist, cache=TRUE}
-folds <- vfold_cv(train_df, v = 3)
+# Using only the first 100 rows for speed. The real call should be
+# folds <- vfold_cv(train_df, v = 3)
+folds <- vfold_cv(train_df[1:100,], v = 3)
 
 tune_res <- tune_grid(
   tune_wf,

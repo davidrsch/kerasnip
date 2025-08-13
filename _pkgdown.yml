@@ -63,7 +63,12 @@ navbar:
   components:
     intro:
       text: "Getting started"
-      href: guides/getting_started.html
+      href: arcticles/getting_started.html
+    guides:
+      text: "Guides"
+      menu:
+        - text: "Functional API"
+          href: articles/functional_api.html
     github:
       icon: fa-github
       href: https://github.com/davidrsch/kerasnip
