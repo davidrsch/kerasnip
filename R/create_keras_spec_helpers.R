@@ -23,8 +23,6 @@
 #' @param layer_blocks A named list of functions defining Keras layer blocks.
 #' @param functional A logical. If `TRUE`, uses discovery logic for the
 #'   Functional API. If `FALSE`, uses logic for the Sequential API.
-#' @param global_args A character vector of global arguments to add to the
-#'   specification (e.g., "epochs").
 #' @return A list containing two elements:
 #'
 #' @noRd

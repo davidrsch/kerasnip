@@ -36,15 +36,6 @@
 #' @param y A vector of outcomes.
 #' @param layer_blocks A named list of layer block functions. This is passed
 #'   internally from the `parsnip` model specification.
-#' @param epochs An integer for the number of training iterations.
-#' @param learn_rate A double for the learning rate, used to configure the
-#'   default Adam optimizer.
-#' @param batch_size An integer for the number of samples per gradient update.
-#'   This is a tunable parameter and is passed to `keras3::fit()`.
-#' @param validation_split The proportion of the training data to use for the
-#'   validation set.
-#' @param verbose An integer for the verbosity of the fitting process (0, 1, or
-#'   2).
 #' @param ... Additional arguments passed down from the model specification.
 #'   These can include:
 #'   \itemize{
