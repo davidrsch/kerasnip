@@ -78,148 +78,17 @@ generic_functional_fit <- function(
   layer_blocks,
   ...
 ) {
-  # --- 0. Argument & Data Preparation ---
-  all_args <- list(...)
-  learn_rate <- all_args$learn_rate %||% 0.01
-  verbose <- all_args$verbose %||% 0
+  # --- 1. Build and Compile Model ---
+  model <- build_and_compile_functional_model(x, y, layer_blocks, ...)
 
-  # Process x input
+  # --- 2. Model Fitting ---
+  all_args <- list(...)
+  verbose <- all_args$verbose %||% 0
   x_processed <- process_x(x)
   x_proc <- x_processed$x_proc
-  input_shape <- x_processed$input_shape
-
-  # Process y input
   y_processed <- process_y(y)
   y_mat <- y_processed$y_proc
-  is_classification <- y_processed$is_classification
-  class_levels <- y_processed$class_levels
-  num_classes <- y_processed$num_classes
 
-  # Determine default compile arguments based on mode
-  default_loss <- if (is_classification) {
-    if (num_classes > 2) {
-      "categorical_crossentropy"
-    } else {
-      "binary_crossentropy"
-    }
-  } else {
-    "mean_squared_error"
-  }
-  default_metrics <- if (is_classification) {
-    "accuracy"
-  } else {
-    "mean_absolute_error"
-  }
-
-  # --- 2. Dynamic Model Architecture Construction (DIFFERENT from sequential) ---
-  # Create a list to store the output tensors of each block.  The names of the
-  # list elements correspond to the block names.
-  block_outputs <- list()
-  # The first block MUST be the input layer and MUST NOT have `input_from`.
-  first_block_name <- names(layer_blocks)[1]
-  first_block_fn <- layer_blocks[[first_block_name]]
-  block_outputs[[first_block_name]] <- first_block_fn(input_shape = input_shape)
-
-  # Iterate through the remaining blocks, connecting and repeating them as needed.
-  for (block_name in names(layer_blocks)[-1]) {
-    block_fn <- layer_blocks[[block_name]]
-    block_fmls <- rlang::fn_fmls(block_fn)
-    block_fml_names <- names(block_fmls)
-
-    # --- Get Repetition Count ---
-    num_repeats_arg <- paste0("num_", block_name)
-    num_repeats_val <- all_args[[num_repeats_arg]]
-
-    # If num_repeats_val is NULL or zapped, default to 1.
-    # Otherwise, use the value provided by the user.
-    if (is.null(num_repeats_val) || inherits(num_repeats_val, "rlang_zap")) {
-      num_repeats <- 1
-    } else {
-      num_repeats <- as.integer(num_repeats_val)
-    }
-
-    # --- Get Hyperparameters for this block ---
-    # Hyperparameters are formals that are NOT other block names (graph connections)
-    hyperparam_names <- setdiff(block_fml_names, names(layer_blocks))
-    user_hyperparams <- list()
-    for (hp_name in hyperparam_names) {
-      full_arg_name <- paste(block_name, hp_name, sep = "_")
-      arg_val <- all_args[[full_arg_name]]
-      if (!is.null(arg_val) && !inherits(arg_val, "rlang_zap")) {
-        user_hyperparams[[hp_name]] <- arg_val
-      }
-    }
-    # Combine user args with the block's defaults for those hyperparameters
-    block_hyperparams <- utils::modifyList(
-      as.list(block_fmls[hyperparam_names]),
-      user_hyperparams
-    )
-
-    # Add special engine-supplied arguments if the block can accept them
-    if (is_classification && "num_classes" %in% block_fml_names) {
-      block_hyperparams$num_classes <- num_classes
-    }
-
-    # --- Get Input Tensors for this block ---
-    input_tensor_names <- intersect(block_fml_names, names(block_outputs))
-    if (length(input_tensor_names) == 0 && block_name != "output") {
-      warning("Block '", block_name, "' has no inputs from other blocks.")
-    }
-
-    # --- Repetition Loop ---
-    if (num_repeats > 1 && length(input_tensor_names) != 1) {
-      stop(
-        "Block '",
-        block_name,
-        "' cannot be repeated because it has ",
-        length(input_tensor_names),
-        " inputs (",
-        paste(input_tensor_names, collapse = ", "),
-        "). Only blocks with exactly one input tensor can be repeated."
-      )
-    }
-
-    # The initial input(s) for the first iteration
-    input_args <- purrr::map(input_tensor_names, ~ block_outputs[[.x]])
-    names(input_args) <- input_tensor_names
-
-    # The tensor that will be updated and passed through the loop
-    current_tensor <- input_args[[1]]
-
-    for (i in seq_len(num_repeats)) {
-      # For repetitions after the first, update the input tensor
-      if (i > 1) {
-        input_args[[input_tensor_names[1]]] <- current_tensor
-      }
-      call_args <- c(input_args, block_hyperparams)
-      current_tensor <- rlang::exec(block_fn, !!!call_args)
-    }
-
-    # Store the final output of the (possibly repeated) block
-    block_outputs[[block_name]] <- current_tensor
-  }
-
-  # The last layer must be named 'output'
-  output_tensor <- block_outputs[["output"]]
-  if (is.null(output_tensor)) {
-    stop("An 'output' block must be defined in layer_blocks.")
-  }
-  model <- keras3::keras_model(
-    inputs = block_outputs[[first_block_name]],
-    outputs = output_tensor
-  )
-
-  # --- 3. Model Compilation ---
-  # Collect all arguments starting with "compile_" from `...`
-  compile_args <- collect_compile_args(
-    all_args,
-    learn_rate,
-    default_loss,
-    default_metrics
-  )
-  rlang::exec(keras3::compile, model, !!!compile_args)
-
-  # --- 4. Model Fitting ---
   fit_args <- collect_fit_args(
     x_proc,
     y_mat,
@@ -230,13 +99,11 @@ generic_functional_fit <- function(
   # Fit the model using the constructed arguments
   history <- rlang::exec(keras3::fit, model, !!!fit_args)
 
-  # --- 5. Return value ---
-  # Per parsnip extension guidelines, the fit function should return a list
-  # containing the raw model object in an element named `fit`. For
-  # classification, it should also include an element `lvl` with the factor levels.
+  # --- 3. Return value ---
   list(
     fit = model, # The raw Keras model object
     history = history, # The training history
-    lvl = class_levels # Factor levels for classification, NULL for regression
+    lvl = y_processed$class_levels # Factor levels for classification, NULL for regression
   )
 }
+
