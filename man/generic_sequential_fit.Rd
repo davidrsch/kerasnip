@@ -29,19 +29,6 @@ prefixed with \code{compile_} (e.g., \code{compile_loss = "mae"},
 prefixed with \code{fit_} (e.g., \code{fit_callbacks = list(...)},
 \code{fit_class_weight = list(...)}).
 }}
-
-\item{epochs}{An integer for the number of training iterations.}
-
-\item{learn_rate}{A double for the learning rate, used to configure the
-default Adam optimizer.}
-
-\item{batch_size}{An integer for the number of samples per gradient update.
-This is a tunable parameter and is passed to \code{keras3::fit()}.}
-
-\item{validation_split}{The proportion of the training data to use for
-the validation set.}
-
-\item{verbose}{An integer for the verbosity of the fitting process (0, 1, or 2).}
 }
 \value{
 A list containing the fitted model and other metadata. This list is
