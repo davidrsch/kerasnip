@@ -42,6 +42,8 @@
 #'       model.
 #'   }
 #'
+#' @importFrom dplyr bind_rows filter select
+#' @importFrom cli cli_h1 cli_alert_danger cli_h2 cli_text cli_bullets cli_code cli_alert_info cli_alert_success
 #' @export
 compile_keras_grid <- function(spec, grid, x, y) {
   # Input validation
