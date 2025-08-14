@@ -1,4 +1,3 @@
-
 #' @noRd
 build_and_compile_sequential_model <- function(
   x,
