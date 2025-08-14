@@ -176,8 +176,12 @@ extract_valid_grid <- function(compiled_grid) {
 #'   effect of printing to the console.
 #' @export
 inform_errors <- function(compiled_grid, n = 10) {
-  if (!is.data.frame(compiled_grid) || !all(c("error") %in% names(compiled_grid))) {
-    stop("`compiled_grid` must be a data frame produced by `compile_keras_grid()`.")
+  if (
+    !is.data.frame(compiled_grid) || !all(c("error") %in% names(compiled_grid))
+  ) {
+    stop(
+      "`compiled_grid` must be a data frame produced by `compile_keras_grid()`."
+    )
   }
   
   error_grid <- compiled_grid %>%
