@@ -148,8 +148,15 @@ compile_keras_grid <- function(spec, grid, x, y) {
 #'   The columns for `compiled_model`, `model_summary`, and `error` are removed.
 #' @export
 extract_valid_grid <- function(compiled_grid) {
-  if (!is.data.frame(compiled_grid) || !all(c("error", "compiled_model", "model_summary") %in% names(compiled_grid))) {
-    stop("`compiled_grid` must be a data frame produced by `compile_keras_grid()`.")
+  if (
+    !is.data.frame(compiled_grid) ||
+      !all(
+        c("error", "compiled_model", "model_summary") %in% names(compiled_grid)
+      )
+  ) {
+    stop(
+      "`compiled_grid` must be a data frame produced by `compile_keras_grid()`."
+    )
   }
   
   compiled_grid %>%
