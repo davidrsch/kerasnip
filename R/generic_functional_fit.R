@@ -106,4 +106,3 @@ generic_functional_fit <- function(
     lvl = y_processed$class_levels # Factor levels for classification, NULL for regression
   )
 }
-
