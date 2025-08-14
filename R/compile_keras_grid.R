@@ -206,6 +206,5 @@ inform_errors <- function(compiled_grid, n = 10) {
   } else {
     cli::cli_alert_success("All models compiled successfully!")
   }
-  
   invisible(compiled_grid)
 }
