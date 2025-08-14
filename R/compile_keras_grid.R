@@ -200,7 +200,6 @@ inform_errors <- function(compiled_grid, n = 10) {
       cli::cli_text("Error Message:")
       cli::cli_code(row$error)
     }
-    
     if (nrow(error_grid) > n) {
       cli::cli_alert_info("... and {nrow(error_grid) - n} more errors.")
     }
