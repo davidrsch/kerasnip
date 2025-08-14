@@ -158,7 +158,6 @@ extract_valid_grid <- function(compiled_grid) {
       "`compiled_grid` must be a data frame produced by `compile_keras_grid()`."
     )
   }
-  
   compiled_grid %>%
     dplyr::filter(is.na(error)) %>%
     dplyr::select(-compiled_model, -model_summary, -error)
