@@ -47,6 +47,9 @@ reference:
       Functions for summarizing, evaluating, and extracting information
       from trained Keras models.
     contents:
+      - compile_keras_grid
+      - extract_valid_grid
+      - inform_errors
       - extract_keras_history
       - extract_keras_summary
       - keras_evaluate
