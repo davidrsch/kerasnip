@@ -183,7 +183,6 @@ inform_errors <- function(compiled_grid, n = 10) {
       "`compiled_grid` must be a data frame produced by `compile_keras_grid()`."
     )
   }
-  
   error_grid <- compiled_grid %>%
     dplyr::filter(!is.na(error))
   
