@@ -185,7 +185,6 @@ inform_errors <- function(compiled_grid, n = 10) {
   }
   error_grid <- compiled_grid %>%
     dplyr::filter(!is.na(error))
-  
   if (nrow(error_grid) > 0) {
     cli::cli_h1("Compilation Errors Summary")
     cli::cli_alert_danger("{nrow(error_grid)} of {nrow(compiled_grid)} models failed to compile.")
