@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   functional_api: functional_api.html
   getting_started: getting_started.html
-last_built: 2025-08-13T09:46Z
+last_built: 2025-08-14T10:04Z
 urls:
   reference: https://davidrsch.github.io/kerasnip/reference
   article: https://davidrsch.github.io/kerasnip/articles

@@ -11,13 +11,16 @@
 <url><loc>https://davidrsch.github.io/kerasnip/authors.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/index.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/news/index.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/compile_keras_grid.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/create_keras_functional_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/create_keras_sequential_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/extract_keras_history.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/extract_keras_summary.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/extract_valid_grid.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/generic_functional_fit.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/generic_sequential_fit.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/index.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/inform_errors.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/inp_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/keras_evaluate.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/keras_objects.html</loc></url>
