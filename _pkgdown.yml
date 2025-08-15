@@ -71,11 +71,10 @@ navbar:
       text: "Guides"
       menu:
         - text: "Model Definition"
-          menu:
-            - text: "Sequential Model"
-              href: articles/sequential_model.html
-            - text: "Functional API"
-              href: articles/functional_api.html
+        - text: "Sequential Model"
+          href: articles/sequential_model.html
+        - text: "Functional API"
+          href: articles/functional_api.html
     github:
       icon: fa-github
       href: https://github.com/davidrsch/kerasnip
