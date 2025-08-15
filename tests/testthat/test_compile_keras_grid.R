@@ -45,7 +45,6 @@ test_that("compile_keras_grid works for sequential models", {
       "dense_units",
       "learn_rate",
       "compiled_model",
-      "model_summary",
       "error"
     ) %in%
       names(results)
@@ -98,7 +97,6 @@ test_that("compile_keras_grid works for functional models", {
       "dense_units",
       "learn_rate",
       "compiled_model",
-      "model_summary",
       "error"
     ) %in%
       names(results)
