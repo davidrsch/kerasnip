@@ -64,11 +64,22 @@
 #' @keywords internal
 #' @export
 generic_functional_fit <- function(
-  x,
-  y,
+  formula,
+  data,
   layer_blocks,
   ...
 ) {
+  # Separate predictors and outcomes from the processed data frame provided by parsnip
+  y_names <- all.vars(formula[[2]])
+  x_names <- all.vars(formula[[3]])
+
+  # Handle the `.` case for predictors
+  if ("." %in% x_names) {
+    x <- data[, !(names(data) %in% y_names), drop = FALSE]
+  } else {
+    x <- data[, x_names, drop = FALSE]
+  }
+  y <- data[, y_names, drop = FALSE]
   # --- 1. Build and Compile Model ---
   model <- build_and_compile_functional_model(x, y, layer_blocks, ...)
 

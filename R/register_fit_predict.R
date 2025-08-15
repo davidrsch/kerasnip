@@ -30,8 +30,8 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
     eng = "keras",
     mode = mode,
     value = list(
-      interface = "data.frame",
-      protect = c("x", "y"),
+      interface = "formula",
+      protect = c("formula", "data"),
       func = c(
         pkg = "kerasnip",
         fun = if (functional) {
