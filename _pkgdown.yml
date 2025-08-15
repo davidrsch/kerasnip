@@ -51,7 +51,7 @@ reference:
       - extract_valid_grid
       - inform_errors
       - extract_keras_history
-      - extract_keras_summary
+      - extract_keras_model
       - keras_evaluate
 
 development:
