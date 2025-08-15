@@ -10,8 +10,21 @@ extract_keras_history(object)
 \item{object}{A \code{model_fit} object produced by a \code{kerasnip} specification.}
 }
 \value{
-A \code{keras_training_history} containing the training history (metrics per epoch).
+A \code{keras_training_history} object. You can call \code{plot()} on this
+object to visualize the learning curves.
 }
 \description{
-Extracts and returns the training history of a Keras model fitted with \code{kerasnip}.
+Extracts and returns the training history from a \code{parsnip} \code{model_fit} object
+created by \code{kerasnip}.
+}
+\details{
+Extract Keras Training History
+
+The history object contains the metrics recorded during model training, such
+as loss and accuracy, for each epoch. This is highly useful for visualizing
+the training process and diagnosing issues like overfitting.
+The returned object can be plotted directly.
+}
+\seealso{
+keras_evaluate, extract_keras_model
 }

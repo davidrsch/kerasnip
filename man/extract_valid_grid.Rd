@@ -11,11 +11,31 @@ extract_valid_grid(compiled_grid)
 }
 \value{
 A tibble containing the subset of the original grid that resulted in
-a successful model compilation (i.e., where the \code{error} column is \code{NA}).
-The columns for \code{compiled_model}, \code{model_summary}, and \code{error} are removed.
+a successful model compilation. The \code{compiled_model} and \code{error} columns
+are removed, leaving a clean grid ready for tuning.
 }
 \description{
 This helper function filters the results from \code{compile_keras_grid()} to
 return a new hyperparameter grid containing only the combinations that
 compiled successfully.
+}
+\details{
+Filter a Grid to Only Valid Hyperparameter Sets
+
+After running \code{compile_keras_grid()}, you can use this function to remove
+problematic hyperparameter combinations before proceeding to the full
+\code{tune::tune_grid()}.
+}
+\examples{
+\dontrun{
+# Continuing the example from `compile_keras_grid`:
+
+# `compiled_grid` contains one row with an error.
+valid_grid <- extract_valid_grid(compiled_grid)
+
+# `valid_grid` now only contains the rows that compiled successfully.
+print(valid_grid)
+
+# This clean grid can now be passed to tune::tune_grid().
+}
 }

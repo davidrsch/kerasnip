@@ -1,16 +1,63 @@
-#' Evaluate a Kerasnip Model
+#' Evaluate a Fitted Kerasnip Model on New Data
 #'
+#' @title Evaluate a Kerasnip Model
+#' @description
 #' This function provides an `kera_evaluate()` method for `model_fit` objects
-#' created by `kerasnip`. It preprocesses the data into the format expected by
-#' Keras and then calls `keras3::evaluate()` on the underlying model.
+#' created by `kerasnip`. It preprocesses the new data into the format expected
+#' by Keras and then calls `keras3::evaluate()` on the underlying model to compute
+#' the loss and any other metrics.
 #'
 #' @param object A `model_fit` object produced by a `kerasnip` specification.
-#' @param x A data frame or matrix of predictors.
-#' @param y A vector or data frame of outcomes.
-#' @param ... Additional arguments passed on to `keras3::evaluate()`.
+#' @param x A data frame or matrix of new predictor data.
+#' @param y A vector or data frame of new outcome data corresponding to `x`.
+#' @param ... Additional arguments passed on to `keras3::evaluate()` (e.g.,
+#'   `batch_size`).
 #'
-#' @return A `list` with evaluation results
+#' @return A named list containing the evaluation results (e.g., `loss`,
+#'   `accuracy`). The names are determined by the metrics the model was compiled
+#'   with.
 #'
+#' @examples
+#' \dontrun{
+#' if (keras::is_keras_available()) {
+#'
+#' # 1. Define and fit a model ----
+#' create_keras_sequential_spec(
+#'   model_name = "my_mlp",
+#'   layer_blocks = list(input_block, hidden_block, output_block),
+#'   mode = "classification"
+#' )
+#'
+#' mlp_spec <- my_mlp(
+#'   hidden_units = 32,
+#'   compile_loss = "categorical_crossentropy",
+#'   compile_optimizer = "adam",
+#'   compile_metrics = "accuracy",
+#'   fit_epochs = 5
+#' ) |> set_engine("keras")
+#'
+#' x_train <- matrix(rnorm(100 * 10), ncol = 10)
+#' y_train <- factor(sample(0:1, 100, replace = TRUE))
+#' train_df <- data.frame(x = I(x_train), y = y_train)
+#'
+#' fitted_mlp <- fit(mlp_spec, y ~ x, data = train_df)
+#'
+#' # 2. Evaluate the model on new data ----
+#' x_test <- matrix(rnorm(50 * 10), ncol = 10)
+#' y_test <- factor(sample(0:1, 50, replace = TRUE))
+#'
+#' eval_metrics <- keras_evaluate(fitted_mlp, x_test, y_test)
+#' print(eval_metrics)
+#'
+#' # 3. Extract the Keras model object ----
+#' keras_model <- extract_keras_model(fitted_mlp)
+#' summary(keras_model)
+#'
+#' # 4. Extract the training history ----
+#' history <- extract_keras_history(fitted_mlp)
+#' plot(history)
+#' }
+#' }
 #' @export
 keras_evaluate <- function(object, x, y = NULL, ...) {
   # 1. Preprocess predictor data (x)
@@ -56,11 +103,21 @@ extract_keras_model <- function(object) {
 
 #' Extract Keras Training History
 #'
+#' @title Extract Keras Training History
 #' @description
-#' Extracts and returns the training history of a Keras model fitted with `kerasnip`.
+#' Extracts and returns the training history from a `parsnip` `model_fit` object
+#' created by `kerasnip`.
+#'
+#' @details
+#' The history object contains the metrics recorded during model training, such
+#' as loss and accuracy, for each epoch. This is highly useful for visualizing
+#' the training process and diagnosing issues like overfitting.
+#' The returned object can be plotted directly.
 #'
 #' @param object A `model_fit` object produced by a `kerasnip` specification.
-#' @return A `keras_training_history` containing the training history (metrics per epoch).
+#' @return A `keras_training_history` object. You can call `plot()` on this
+#'   object to visualize the learning curves.
+#' @seealso keras_evaluate, extract_keras_model
 #' @export
 extract_keras_history <- function(object) {
   object$fit$history
