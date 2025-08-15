@@ -9,17 +9,66 @@ keras_evaluate(object, x, y = NULL, ...)
 \arguments{
 \item{object}{A \code{model_fit} object produced by a \code{kerasnip} specification.}
 
-\item{x}{A data frame or matrix of predictors.}
+\item{x}{A data frame or matrix of new predictor data.}
 
-\item{y}{A vector or data frame of outcomes.}
+\item{y}{A vector or data frame of new outcome data corresponding to \code{x}.}
 
-\item{...}{Additional arguments passed on to \code{keras3::evaluate()}.}
+\item{...}{Additional arguments passed on to \code{keras3::evaluate()} (e.g.,
+\code{batch_size}).}
 }
 \value{
-A \code{list} with evaluation results
+A named list containing the evaluation results (e.g., \code{loss},
+\code{accuracy}). The names are determined by the metrics the model was compiled
+with.
 }
 \description{
 This function provides an \code{kera_evaluate()} method for \code{model_fit} objects
-created by \code{kerasnip}. It preprocesses the data into the format expected by
-Keras and then calls \code{keras3::evaluate()} on the underlying model.
+created by \code{kerasnip}. It preprocesses the new data into the format expected
+by Keras and then calls \code{keras3::evaluate()} on the underlying model to compute
+the loss and any other metrics.
+}
+\details{
+Evaluate a Fitted Kerasnip Model on New Data
+}
+\examples{
+\dontrun{
+if (keras::is_keras_available()) {
+
+# 1. Define and fit a model ----
+create_keras_sequential_spec(
+  model_name = "my_mlp",
+  layer_blocks = list(input_block, hidden_block, output_block),
+  mode = "classification"
+)
+
+mlp_spec <- my_mlp(
+  hidden_units = 32,
+  compile_loss = "categorical_crossentropy",
+  compile_optimizer = "adam",
+  compile_metrics = "accuracy",
+  fit_epochs = 5
+) |> set_engine("keras")
+
+x_train <- matrix(rnorm(100 * 10), ncol = 10)
+y_train <- factor(sample(0:1, 100, replace = TRUE))
+train_df <- data.frame(x = I(x_train), y = y_train)
+
+fitted_mlp <- fit(mlp_spec, y ~ x, data = train_df)
+
+# 2. Evaluate the model on new data ----
+x_test <- matrix(rnorm(50 * 10), ncol = 10)
+y_test <- factor(sample(0:1, 50, replace = TRUE))
+
+eval_metrics <- keras_evaluate(fitted_mlp, x_test, y_test)
+print(eval_metrics)
+
+# 3. Extract the Keras model object ----
+keras_model <- extract_keras_model(fitted_mlp)
+summary(keras_model)
+
+# 4. Extract the training history ----
+history <- extract_keras_history(fitted_mlp)
+plot(history)
+}
+}
 }

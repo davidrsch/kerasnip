@@ -14,10 +14,10 @@ template:
     code_font: "monospace"
 
 guides:
-  - title: "Getting Started"
+  - title: "Model Definition"
     navbar: ~
     contents:
-      - getting_started
+      - sequential_model
       - functional_api
 
 # examples:
@@ -51,7 +51,7 @@ reference:
       - extract_valid_grid
       - inform_errors
       - extract_keras_history
-      - extract_keras_summary
+      - extract_keras_model
       - keras_evaluate
 
 development:
@@ -70,6 +70,9 @@ navbar:
     guides:
       text: "Guides"
       menu:
+        - text: "Model Definition"
+        - text: "Sequential Model"
+          href: articles/sequential_model.html
         - text: "Functional API"
           href: articles/functional_api.html
     github:

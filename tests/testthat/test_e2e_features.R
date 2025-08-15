@@ -139,7 +139,7 @@ test_that("E2E: Setting num_blocks = 0 works for sequential models", {
   fit_obj <- parsnip::fit(spec, mpg ~ ., data = mtcars)
 
   # Check that the dense layer is NOT in the model
-  keras_model <- fit_obj |> extract_keras_summary()
+  keras_model <- fit_obj |> extract_keras_model()
   expect_equal(length(keras_model$layers), 1) # Output layers only
 
   # Check layer names explicitly
@@ -162,7 +162,7 @@ test_that("E2E: Error handling for reserved names works", {
   )
 })
 
-test_that("E2E: extract_keras_summary works", {
+test_that("E2E: extract_keras_model works", {
   skip_if_no_keras()
 
   # Reuse model setup from previous tests
@@ -194,7 +194,7 @@ test_that("E2E: extract_keras_summary works", {
 
   fit_obj <- parsnip::fit(spec, mpg ~ ., data = mtcars)
 
-  summary_output <- extract_keras_summary(fit_obj)
+  summary_output <- extract_keras_model(fit_obj)
 
   expect_type(summary_output, "closure")
   expect_true(any(grepl("Layer ", summary_output)))

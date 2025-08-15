@@ -2,20 +2,37 @@
 % Please edit documentation in R/compile_keras_grid.R
 \name{inform_errors}
 \alias{inform_errors}
-\title{Inform about Compilation Errors}
+\title{Inform About Compilation Errors}
 \usage{
 inform_errors(compiled_grid, n = 10)
 }
 \arguments{
 \item{compiled_grid}{A tibble, the result of a call to \code{compile_keras_grid()}.}
 
-\item{n}{The maximum number of errors to display.}
+\item{n}{A single integer for the maximum number of distinct errors to
+display in detail.}
 }
 \value{
 Invisibly returns the input \code{compiled_grid}. Called for its side
-effect of printing to the console.
+effect of printing a summary to the console.
 }
 \description{
 This helper function inspects the results from \code{compile_keras_grid()} and
-prints a formatted summary of any compilation errors that occurred.
+prints a formatted, easy-to-read summary of any compilation errors that
+occurred.
+}
+\details{
+Display a Summary of Compilation Errors
+
+This is most useful for interactive debugging of complex tuning grids where
+some hyperparameter combinations may lead to invalid Keras models.
+}
+\examples{
+\dontrun{
+# Continuing the example from `compile_keras_grid`:
+
+# `compiled_grid` contains one row with an error.
+# This will print a formatted summary of that error.
+inform_errors(compiled_grid)
+}
 }

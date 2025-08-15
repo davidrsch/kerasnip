@@ -2,7 +2,7 @@
 % Please edit documentation in R/compile_keras_grid.R
 \name{compile_keras_grid}
 \alias{compile_keras_grid}
-\title{Compile Keras Models over a Grid of Hyperparameters}
+\title{Compile Keras Models Over a Grid of Hyperparameters}
 \usage{
 compile_keras_grid(spec, grid, x, y)
 }
@@ -16,40 +16,84 @@ to evaluate. Each row represents a unique model architecture to be compiled.}
 \item{x}{A data frame or matrix of predictors. This is used to infer the
 \code{input_shape} for the Keras model.}
 
-\item{y}{A vector of outcomes. This is used to infer the output shape and
-the default loss function.}
+\item{y}{A vector or factor of outcomes. This is used to infer the output
+shape and the default loss function for the Keras model.}
 }
 \value{
 A \code{tibble} with the following columns:
 \itemize{
 \item Columns from the input \code{grid}.
 \item \code{compiled_model}: A list-column containing the compiled Keras model
-objects. If compilation failed for a specific hyperparameter set, this
-column will contain a character string with the error message.
-\item \code{model_summary}: A list-column containing a character string with the
-output of \code{keras3::summary_keras_model()} for each successfully compiled
-model.
+objects. If compilation failed, the element will be \code{NULL}.
+\item \code{error}: A list-column containing \code{NA} for successes or a
+character string with the error message for failures.
 }
 }
 \description{
-This function allows you to build and compile multiple Keras models based on a
-\code{parsnip} model specification and a grid of hyperparameters, without actually
-fitting them. It's a valuable tool for validating model architectures and
-catching potential errors early in the modeling process.
+Pre-compiles Keras models for each hyperparameter combination in a grid.
+
+This function is a powerful debugging tool to use before running a full
+\code{tune::tune_grid()}. It allows you to quickly validate multiple model
+architectures, ensuring they can be successfully built and compiled without
+the time-consuming process of actually fitting them. It helps catch common
+errors like incompatible layer shapes or invalid argument values early.
 }
 \details{
-The function operates by iterating through each row of the provided \code{grid}.
-For each combination of hyperparameters, it:
-\enumerate{
-\item Constructs the appropriate Keras model (Sequential or Functional) based
-on the \code{spec}.
-\item Compiles the model using the specified optimizer, loss, and metrics.
-\item Wraps the process in a \code{try-catch} block to gracefully handle any
-errors that might occur during model instantiation or compilation (e.g.,
-due to incompatible layer shapes or invalid argument values).
+Compile and Validate Keras Model Architectures
+
+The function iterates through each row of the provided \code{grid}. For each
+hyperparameter combination, it attempts to build and compile the Keras model
+defined by the \code{spec}. The process is wrapped in a \code{try-catch} block to
+gracefully handle and report any errors that occur during model instantiation
+or compilation.
+
+The output is a tibble that mirrors the input \code{grid}, with additional columns
+containing the compiled model object or the error message, making it easy to
+inspect which architectures are valid.
 }
-The output is a \code{tibble} where each row corresponds to a row in the input
-\code{grid}. It includes the original hyperparameters, the compiled Keras model
-object (or a string with the error message if compilation failed), and a
-summary of the model's architecture.
+\examples{
+\dontrun{
+if (keras::is_keras_available()) {
+
+# 1. Define a kerasnip model specification
+create_keras_sequential_spec(
+  model_name = "my_mlp",
+  layer_blocks = list(
+    input_block,
+    hidden_block,
+    output_block
+  ),
+  mode = "classification"
+)
+
+mlp_spec <- my_mlp(
+  hidden_units = tune(),
+  compile_loss = "categorical_crossentropy",
+  compile_optimizer = "adam"
+)
+
+# 2. Create a hyperparameter grid
+# Include an invalid value (-10) to demonstrate error handling
+param_grid <- tibble::tibble(
+  hidden_units = c(32, 64, -10)
+)
+
+# 3. Prepare dummy data
+x_train <- matrix(rnorm(100 * 10), ncol = 10)
+y_train <- factor(sample(0:1, 100, replace = TRUE))
+
+# 4. Compile models over the grid
+compiled_grid <- compile_keras_grid(
+  spec = mlp_spec,
+  grid = param_grid,
+  x = x_train,
+  y = y_train
+)
+
+print(compiled_grid)
+
+# 5. Inspect the results
+# The row with `hidden_units = -10` will show an error.
+}
+}
 }

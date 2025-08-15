@@ -210,7 +210,7 @@ test_that("E2E: Block repetition works for functional models", {
     set_engine("keras")
   fit_1 <- fit(spec_1, mpg ~ ., data = mtcars)
   model_1_layers <- fit_1 |>
-    extract_keras_summary() |>
+    extract_keras_model() |>
     pluck("layers")
 
   # Expect 3 layers: Input, Dense, Output
@@ -221,7 +221,7 @@ test_that("E2E: Block repetition works for functional models", {
     set_engine("keras")
   fit_2 <- fit(spec_2, mpg ~ ., data = mtcars)
   model_2_layers <- fit_2 |>
-    extract_keras_summary() |>
+    extract_keras_model() |>
     pluck("layers")
   # Expect 4 layers: Input, Dense, Dense, Output
   expect_equal(length(model_2_layers), 4)
@@ -231,7 +231,7 @@ test_that("E2E: Block repetition works for functional models", {
     set_engine("keras")
   fit_3 <- fit(spec_3, mpg ~ ., data = mtcars)
   model_3_layers <- fit_3 |>
-    extract_keras_summary() |>
+    extract_keras_model() |>
     pluck("layers")
   # Expect 2 layers: Input, Output
   expect_equal(length(model_3_layers), 2)

@@ -1,0 +1,257 @@
+---
+title: The Sequential Model with kerasnip
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The Sequential Model with kerasnip}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+This vignette provides a comprehensive guide to using `kerasnip` to define sequential Keras models within the `tidymodels` ecosystem. `kerasnip` bridges the gap between the imperative, layer-by-layer construction of Keras models and the declarative, specification-based approach of `tidymodels`.
+
+Here, we will focus on `create_keras_sequential_spec()`, which is ideal for models where layers form a plain stack, with each layer having exactly one input tensor and one output tensor.
+
+## Setup
+
+We'll start by loading the necessary packages:
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+# Suppress verbose Keras output for the vignette
+options(keras.fit_verbose = 0)
+set.seed(123)
+```
+
+```{r load-packages}
+library(kerasnip)
+library(tidymodels)
+library(keras3)
+```
+
+## When to use `create_keras_sequential_spec()`
+
+A `Sequential` model in Keras is appropriate for a plain stack of layers where each layer has exactly one input tensor and one output tensor. `kerasnip`'s `create_keras_sequential_spec()` function is designed to define such models in a `tidymodels`-compatible way.
+
+Instead of building the model layer-by-layer imperatively, you define a named, ordered list of R functions called `layer_blocks`. Each `layer_block` function takes a Keras model object as its first argument and returns the modified model. `kerasnip` then uses these blocks to construct the full Keras Sequential model.
+
+For models with more complex, non-linear topologies (e.g., multiple inputs/outputs, residual connections, or multi-branch models), you should use `create_keras_functional_spec()`.
+
+## Creating a `kerasnip` Sequential Model Specification
+
+Let's define a simple sequential model with three dense layers.
+
+First, we define our `layer_blocks`:
+
+```{r define-simple-blocks}
+# The first block must initialize the model. `input_shape` is passed automatically.
+input_block <- function(model, input_shape) {
+  keras_model_sequential(input_shape = input_shape)
+}
+
+# A reusable block for hidden layers. `units` will become a tunable parameter.
+hidden_block <- function(model, units = 32, activation = "relu") {
+  model |> layer_dense(units = units, activation = activation)
+}
+
+# The output block. `num_classes` is passed automatically for classification.
+output_block <- function(model, num_classes, activation = "softmax") {
+  model |> layer_dense(units = num_classes, activation = activation)
+}
+```
+
+Now, we use `create_keras_sequential_spec()` to generate our `parsnip` model specification function. We'll name our model `my_simple_mlp`.
+
+```{r create-simple-spec}
+create_keras_sequential_spec(
+  model_name = "my_simple_mlp",
+  layer_blocks = list(
+    input = input_block,
+    hidden_1 = hidden_block,
+    hidden_2 = hidden_block,
+    output = output_block
+  ),
+  mode = "classification"
+)
+```
+
+## A common debugging workflow: `compile_keras_grid()`
+
+In the original Keras guide, a common workflow is to incrementally add layers and call `summary()` to inspect the architecture. With `kerasnip`, the model is defined declaratively, so we can't inspect it layer-by-layer in the same way.
+
+However, `kerasnip` provides a powerful equivalent: `compile_keras_grid()`. This function checks if your `layer_blocks` define a valid Keras model and returns the compiled model structure, all without running a full training cycle. This is perfect for debugging your architecture.
+
+Let's see this in action with a CNN architecture:
+
+```{r compile-grid-debug}
+# Define CNN layer blocks
+cnn_input_block <- function(model, input_shape) {
+  keras_model_sequential(input_shape = input_shape)
+}
+cnn_conv_block <- function(model, filters = 32, kernel_size = 3, activation = "relu") {
+  model |> layer_conv_2d(filters = filters, kernel_size = kernel_size, activation = activation)
+}
+cnn_pool_block <- function(model, pool_size = 2) {
+  model |> layer_max_pooling_2d(pool_size = pool_size)
+}
+cnn_flatten_block <- function(model) {
+  model |> layer_flatten()
+}
+cnn_output_block <- function(model, num_classes, activation = "softmax") {
+  model |> layer_dense(units = num_classes, activation = activation)
+}
+
+# Create the kerasnip spec function
+create_keras_sequential_spec(
+  model_name = "my_cnn",
+  layer_blocks = list(
+    input = cnn_input_block,
+    conv1 = cnn_conv_block,
+    pool1 = cnn_pool_block,
+    flatten = cnn_flatten_block,
+    output = cnn_output_block
+  ),
+  mode = "classification"
+)
+
+# Create a spec instance for a 28x28x1 image
+cnn_spec <- my_cnn(
+  conv1_filters = 32, conv1_kernel_size = 5,
+  compile_loss = "categorical_crossentropy",
+  compile_optimizer = "adam"
+)
+
+# Prepare dummy data with the correct shape.
+# We create a list of 28x28x1 arrays.
+x_dummy_list <- lapply(1:10, function(i) array(runif(28*28*1), dim = c(28, 28, 1)))
+x_dummy_df <- tibble::tibble(x = x_dummy_list)
+y_dummy <- factor(sample(0:9, 10, replace = TRUE), levels = 0:9)
+y_dummy_df <- tibble::tibble(y = y_dummy)
+
+
+# Use compile_keras_grid to get the model summary
+compilation_results <- compile_keras_grid(
+  spec = cnn_spec,
+  grid = tibble::tibble(), 
+  x = x_dummy_df,
+  y = y_dummy_df
+)
+
+# Print the summary
+summary(compilation_results$compiled_model[[1]])
+```
+
+<!-- ## What to do once you have a model -->
+<!-- -->
+<!-- Once your model architecture is ready, you will want to: -->
+<!-- -->
+<!-- TODO: Create vignettes for the following guides and uncomment these links: -->
+<!-- -->
+<!-- - [Train your model, evaluate it, and run inference](https://keras3.posit.co/articles/training_and_evaluation.html) -->
+<!-- - [Save your model to disk and restore it](https://keras3.posit.co/articles/serialization_and_saving.html) -->
+
+## Feature Extraction with a Sequential Model
+
+Once a Sequential model has been built, it behaves like a Functional API model. This means that every layer has an input and output attribute. In `kerasnip`, we can get access to this underlying model structure using `compile_keras_grid()`.
+
+This allows us to create a new model that outputs the values of the intermediate layers.
+
+```{r feature-extraction}
+# We can reuse the compilation results from the previous chunk
+keras_model_obj <- compilation_results$compiled_model[[1]]
+
+# Create a new Keras model for feature extraction
+feature_extractor <- keras_model(
+  inputs = keras_model_obj$inputs,
+  outputs = lapply(keras_model_obj$layers, function(x) x$output)
+)
+
+# Call the feature extractor on a dummy input tensor
+x_tensor <- op_ones(c(1, 28, 28, 1))
+features <- feature_extractor(x_tensor)
+
+# Print the shapes of the extracted feature maps
+lapply(features, dim)
+```
+
+## Transfer Learning with a Sequential Model
+
+<!-- TODO: Create a vignette for the transfer learning guide and uncomment this link: -->
+<!-- If you aren’t familiar with it, make sure to read our [guide to transfer learning](https://keras3.posit.co/articles/transfer_learning.html). -->
+
+Transfer learning consists of freezing the bottom layers in a model and only training the top layers. A common blueprint is to use a Sequential model to stack a pre-trained model and some freshly initialized classification layers.
+
+`kerasnip` supports this by allowing a `layer_block` to contain a pre-trained model.
+
+```{r transfer-learning}
+# Define a block that incorporates a pre-trained base
+# This block creates a new sequential model and adds the pre-trained,
+# frozen base model as its first layer.
+pretrained_base_block <- function(model, input_shape) {
+  base_model <- application_xception(
+    weights = "imagenet",
+    include_top = FALSE,
+    pooling = "avg",
+    input_shape = input_shape
+  )
+  # Freeze the weights of the pre-trained base
+  freeze_weights(base_model)
+  
+  # The block must return a sequential model
+  keras_model_sequential(input_shape = input_shape) |>
+    base_model()
+}
+
+# Define a new classification head. This block will be appended to the
+# sequential model returned by the previous block.
+classification_head_block <- function(model, num_classes) {
+  model |>
+    layer_dense(units = 1000, activation = "relu") |> 
+    layer_dense(units = num_classes, activation = "softmax")
+}
+
+# Create a new kerasnip spec with the pre-trained base and new head
+create_keras_sequential_spec(
+  model_name = "transfer_cnn",
+  layer_blocks = list(
+    base = pretrained_base_block,
+    head = classification_head_block
+  ),
+  mode = "classification"
+)
+
+# Create a spec instance
+transfer_spec <- transfer_cnn(
+  compile_loss = "categorical_crossentropy",
+  compile_optimizer = "adam"
+)
+
+# Prepare dummy data for a 224x224x3 image
+x_dummy_tl_list <- lapply(1:10, function(i) array(runif(224*224*3), dim = c(224, 224, 3)))
+x_dummy_tl_df <- tibble::tibble(x = x_dummy_tl_list)
+y_dummy_tl <- factor(sample(0:9, 10, replace = TRUE), levels = 0:9)
+y_dummy_tl_df <- tibble::tibble(y = y_dummy_tl)
+
+
+# Use compile_keras_grid to inspect the model and trainable parameters
+compilation_results_tl <- compile_keras_grid(
+  spec = transfer_spec,
+  grid = tibble::tibble(),
+  x = x_dummy_tl_df,
+  y = y_dummy_tl_df
+)
+
+# Print the summary to verify that the base model's parameters are non-trainable
+summary(compilation_results_tl$compiled_model[[1]])
+```
+
+<!-- To find out more about building models in Keras, see: -->
+
+<!-- TODO: Create vignettes for the following guides and uncomment these links: -->
+<!-- -->
+<!-- - [The Functional API](https://keras3.posit.co/articles/functional_api.html) -->
+<!-- - [Making new Layers & Models via subclassing](https://keras3.posit.co/articles/making_new_layers_and_models_via_subclassing.html) -->
