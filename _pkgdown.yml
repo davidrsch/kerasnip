@@ -14,10 +14,10 @@ template:
     code_font: "monospace"
 
 guides:
-  - title: "Getting Started"
+  - title: "Model Definition"
     navbar: ~
     contents:
-      - getting_started
+      - sequential_model
       - functional_api
 
 # examples:
@@ -70,8 +70,12 @@ navbar:
     guides:
       text: "Guides"
       menu:
-        - text: "Functional API"
-          href: articles/functional_api.html
+        - text: "Model Definition"
+          menu:
+            - text: "Sequential Model"
+              href: articles/sequential_model.html
+            - text: "Functional API"
+              href: articles/functional_api.html
     github:
       icon: fa-github
       href: https://github.com/davidrsch/kerasnip
