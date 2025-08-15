@@ -33,17 +33,24 @@ keras_evaluate <- function(object, x, y = NULL, ...) {
   keras3::evaluate(keras_model, x = x_proc, y = y_proc, ...)
 }
 
-#' Extract Keras Model Summary
+#' Extract the Raw Keras Model from a Kerasnip Fit
 #'
+#' @title Extract Keras Model from a Fitted Kerasnip Object
 #' @description
-#' Extracts and returns the summary of a Keras model fitted with `kerasnip`.
+#' Extracts and returns the underlying Keras model object from a `parsnip`
+#' `model_fit` object created by `kerasnip`.
+#'
+#' @details
+#' This is useful when you need to work directly with the Keras model object for
+#' tasks like inspecting layer weights, creating custom plots, or passing it to
+#' other Keras-specific functions.
 #'
 #' @param object A `model_fit` object produced by a `kerasnip` specification.
-#' @param ... Additional arguments passed on to `keras3::summary()`.
 #'
-#' @return A character vector, where each element is a line of the model summary.
+#' @return The raw Keras model object (`keras_model`).
+#' @seealso keras_evaluate, extract_keras_history
 #' @export
-extract_keras_summary <- function(object, ...) {
+extract_keras_model <- function(object) {
   object$fit$fit
 }
 

@@ -181,12 +181,13 @@ mlp_fit <- fit(mlp_spec, y ~ x, data = train_df)
 
 ```{r model-summarize}
 mlp_fit |> 
-  extract_keras_summary()
+  extract_keras_model() |> 
+  summary()
 ```
 
 ```{r model-plot, eval=FALSE}
 mlp_fit |> 
-  extract_keras_summary() |> 
+  extract_keras_model() |> 
   plot(show_shapes = TRUE)
 ```
 
@@ -320,7 +321,8 @@ We can now inspect our final, tuned model.
 # Print the model summary
 final_fit |>
   extract_fit_parsnip() |>
-  extract_keras_summary()
+  extract_keras_model() |> 
+  summary()
 
 # Plot the training history
 final_fit |> 
