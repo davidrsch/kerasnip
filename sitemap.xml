@@ -8,6 +8,7 @@
 <url><loc>https://davidrsch.github.io/kerasnip/articles/functional_api.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/getting_started.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/index.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/articles/sequential_model.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/authors.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/index.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/news/index.html</loc></url>
@@ -15,7 +16,7 @@
 <url><loc>https://davidrsch.github.io/kerasnip/reference/create_keras_functional_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/create_keras_sequential_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/extract_keras_history.html</loc></url>
-<url><loc>https://davidrsch.github.io/kerasnip/reference/extract_keras_summary.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/extract_keras_model.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/extract_valid_grid.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/generic_functional_fit.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/generic_sequential_fit.html</loc></url>

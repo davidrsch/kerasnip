@@ -22,7 +22,9 @@ compiled successfully."><meta property="og:image" content="https://davidrsch.git
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/getting_started.html">Getting started</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-guides"><li><a class="dropdown-item" href="../articles/functional_api.html">Functional API</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-guides"><li><h6 class="dropdown-header" data-toc-skip>Model Definition</h6></li>
+    <li><a class="dropdown-item" href="../articles/sequential_model.html">Sequential Model</a></li>
+    <li><a class="dropdown-item" href="../articles/functional_api.html">Functional API</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -63,10 +65,32 @@ compiled successfully.</p>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A tibble containing the subset of the original grid that resulted in
-a successful model compilation (i.e., where the <code>error</code> column is <code>NA</code>).
-The columns for <code>compiled_model</code>, <code>model_summary</code>, and <code>error</code> are removed.</p>
+a successful model compilation. The <code>compiled_model</code> and <code>error</code> columns
+are removed, leaving a clean grid ready for tuning.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Filter a Grid to Only Valid Hyperparameter Sets</p>
+<p>After running <code><a href="compile_keras_grid.html">compile_keras_grid()</a></code>, you can use this function to remove
+problematic hyperparameter combinations before proceeding to the full
+<code><a href="https://tune.tidymodels.org/reference/tune_grid.html" class="external-link">tune::tune_grid()</a></code>.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># Continuing the example from `compile_keras_grid`:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `compiled_grid` contains one row with an error.</span></span></span>
+<span class="r-in"><span><span class="va">valid_grid</span> <span class="op">&lt;-</span> <span class="fu">extract_valid_grid</span><span class="op">(</span><span class="va">compiled_grid</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `valid_grid` now only contains the rows that compiled successfully.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">valid_grid</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This clean grid can now be passed to tune::tune_grid().</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -39,7 +39,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
-<li><a class="dropdown-item" href="../articles/functional_api.html">Functional API</a></li>
+<li><h6 class="dropdown-header" data-toc-skip>Model Definition</h6></li>
+    <li><a class="dropdown-item" href="../articles/sequential_model.html">Sequential Model</a></li>
+    <li><a class="dropdown-item" href="../articles/functional_api.html">Functional API</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -288,15 +290,15 @@ discovered automatically from our block definitions.</p>
 <span><span class="va">fit_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wf</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1/1 - 0s - 39ms/step</span></span></code></pre>
+<pre><code><span><span class="co">## 1/1 - 0s - 40ms/step</span></span></code></pre>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 1</span></span></span>
-<span><span class="co">##     .pred</span></span>
-<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>  6.93  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>  6.96  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>  7.29  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>  1.64  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">0.051</span><span style="color: #BB0000; text-decoration: underline;">1</span></span></span></code></pre>
+<span><span class="co">##      .pred</span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>  0.158  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  0.006<span style="text-decoration: underline;">97</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.416</span>  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  6.79   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> 10.4</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -385,7 +387,7 @@ repeatable block.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 3/3 - 0s - 16ms/step</span></span>
 <span><span class="co">## 3/3 - 0s - 7ms/step</span></span>
-<span><span class="co">## 3/3 - 0s - 21ms/step</span></span>
+<span><span class="co">## 3/3 - 0s - 22ms/step</span></span>
 <span><span class="co">## 3/3 - 0s - 7ms/step</span></span>
 <span><span class="co">## 3/3 - 0s - 16ms/step</span></span>
 <span><span class="co">## 3/3 - 0s - 7ms/step</span></span>
@@ -396,7 +398,7 @@ repeatable block.</p>
 <span><span class="co">## 3/3 - 0s - 21ms/step</span></span>
 <span><span class="co">## 3/3 - 0s - 7ms/step</span></span>
 <span><span class="co">## 3/3 - 0s - 16ms/step</span></span>
-<span><span class="co">## 3/3 - 0s - 8ms/step</span></span>
+<span><span class="co">## 3/3 - 0s - 7ms/step</span></span>
 <span><span class="co">## 3/3 - 0s - 21ms/step</span></span>
 <span><span class="co">## 3/3 - 0s - 7ms/step</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -404,10 +406,10 @@ repeatable block.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 8</span></span></span>
 <span><span class="co">##   num_dense_path dense_path_units .metric .estimator  mean     n std_err .config</span></span>
 <span><span class="co">##            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>              3               32 accura… multiclass 0.807     2  0.127  Prepro…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>              1               32 accura… multiclass 0.68      2  0      Prepro…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>              1                8 accura… multiclass 0.633     2  0.046<span style="text-decoration: underline;">7</span> Prepro…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>              3                8 accura… multiclass 0.48      2  0.147  Prepro…</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>              3               32 accura… multiclass 0.96      2 0.026<span style="text-decoration: underline;">7</span>  Prepro…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>              1               32 accura… multiclass 0.673     2 0.006<span style="text-decoration: underline;">67</span> Prepro…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>              3                8 accura… multiclass 0.587     2 0.267   Prepro…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>              1                8 accura… multiclass 0.56      2 0.093<span style="text-decoration: underline;">3</span>  Prepro…</span></span></code></pre>
 <p>The results show that <code>tidymodels</code> successfully trained
 and evaluated models with different numbers of hidden layers,
 demonstrating that we can tune the very architecture of the network.</p>
