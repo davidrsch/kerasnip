@@ -110,19 +110,14 @@ compile_keras_grid <- function(spec, grid, x, y) {
       {
         model <- do.call(build_fn, args)
         # Capture the model summary
-        summary_char <- utils::capture.output(summary(
-          model
-        ))
         list(
           compiled_model = list(model),
-          model_summary = paste(summary_char, collapse = "\n"),
           error = NA_character_
         )
       },
       error = function(e) {
         list(
           compiled_model = list(NULL),
-          model_summary = NA_character_,
           error = as.character(e$message)
         )
       }
