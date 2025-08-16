@@ -121,8 +121,12 @@ test_that("E2E: Multi-input, multi-output functional regression works", {
     tensor |> layer_dense(units = units, activation = "relu")
   }
   concat_block <- function(in_1, in_2) layer_concatenate(list(in_1, in_2))
-  output_block_1 <- function(tensor) layer_dense(tensor, units = 1, name = "output_1")
-  output_block_2 <- function(tensor) layer_dense(tensor, units = 1, name = "output_2")
+  output_block_1 <- function(tensor) {
+    layer_dense(tensor, units = 1, name = "output_1")
+  }
+  output_block_2 <- function(tensor) {
+    layer_dense(tensor, units = 1, name = "output_2")
+  }
 
   model_name <- "multi_in_out_reg"
   on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
