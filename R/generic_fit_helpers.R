@@ -61,7 +61,8 @@ collect_compile_args <- function(
     if (is.character(loss_arg) && length(loss_arg) == 1) {
       # Single loss string for all outputs
       final_compile_args$loss <- get_keras_object(loss_arg, "loss")
-    } else if (is.list(loss_arg) && !is.null(names(loss_arg))) { # Named list of losses
+    } else if (is.list(loss_arg) && !is.null(names(loss_arg))) {
+      # Named list of losses
       final_compile_args$loss <- lapply(loss_arg, function(l) {
         if (is.character(l)) get_keras_object(l, "loss") else l
       })
