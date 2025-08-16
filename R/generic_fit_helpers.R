@@ -95,7 +95,9 @@ collect_compile_args <- function(
         if (is.character(m)) get_keras_object(m, "metric") else m
       })
     } else {
-      stop("For multiple outputs, 'compile_metrics' must be a single string or a named list of metrics.")
+      stop(
+        "For multiple outputs, 'compile_metrics' must be a single string or a named list of metrics."
+      )
     }
   } else { # Single output
     metrics_arg <- user_compile_args$metrics %||% default_metrics
