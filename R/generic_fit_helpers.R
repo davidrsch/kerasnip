@@ -103,7 +103,11 @@ collect_compile_args <- function(
     # Single output
     metrics_arg <- user_compile_args$metrics %||% default_metrics
     if (is.character(metrics_arg)) {
-      final_compile_args$metrics <- lapply(metrics_arg, get_keras_object, "metric")
+      final_compile_args$metrics <- lapply(
+        metrics_arg,
+        get_keras_object,
+        "metric"
+      )
     } else {
       final_compile_args$metrics <- metrics_arg
     }
