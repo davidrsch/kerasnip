@@ -34,9 +34,9 @@ There are two special requirements:
 
 Let's see this in action.
 
-## Example 1: A Fork-Join Regression Model
+## Example 1: A Two-Input Regression Model
 
-We will build a model that forks the input, passes it through two separate dense layer paths, and then joins the results with a concatenation layer before producing a final prediction.
+This model will take two distinct inputs, process them separately, and then concatenate their outputs before a final regression layer. This clearly demonstrates the functional API's ability to handle multiple inputs, which is not possible with the sequential API.
 
 ### Step 1: Load Libraries
 
@@ -55,68 +55,73 @@ options(kerasnip.show_removal_messages = FALSE)
 
 These are the building blocks of our model. Each function represents a node in the graph.
 
-```{r define-blocks-functional}
-# The input node. `input_shape` is supplied automatically by the engine.
-input_block <- function(input_shape) {
-  layer_input(shape = input_shape)
+```{r define-blocks-functional-two-input}
+# Input blocks for two distinct inputs
+input_block_1 <- function(input_shape) {
+  layer_input(shape = input_shape, name = "input_1")
 }
 
-# A generic block for a dense path. `units` will be a tunable parameter.
-path_block <- function(tensor, units = 16) {
+input_block_2 <- function(input_shape) {
+  layer_input(shape = input_shape, name = "input_2")
+}
+
+# Dense paths for each input
+dense_path_1 <- function(tensor, units = 16) {
   tensor |> layer_dense(units = units, activation = "relu")
 }
 
-# A block to join two tensors.
+dense_path_2 <- function(tensor, units = 16) {
+  tensor |> layer_dense(units = units, activation = "relu")
+}
+
+# A block to join two tensors
 concat_block <- function(input_a, input_b) {
   layer_concatenate(list(input_a, input_b))
 }
 
-# The final output block for regression.
-output_block_reg <- function(tensor) {
-  layer_dense(tensor, units = 1)
+# The final output block for regression
+output_block_1 <- function(tensor) {
+  layer_dense(tensor, units = 1, name = "output_1")
+}
+
+output_block_2 <- function(tensor) {
+  layer_dense(tensor, units = 1, name = "output_2")
 }
 ```
 
 ### Step 3: Create the Model Specification
 
-Now we assemble the blocks into a graph. We use the `inp_spec()` helper to connect the blocks. This avoids writing verbose anonymous functions like `function(main_input, units) path_block(main_input, units)`. `inp_spec()` automatically creates a wrapper that renames the arguments of our blocks to match the node names from the `layer_blocks` list.
+Now we assemble the blocks into a graph. The `inp_spec()` helper simplifies connecting these blocks, eliminating the need for verbose anonymous functions. `inp_spec()` automatically creates a wrapper that renames the arguments of our blocks to match the node names defined in the `layer_blocks` list.
 
-```{r create-spec-functional}
-model_name <- "forked_reg_spec"
+```{r create-spec-functional-two-input}
+model_name <- "two_output_reg_spec" # Changed model name
 # Clean up the spec when the vignette is done knitting
 on.exit(remove_keras_spec(model_name), add = TRUE)
 
 create_keras_functional_spec(
   model_name = model_name,
   layer_blocks = list(
-    # Node names are defined by the list names
-    main_input = input_block,
-
-    # `inp_spec()` renames the first argument of `path_block` ('tensor')
-    # to 'main_input' to match the node name.
-    path_a = inp_spec(path_block, "main_input"),
-    path_b = inp_spec(path_block, "main_input"),
-
-    # For multiple inputs, `inp_spec()` takes a named vector to map
-    # new argument names to the original block's argument names.
-    concatenated = inp_spec(concat_block, c(path_a = "input_a", path_b = "input_b")),
-
-    # The output block takes the concatenated tensor as its input.
-    output = inp_spec(output_block_reg, "concatenated")
+    input_1 = input_block_1,
+    input_2 = input_block_2,
+    processed_1 = inp_spec(dense_path_1, "input_1"),
+    processed_2 = inp_spec(dense_path_2, "input_2"),
+    concatenated = inp_spec(concat_block, c(processed_1 = "input_a", processed_2 = "input_b")),
+    output_1 = inp_spec(output_block_1, "concatenated"), # New output block 1
+    output_2 = inp_spec(output_block_2, "concatenated")  # New output block 2
   ),
-  mode = "regression"
+  mode = "regression" # Still regression, but will have two columns in y
 )
 ```
 
 ### Step 4: Use and Fit the Model
 
-The new function `forked_reg_spec()` is now available. Its arguments (`path_a_units`, `path_b_units`) were discovered automatically from our block definitions.
+The new function `two_input_reg_spec()` is now available. Its arguments (`processed_1_units`, `processed_2_units`) were discovered automatically from our block definitions.
 
-```{r fit-functional}
-# We can override the default `units` from `path_block` for each path.
-spec <- forked_reg_spec(
-  path_a_units = 16,
-  path_b_units = 8,
+```{r fit-functional-two-input}
+# We can override the default `units` for each path.
+spec <- two_output_reg_spec( # Changed spec name
+  processed_1_units = 16,
+  processed_2_units = 8,
   fit_epochs = 10,
   fit_verbose = 0 # Suppress fitting output in vignette
 ) |>
@@ -124,94 +129,106 @@ spec <- forked_reg_spec(
 
 print(spec)
 
-# Fit the model on the mtcars dataset
-rec <- recipe(mpg ~ ., data = mtcars)
+# Prepare dummy data with two inputs and two outputs
+set.seed(123)
+x_data_1 <- matrix(runif(100 * 5), ncol = 5)
+x_data_2 <- matrix(runif(100 * 3), ncol = 3)
+y_data_1 <- runif(100)
+y_data_2 <- runif(100) # New second output
+
+# For tidymodels, inputs and outputs need to be in a data frame, potentially as lists of matrices
+train_df <- tibble::tibble(
+  input_1 = lapply(seq_len(nrow(x_data_1)), function(i) x_data_1[i, , drop = FALSE]),
+  input_2 = lapply(seq_len(nrow(x_data_2)), function(i) x_data_2[i, , drop = FALSE]),
+  output_1 = y_data_1, # Named output 1
+  output_2 = y_data_2  # Named output 2
+)
+
+rec <- recipe(output_1 + output_2 ~ input_1 + input_2, data = train_df) # Recipe for two outputs
 wf <- workflow() |> 
-  add_recipe(rec) |>
+  add_recipe(rec) |> 
   add_model(spec)
 
+fit_obj <- fit(wf, data = train_df)
 
-fit_obj <- fit(wf, data = mtcars)
-
-predict(fit_obj, new_data = mtcars[1:5, ])
-```
-
-## Example 2: Tuning a Functional Model's Depth
-
-A key feature of `kerasnip` is the ability to tune the *depth* of the network by repeating a block multiple times. A block can be repeated if it has **exactly one input tensor** from another block in the graph.
-
-Let's create a simple functional model and tune both its width (`units`) and its depth (`num_...`).
-
-### Step 1: Define Blocks and Create Spec
-
-This model is architecturally sequential, but we build it with the functional API to demonstrate the repetition feature.
-
-```{r create-tunable-functional-spec}
-dense_block <- function(tensor, units = 16) {
-  tensor |> layer_dense(units = units, activation = "relu")
-}
-output_block_class <- function(tensor, num_classes) {
-  tensor |> layer_dense(units = num_classes, activation = "softmax")
-}
-
-model_name_tune <- "tunable_func_mlp"
-on.exit(remove_keras_spec(model_name_tune), add = TRUE)
-
-create_keras_functional_spec(
-  model_name = model_name_tune,
-  layer_blocks = list(
-    main_input = input_block,
-    # This block has a single input ('main_input'), so it can be repeated.
-    dense_path = inp_spec(dense_block, "main_input"),
-    output = inp_spec(output_block_class, "dense_path")
-  ),
-  mode = "classification"
+# Predict on new data
+new_data_df <- tibble::tibble(
+  input_1 = lapply(seq_len(5), function(i) matrix(runif(5), ncol = 5)),
+  input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
+predict(fit_obj, new_data = new_data_df)
 ```
 
-### Step 2: Set up and Run Tuning
+## A common debugging workflow: `compile_keras_grid()`
 
-We will tune `dense_path_units` (the width) and `num_dense_path` (the depth). The `num_dense_path` argument was created automatically because `dense_path` is a repeatable block.
+In the original Keras guide, a common workflow is to incrementally add layers and call `summary()` to inspect the architecture. With `kerasnip`, the model is defined declaratively, so we can't inspect it layer-by-layer in the same way.
 
-```{r tune-functional, cache=TRUE}
-tune_spec <- tunable_func_mlp(
-  dense_path_units = tune(),
-  num_dense_path = tune(),
-  fit_epochs = 5,
-  fit_verbose = 0
-) |>
-  set_engine("keras")
+However, `kerasnip` provides a powerful equivalent: `compile_keras_grid()`. This function checks if your `layer_blocks` define a valid Keras model and returns the compiled model structure, all without running a full training cycle. This is perfect for debugging your architecture.
 
-rec <- recipe(Species ~ ., data = iris)
-tune_wf <- workflow() |> 
-  add_recipe(rec) |>
-  add_model(tune_spec)
+Let's see this in action with the `two_input_reg_spec` model:
 
-folds <- vfold_cv(iris, v = 2)
-
-# Define the tuning grid
-params <- extract_parameter_set_dials(tune_wf) |>
-  update(
-    dense_path_units = hidden_units(c(8, 32)),
-    num_dense_path = num_terms(c(1, 3)) # Test models with 1, 2, or 3 hidden layers
-  )
-
-grid <- grid_regular(params, levels = 2)
-grid
-
-control <- control_grid(save_pred = FALSE, verbose = FALSE)
-
-tune_res <- tune_grid(
-  tune_wf,
-  resamples = folds,
-  grid = grid,
-  control = control
+```{r compile-grid-debug-functional}
+# Create a spec instance
+spec <- two_output_reg_spec( # Changed spec name
+  processed_1_units = 16,
+  processed_2_units = 8
 )
 
-show_best(tune_res, metric = "accuracy")
+# Prepare dummy data with two inputs and two outputs
+x_dummy_1 <- matrix(runif(10 * 5), ncol = 5)
+x_dummy_2 <- matrix(runif(10 * 3), ncol = 3)
+y_dummy_1 <- runif(10)
+y_dummy_2 <- runif(10) # New second output
+
+# For tidymodels, inputs and outputs need to be in a data frame, potentially as lists of matrices
+x_dummy_df <- tibble::tibble(
+  input_1 = lapply(seq_len(nrow(x_dummy_1)), function(i) x_dummy_1[i, , drop = FALSE]),
+  input_2 = lapply(seq_len(nrow(x_dummy_2)), function(i) x_dummy_2[i, , drop = FALSE])
+)
+y_dummy_df <- tibble::tibble(output_1 = y_dummy_1, output_2 = y_dummy_2) # Named outputs
+
+# Use compile_keras_grid to get the model
+compilation_results <- compile_keras_grid(
+  spec = spec,
+  grid = tibble::tibble(), 
+  x = x_dummy_df,
+  y = y_dummy_df
+)
+
+# Print the summary
+compilation_results |> 
+  select(compiled_model) |> 
+  pull() |> 
+  pluck(1) |> 
+  summary()
 ```
 
-The results show that `tidymodels` successfully trained and evaluated models with different numbers of hidden layers, demonstrating that we can tune the very architecture of the network.
+```{r grid-debug-plot, eval=FALSE}
+compilation_results |> 
+  select(compiled_model) |> 
+  pull() |> 
+  pluck(1) |> 
+  plot(show_shapes = TRUE)
+```
+
+![model](images/model_plot_shapes_fAPI.png){fig-alt="A picture showing the model shape"}
+
+## When to use the functional API
+
+In general, the functional API is higher-level, easier and safer, and has a number of features that subclassed models do not support.
+
+However, model subclassing provides greater flexibility when building models that are not easily expressible as directed acyclic graphs of layers. For example, you could not implement a Tree-RNN with the functional API and would have to subclass `Model` directly.
+
+### Functional API strengths
+
+*   **Less verbose**: There is no `super$initialize()`, no `call = function(...)`, no `self$...`, etc.
+*   **Model validation during graph definition**: In the functional API, the input specification (shape and dtype) is created in advance using `layer_input()`. Each time a layer is called, it validates that the input specification matches its assumptions, raising a helpful error message if not.
+*   **A functional model is plottable and inspectable**: You can plot the model as a graph, and you can easily access intermediate nodes in this graph.
+*   **A functional model can be serialized or cloned**: As a data structure rather than code, a functional model is safely serializable. It can be saved as a single file, allowing you to recreate the exact same model without needing the original code.
+
+### Functional API weakness
+
+*   **It does not support dynamic architectures**: The functional API treats models as DAGs of layers. This is true for most deep learning architectures, but not all – for example, recursive networks or Tree RNNs do not follow this assumption and cannot be implemented in the functional API.
 
 ## Conclusion
 
