@@ -71,7 +71,8 @@ collect_compile_args <- function(
         "For multiple outputs, 'compile_loss' must be a single string or a named list of losses."
       )
     }
-  } else { # Single output
+  } else {
+    # Single output
     loss_arg <- user_compile_args$loss %||% default_loss
     if (is.character(loss_arg)) {
       final_compile_args$loss <- get_keras_object(loss_arg, "loss")
