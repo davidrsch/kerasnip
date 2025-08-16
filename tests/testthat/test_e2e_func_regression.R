@@ -138,7 +138,10 @@ test_that("E2E: Multi-input, multi-output functional regression works", {
       input_b = input_block_2,
       path_a = inp_spec(dense_path, "input_a"),
       path_b = inp_spec(dense_path, "input_b"),
-      concatenated = inp_spec(concat_block, c(path_a = "in_1", path_b = "in_2")),
+      concatenated = inp_spec(
+        concat_block,
+        c(path_a = "in_1", path_b = "in_2")
+      ),
       output_1 = inp_spec(output_block_1, "concatenated"),
       output_2 = inp_spec(output_block_2, "concatenated")
     ),
