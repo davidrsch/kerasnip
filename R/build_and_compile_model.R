@@ -312,7 +312,9 @@ build_and_compile_functional_model <- function(
           is_cls <- !is.null(y_processed$class_levels[[y_name]]) &&
             length(y_processed$class_levels[[y_name]]) > 0
           if (is_cls) {
-            block_hyperparams$num_classes <- length(y_processed$class_levels[[y_name]])
+            block_hyperparams$num_classes <- length(y_processed$class_levels[[
+              y_name
+            ]])
           }
         } else if (block_name %in% y_names) {
           # Standard case: block name matches an output name
