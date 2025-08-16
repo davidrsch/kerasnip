@@ -89,7 +89,8 @@ collect_compile_args <- function(
     if (is.character(metrics_arg) && length(metrics_arg) == 1) {
       # Single metric string for all outputs
       final_compile_args$metrics <- get_keras_object(metrics_arg, "metric")
-    } else if (is.list(metrics_arg) && !is.null(names(metrics_arg))) { # Named list of metrics
+    } else if (is.list(metrics_arg) && !is.null(names(metrics_arg))) {
+      # Named list of metrics
       final_compile_args$metrics <- lapply(metrics_arg, function(m) {
         if (is.character(m)) get_keras_object(m, "metric") else m
       })
