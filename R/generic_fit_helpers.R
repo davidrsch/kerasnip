@@ -14,8 +14,8 @@
 #'
 #' @param all_args The list of all arguments passed to the fitting function's `...`.
 #' @param learn_rate The top-level `learn_rate` parameter.
-#' @param default_loss The default loss function to use if not provided.
-#' @param default_metrics The default metric(s) to use if not provided.
+#' @param default_loss The default loss function to use if not provided. Can be a single value or a named list.
+#' @param default_metrics The default metric(s) to use if not provided. Can be a single value or a named list of vectors/single values.
 #' @return A named list of arguments ready to be passed to `keras3::compile()`.
 #' @noRd
 collect_compile_args <- function(
@@ -53,19 +53,49 @@ collect_compile_args <- function(
     )
   }
 
-  # Resolve loss: use user-provided, otherwise default. Resolve string if needed.
-  loss_arg <- user_compile_args$loss %||% default_loss
-  if (is.character(loss_arg)) {
-    final_compile_args$loss <- get_keras_object(loss_arg, "loss")
-  } else {
-    final_compile_args$loss <- loss_arg
+  # Handle loss: can be single or multiple outputs
+  if (is.list(default_loss) && !is.null(names(default_loss))) { # Multiple outputs
+    # User can provide a single loss for all outputs, or a named list
+    loss_arg <- user_compile_args$loss %||% default_loss
+    if (is.character(loss_arg) && length(loss_arg) == 1) { # Single loss string for all outputs
+      final_compile_args$loss <- get_keras_object(loss_arg, "loss")
+    } else if (is.list(loss_arg) && !is.null(names(loss_arg))) { # Named list of losses
+      final_compile_args$loss <- lapply(loss_arg, function(l) {
+        if (is.character(l)) get_keras_object(l, "loss") else l
+      })
+    } else {
+      stop("For multiple outputs, 'compile_loss' must be a single string or a named list of losses.")
+    }
+  } else { # Single output
+    loss_arg <- user_compile_args$loss %||% default_loss
+    if (is.character(loss_arg)) {
+      final_compile_args$loss <- get_keras_object(loss_arg, "loss")
+    } else {
+      final_compile_args$loss <- loss_arg
+    }
   }
 
-  # Resolve metrics: user‐supplied or default
-  metrics_arg <- user_compile_args$metrics %||% default_metrics
-  # Keras' `compile()` can handle a single string or a list/vector of strings.
-  # This correctly passes along either the default string or a user-provided vector.
-  final_compile_args$metrics <- metrics_arg
+  # Handle metrics: can be single or multiple outputs
+  if (is.list(default_metrics) && !is.null(names(default_metrics))) { # Multiple outputs
+    # User can provide a single metric for all outputs, or a named list
+    metrics_arg <- user_compile_args$metrics %||% default_metrics
+    if (is.character(metrics_arg) && length(metrics_arg) == 1) { # Single metric string for all outputs
+      final_compile_args$metrics <- get_keras_object(metrics_arg, "metric")
+    } else if (is.list(metrics_arg) && !is.null(names(metrics_arg))) { # Named list of metrics
+      final_compile_args$metrics <- lapply(metrics_arg, function(m) {
+        if (is.character(m)) get_keras_object(m, "metric") else m
+      })
+    } else {
+      stop("For multiple outputs, 'compile_metrics' must be a single string or a named list of metrics.")
+    }
+  } else { # Single output
+    metrics_arg <- user_compile_args$metrics %||% default_metrics
+    if (is.character(metrics_arg)) {
+      final_compile_args$metrics <- lapply(metrics_arg, get_keras_object, "metric")
+    } else {
+      final_compile_args$metrics <- metrics_arg
+    }
+  }
 
   # Add any other user-provided compile arguments (e.g., `weighted_metrics`)
   other_args <- user_compile_args[
