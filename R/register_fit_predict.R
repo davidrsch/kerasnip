@@ -166,13 +166,10 @@ keras_postprocess_probs <- function(results, object) {
           lvls <- paste0("class", 1:ncol(res))
         }
         colnames(res) <- lvls
-        tibble::as_tibble(res, .name_repair = "unique") %>%
+        tibble::as_tibble(res, .name_repair = "unique") |>
           dplyr::rename_with(~ paste0(".pred_", name, "_", .x))
       }
-      colnames(res) <- lvls
-      tibble::as_tibble(res, .name_repair = "unique") %>%
-        dplyr::rename_with(~ paste0(".pred_", name, "_", .x))
-    })
+    )
     return(combined_preds)
   } else {
     # Single output case: results is a matrix/array
@@ -199,26 +196,30 @@ keras_postprocess_probs <- function(results, object) {
 keras_postprocess_classes <- function(results, object) {
   if (is.list(results) && !is.null(names(results))) {
     # Multi-output case: results is a named list of arrays/matrices
-    combined_preds <- purrr::map2_dfc(results, names(results), function(res, name) {
-      lvls <- object$fit$lvl[[name]] # Assuming object$fit$lvl is a named list of levels
-      if (is.null(lvls)) {
-        # Fallback if levels are not specifically named for this output
-        lvls <- paste0("class", 1:ncol(res)) # This might not be correct for classes, but a placeholder
-      }
+    combined_preds <- purrr::map2_dfc(
+      results,
+      names(results),
+      function(res, name) {
+        lvls <- object$fit$lvl[[name]] # Assuming object$fit$lvl is a named list of levels
+        if (is.null(lvls)) {
+          # Fallback if levels are not specifically named for this output
+          lvls <- paste0("class", 1:ncol(res)) # This might not be correct for classes, but a placeholder
+        }
 
-      if (ncol(res) == 1) {
-        # Binary classification
-        pred_class <- ifelse(res[, 1] > 0.5, lvls[2], lvls[1])
-        pred_class <- factor(pred_class, levels = lvls)
-      } else {
-        # Multiclass classification
-        pred_class_int <- apply(res, 1, which.max)
-        pred_class <- lvls[pred_class_int]
-        pred_class <- factor(pred_class, levels = lvls)
+        if (ncol(res) == 1) {
+          # Binary classification
+          pred_class <- ifelse(res[, 1] > 0.5, lvls[2], lvls[1])
+          pred_class <- factor(pred_class, levels = lvls)
+        } else {
+          # Multiclass classification
+          pred_class_int <- apply(res, 1, which.max)
+          pred_class <- lvls[pred_class_int]
+          pred_class <- factor(pred_class, levels = lvls)
+        }
+        tibble::tibble(.pred_class = pred_class) |>
+          dplyr::rename_with(~ paste0(".pred_class_", name))
       }
-      tibble::tibble(.pred_class = pred_class) %>%
-        dplyr::rename_with(~ paste0(".pred_class_", name))
-    })
+    )
     return(combined_preds)
   } else {
     # Single output case: results is a matrix/array

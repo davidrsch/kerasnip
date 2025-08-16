@@ -216,8 +216,8 @@ extract_valid_grid <- function(compiled_grid) {
       "`compiled_grid` must be a data frame produced by `compile_keras_grid()`."
     )
   }
-  compiled_grid %>%
-    dplyr::filter(is.na(error)) %>%
+  compiled_grid |>
+    dplyr::filter(is.na(error)) |>
     dplyr::select(-c(compiled_model, error))
 }
 
@@ -257,7 +257,7 @@ inform_errors <- function(compiled_grid, n = 10) {
       "`compiled_grid` must be a data frame produced by `compile_keras_grid()`."
     )
   }
-  error_grid <- compiled_grid %>%
+  error_grid <- compiled_grid |>
     dplyr::filter(!is.na(error))
   if (nrow(error_grid) > 0) {
     cli::cli_h1("Compilation Errors Summary")
@@ -267,7 +267,7 @@ inform_errors <- function(compiled_grid, n = 10) {
 
     for (i in 1:min(nrow(error_grid), n)) {
       row <- error_grid[i, ]
-      params <- row %>% dplyr::select(-c(compiled_model, error))
+      params <- row |> dplyr::select(-c(compiled_model, error))
       cli::cli_h2("Error {i}/{nrow(error_grid)}")
       cli::cli_text("Hyperparameters:")
       cli::cli_bullets(paste0(names(params), ": ", as.character(params)))
