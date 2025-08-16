@@ -27,8 +27,10 @@
 <url><loc>https://davidrsch.github.io/kerasnip/reference/keras_objects.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/loss_function_keras.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/optimizer_function.html</loc></url>
-<url><loc>https://davidrsch.github.io/kerasnip/reference/process_x.html</loc></url>
-<url><loc>https://davidrsch.github.io/kerasnip/reference/process_y.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/process_x_functional.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/process_x_sequential.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/process_y_functional.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/process_y_sequential.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/register_keras_loss.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/register_keras_metric.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/register_keras_optimizer.html</loc></url>
