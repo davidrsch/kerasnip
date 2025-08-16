@@ -54,7 +54,8 @@ collect_compile_args <- function(
   }
 
   # Handle loss: can be single or multiple outputs
-  if (is.list(default_loss) && !is.null(names(default_loss))) { # Multiple outputs
+  if (is.list(default_loss) && !is.null(names(default_loss))) {
+    # Multiple outputs
     # User can provide a single loss for all outputs, or a named list
     loss_arg <- user_compile_args$loss %||% default_loss
     if (is.character(loss_arg) && length(loss_arg) == 1) { # Single loss string for all outputs
