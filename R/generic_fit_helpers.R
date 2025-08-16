@@ -82,7 +82,8 @@ collect_compile_args <- function(
   }
 
   # Handle metrics: can be single or multiple outputs
-  if (is.list(default_metrics) && !is.null(names(default_metrics))) { # Multiple outputs
+  if (is.list(default_metrics) && !is.null(names(default_metrics))) {
+    # Multiple outputs
     # User can provide a single metric for all outputs, or a named list
     metrics_arg <- user_compile_args$metrics %||% default_metrics
     if (is.character(metrics_arg) && length(metrics_arg) == 1) { # Single metric string for all outputs
