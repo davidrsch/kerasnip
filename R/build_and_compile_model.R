@@ -324,7 +324,9 @@ build_and_compile_functional_model <- function(
               block_name
             ]]) &&
               length(y_processed$class_levels[[block_name]]) > 0,
-            num_classes = if (!is.null(y_processed$class_levels[[block_name]])) {
+            num_classes = if (
+              !is.null(y_processed$class_levels[[block_name]])
+            ) {
               length(y_processed$class_levels[[block_name]])
             } else {
               NULL
