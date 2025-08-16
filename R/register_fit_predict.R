@@ -156,11 +156,18 @@ keras_postprocess_numeric <- function(results, object) {
 keras_postprocess_probs <- function(results, object) {
   if (is.list(results) && !is.null(names(results))) {
     # Multi-output case: results is a named list of arrays/matrices
-    combined_preds <- purrr::map2_dfc(results, names(results), function(res, name) {
-      lvls <- object$fit$lvl[[name]] # Assuming object$fit$lvl is a named list of levels
-      if (is.null(lvls)) {
-        # Fallback if levels are not specifically named for this output
-        lvls <- paste0("class", 1:ncol(res))
+    combined_preds <- purrr::map2_dfc(
+      results,
+      names(results),
+      function(res, name) {
+        lvls <- object$fit$lvl[[name]] # Assuming object$fit$lvl is a named list of levels
+        if (is.null(lvls)) {
+          # Fallback if levels are not specifically named for this output
+          lvls <- paste0("class", 1:ncol(res))
+        }
+        colnames(res) <- lvls
+        tibble::as_tibble(res, .name_repair = "unique") %>%
+          dplyr::rename_with(~ paste0(".pred_", name, "_", .x))
       }
       colnames(res) <- lvls
       tibble::as_tibble(res, .name_repair = "unique") %>%
