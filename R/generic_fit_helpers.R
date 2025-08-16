@@ -86,7 +86,8 @@ collect_compile_args <- function(
     # Multiple outputs
     # User can provide a single metric for all outputs, or a named list
     metrics_arg <- user_compile_args$metrics %||% default_metrics
-    if (is.character(metrics_arg) && length(metrics_arg) == 1) { # Single metric string for all outputs
+    if (is.character(metrics_arg) && length(metrics_arg) == 1) {
+      # Single metric string for all outputs
       final_compile_args$metrics <- get_keras_object(metrics_arg, "metric")
     } else if (is.list(metrics_arg) && !is.null(names(metrics_arg))) { # Named list of metrics
       final_compile_args$metrics <- lapply(metrics_arg, function(m) {
