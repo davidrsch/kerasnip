@@ -111,8 +111,12 @@ test_that("E2E: Multi-input, multi-output functional regression works", {
   on.exit(options(kerasnip.show_removal_messages = TRUE), add = TRUE)
 
   # Define layer blocks
-  input_block_1 <- function(input_shape) layer_input(shape = input_shape, name = "input_1")
-  input_block_2 <- function(input_shape) layer_input(shape = input_shape, name = "input_2")
+  input_block_1 <- function(input_shape) {
+    layer_input(shape = input_shape, name = "input_1")
+  }
+  input_block_2 <- function(input_shape) {
+    layer_input(shape = input_shape, name = "input_2")
+  }
   dense_path <- function(tensor, units = 16) {
     tensor |> layer_dense(units = units, activation = "relu")
   }
