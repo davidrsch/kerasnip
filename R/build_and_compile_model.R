@@ -302,7 +302,8 @@ build_and_compile_functional_model <- function(
     # This is primarily for output layers that might need num_classes
     if ("num_classes" %in% block_fml_names) {
       # Check if this block is an output block and if it's a classification task
-      if (is.list(y_processed$y_proc) && !is.null(names(y_processed$y_proc))) { # Multi-output case
+      if (is.list(y_processed$y_proc) && !is.null(names(y_processed$y_proc))) {
+        # Multi-output case
         # Find the corresponding output in y_processed based on block_name
         y_names <- names(y_processed$y_proc)
         # If there is only one output, and this block is named 'output',
