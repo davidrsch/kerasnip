@@ -336,7 +336,8 @@ build_and_compile_functional_model <- function(
             block_hyperparams$num_classes <- current_y_info$num_classes
           }
         }
-      } else { # Single output case
+      } else {
+        # Single output case
         if (is_classification) {
           block_hyperparams$num_classes <- num_classes
         }
