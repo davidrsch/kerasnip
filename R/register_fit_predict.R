@@ -57,7 +57,11 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = rlang::expr(process_x(new_data)$x_proc)
+          x = if (functional) {
+            rlang::expr(process_x_functional(new_data)$x_proc)
+          } else {
+            rlang::expr(process_x_sequential(new_data)$x_proc)
+          }
         )
       )
     )
@@ -74,7 +78,11 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = rlang::expr(process_x(new_data)$x_proc)
+          x = if (functional) {
+            rlang::expr(process_x_functional(new_data)$x_proc)
+          } else {
+            rlang::expr(process_x_sequential(new_data)$x_proc)
+          }
         )
       )
     )
@@ -89,14 +97,18 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = rlang::expr(process_x(new_data)$x_proc)
+          x = if (functional) {
+            rlang::expr(process_x_functional(new_data)$x_proc)
+          } else {
+            rlang::expr(process_x_sequential(new_data)$x_proc)
+          }
         )
       )
     )
   }
 }
 
-#' Post-process Keras Numeric Predictions
+##' Post-process Keras Numeric Predictions
 #'
 #' @description
 #' Formats raw numeric predictions from a Keras model into a tibble with the
@@ -110,7 +122,22 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
 #' @return A tibble with a `.pred` column.
 #' @noRd
 keras_postprocess_numeric <- function(results, object) {
-  tibble::tibble(.pred = as.vector(results))
+  if (is.list(results) && !is.null(names(results))) {
+    # Multi-output case: results is a named list of arrays/matrices
+    # Combine them into a single tibble with appropriate column names
+    combined_preds <- tibble::as_tibble(results)
+    # Rename columns to .pred_output_name if there are multiple outputs
+    if (length(results) > 1) {
+      colnames(combined_preds) <- paste0(".pred_", names(results))
+    } else {
+      # If only one output, but still a list, name it .pred
+      colnames(combined_preds) <- ".pred"
+    }
+    return(combined_preds)
+  } else {
+    # Single output case: results is a matrix/array
+    tibble::tibble(.pred = as.vector(results))
+  }
 }
 
 #' Post-process Keras Probability Predictions
@@ -127,9 +154,25 @@ keras_postprocess_numeric <- function(results, object) {
 #' @return A tibble with named columns for each class probability.
 #' @noRd
 keras_postprocess_probs <- function(results, object) {
-  # The levels are now nested inside the fit object
-  colnames(results) <- object$fit$lvl
-  tibble::as_tibble(results)
+  if (is.list(results) && !is.null(names(results))) {
+    # Multi-output case: results is a named list of arrays/matrices
+    combined_preds <- purrr::map2_dfc(results, names(results), function(res, name) {
+      lvls <- object$fit$lvl[[name]] # Assuming object$fit$lvl is a named list of levels
+      if (is.null(lvls)) {
+        # Fallback if levels are not specifically named for this output
+        lvls <- paste0("class", 1:ncol(res))
+      }
+      colnames(res) <- lvls
+      tibble::as_tibble(res, .name_repair = "unique") %>%
+        dplyr::rename_with(~ paste0(".pred_", name, "_", .x))
+    })
+    return(combined_preds)
+  } else {
+    # Single output case: results is a matrix/array
+    # The levels are now nested inside the fit object
+    colnames(results) <- object$fit$lvl
+    tibble::as_tibble(results)
+  }
 }
 
 #' Post-process Keras Class Predictions
@@ -147,17 +190,43 @@ keras_postprocess_probs <- function(results, object) {
 #' @return A tibble with a `.pred_class` column containing factor predictions.
 #' @noRd
 keras_postprocess_classes <- function(results, object) {
-  # The levels are now nested inside the fit object
-  lvls <- object$fit$lvl
-  if (ncol(results) == 1) {
-    # Binary classification
-    pred_class <- ifelse(results[, 1] > 0.5, lvls[2], lvls[1])
-    pred_class <- factor(pred_class, levels = lvls)
+  if (is.list(results) && !is.null(names(results))) {
+    # Multi-output case: results is a named list of arrays/matrices
+    combined_preds <- purrr::map2_dfc(results, names(results), function(res, name) {
+      lvls <- object$fit$lvl[[name]] # Assuming object$fit$lvl is a named list of levels
+      if (is.null(lvls)) {
+        # Fallback if levels are not specifically named for this output
+        lvls <- paste0("class", 1:ncol(res)) # This might not be correct for classes, but a placeholder
+      }
+
+      if (ncol(res) == 1) {
+        # Binary classification
+        pred_class <- ifelse(res[, 1] > 0.5, lvls[2], lvls[1])
+        pred_class <- factor(pred_class, levels = lvls)
+      } else {
+        # Multiclass classification
+        pred_class_int <- apply(res, 1, which.max)
+        pred_class <- lvls[pred_class_int]
+        pred_class <- factor(pred_class, levels = lvls)
+      }
+      tibble::tibble(.pred_class = pred_class) %>%
+        dplyr::rename_with(~ paste0(".pred_class_", name))
+    })
+    return(combined_preds)
   } else {
-    # Multiclass classification
-    pred_class_int <- apply(results, 1, which.max)
-    pred_class <- lvls[pred_class_int]
-    pred_class <- factor(pred_class, levels = lvls)
+    # Single output case: results is a matrix/array
+    # The levels are now nested inside the fit object
+    lvls <- object$fit$lvl
+    if (ncol(results) == 1) {
+      # Binary classification
+      pred_class <- ifelse(results[, 1] > 0.5, lvls[2], lvls[1])
+      pred_class <- factor(pred_class, levels = lvls)
+    } else {
+      # Multiclass classification
+      pred_class_int <- apply(results, 1, which.max)
+      pred_class <- lvls[pred_class_int]
+      pred_class <- factor(pred_class, levels = lvls)
+    }
+    tibble::tibble(.pred_class = pred_class)
   }
-  tibble::tibble(.pred_class = pred_class)
 }
