@@ -319,7 +319,9 @@ build_and_compile_functional_model <- function(
         } else if (block_name %in% y_names) {
           # Standard case: block name matches an output name
           current_y_info <- list(
-            is_classification = !is.null(y_processed$class_levels[[block_name]]) &&
+            is_classification = !is.null(y_processed$class_levels[[
+              block_name
+            ]]) &&
               length(y_processed$class_levels[[block_name]]) > 0,
             num_classes = if (!is.null(y_processed$class_levels[[block_name]])) {
               length(y_processed$class_levels[[block_name]])
