@@ -60,14 +60,28 @@
 #' }
 #' @export
 keras_evaluate <- function(object, x, y = NULL, ...) {
-  # 1. Preprocess predictor data (x)
-  x_processed <- process_x(x)
+  # 1. Get the correct processing functions from the fit object
+  process_x_fun <- object$fit$process_x
+  process_y_fun <- object$fit$process_y
+
+  if (is.null(process_x_fun) || is.null(process_y_fun)) {
+    stop(
+      "Could not find processing functions in the model fit object. ",
+      "Please ensure the model was fitted with a recent version of kerasnip.",
+      call. = FALSE
+    )
+  }
+
+  # 2. Preprocess predictor data (x)
+  x_processed <- process_x_fun(x)
   x_proc <- x_processed$x_proc
 
-  # 2. Preprocess outcome data (y)
+  # 3. Preprocess outcome data (y)
   y_proc <- NULL
   if (!is.null(y)) {
-    y_processed <- process_y(
+    # Note: For evaluation, we pass the class levels from the trained model
+    # to ensure consistent encoding of the new data.
+    y_processed <- process_y_fun(
       y,
       is_classification = !is.null(object$fit$lvl),
       class_levels = object$fit$lvl
@@ -75,7 +89,7 @@ keras_evaluate <- function(object, x, y = NULL, ...) {
     y_proc <- y_processed$y_proc
   }
 
-  # 3. Call the underlying Keras evaluate method
+  # 4. Call the underlying Keras evaluate method
   keras_model <- object$fit$fit
   keras3::evaluate(keras_model, x = x_proc, y = y_proc, ...)
 }
