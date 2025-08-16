@@ -99,7 +99,7 @@ test_that("E2E: Block repetition works for functional models", {
     set_engine("keras")
   fit_3 <- fit(spec_3, mpg ~ ., data = mtcars)
   model_3_layers <- fit_3 |>
-    extract_keras_model() |> 
+    extract_keras_model() |>
     pluck("layers")
   # Expect 2 layers: Input, Output
   expect_equal(length(model_3_layers), 2)
