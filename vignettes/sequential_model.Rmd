@@ -142,116 +142,20 @@ compilation_results <- compile_keras_grid(
 )
 
 # Print the summary
-summary(compilation_results$compiled_model[[1]])
+compilation_results |> 
+  select(compiled_model) |> 
+  pull() |> 
+  pluck(1) |> 
+  summary()
 ```
 
-<!-- ## What to do once you have a model -->
-<!-- -->
-<!-- Once your model architecture is ready, you will want to: -->
-<!-- -->
-<!-- TODO: Create vignettes for the following guides and uncomment these links: -->
-<!-- -->
-<!-- - [Train your model, evaluate it, and run inference](https://keras3.posit.co/articles/training_and_evaluation.html) -->
-<!-- - [Save your model to disk and restore it](https://keras3.posit.co/articles/serialization_and_saving.html) -->
-
-## Feature Extraction with a Sequential Model
-
-Once a Sequential model has been built, it behaves like a Functional API model. This means that every layer has an input and output attribute. In `kerasnip`, we can get access to this underlying model structure using `compile_keras_grid()`.
-
-This allows us to create a new model that outputs the values of the intermediate layers.
-
-```{r feature-extraction}
-# We can reuse the compilation results from the previous chunk
-keras_model_obj <- compilation_results$compiled_model[[1]]
-
-# Create a new Keras model for feature extraction
-feature_extractor <- keras_model(
-  inputs = keras_model_obj$inputs,
-  outputs = lapply(keras_model_obj$layers, function(x) x$output)
-)
-
-# Call the feature extractor on a dummy input tensor
-x_tensor <- op_ones(c(1, 28, 28, 1))
-features <- feature_extractor(x_tensor)
-
-# Print the shapes of the extracted feature maps
-lapply(features, dim)
+```{r grid-debug-plot, eval=FALSE}
+compilation_results |> 
+  select(compiled_model) |> 
+  pull() |> 
+  pluck(1) |> 
+  plot(show_shapes = TRUE)
 ```
 
-## Transfer Learning with a Sequential Model
+![model](images/model_plot_shapes_s.png){fig-alt="A picture showing the model shape"}
 
-<!-- TODO: Create a vignette for the transfer learning guide and uncomment this link: -->
-<!-- If you aren’t familiar with it, make sure to read our [guide to transfer learning](https://keras3.posit.co/articles/transfer_learning.html). -->
-
-Transfer learning consists of freezing the bottom layers in a model and only training the top layers. A common blueprint is to use a Sequential model to stack a pre-trained model and some freshly initialized classification layers.
-
-`kerasnip` supports this by allowing a `layer_block` to contain a pre-trained model.
-
-```{r transfer-learning}
-# Define a block that incorporates a pre-trained base
-# This block creates a new sequential model and adds the pre-trained,
-# frozen base model as its first layer.
-pretrained_base_block <- function(model, input_shape) {
-  base_model <- application_xception(
-    weights = "imagenet",
-    include_top = FALSE,
-    pooling = "avg",
-    input_shape = input_shape
-  )
-  # Freeze the weights of the pre-trained base
-  freeze_weights(base_model)
-  
-  # The block must return a sequential model
-  keras_model_sequential(input_shape = input_shape) |>
-    base_model()
-}
-
-# Define a new classification head. This block will be appended to the
-# sequential model returned by the previous block.
-classification_head_block <- function(model, num_classes) {
-  model |>
-    layer_dense(units = 1000, activation = "relu") |> 
-    layer_dense(units = num_classes, activation = "softmax")
-}
-
-# Create a new kerasnip spec with the pre-trained base and new head
-create_keras_sequential_spec(
-  model_name = "transfer_cnn",
-  layer_blocks = list(
-    base = pretrained_base_block,
-    head = classification_head_block
-  ),
-  mode = "classification"
-)
-
-# Create a spec instance
-transfer_spec <- transfer_cnn(
-  compile_loss = "categorical_crossentropy",
-  compile_optimizer = "adam"
-)
-
-# Prepare dummy data for a 224x224x3 image
-x_dummy_tl_list <- lapply(1:10, function(i) array(runif(224*224*3), dim = c(224, 224, 3)))
-x_dummy_tl_df <- tibble::tibble(x = x_dummy_tl_list)
-y_dummy_tl <- factor(sample(0:9, 10, replace = TRUE), levels = 0:9)
-y_dummy_tl_df <- tibble::tibble(y = y_dummy_tl)
-
-
-# Use compile_keras_grid to inspect the model and trainable parameters
-compilation_results_tl <- compile_keras_grid(
-  spec = transfer_spec,
-  grid = tibble::tibble(),
-  x = x_dummy_tl_df,
-  y = y_dummy_tl_df
-)
-
-# Print the summary to verify that the base model's parameters are non-trainable
-summary(compilation_results_tl$compiled_model[[1]])
-```
-
-<!-- To find out more about building models in Keras, see: -->
-
-<!-- TODO: Create vignettes for the following guides and uncomment these links: -->
-<!-- -->
-<!-- - [The Functional API](https://keras3.posit.co/articles/functional_api.html) -->
-<!-- - [Making new Layers & Models via subclassing](https://keras3.posit.co/articles/making_new_layers_and_models_via_subclassing.html) -->

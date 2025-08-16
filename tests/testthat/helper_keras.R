@@ -7,6 +7,7 @@ library(rsample)
 library(dials)
 library(tune)
 library(purrr)
+library(dplyr)
 
 skip_if_no_keras <- function() {
   testthat::skip_if_not_installed("keras3")

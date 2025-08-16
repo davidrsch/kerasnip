@@ -90,9 +90,9 @@ generic_functional_fit <- function(
   # --- 2. Model Fitting ---
   all_args <- list(...)
   verbose <- all_args$verbose %||% 0
-  x_processed <- process_x(x)
+  x_processed <- process_x_functional(x)
   x_proc <- x_processed$x_proc
-  y_processed <- process_y(y)
+  y_processed <- process_y_functional(y)
   y_mat <- y_processed$y_proc
 
   fit_args <- collect_fit_args(
@@ -109,6 +109,8 @@ generic_functional_fit <- function(
   list(
     fit = model, # The raw Keras model object
     history = history, # The training history
-    lvl = y_processed$class_levels # Factor levels for classification, NULL for regression
+    lvl = y_processed$class_levels, # Factor levels for classification, NULL for regression
+    process_x = process_x_functional,
+    process_y = process_y_functional
   )
 }

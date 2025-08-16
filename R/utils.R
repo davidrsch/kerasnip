@@ -176,6 +176,141 @@ loss_function_keras <- function(values = NULL) {
   )
 }
 
+#' Process Predictor Input for Keras (Functional API)
+#'
+#' @description
+#' Preprocesses predictor data (`x`) into a format suitable for Keras models
+#' built with the Functional API. Handles both tabular data and list-columns
+#' of arrays (e.g., for images), supporting multiple inputs.
+#'
+#' @param x A data frame or matrix of predictors.
+#' @return A list containing:
+#'   - `x_proc`: The processed predictor data (matrix or array, or list of arrays).
+#'   - `input_shape`: The determined input shape(s) for the Keras model.
+#' @keywords internal
+#' @export
+process_x_functional <- function(x) {
+  if (is.data.frame(x)) {
+    # Check if it's a multi-input scenario (multiple list-columns)
+    if (all(sapply(x, is.list)) && ncol(x) > 1) {
+      x_proc_list <- lapply(x, function(col) {
+        do.call(abind::abind, c(col, list(along = 0)))
+      })
+      # For multi-input, input_shape should be a list of shapes
+      input_shape_list <- lapply(x_proc_list, function(arr) {
+        if (length(dim(arr)) > 2) dim(arr)[-1] else ncol(arr)
+      })
+      # Add names to the lists
+      names(x_proc_list) <- names(x)
+      names(input_shape_list) <- names(x)
+      return(list(x_proc = x_proc_list, input_shape = input_shape_list))
+    } else if (ncol(x) == 1 && is.list(x[[1]])) {
+      # Original case: single predictor column containing a list of arrays.
+      x_proc <- do.call(abind::abind, c(x[[1]], list(along = 0)))
+    } else {
+      x_proc <- as.matrix(x)
+    }
+  }
+  input_shape <- if (length(dim(x_proc)) > 2) dim(x_proc)[-1] else ncol(x_proc)
+  list(x_proc = x_proc, input_shape = input_shape)
+}
+
+#' Process Outcome Input for Keras (Functional API)
+#'
+#' @description
+#' Preprocesses outcome data (`y`) into a format suitable for Keras models
+#' built with the Functional API. Handles both regression (numeric) and
+#' classification (factor) outcomes, including one-hot encoding for classification,
+#' and supports multiple outputs.
+#'
+#' @param y A vector or data frame of outcomes.
+#' @param is_classification Logical, optional. If `TRUE`, treats `y` as
+#'   classification. If `FALSE`, treats as regression. If `NULL` (default),
+#'   it's determined from `is.factor(y)`.
+#' @param class_levels Character vector, optional. The factor levels for
+#'   classification outcomes. If `NULL` (default), determined from `levels(y)`.
+#' @return A list containing:
+#'   - `y_proc`: The processed outcome data (matrix or one-hot encoded array,
+#'     or list of these for multiple outputs).
+#'   - `is_classification`: Logical, indicating if `y` was treated as classification.
+#'   - `num_classes`: Integer, the number of classes for classification, or `NULL`.
+#'   - `class_levels`: Character vector, the factor levels for classification, or `NULL`.
+#' @importFrom keras3 to_categorical
+#' @keywords internal
+#' @export
+process_y_functional <- function(
+  y,
+  is_classification = NULL,
+  class_levels = NULL
+) {
+  # If y is a data frame/tibble with one column, extract it to ensure it's
+  # processed by the single-output logic path.
+  if (is.data.frame(y) && ncol(y) == 1) {
+    y <- y[[1]]
+  }
+
+  if (is.data.frame(y)) {
+    # Handle multiple output columns
+    y_proc_list <- list() # This will store the processed y for each output
+    class_levels_list <- list() # To store class levels for each output
+
+    for (col_name in names(y)) {
+      current_y <- y[[col_name]]
+      current_is_classification <- is_classification %||% is.factor(current_y)
+      current_class_levels <- class_levels %||% levels(current_y)
+
+      y_proc_single <- NULL
+      num_classes_single <- NULL
+
+      if (current_is_classification) {
+        if (is.null(current_class_levels)) {
+          current_class_levels <- levels(current_y)
+        }
+        num_classes_single <- length(current_class_levels)
+        y_factored <- factor(current_y, levels = current_class_levels)
+        y_proc_single <- keras3::to_categorical(
+          as.numeric(y_factored) - 1,
+          num_classes = num_classes_single
+        )
+      } else {
+        y_proc_single <- as.matrix(current_y)
+      }
+      y_proc_list[[col_name]] <- y_proc_single
+      class_levels_list[[col_name]] <- current_class_levels # Store class levels for each output
+    }
+    # Return a list containing y_proc_list and class_levels_list
+    return(list(y_proc = y_proc_list, class_levels = class_levels_list))
+  } else {
+    # Original single output case
+    if (is.null(is_classification)) {
+      is_classification <- is.factor(y)
+    }
+
+    y_proc <- NULL
+    num_classes <- NULL
+    if (is_classification) {
+      if (is.null(class_levels)) {
+        class_levels <- levels(y)
+      }
+      num_classes <- length(class_levels)
+      y_factored <- factor(y, levels = class_levels)
+      y_proc <- keras3::to_categorical(
+        as.numeric(y_factored) - 1,
+        num_classes = num_classes
+      )
+    } else {
+      y_proc <- as.matrix(y)
+    }
+    return(list(
+      y_proc = y_proc,
+      class_levels = class_levels,
+      is_classification = is_classification,
+      num_classes = num_classes
+    ))
+  }
+}
+
+
 #' Process Predictor Input for Keras
 #'
 #' @description
@@ -188,7 +323,7 @@ loss_function_keras <- function(values = NULL) {
 #'   - `input_shape`: The determined input shape for the Keras model.
 #' @keywords internal
 #' @export
-process_x <- function(x) {
+process_x_sequential <- function(x) {
   if (is.data.frame(x) && ncol(x) == 1 && is.list(x[[1]])) {
     # Assumes a single predictor column containing a list of arrays.
     # We stack them into a single higher-dimensional array.
@@ -221,7 +356,11 @@ process_x <- function(x) {
 #' @importFrom keras3 to_categorical
 #' @keywords internal
 #' @export
-process_y <- function(y, is_classification = NULL, class_levels = NULL) {
+process_y_sequential <- function(
+  y,
+  is_classification = NULL,
+  class_levels = NULL
+) {
   # If y is a data frame/tibble, extract the first column
   if (is.data.frame(y)) {
     y <- y[[1]]
