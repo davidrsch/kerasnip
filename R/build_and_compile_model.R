@@ -1,3 +1,18 @@
+#' Build and Compile a Keras Sequential Model
+#'
+#' @description
+#' This internal helper function constructs and compiles a Keras sequential model
+#' based on a list of layer blocks and other parameters. It handles data
+#' processing, dynamic architecture construction, and model compilation.
+#'
+#' @param x A data frame or matrix of predictors.
+#' @param y A vector or data frame of outcomes.
+#' @param layer_blocks A named list of functions that define the layers of the
+#'   model. The order of the list determines the order of the layers.
+#' @param ... Additional arguments passed to the function, including layer
+#'   hyperparameters, repetition counts for blocks, and compile/fit arguments.
+#'
+#' @return A compiled Keras model object.
 #' @noRd
 build_and_compile_sequential_model <- function(
   x,
@@ -11,16 +26,18 @@ build_and_compile_sequential_model <- function(
   verbose <- all_args$verbose %||% 0
 
   # Process x input
-  x_processed <- process_x(x)
+  x_processed <- process_x_sequential(x)
   x_proc <- x_processed$x_proc
   input_shape <- x_processed$input_shape
 
   # Process y input
-  y_processed <- process_y(y)
-  y_mat <- y_processed$y_proc
+  y_processed <- process_y_sequential(y)
+
+  # Determine is_classification, class_levels, and num_classes
   is_classification <- y_processed$is_classification
   class_levels <- y_processed$class_levels
   num_classes <- y_processed$num_classes
+  y_mat <- y_processed$y_proc
 
   # Determine default compile arguments based on mode
   default_loss <- if (is_classification) {
@@ -93,6 +110,7 @@ build_and_compile_sequential_model <- function(
   }
 
   # --- 3. Model Compilation ---
+  # Collect all arguments starting with "compile_" from `...`
   compile_args <- collect_compile_args(
     all_args,
     learn_rate,
