@@ -9,6 +9,8 @@
 <url><loc>https://davidrsch.github.io/kerasnip/articles/getting_started.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/index.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/sequential_model.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/articles/workflows_functional.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/articles/workflows_sequential.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/authors.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/index.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/news/index.html</loc></url>
@@ -35,5 +37,6 @@
 <url><loc>https://davidrsch.github.io/kerasnip/reference/register_keras_metric.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/register_keras_optimizer.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/remove_keras_spec.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/step_collapse.html</loc></url>
 </urlset>
 
