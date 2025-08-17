@@ -126,14 +126,14 @@ bake.step_collapse <- function(object, new_data, ...) {
 #' @export
 print.step_collapse <- function(x, ...) {
   if (is.null(x$columns)) {
-    cat("Collapse predictors into list-column (unprepped)\n")
+    cat("Collapse predictors into list-column (unprepped)\\n")
   } else {
     cat(
       "Collapse predictors into list-column:",
       paste(x$columns, collapse = ", "),
-      " → ",
+      " -> ",
       x$new_col,
-      "\n"
+      "\\n"
     )
   }
   invisible(x)
