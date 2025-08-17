@@ -18,7 +18,8 @@ Imports:
     tibble,    
     purrr,
     dplyr,
-    cli
+    cli,
+    recipes
 Suggests: 
     testthat (>= 3.0.0),
     modeldata,
