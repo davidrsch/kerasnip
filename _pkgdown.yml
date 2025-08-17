@@ -19,6 +19,8 @@ guides:
     contents:
       - sequential_model
       - functional_api
+      - workflows_sequential
+      - workflows_functional
 
 # examples:
 
@@ -54,6 +56,12 @@ reference:
       - extract_keras_model
       - keras_evaluate
 
+  - title: "Custom recipe steps"
+    desc: >
+      Custom stpes for recipe which uses kerasnip models specifications
+    contents:
+      - step_collapse
+
 development:
   mode: auto
 
@@ -75,6 +83,11 @@ navbar:
           href: articles/sequential_model.html
         - text: "Functional API"
           href: articles/functional_api.html
+        - text: "Workflows"
+        - text: "Sequential Model"
+          href: articles/workflows_sequential.html
+        - text: "Functional API"
+          href: articles/workflows_functional.html
     github:
       icon: fa-github
       href: https://github.com/davidrsch/kerasnip
