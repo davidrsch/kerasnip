@@ -21,6 +21,7 @@ register_core_model <- function(model_name, mode) {
   parsnip::set_model_mode(model_name, mode)
   parsnip::set_model_engine(model_name, mode, "keras")
   parsnip::set_dependency(model_name, "keras", "keras3")
+  parsnip::set_dependency(model_name, "keras", "kerasnip")
 
   parsnip::set_encoding(
     model = model_name,
