@@ -43,6 +43,7 @@
 #'   prep()
 #'
 #' bake(rec, new_data = NULL)
+#' @importFrom recipes prep bake
 #' @export
 step_collapse <- function(
   recipe,
