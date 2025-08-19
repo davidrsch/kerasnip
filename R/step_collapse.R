@@ -107,6 +107,12 @@ prep.step_collapse <- function(x, training, info = NULL, ...) {
 
 #' @export
 bake.step_collapse <- function(object, new_data, ...) {
+  if (object$skip) {
+    return(new_data)
+  }
+  if (length(object$columns) == 0) {
+    return(new_data)
+  }
   recipes::check_new_data(object$columns, object, new_data)
 
   rows_list <- apply(
@@ -126,15 +132,15 @@ bake.step_collapse <- function(object, new_data, ...) {
 
 #' @export
 print.step_collapse <- function(x, ...) {
-  if (is.null(x$columns)) {
-    cat("Collapse predictors into list-column (unprepped)\\n")
+  if (is.null(x$columns) || length(x$columns) == 0) {
+    cat("Collapse predictors into list-column (unprepped)\n")
   } else {
     cat(
       "Collapse predictors into list-column:",
       paste(x$columns, collapse = ", "),
       " -> ",
       x$new_col,
-      "\\n"
+      "\n"
     )
   }
   invisible(x)

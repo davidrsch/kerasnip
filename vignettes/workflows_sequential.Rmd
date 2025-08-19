@@ -10,8 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE # Set to TRUE to run all chunks when knitting
+  comment = "#>"
 )
 # Suppress verbose Keras output for the vignette
 options(keras.fit_verbose = 0)
@@ -175,7 +174,7 @@ print(mlp_grid)
 
 Now, we'll use `tune_race_anova()` to perform cross-validation and find the best hyperparameters.
 
-```{r tune-model}
+```{r tune-model, cache=TRUE}
 # Note: Parallel processing with `plan(multisession)` is currently not working
 # with Keras models due to backend conflicts.
 # plan(multisession)
@@ -232,13 +231,15 @@ final_penguin_fit |>
   summary()
 ```
 
-```{r inspect-final-keras-model-plot}
+```{r inspect-final-keras-model-plot, eval=FALSE}
 # Plot the Keras model
 final_penguin_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
-  plot()
+  plot(show_shapes = TRUE)
 ```
+
+![Model](images/model_plot_shapes_ws.png){fig-alt="A picture showing the model shape"}
 
 ```{r inspect-final-keras-model-history}
 # Plot the training history

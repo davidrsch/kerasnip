@@ -51,6 +51,49 @@ test_that("E2E: Functional spec (regression) works", {
   expect_true(is.numeric(preds$.pred))
 })
 
+test_that("E2E: Functional regression works with named predictors in formula", {
+  skip_if_no_keras()
+
+  input_block <- function(input_shape) keras3::layer_input(shape = input_shape)
+  path_block <- function(tensor, units = 8) {
+    tensor |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  concat_block <- function(input_a, input_b) {
+    keras3::layer_concatenate(list(input_a, input_b))
+  }
+  output_block_reg <- function(tensor) keras3::layer_dense(tensor, units = 1)
+
+  model_name <- "e2e_func_reg_named"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      main_input = input_block,
+      path_a = inp_spec(path_block, "main_input"),
+      path_b = inp_spec(path_block, "main_input"),
+      concatenated = inp_spec(
+        concat_block,
+        c(path_a = "input_a", path_b = "input_b")
+      ),
+      output = inp_spec(output_block_reg, "concatenated")
+    ),
+    mode = "regression"
+  )
+
+  spec <- e2e_func_reg_named(
+    fit_epochs = 1
+  ) |>
+    set_engine("keras")
+
+  data <- mtcars
+  # Use named predictors to cover the x <- data[, x_names, drop = FALSE] line
+  expect_no_error(
+    fit_obj <- fit(spec, mpg ~ cyl + disp, data = data)
+  )
+  expect_s3_class(fit_obj, "model_fit")
+})
+
 test_that("E2E: Block repetition works for functional models", {
   skip_if_no_keras()
 

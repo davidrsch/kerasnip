@@ -99,7 +99,7 @@ test_that("E2E: Functional spec tuning (including repetition) works", {
   tune_wf <- workflows::workflow(rec, tune_spec)
 
   folds <- rsample::vfold_cv(iris, v = 2)
-  params <- extract_parameter_set_dials(tune_wf) |> 
+  params <- extract_parameter_set_dials(tune_wf) |>
     update(
       num_dense_path = num_terms(c(1, 2)),
       dense_path_units = hidden_units(c(4, 8))
@@ -192,4 +192,107 @@ test_that("E2E: Multi-input, single-output functional classification works", {
   expect_equal(names(preds), c(".pred_class"))
   expect_equal(nrow(preds), 5)
   expect_true(is.factor(preds$.pred_class))
+})
+
+test_that("E2E: Functional spec with pre-constructed optimizer works", {
+  skip_if_no_keras()
+
+  # Define blocks for a simple forked functional model
+  input_block <- function(input_shape) keras3::layer_input(shape = input_shape)
+  path_block <- function(tensor, units = 16) {
+    tensor |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  concat_block <- function(input_a, input_b) {
+    keras3::layer_concatenate(list(input_a, input_b))
+  }
+  output_block_class <- function(tensor, num_classes) {
+    tensor |> keras3::layer_dense(units = num_classes, activation = "softmax")
+  }
+
+  model_name <- "e2e_func_class_optimizer"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  # Create a spec with two parallel paths that are then concatenated
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      main_input = input_block,
+      path_a = inp_spec(path_block, "main_input"),
+      path_b = inp_spec(path_block, "main_input"),
+      concatenated = inp_spec(
+        concat_block,
+        c(path_a = "input_a", path_b = "input_b")
+      ),
+      output = inp_spec(output_block_class, "concatenated")
+    ),
+    mode = "classification"
+  )
+
+  # Define a pre-constructed optimizer
+  my_optimizer <- keras3::optimizer_sgd(learning_rate = 0.001)
+
+  spec <- e2e_func_class_optimizer(
+    path_a_units = 8,
+    path_b_units = 4,
+    fit_epochs = 2,
+    compile_optimizer = my_optimizer
+  ) |>
+    set_engine("keras")
+
+  data <- iris
+  rec <- recipe(Species ~ ., data = data)
+  wf <- workflows::workflow(rec, spec)
+
+  expect_no_error(fit_obj <- parsnip::fit(wf, data = data))
+  expect_s3_class(fit_obj, "workflow")
+})
+
+test_that("E2E: Functional spec with string loss works", {
+  skip_if_no_keras()
+
+  # Define blocks for a simple forked functional model
+  input_block <- function(input_shape) keras3::layer_input(shape = input_shape)
+  path_block <- function(tensor, units = 16) {
+    tensor |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  concat_block <- function(input_a, input_b) {
+    keras3::layer_concatenate(list(input_a, input_b))
+  }
+  output_block_class <- function(tensor, num_classes) {
+    tensor |> keras3::layer_dense(units = num_classes, activation = "softmax")
+  }
+
+  model_name <- "e2e_func_class_loss_string"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  # Create a spec with two parallel paths that are then concatenated
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      main_input = input_block,
+      path_a = inp_spec(path_block, "main_input"),
+      path_b = inp_spec(path_block, "main_input"),
+      concatenated = inp_spec(
+        concat_block,
+        c(path_a = "input_a", path_b = "input_b")
+      ),
+      output = inp_spec(output_block_class, "concatenated")
+    ),
+    mode = "classification"
+  )
+
+  spec <- e2e_func_class_loss_string(
+    path_a_units = 8,
+    path_b_units = 4,
+    fit_epochs = 2,
+    compile_loss = "categorical_crossentropy"
+  ) |>
+    set_engine("keras")
+
+  data <- iris
+  rec <- recipe(Species ~ ., data = data)
+  wf <- workflows::workflow(rec, spec)
+
+  expect_no_error(fit_obj <- parsnip::fit(wf, data = data))
+  expect_s3_class(fit_obj, "workflow")
 })

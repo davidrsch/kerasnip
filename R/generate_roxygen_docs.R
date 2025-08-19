@@ -80,12 +80,6 @@ generate_roxygen_docs <- function(
     c(num_params, fit_params, compile_params, special_params)
   )
 
-  # Document block-specific params
-  if ("learn_rate" %in% block_params) {
-    # This can happen if a user names a block `learn` and it has a `rate` param.
-    # It's an edge case, but we should not document it twice.
-    block_params <- setdiff(block_params, "learn_rate")
-  }
   if (length(block_params) > 0) {
     # Sort block names by length descending to handle overlapping names
     # (e.g., "dense" and "dense_layer")
