@@ -31,6 +31,7 @@ Suggests:
     recipes,
     rsample,
     knitr,
+    lm4,
     rmarkdown
 VignetteBuilder: knitr
 Config/testthat/edition: 3
