@@ -24,6 +24,7 @@ Suggests:
     testthat (>= 3.0.0),
     modeldata,
     tidymodels,
+    finetune,
     tune,
     dials,
     workflows,
