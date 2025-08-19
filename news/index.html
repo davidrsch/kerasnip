@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,11 +42,44 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.1" id="kerasnip-001">kerasnip 0.0.1<a class="anchor" aria-label="anchor" href="#kerasnip-001"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-1"></a></h3>
+<ul><li>Added support for <strong>functional API</strong> (<code><a href="../reference/create_keras_functional_spec.html">create_keras_functional_spec()</a></code>) (#6).</li>
+<li>Introduced <strong>custom steps</strong>, including <code>step_collapse</code> for collapsing columns in list columns (#20).</li>
+<li>Added <strong>evaluation helpers</strong>: <code><a href="../reference/keras_evaluate.html">keras_evaluate()</a></code>, extractors for summary and history (#12).</li>
+<li>Introduced modularized helpers for <strong>build and compile</strong> of keras models (#14).</li>
+<li>Added <strong>sequential workflow</strong> and <strong>functional workflow</strong> examples and vignettes (#20).</li>
+<li>Added new <strong>tests</strong> to improve coverage.</li>
+<li>Added <strong>pkgdown site improvements</strong> (favicon, documentation pages, guides) (#10, #16, #18 and #20).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-0-0-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-0-1"></a></h3>
+<ul><li>Refactored code for modularity and clarity.</li>
+<li>Updated documentation across multiple guides and functions.</li>
+<li>Improved consistency with <strong>tidy naming conventions</strong>.</li>
+<li>Improved robustness of tests and error handling.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-0-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-1"></a></h3>
+<ul><li>Fixed issues with <strong>compile_</strong> and <strong>fit_</strong> argument handling.</li>
+<li>Fixed issues with <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> and <code><a href="https://rdrr.io/pkg/tensorflow/man/evaluate.html" class="external-link">evaluate()</a></code> to handle multiple outputs correctly (#18).</li>
+<li>Fixed documentation typos and pkgdown errors.</li>
+<li>Fixed utils issues and missing dependencies.</li>
+<li>Fixed warnings and CRAN check issues.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-0-0-1">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-0-1"></a></h3>
+<ul><li>Changed <code>fit</code> interface to use formula, supporting list columns (#18).</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9000" id="kerasnip-0009000">kerasnip 0.0.0.9000<a class="anchor" aria-label="anchor" href="#kerasnip-0009000"></a></h2>
 <ul><li>Initial development version.</li>
 <li>Added <code>create_keras_spec()</code> to generate <code>parsnip</code> specifications dynamically.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
