@@ -152,9 +152,6 @@ create_keras_functional_spec(
   ),
   mode = "regression"
 )
-
-# Clean up the spec when the vignette is done knitting
-on.exit(remove_keras_spec("ames_functional_mlp"), add = TRUE)
 ```
 
 ## Model Specification
