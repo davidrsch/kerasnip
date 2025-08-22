@@ -42,6 +42,14 @@ This model will take two distinct inputs, process them separately, and then conc
 
 First, we load the necessary packages.
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = reticulate::py_module_available("keras")
+)
+```
+
 ```{r setup}
 library(kerasnip)
 library(tidymodels)

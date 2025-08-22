@@ -19,7 +19,8 @@ Imports:
     purrr,
     dplyr,
     cli,
-    recipes
+    recipes,
+    reticulate
 Suggests: 
     testthat (>= 3.0.0),
     modeldata,

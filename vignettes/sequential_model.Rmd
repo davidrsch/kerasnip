@@ -20,7 +20,8 @@ We'll start by loading the necessary packages:
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = reticulate::py_module_available("keras")
 )
 # Suppress verbose Keras output for the vignette
 options(keras.fit_verbose = 0)

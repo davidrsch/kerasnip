@@ -59,8 +59,11 @@ keras_compile_arg_names <- NULL
 #' }
 #' This dynamic discovery ensures that `kerasnip` automatically supports all
 #' objects available in the user's installed version of Keras.
+#' @importFrom reticulate py_require
 #' @noRd
 .onLoad <- function(libname, pkgname) {
+  py_require(c("keras", "pydot", "scipy", "pandas", "Pillow", "ipython"))
+
   # Helper to get the default string name from a Keras function's `name` argument
   get_keras_default_name <- function(fn_name, keras_ns) {
     fn <- get(fn_name, envir = keras_ns)
