@@ -141,30 +141,29 @@ inputs, which is not possible with the sequential API.</p>
 <p>First, we load the necessary packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kerasnip</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────────── tidymodels 1.3.0 ──</span></span></code></pre>
-<pre><code><span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.9     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.1</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dials       </span> 1.4.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">rsample     </span> 1.3.1</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr       </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble      </span> 3.3.0</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 3.5.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.0.9     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 1.3.0</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">modeldata   </span> 1.5.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflows   </span> 1.2.0</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.3.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.1</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr       </span> 1.1.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">yardstick   </span> 1.3.2</span></span></code></pre>
-<pre><code><span><span class="co">## ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────────── tidymodels_conflicts() ──</span></span>
-<span><span class="co">## <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">purrr</span>::<span style="color: #00BB00;">discard()</span> masks <span style="color: #0000BB;">scales</span>::discard()</span></span>
-<span><span class="co">## <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span>  masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
-<span><span class="co">## <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>     masks <span style="color: #0000BB;">stats</span>::lag()</span></span>
-<span><span class="co">## <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">recipes</span>::<span style="color: #00BB00;">step()</span>  masks <span style="color: #0000BB;">stats</span>::step()</span></span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'keras3'</span></span></code></pre>
-<pre><code><span><span class="co">## The following object is masked from 'package:yardstick':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     get_weights</span></span></code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Silence the startup messages from remove_keras_spec</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────────── tidymodels 1.3.0 ──</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.9     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dials       </span> 1.4.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">rsample     </span> 1.3.1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr       </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble      </span> 3.3.0</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 3.5.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.0.9     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 1.3.0</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">modeldata   </span> 1.5.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflows   </span> 1.2.0</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.3.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr       </span> 1.1.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">yardstick   </span> 1.3.2</span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────────── tidymodels_conflicts() ──</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">purrr</span>::<span style="color: #00BB00;">discard()</span> masks <span style="color: #0000BB;">scales</span>::discard()</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span>  masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>     masks <span style="color: #0000BB;">stats</span>::lag()</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">recipes</span>::<span style="color: #00BB00;">step()</span>  masks <span style="color: #0000BB;">stats</span>::step()</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'keras3'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:yardstick':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     get_weights</span></span>
+<span></span>
+<span><span class="co"># Silence the startup messages from remove_keras_spec</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>kerasnip.show_removal_messages <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -172,7 +171,7 @@ inputs, which is not possible with the sequential API.</p>
 </h3>
 <p>These are the building blocks of our model. Each function represents
 a node in the graph.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Input blocks for two distinct inputs</span></span>
 <span><span class="va">input_block_1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input_shape</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://keras3.posit.co/reference/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="va">input_shape</span>, name <span class="op">=</span> <span class="st">"input_1"</span><span class="op">)</span></span>
@@ -213,7 +212,7 @@ helper simplifies connecting these blocks, eliminating the need for
 verbose anonymous functions. <code><a href="../reference/inp_spec.html">inp_spec()</a></code> automatically
 creates a wrapper that renames the arguments of our blocks to match the
 node names defined in the <code>layer_blocks</code> list.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_name</span> <span class="op">&lt;-</span> <span class="st">"two_output_reg_spec"</span> <span class="co"># Changed model name</span></span>
 <span><span class="co"># Clean up the spec when the vignette is done knitting</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/remove_keras_spec.html">remove_keras_spec</a></span><span class="op">(</span><span class="va">model_name</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -239,7 +238,7 @@ node names defined in the <code>layer_blocks</code> list.</p>
 Its arguments (<code>processed_1_units</code>,
 <code>processed_2_units</code>) were discovered automatically from our
 block definitions.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># We can override the default `units` for each path.</span></span>
 <span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">two_output_reg_spec</span><span class="op">(</span> <span class="co"># Changed spec name</span></span>
 <span>  processed_1_units <span class="op">=</span> <span class="fl">16</span>,</span>
@@ -249,48 +248,48 @@ block definitions.</p>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">spec</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## two output reg spec Model Specification (regression)</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Main Arguments:</span></span>
-<span><span class="co">##   num_input_1 = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   num_input_2 = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   num_processed_1 = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   num_processed_2 = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   num_concatenated = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   num_output_1 = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   num_output_2 = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   processed_1_units = 16</span></span>
-<span><span class="co">##   processed_2_units = 8</span></span>
-<span><span class="co">##   learn_rate = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_batch_size = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_epochs = 10</span></span>
-<span><span class="co">##   fit_callbacks = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_validation_split = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_validation_data = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_shuffle = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_class_weight = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_sample_weight = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_initial_epoch = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_steps_per_epoch = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_validation_steps = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_validation_batch_size = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_validation_freq = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   fit_verbose = 0</span></span>
-<span><span class="co">##   fit_view_metrics = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_optimizer = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_loss = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_metrics = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_loss_weights = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_weighted_metrics = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_run_eagerly = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_steps_per_execution = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_jit_compile = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">##   compile_auto_scale_loss = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Computational engine: keras</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Prepare dummy data with two inputs and two outputs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">spec</span><span class="op">)</span></span>
+<span><span class="co">#&gt; two output reg spec Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Main Arguments:</span></span>
+<span><span class="co">#&gt;   num_input_1 = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   num_input_2 = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   num_processed_1 = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   num_processed_2 = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   num_concatenated = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   num_output_1 = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   num_output_2 = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   processed_1_units = 16</span></span>
+<span><span class="co">#&gt;   processed_2_units = 8</span></span>
+<span><span class="co">#&gt;   learn_rate = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_batch_size = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_epochs = 10</span></span>
+<span><span class="co">#&gt;   fit_callbacks = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_validation_split = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_validation_data = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_shuffle = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_class_weight = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_sample_weight = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_initial_epoch = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_steps_per_epoch = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_validation_steps = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_validation_batch_size = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_validation_freq = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   fit_verbose = 0</span></span>
+<span><span class="co">#&gt;   fit_view_metrics = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_optimizer = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_loss = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_metrics = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_loss_weights = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_weighted_metrics = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_run_eagerly = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_steps_per_execution = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_jit_compile = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt;   compile_auto_scale_loss = structure(list(), class = "rlang_zap")</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: keras</span></span>
+<span></span>
+<span><span class="co"># Prepare dummy data with two inputs and two outputs</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="va">x_data_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fl">5</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">x_data_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
@@ -317,16 +316,16 @@ block definitions.</p>
 <span>  input_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1/1 - 0s - 47ms/step</span></span></code></pre>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
-<span><span class="co">##   .pred_output_1 .pred_output_2</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>        0.489 …        0.412 …</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>        0.404 …        0.384 …</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>        0.486 …        0.406 …</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>        0.524 …        0.534 …</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>        0.455 …        0.449 …</span></span></code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 46ms/step</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
+<span><span class="co">#&gt;   .pred_output_1 .pred_output_2</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.635 …        0.495 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.282 …        0.384 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.383 …        0.442 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.353 …        0.525 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.387 …        0.472 …</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -343,7 +342,7 @@ compiled model structure, all without running a full training cycle.
 This is perfect for debugging your architecture.</p>
 <p>Let’s see this in action with the <code>two_input_reg_spec</code>
 model:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a spec instance</span></span>
 <span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">two_output_reg_spec</span><span class="op">(</span> <span class="co"># Changed spec name</span></span>
 <span>  processed_1_units <span class="op">=</span> <span class="fl">16</span>,</span>
@@ -376,30 +375,30 @@ model:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">compiled_model</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">pluck</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="font-weight: bold;">Model: "functional_1"</span></span></span>
-<span><span class="co">## ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓</span></span>
-<span><span class="co">## ┃<span style="font-weight: bold;"> Layer (type)          </span>┃<span style="font-weight: bold;"> Output Shape      </span>┃<span style="font-weight: bold;">     Param # </span>┃<span style="font-weight: bold;"> Connected to       </span>┃</span></span>
-<span><span class="co">## ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩</span></span>
-<span><span class="co">## │ input_1 (<span style="color: #0087FF;">InputLayer</span>)  │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">5</span>)      │           <span style="color: #00AF00;">0</span> │ -                  │</span></span>
-<span><span class="co">## ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">## │ input_2 (<span style="color: #0087FF;">InputLayer</span>)  │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">3</span>)      │           <span style="color: #00AF00;">0</span> │ -                  │</span></span>
-<span><span class="co">## ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">## │ dense_2 (<span style="color: #0087FF;">Dense</span>)       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">16</span>)     │          <span style="color: #00AF00;">96</span> │ input_1[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]      │</span></span>
-<span><span class="co">## ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">## │ dense_3 (<span style="color: #0087FF;">Dense</span>)       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">8</span>)      │          <span style="color: #00AF00;">32</span> │ input_2[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]      │</span></span>
-<span><span class="co">## ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">## │ concatenate_1         │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">24</span>)     │           <span style="color: #00AF00;">0</span> │ dense_2[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],     │</span></span>
-<span><span class="co">## │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_3[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]      │</span></span>
-<span><span class="co">## ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">## │ output_1 (<span style="color: #0087FF;">Dense</span>)      │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │          <span style="color: #00AF00;">25</span> │ concatenate_1[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">…</span> │</span></span>
-<span><span class="co">## ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">## │ output_2 (<span style="color: #0087FF;">Dense</span>)      │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │          <span style="color: #00AF00;">25</span> │ concatenate_1[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">…</span> │</span></span>
-<span><span class="co">## └───────────────────────┴───────────────────┴─────────────┴────────────────────┘</span></span>
-<span><span class="co">## <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">178</span> (712.00 B)</span></span>
-<span><span class="co">## <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">178</span> (712.00 B)</span></span>
-<span><span class="co">## <span style="font-weight: bold;"> Non-trainable params: </span><span style="color: #00AF00;">0</span> (0.00 B)</span></span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_1"</span></span></span>
+<span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓</span></span>
+<span><span class="co">#&gt; ┃<span style="font-weight: bold;"> Layer (type)          </span>┃<span style="font-weight: bold;"> Output Shape      </span>┃<span style="font-weight: bold;">     Param # </span>┃<span style="font-weight: bold;"> Connected to       </span>┃</span></span>
+<span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩</span></span>
+<span><span class="co">#&gt; │ input_1 (<span style="color: #0087FF;">InputLayer</span>)  │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">5</span>)      │           <span style="color: #00AF00;">0</span> │ -                  │</span></span>
+<span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
+<span><span class="co">#&gt; │ input_2 (<span style="color: #0087FF;">InputLayer</span>)  │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">3</span>)      │           <span style="color: #00AF00;">0</span> │ -                  │</span></span>
+<span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
+<span><span class="co">#&gt; │ dense_2 (<span style="color: #0087FF;">Dense</span>)       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">16</span>)     │          <span style="color: #00AF00;">96</span> │ input_1[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]      │</span></span>
+<span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
+<span><span class="co">#&gt; │ dense_3 (<span style="color: #0087FF;">Dense</span>)       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">8</span>)      │          <span style="color: #00AF00;">32</span> │ input_2[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]      │</span></span>
+<span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
+<span><span class="co">#&gt; │ concatenate_1         │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">24</span>)     │           <span style="color: #00AF00;">0</span> │ dense_2[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],     │</span></span>
+<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_3[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]      │</span></span>
+<span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
+<span><span class="co">#&gt; │ output_1 (<span style="color: #0087FF;">Dense</span>)      │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │          <span style="color: #00AF00;">25</span> │ concatenate_1[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">…</span> │</span></span>
+<span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
+<span><span class="co">#&gt; │ output_2 (<span style="color: #0087FF;">Dense</span>)      │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │          <span style="color: #00AF00;">25</span> │ concatenate_1[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">…</span> │</span></span>
+<span><span class="co">#&gt; └───────────────────────┴───────────────────┴─────────────┴────────────────────┘</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">178</span> (712.00 B)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">178</span> (712.00 B)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Non-trainable params: </span><span style="color: #00AF00;">0</span> (0.00 B)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">compilation_results</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">compiled_model</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
