@@ -224,7 +224,10 @@ node names defined in the <code>layer_blocks</code> list.</p>
 <span>    input_2 <span class="op">=</span> <span class="va">input_block_2</span>,</span>
 <span>    processed_1 <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">dense_path_1</span>, <span class="st">"input_1"</span><span class="op">)</span>,</span>
 <span>    processed_2 <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">dense_path_2</span>, <span class="st">"input_2"</span><span class="op">)</span>,</span>
-<span>    concatenated <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">concat_block</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>processed_1 <span class="op">=</span> <span class="st">"input_a"</span>, processed_2 <span class="op">=</span> <span class="st">"input_b"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    concatenated <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span></span>
+<span>      <span class="va">concat_block</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>processed_1 <span class="op">=</span> <span class="st">"input_a"</span>, processed_2 <span class="op">=</span> <span class="st">"input_b"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    output_1 <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">output_block_1</span>, <span class="st">"concatenated"</span><span class="op">)</span>, <span class="co"># New output block 1</span></span>
 <span>    output_2 <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">output_block_2</span>, <span class="st">"concatenated"</span><span class="op">)</span>  <span class="co"># New output block 2</span></span>
 <span>  <span class="op">)</span>,</span>
@@ -296,17 +299,24 @@ block definitions.</p>
 <span><span class="va">y_data_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">y_data_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="co"># New second output</span></span>
 <span></span>
-<span><span class="co"># For tidymodels, inputs and outputs need to be in a data frame, potentially as lists of matrices</span></span>
+<span><span class="co"># For tidymodels, inputs and outputs need to be in a data frame,</span></span>
+<span><span class="co"># potentially as lists of matrices</span></span>
 <span><span class="va">train_df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>  input_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x_data_1</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_data_1</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x_data_2</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_data_2</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  input_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x_data_1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_data_1</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x_data_2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_data_2</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  output_1 <span class="op">=</span> <span class="va">y_data_1</span>, <span class="co"># Named output 1</span></span>
 <span>  output_2 <span class="op">=</span> <span class="va">y_data_2</span>  <span class="co"># Named output 2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">output_1</span> <span class="op">+</span> <span class="va">output_2</span> <span class="op">~</span> <span class="va">input_1</span> <span class="op">+</span> <span class="va">input_2</span>, data <span class="op">=</span> <span class="va">train_df</span><span class="op">)</span> <span class="co"># Recipe for two outputs</span></span>
-<span><span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">output_1</span> <span class="op">+</span> <span class="va">output_2</span> <span class="op">~</span> <span class="va">input_1</span> <span class="op">+</span> <span class="va">input_2</span>, data <span class="op">=</span> <span class="va">train_df</span><span class="op">)</span></span>
+<span><span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">spec</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fit_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wf</span>, data <span class="op">=</span> <span class="va">train_df</span><span class="op">)</span></span>
@@ -317,15 +327,15 @@ block definitions.</p>
 <span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 46ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 48ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_output_1 .pred_output_2</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.635 …        0.495 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.282 …        0.384 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.383 …        0.442 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.353 …        0.525 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.387 …        0.472 …</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.587 …        0.390 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.296 …        0.430 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.454 …        0.410 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.400 …        0.508 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.443 …        0.420 …</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -355,26 +365,33 @@ model:</p>
 <span><span class="va">y_dummy_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">y_dummy_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="co"># New second output</span></span>
 <span></span>
-<span><span class="co"># For tidymodels, inputs and outputs need to be in a data frame, potentially as lists of matrices</span></span>
+<span><span class="co"># For tidymodels, inputs and outputs need to be in a data frame,</span></span>
+<span><span class="co"># potentially as lists of matrices</span></span>
 <span><span class="va">x_dummy_df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>  input_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x_dummy_1</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_dummy_1</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x_dummy_2</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_dummy_2</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span>
+<span>  input_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x_dummy_1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_dummy_1</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x_dummy_2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_dummy_2</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">y_dummy_df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>output_1 <span class="op">=</span> <span class="va">y_dummy_1</span>, output_2 <span class="op">=</span> <span class="va">y_dummy_2</span><span class="op">)</span> <span class="co"># Named outputs</span></span>
+<span><span class="va">y_dummy_df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>output_1 <span class="op">=</span> <span class="va">y_dummy_1</span>, output_2 <span class="op">=</span> <span class="va">y_dummy_2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Use compile_keras_grid to get the model</span></span>
 <span><span class="va">compilation_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compile_keras_grid.html">compile_keras_grid</a></span><span class="op">(</span></span>
 <span>  spec <span class="op">=</span> <span class="va">spec</span>,</span>
-<span>  grid <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  grid <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  x <span class="op">=</span> <span class="va">x_dummy_df</span>,</span>
 <span>  y <span class="op">=</span> <span class="va">y_dummy_df</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Print the summary</span></span>
-<span><span class="va">compilation_results</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">compiled_model</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">pluck</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">compilation_results</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">compiled_model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pluck</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_1"</span></span></span>
 <span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓</span></span>
@@ -399,10 +416,10 @@ model:</p>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">178</span> (712.00 B)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Non-trainable params: </span><span style="color: #00AF00;">0</span> (0.00 B)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">compilation_results</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">compiled_model</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">pluck</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">compilation_results</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">compiled_model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pluck</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>show_shapes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
 <img src="images/model_plot_shapes_fAPI.png" fig-alt="A picture showing the model shape" alt="model"><div class="figcaption">model</div>
