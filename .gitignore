@@ -8,3 +8,5 @@ docs
 .DS_Store
 .quarto
 vignettes/*_cache
+/doc/
+/Meta/

@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
+^\.vscode$
 ^README\.Rmd$
 ^LICENSE\.md$
 ^NEWS\.md$
@@ -9,3 +10,7 @@
 ^renv$
 ^renv.lock$
 ^air\.toml$
+^doc$
+^Meta$
+^codeconv\.yml$
+^pkgdown$
