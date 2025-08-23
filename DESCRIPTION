@@ -1,5 +1,5 @@
 Package: kerasnip
-Title: A Bridge Between keras and tidymodels
+Title: A Bridge Between Keras and Tidymodels
 Version: 0.0.1
 Authors@R: 
     person("David", "Díaz", , "daviddrsch@gmail.com", role = c("aut", "cre"))
