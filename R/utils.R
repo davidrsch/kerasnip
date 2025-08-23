@@ -393,6 +393,18 @@ process_y_sequential <- function(
   )
 }
 
+##' Get Parsnip's Model Environment
+#'
+#' @description
+#' This is an internal helper function to retrieve the environment where `parsnip`
+#' stores its model definitions. It is used to dynamically interact with the
+#' `parsnip` infrastructure.
+#'
+#' @return The `parsnip` model environment.
+#' @examples
+#' \dontrun{
+#' model_env <- kerasnip:::get_model_env()
+#' }
 #' @keywords internal
 #' @export
 get_model_env <- function() {
