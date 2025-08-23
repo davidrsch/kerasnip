@@ -173,9 +173,9 @@ Now, we'll use `tune_race_anova()` to perform cross-validation and find the best
 
 ```{r tune-model, cache=TRUE}
 # Note: Parallel processing with `plan(multisession)` is currently not working
-# with Keras models due to backend conflicts: plan(multisession)
-set.seed(123)
+# with Keras models due to backend conflicts
 
+set.seed(123)
 penguin_tune_results <- tune_race_anova(
   penguin_wf,
   resamples = penguin_folds,

@@ -226,14 +226,14 @@ Now, we'll use `tune_race_anova()` to perform cross-validation and find the best
 
 ```{r tune-model, cache=TRUE}
 # Note: Parallel processing with `plan(multisession)` is currently not working
-# with Keras models due to backend conflicts: plan(multisession)
+# with Keras models due to backend conflicts
 
 set.seed(123)
 ames_tune_results <- tune_race_anova(
   ames_wf,
   resamples = ames_folds,
   grid = functional_mlp_grid,
-  metrics = metric_set(rmse, mae, rsq), # Evaluate regression metrics
+  metrics = metric_set(rmse, mae, rsq),
   control = control_race(save_pred = TRUE, save_workflow = TRUE)
 )
 ```
