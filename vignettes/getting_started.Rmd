@@ -282,7 +282,7 @@ grid <- grid_regular(params, levels = 3)
 grid
 ```
 
-```{r run-tuning-mnist, cache=TRUE}
+```{r run-tuning, cache=TRUE}
 # Using only the first 100 rows for speed. The real call should be
 # folds <- vfold_cv(train_df, v = 3)
 folds <- vfold_cv(train_df[1:100,], v = 3)
