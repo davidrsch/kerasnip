@@ -71,9 +71,6 @@ We will create a `recipes` object to preprocess our data. This recipe will:
 penguin_recipe <- recipe(species ~ ., data = penguin_train) |>
   step_normalize(all_numeric_predictors()) |>
   step_dummy(all_nominal_predictors())
-
-# You can prep and bake the recipe to see the processed data
-# prep(penguin_recipe) |> bake(new_data = penguin_train)
 ```
 
 ## Define Keras Sequential Model with `kerasnip`
@@ -131,7 +128,9 @@ mlp_spec <- penguin_mlp(
   fit_epochs = 20,
   fit_batch_size = 32,
   fit_validation_split = 0.2,
-  fit_callbacks = list(callback_early_stopping(monitor = "val_loss", patience = 5))
+  fit_callbacks = list(
+    callback_early_stopping(monitor = "val_loss", patience = 5)
+  )
 ) |>
   set_engine("keras")
 
@@ -174,15 +173,14 @@ Now, we'll use `tune_race_anova()` to perform cross-validation and find the best
 
 ```{r tune-model, cache=TRUE}
 # Note: Parallel processing with `plan(multisession)` is currently not working
-# with Keras models due to backend conflicts.
-# plan(multisession)
+# with Keras models due to backend conflicts: plan(multisession)
 set.seed(123)
 
 penguin_tune_results <- tune_race_anova(
   penguin_wf,
   resamples = penguin_folds,
   grid = mlp_grid,
-  metrics = metric_set(accuracy, roc_auc, f_meas), # Evaluate multiple metrics
+  metrics = metric_set(accuracy, roc_auc, f_meas),
   control = control_race(save_pred = TRUE, save_workflow = TRUE)
 )
 ```
@@ -196,7 +194,7 @@ We can inspect the tuning results to see which hyperparameter combinations perfo
 show_best(penguin_tune_results, metric = "accuracy", n = 5)
 
 # Autoplot the results
-# autoplot(penguin_tune_results) # Currently does not work due to a label issue.
+# Currently does not work due to a label issue: autoplot(penguin_tune_results)
 
 # Select the best hyperparameters
 best_mlp_params <- select_best(penguin_tune_results, metric = "accuracy")
@@ -254,17 +252,32 @@ Finally, we will make predictions on the test set and evaluate the model's perfo
 ```{r predict-evaluate}
 # Make predictions on the test set
 penguin_test_pred <- predict(final_penguin_fit, new_data = penguin_test)
-penguin_test_prob <- predict(final_penguin_fit, new_data = penguin_test, type = "prob")
+penguin_test_prob <- predict(
+  final_penguin_fit,
+  new_data = penguin_test,
+  type = "prob"
+)
 
 # Combine predictions with actuals
 penguin_results <- penguin_test |>
   select(species) |>
-  bind_cols( penguin_test_pred, penguin_test_prob)
+  bind_cols(penguin_test_pred, penguin_test_prob)
 
 print(head(penguin_results))
 
 # Evaluate performance using yardstick metrics
-metrics_results <- metric_set(accuracy, roc_auc, f_meas)(penguin_results, truth = species, estimate = .pred_class, .pred_Adelie, .pred_Chinstrap, .pred_Gentoo)
+metrics_results <- metric_set(
+  accuracy,
+  roc_auc,
+  f_meas
+)(
+  penguin_results,
+  truth = species,
+  estimate = .pred_class,
+  .pred_Adelie,
+  .pred_Chinstrap,
+  .pred_Gentoo
+)
 
 print(metrics_results)
 

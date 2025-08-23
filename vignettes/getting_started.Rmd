@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   eval = reticulate::py_module_available("keras")
 )
-# Suppress verbose Keras output for the vignette 
+# Suppress verbose Keras output for the vignette
 options(keras.fit_verbose = 0)
 set.seed(123)
 ```
@@ -181,22 +181,22 @@ mlp_fit <- fit(mlp_spec, y ~ x, data = train_df)
 ```
 
 ```{r model-summarize}
-mlp_fit |> 
-  extract_keras_model() |> 
+mlp_fit |>
+  extract_keras_model() |>
   summary()
 ```
 
 ```{r model-plot, eval=FALSE}
-mlp_fit |> 
-  extract_keras_model() |> 
+mlp_fit |>
+  extract_keras_model() |>
   plot(show_shapes = TRUE)
 ```
 
 ![model](images/model_plot_shapes_gs.png){fig-alt="A picture showing the model shape"}
 
 ```{r model-fit-history}
-mlp_fit |> 
-  extract_keras_history() |> 
+mlp_fit |>
+  extract_keras_history() |>
   plot()
 ```
 
@@ -213,7 +213,7 @@ mlp_fit |> keras_evaluate(x_test, y_test)
 Once the model is trained, we can use the standard `tidymodels` `predict()` function to generate predictions on new data. By default, `predict()` on a `parsnip` classification model returns the predicted class labels.
 
 ```{r model-predict-class}
-# Predict the class for the first 5 images in the test set 
+# Predict the class for the first 5 images in the test set
 class_preds <- mlp_fit |>
   predict(new_data = head(select(test_df, x)))
 class_preds
@@ -223,7 +223,8 @@ To get the underlying probabilities for each class, we can set `type = "prob"`. 
 
 ```{r model-predict-prob}
 # Predict probabilities for the first 5 images
-prob_preds <- mlp_fit |> predict(new_data = head(select(test_df, x)), type = "prob")
+prob_preds <- mlp_fit |>
+  predict(new_data = head(select(test_df, x)), type = "prob")
 prob_preds
 ```
 
@@ -249,7 +250,8 @@ Using the `mnist_mlp` spec we just created, let's define a tunable model.
 
 ```{r tune-spec-mnist}
 # Define a tunable specification
-# We set num_hidden_2 = 0 to disable the second hidden block for this tuning example
+# We set num_hidden_2 = 0 to disable the second hidden block
+# for this tuning example
 tune_spec <- mnist_mlp(
   num_hidden_1 = tune(),
   hidden_1_units = tune(),
@@ -283,9 +285,9 @@ grid
 ```
 
 ```{r run-tuning, cache=TRUE}
-# Using only the first 100 rows for speed. The real call should be
-# folds <- vfold_cv(train_df, v = 3)
-folds <- vfold_cv(train_df[1:100,], v = 3)
+# Using only the first 100 rows for speed. The real call
+# should be: folds <- vfold_cv(train_df, v = 3)
+folds <- vfold_cv(train_df[1:100, ], v = 3)
 
 tune_res <- tune_grid(
   tune_wf,
@@ -322,11 +324,11 @@ We can now inspect our final, tuned model.
 # Print the model summary
 final_fit |>
   extract_fit_parsnip() |>
-  extract_keras_model() |> 
+  extract_keras_model() |>
   summary()
 
 # Plot the training history
-final_fit |> 
+final_fit |>
   extract_fit_parsnip() |>
   extract_keras_history() |>
   plot()

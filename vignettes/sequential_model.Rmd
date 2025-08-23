@@ -49,7 +49,8 @@ Let's define a simple sequential model with three dense layers.
 First, we define our `layer_blocks`:
 
 ```{r define-simple-blocks}
-# The first block must initialize the model. `input_shape` is passed automatically.
+# The first block must initialize the model. `input_shape`
+# is passed automatically.
 input_block <- function(model, input_shape) {
   keras_model_sequential(input_shape = input_shape)
 }
@@ -93,8 +94,18 @@ Let's see this in action with a CNN architecture:
 cnn_input_block <- function(model, input_shape) {
   keras_model_sequential(input_shape = input_shape)
 }
-cnn_conv_block <- function(model, filters = 32, kernel_size = 3, activation = "relu") {
-  model |> layer_conv_2d(filters = filters, kernel_size = kernel_size, activation = activation)
+cnn_conv_block <- function(
+  model,
+  filters = 32,
+  kernel_size = 3,
+  activation = "relu"
+) {
+  model |>
+    layer_conv_2d(
+      filters = filters,
+      kernel_size = kernel_size,
+      activation = activation
+    )
 }
 cnn_pool_block <- function(model, pool_size = 2) {
   model |> layer_max_pooling_2d(pool_size = pool_size)
@@ -128,7 +139,10 @@ cnn_spec <- my_cnn(
 
 # Prepare dummy data with the correct shape.
 # We create a list of 28x28x1 arrays.
-x_dummy_list <- lapply(1:10, function(i) array(runif(28*28*1), dim = c(28, 28, 1)))
+x_dummy_list <- lapply(
+  1:10,
+  function(i) array(runif(28 * 28 * 1), dim = c(28, 28, 1))
+)
 x_dummy_df <- tibble::tibble(x = x_dummy_list)
 y_dummy <- factor(sample(0:9, 10, replace = TRUE), levels = 0:9)
 y_dummy_df <- tibble::tibble(y = y_dummy)
@@ -137,24 +151,24 @@ y_dummy_df <- tibble::tibble(y = y_dummy)
 # Use compile_keras_grid to get the model summary
 compilation_results <- compile_keras_grid(
   spec = cnn_spec,
-  grid = tibble::tibble(), 
+  grid = tibble::tibble(),
   x = x_dummy_df,
   y = y_dummy_df
 )
 
 # Print the summary
-compilation_results |> 
-  select(compiled_model) |> 
-  pull() |> 
-  pluck(1) |> 
+compilation_results |>
+  select(compiled_model) |>
+  pull() |>
+  pluck(1) |>
   summary()
 ```
 
 ```{r grid-debug-plot, eval=FALSE}
-compilation_results |> 
-  select(compiled_model) |> 
-  pull() |> 
-  pluck(1) |> 
+compilation_results |>
+  select(compiled_model) |>
+  pull() |>
+  pluck(1) |>
   plot(show_shapes = TRUE)
 ```
 

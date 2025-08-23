@@ -113,7 +113,10 @@ create_keras_functional_spec(
     input_2 = input_block_2,
     processed_1 = inp_spec(dense_path_1, "input_1"),
     processed_2 = inp_spec(dense_path_2, "input_2"),
-    concatenated = inp_spec(concat_block, c(processed_1 = "input_a", processed_2 = "input_b")),
+    concatenated = inp_spec(
+      concat_block,
+      c(processed_1 = "input_a", processed_2 = "input_b")
+    ),
     output_1 = inp_spec(output_block_1, "concatenated"), # New output block 1
     output_2 = inp_spec(output_block_2, "concatenated")  # New output block 2
   ),
@@ -144,17 +147,24 @@ x_data_2 <- matrix(runif(100 * 3), ncol = 3)
 y_data_1 <- runif(100)
 y_data_2 <- runif(100) # New second output
 
-# For tidymodels, inputs and outputs need to be in a data frame, potentially as lists of matrices
+# For tidymodels, inputs and outputs need to be in a data frame,
+# potentially as lists of matrices
 train_df <- tibble::tibble(
-  input_1 = lapply(seq_len(nrow(x_data_1)), function(i) x_data_1[i, , drop = FALSE]),
-  input_2 = lapply(seq_len(nrow(x_data_2)), function(i) x_data_2[i, , drop = FALSE]),
+  input_1 = lapply(
+    seq_len(nrow(x_data_1)),
+    function(i) x_data_1[i, , drop = FALSE]
+  ),
+  input_2 = lapply(
+    seq_len(nrow(x_data_2)),
+    function(i) x_data_2[i, , drop = FALSE]
+  ),
   output_1 = y_data_1, # Named output 1
   output_2 = y_data_2  # Named output 2
 )
 
-rec <- recipe(output_1 + output_2 ~ input_1 + input_2, data = train_df) # Recipe for two outputs
-wf <- workflow() |> 
-  add_recipe(rec) |> 
+rec <- recipe(output_1 + output_2 ~ input_1 + input_2, data = train_df)
+wf <- workflow() |>
+  add_recipe(rec) |>
   add_model(spec)
 
 fit_obj <- fit(wf, data = train_df)
@@ -188,34 +198,41 @@ x_dummy_2 <- matrix(runif(10 * 3), ncol = 3)
 y_dummy_1 <- runif(10)
 y_dummy_2 <- runif(10) # New second output
 
-# For tidymodels, inputs and outputs need to be in a data frame, potentially as lists of matrices
+# For tidymodels, inputs and outputs need to be in a data frame,
+# potentially as lists of matrices
 x_dummy_df <- tibble::tibble(
-  input_1 = lapply(seq_len(nrow(x_dummy_1)), function(i) x_dummy_1[i, , drop = FALSE]),
-  input_2 = lapply(seq_len(nrow(x_dummy_2)), function(i) x_dummy_2[i, , drop = FALSE])
+  input_1 = lapply(
+    seq_len(nrow(x_dummy_1)),
+    function(i) x_dummy_1[i, , drop = FALSE]
+  ),
+  input_2 = lapply(
+    seq_len(nrow(x_dummy_2)),
+    function(i) x_dummy_2[i, , drop = FALSE]
+  )
 )
-y_dummy_df <- tibble::tibble(output_1 = y_dummy_1, output_2 = y_dummy_2) # Named outputs
+y_dummy_df <- tibble::tibble(output_1 = y_dummy_1, output_2 = y_dummy_2)
 
 # Use compile_keras_grid to get the model
 compilation_results <- compile_keras_grid(
   spec = spec,
-  grid = tibble::tibble(), 
+  grid = tibble::tibble(),
   x = x_dummy_df,
   y = y_dummy_df
 )
 
 # Print the summary
-compilation_results |> 
-  select(compiled_model) |> 
-  pull() |> 
-  pluck(1) |> 
+compilation_results |>
+  select(compiled_model) |>
+  pull() |>
+  pluck(1) |>
   summary()
 ```
 
 ```{r grid-debug-plot, eval=FALSE}
-compilation_results |> 
-  select(compiled_model) |> 
-  pull() |> 
-  pluck(1) |> 
+compilation_results |>
+  select(compiled_model) |>
+  pull() |>
+  pluck(1) |>
   plot(show_shapes = TRUE)
 ```
 

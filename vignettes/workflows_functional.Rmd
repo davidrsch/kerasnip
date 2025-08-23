@@ -45,7 +45,16 @@ We'll use the Ames Housing dataset, which is available in the `modeldata` packag
 ```{r data-prep}
 # Select relevant columns and remove rows with missing values
 ames_df <- ames |>
-  select(Sale_Price, Gr_Liv_Area, Year_Built, Neighborhood, Bldg_Type, Overall_Cond, Total_Bsmt_SF, contains("SF")) |>
+  select(
+    Sale_Price,
+    Gr_Liv_Area,
+    Year_Built,
+    Neighborhood,
+    Bldg_Type,
+    Overall_Cond,
+    Total_Bsmt_SF,
+    contains("SF")
+  ) |>
   na.omit()
 
 # Split data into training and testing sets
@@ -71,16 +80,13 @@ This final step is crucial for the multi-input Keras model, as the `kerasnip` fu
 ```{r create-recipe}
 ames_recipe <- recipe(Sale_Price ~ ., data = ames_train) |>
   step_normalize(all_numeric_predictors()) |>
-  step_collapse(all_numeric_predictors(), new_col = "numerical_input") |> 
-  step_dummy(Neighborhood) |> 
-  step_collapse(starts_with("Neighborhood"), new_col = "neighborhood_input") |> 
-  step_dummy(Bldg_Type) |> 
+  step_collapse(all_numeric_predictors(), new_col = "numerical_input") |>
+  step_dummy(Neighborhood) |>
+  step_collapse(starts_with("Neighborhood"), new_col = "neighborhood_input") |>
+  step_dummy(Bldg_Type) |>
   step_collapse(starts_with("Bldg_Type"), new_col = "bldg_input") |>
-  step_dummy(Overall_Cond) |> 
+  step_dummy(Overall_Cond) |>
   step_collapse(starts_with("Overall_Cond"), new_col = "condition_input")
-
-# You can prep and bake the recipe to see the processed data
-# prep(ames_recipe) |> bake(new_data = ames_train)
 ```
 
 ## Define Keras Functional Model with `kerasnip`
@@ -175,7 +181,9 @@ functional_mlp_spec <- ames_functional_mlp(
   fit_epochs = 50,
   fit_batch_size = 32,
   fit_validation_split = 0.2,
-  fit_callbacks = list(callback_early_stopping(monitor = "val_loss", patience = 5))
+  fit_callbacks = list(
+    callback_early_stopping(monitor = "val_loss", patience = 5)
+  )
 ) |>
   set_engine("keras")
 
@@ -218,8 +226,7 @@ Now, we'll use `tune_race_anova()` to perform cross-validation and find the best
 
 ```{r tune-model, cache=TRUE}
 # Note: Parallel processing with `plan(multisession)` is currently not working
-# with Keras models due to backend conflicts.
-# plan(multisession) 
+# with Keras models due to backend conflicts: plan(multisession)
 
 set.seed(123)
 ames_tune_results <- tune_race_anova(
@@ -240,7 +247,7 @@ We can inspect the tuning results to see which hyperparameter combinations perfo
 show_best(ames_tune_results, metric = "rmse", n = 5)
 
 # Autoplot the results
-# autoplot(ames_tune_results) # Currently does not work due to a label issue.
+# Currently does not work due to a label issue: autoplot(ames_tune_results)
 
 # Select the best hyperparameters
 best_functional_mlp_params <- select_best(ames_tune_results, metric = "rmse")
@@ -308,7 +315,15 @@ ames_results <- tibble::tibble(
 print(head(ames_results))
 
 # Evaluate performance using yardstick metrics
-metrics_results <- metric_set(rmse, mae, rsq)(ames_results, truth = Sale_Price, estimate = .pred)
+metrics_results <- metric_set(
+  rmse,
+  mae,
+  rsq
+)(
+  ames_results,
+  truth = Sale_Price,
+  estimate = .pred
+)
 
 print(metrics_results)
 ```
