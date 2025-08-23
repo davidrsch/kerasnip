@@ -32,6 +32,8 @@ Suggests:
     rsample,
     knitr,
     lme4,
-    rmarkdown
+    rmarkdown,
+    future,
+    ggplot2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
