@@ -1,11 +1,11 @@
 Package: kerasnip
-Title: A Bridge Between Keras and Tidymodels
+Title: A Bridge Between keras and tidymodels
 Version: 0.0.1
 Authors@R: 
     person("David", "Díaz", , "daviddrsch@gmail.com", role = c("aut", "cre"))
 Description: Provides a seamless bridge between 'keras' and the 'tidymodels'
     ecosystem. It allows for the dynamic creation of 'parsnip' model
-    specifications for Keras models.
+    specifications for `keras` models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
