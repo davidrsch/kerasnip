@@ -29,7 +29,6 @@ Suggests:
     tune,
     dials,
     workflows,
-    recipes,
     rsample,
     knitr,
     lme4,
