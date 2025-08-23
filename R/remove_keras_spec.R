@@ -17,8 +17,8 @@
 #'     the fit methods, argument definitions, and other registrations.
 #'   \item It removes the model's name from `parsnip`'s master list of models.
 #' }
-#' This function uses the un-exported `parsnip:::get_model_env()` to perform
-#' the cleanup, which may be subject to change in future `parsnip` versions.
+#' This function uses the un-exported `get_model_env()` to perform
+#' the cleanup.
 #'
 #' @param model_name A character string giving the name of the model
 #'   specification function to remove (e.g., "my_mlp").
@@ -61,7 +61,7 @@ remove_keras_spec <- function(model_name, env = parent.frame()) {
   }
 
   # 2. Nuke every parsnip object whose name starts with model_name
-  model_env <- parsnip:::get_model_env()
+  model_env <- get_model_env()
   all_regs <- ls(envir = model_env)
   to_kill <- grep(paste0("^", model_name), all_regs, value = TRUE)
   if (length(to_kill)) {

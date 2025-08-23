@@ -33,8 +33,8 @@ whose names start with the \code{model_name} and removes them. This purges
 the fit methods, argument definitions, and other registrations.
 \item It removes the model's name from \code{parsnip}'s master list of models.
 }
-This function uses the un-exported \code{parsnip:::get_model_env()} to perform
-the cleanup, which may be subject to change in future \code{parsnip} versions.
+This function uses the un-exported \code{get_model_env()} to perform
+the cleanup.
 }
 \examples{
 \dontrun{

@@ -392,3 +392,10 @@ process_y_sequential <- function(
     class_levels = class_levels
   )
 }
+
+#' @keywords internal
+#' @export
+get_model_env <- function() {
+  current <- utils::getFromNamespace("parsnip", ns = "parsnip")
+  current
+}

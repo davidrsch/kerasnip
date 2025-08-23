@@ -119,8 +119,14 @@ keras_compile_arg_names <- NULL
   assign("keras_metrics", all_metrics, envir = parent.env(environment()))
 
   # Discover and store fit() and compile() arguments
-  fit_args <- names(formals(keras3:::fit.keras.src.models.model.Model))
-  compile_args <- names(formals(keras3:::compile.keras.src.models.model.Model))
+  fit_args <- names(formals(get(
+    "fit.keras.src.models.model.Model",
+    asNamespace("keras3")
+  )))
+  compile_args <- names(formals(get(
+    "compile.keras.src.models.model.Model",
+    asNamespace("keras3")
+  )))
 
   # Exclude args that are handled specially or don't make sense in the spec
   fit_args_to_exclude <- c("object", "x", "y", "...")

@@ -96,7 +96,7 @@ compile_keras_grid <- function(spec, grid, x, y) {
     stop("`grid` must be a data frame or tibble.")
   }
 
-  model_env <- parsnip:::get_model_env()
+  model_env <- get_model_env()
   model_name <- class(spec)[1]
 
   fit_info_name <- paste0(model_name, "_fit")
