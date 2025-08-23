@@ -48,12 +48,14 @@ build_spec_function <- function(
   )
   names(quos_exprs) <- parsnip_names
 
+  quos_call <- rlang::call2("quos", rlang::sym("..."), .ns = "rlang")
+
   body <- rlang::expr({
     # Capture both explicit args and ... to pass to the fit impl
     # Named arguments are captured into a list of quosures.
     main_args <- rlang::list2(!!!quos_exprs)
     # ... arguments are captured into a separate list of quosures.
-    dot_args <- rlang::enquos(..., .named = TRUE)
+    dot_args <- !!quos_call
     args <- c(main_args, dot_args)
     parsnip::new_model_spec(
       !!model_name,

@@ -45,15 +45,15 @@ register_update_method <- function(model_name, parsnip_names, env) {
   )
 
   # Create the call to `parsnip::update_spec`
-  update_spec_call <- rlang::expr(
-    parsnip::update_spec(
-      object = object,
-      parameters = parameters,
-      args_enquo_list = args,
-      fresh = fresh,
-      cls = !!model_name,
-      ...
-    )
+  update_spec_call <- rlang::call2(
+    "update_spec",
+    object = rlang::sym("object"),
+    parameters = rlang::sym("parameters"),
+    args_enquo_list = rlang::sym("args"),
+    fresh = rlang::sym("fresh"),
+    cls = model_name,
+    rlang::sym("..."),
+    .ns = "parsnip"
   )
 
   # Combine them into the final body
