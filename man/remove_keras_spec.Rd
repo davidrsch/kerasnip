@@ -40,9 +40,20 @@ the cleanup.
 \dontrun{
 if (requireNamespace("keras3", quietly = TRUE)) {
   # First, create a dummy spec
-  input_block <- function(model, input_shape) keras3::keras_model_sequential(input_shape = input_shape)
-  dense_block <- function(model, units = 16) model |> keras3::layer_dense(units = units)
-  create_keras_sequential_spec("my_temp_model", list(input = input_block, dense = dense_block), "regression")
+  input_block <- function(model, input_shape) {
+    keras3::keras_model_sequential(input_shape = input_shape)
+  }
+  dense_block <- function(model, units = 16) {
+    model |> keras3::layer_dense(units = units)
+  }
+  create_keras_sequential_spec(
+    "my_temp_model",
+    list(
+      input = input_block,
+      dense = dense_block
+    ),
+    "regression"
+  )
 
   # Check it exists in the environment and in parsnip
   exists("my_temp_model")
