@@ -140,7 +140,7 @@ collect_spec_args <- function(
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # --- Example Blocks ---
 #' # A standard dense block with one input tensor and one hyperparameter.
 #' dense_block <- function(tensor, units = 16) {

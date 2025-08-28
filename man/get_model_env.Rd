@@ -15,8 +15,8 @@ stores its model definitions. It is used to dynamically interact with the
 \code{parsnip} infrastructure.
 }
 \examples{
-\dontrun{
-model_env <- kerasnip:::get_model_env()
+\donttest{
+model_env <- kerasnip::get_model_env()
 }
 }
 \keyword{internal}

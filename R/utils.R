@@ -29,6 +29,7 @@
 #'   optimizer object.
 #' @seealso [register_keras_loss()], [register_keras_metric()]
 #' @export
+#' @return No return value, called for side effects.
 #' @examples
 #' if (requireNamespace("keras3", quietly = TRUE)) {
 #'   # Register a custom version of Adam with a different default beta_1
@@ -58,6 +59,7 @@ register_keras_optimizer <- function(name, optimizer_fn) {
 #' @param loss_fn The loss function.
 #' @seealso [register_keras_optimizer()], [register_keras_metric()]
 #' @export
+#' @return No return value, called for side effects.
 register_keras_loss <- function(name, loss_fn) {
   .kerasnip_custom_objects$losses[[name]] <- loss_fn
   invisible()
@@ -78,6 +80,7 @@ register_keras_loss <- function(name, loss_fn) {
 #' @param metric_fn The metric function.
 #' @seealso [register_keras_optimizer()], [register_keras_loss()]
 #' @export
+#' @return No return value, called for side effects.
 register_keras_metric <- function(name, metric_fn) {
   .kerasnip_custom_objects$metrics[[name]] <- metric_fn
   invisible()
@@ -144,6 +147,7 @@ get_keras_object <- function(
 #'   known optimizers (keras defaults + custom registered).
 #' @keywords internal
 #' @export
+#' @return A `dials` parameter object for Keras optimizers.
 optimizer_function <- function(values = NULL) {
   if (is.null(values)) {
     values <- unique(c(
@@ -164,6 +168,7 @@ optimizer_function <- function(values = NULL) {
 #'   known losses (keras defaults + custom registered).
 #' @keywords internal
 #' @export
+#' @return A `dials` parameter object for Keras loss.
 loss_function_keras <- function(values = NULL) {
   if (is.null(values)) {
     values <- unique(c(keras_losses, names(.kerasnip_custom_objects$losses)))
@@ -402,8 +407,8 @@ process_y_sequential <- function(
 #'
 #' @return The `parsnip` model environment.
 #' @examples
-#' \dontrun{
-#' model_env <- kerasnip:::get_model_env()
+#' \donttest{
+#' model_env <- kerasnip::get_model_env()
 #' }
 #' @keywords internal
 #' @export

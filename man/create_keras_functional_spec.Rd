@@ -89,7 +89,7 @@ in the environment specified by the \code{env} argument.
 }
 
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("keras3", quietly = TRUE)) {
   library(keras3)
   library(parsnip)

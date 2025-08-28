@@ -37,7 +37,7 @@ This function uses the un-exported \code{get_model_env()} to perform
 the cleanup.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("keras3", quietly = TRUE)) {
   # First, create a dummy spec
   input_block <- function(model, input_shape) {

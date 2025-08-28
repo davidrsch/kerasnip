@@ -27,7 +27,7 @@ problematic hyperparameter combinations before proceeding to the full
 \code{tune::tune_grid()}.
 }
 \examples{
-\dontrun{
+\donttest{
 # Continuing the example from `compile_keras_grid`:
 
 # `compiled_grid` contains one row with an error.

@@ -28,7 +28,7 @@
 #' @seealso [create_keras_sequential_spec()], [create_keras_functional_spec()]
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' if (requireNamespace("keras3", quietly = TRUE)) {
 #'   # First, create a dummy spec
 #'   input_block <- function(model, input_shape) {

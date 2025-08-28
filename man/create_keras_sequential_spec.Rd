@@ -75,7 +75,7 @@ each block is repeated, making it easy to tune the depth of your network.
 }
 
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("keras3", quietly = TRUE)) {
 library(keras3)
 library(parsnip)

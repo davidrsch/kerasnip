@@ -11,6 +11,9 @@ register_keras_metric(name, metric_fn)
 
 \item{metric_fn}{The metric function.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Allows users to register a custom metric function so it can be used by name
 within \code{kerasnip} model specifications.

@@ -72,7 +72,7 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' if (requireNamespace("keras3", quietly = TRUE)) {
 #'   library(keras3)
 #'   library(parsnip)

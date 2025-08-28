@@ -56,7 +56,7 @@
 #' # This function is not called directly by users.
 #' # It is called internally by `parsnip::fit()`.
 #' # For example:
-#' \dontrun{
+#' \donttest{
 #' # create_keras_functional_spec(...) defines my_functional_model
 #'
 #' spec <- my_functional_model(hidden_units = 128, fit_epochs = 10) |>

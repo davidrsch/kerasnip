@@ -12,6 +12,9 @@ register_keras_optimizer(name, optimizer_fn)
 \item{optimizer_fn}{The optimizer function. It should return a Keras
 optimizer object.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Allows users to register a custom optimizer function so it can be used by
 name within \code{kerasnip} model specifications and tuned with \code{dials}.

@@ -40,8 +40,8 @@
 #'   }
 #'
 #' @examples
-#' \dontrun{
-#' if (keras::is_keras_available()) {
+#' \donttest{
+#' if (requireNamespace("keras3", quietly = TRUE)) {
 #'
 #' # 1. Define a kerasnip model specification
 #' create_keras_sequential_spec(
@@ -193,7 +193,7 @@ compile_keras_grid <- function(spec, grid, x, y) {
 #'   are removed, leaving a clean grid ready for tuning.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Continuing the example from `compile_keras_grid`:
 #'
 #' # `compiled_grid` contains one row with an error.
@@ -241,7 +241,7 @@ extract_valid_grid <- function(compiled_grid) {
 #'   effect of printing a summary to the console.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Continuing the example from `compile_keras_grid`:
 #'
 #' # `compiled_grid` contains one row with an error.

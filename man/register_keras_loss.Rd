@@ -11,6 +11,9 @@ register_keras_loss(name, loss_fn)
 
 \item{loss_fn}{The loss function.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Allows users to register a custom loss function so it can be used by name
 within \code{kerasnip} model specifications and tuned with \code{dials}.

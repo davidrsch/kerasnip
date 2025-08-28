@@ -10,6 +10,9 @@ loss_function_keras(values = NULL)
 \item{values}{A character vector of possible loss functions. Defaults to all
 known losses (keras defaults + custom registered).}
 }
+\value{
+A \code{dials} parameter object for Keras loss.
+}
 \description{
 Dials Parameter for Keras Loss Functions
 }

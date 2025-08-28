@@ -52,8 +52,8 @@ containing the compiled model object or the error message, making it easy to
 inspect which architectures are valid.
 }
 \examples{
-\dontrun{
-if (keras::is_keras_available()) {
+\donttest{
+if (requireNamespace("keras3", quietly = TRUE)) {
 
 # 1. Define a kerasnip model specification
 create_keras_sequential_spec(

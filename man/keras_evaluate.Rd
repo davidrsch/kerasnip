@@ -31,8 +31,8 @@ the loss and any other metrics.
 Evaluate a Fitted Kerasnip Model on New Data
 }
 \examples{
-\dontrun{
-if (keras::is_keras_available()) {
+\donttest{
+if (requireNamespace("keras3", quietly = TRUE)) {
 
 # 1. Define and fit a model ----
 create_keras_sequential_spec(

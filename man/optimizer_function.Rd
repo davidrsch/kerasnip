@@ -10,6 +10,9 @@ optimizer_function(values = NULL)
 \item{values}{A character vector of possible optimizers. Defaults to all
 known optimizers (keras defaults + custom registered).}
 }
+\value{
+A \code{dials} parameter object for Keras optimizers.
+}
 \description{
 Dials Parameter for Keras Optimizers
 }

@@ -28,7 +28,7 @@ This is most useful for interactive debugging of complex tuning grids where
 some hyperparameter combinations may lead to invalid Keras models.
 }
 \examples{
-\dontrun{
+\donttest{
 # Continuing the example from `compile_keras_grid`:
 
 # `compiled_grid` contains one row with an error.
