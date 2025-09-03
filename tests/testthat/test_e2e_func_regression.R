@@ -155,20 +155,22 @@ test_that("E2E: Multi-input, multi-output functional regression works", {
 
   # Define layer blocks
   input_block_1 <- function(input_shape) {
-    layer_input(shape = input_shape, name = "input_1")
+    keras3::layer_input(shape = input_shape, name = "input_1")
   }
   input_block_2 <- function(input_shape) {
-    layer_input(shape = input_shape, name = "input_2")
+    keras3::layer_input(shape = input_shape, name = "input_2")
   }
   dense_path <- function(tensor, units = 16) {
-    tensor |> layer_dense(units = units, activation = "relu")
+    tensor |> keras3::layer_dense(units = units, activation = "relu")
   }
-  concat_block <- function(in_1, in_2) layer_concatenate(list(in_1, in_2))
+  concat_block <- function(in_1, in_2) {
+    keras3::layer_concatenate(list(in_1, in_2))
+  }
   output_block_1 <- function(tensor) {
-    layer_dense(tensor, units = 1, name = "output_1")
+    keras3::layer_dense(tensor, units = 1, name = "output_1")
   }
   output_block_2 <- function(tensor) {
-    layer_dense(tensor, units = 1, name = "output_2")
+    keras3::layer_dense(tensor, units = 1, name = "output_2")
   }
 
   model_name <- "multi_in_out_reg"
