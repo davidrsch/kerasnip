@@ -142,7 +142,7 @@ each block is repeated, making it easy to tune the depth of your network.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"keras3"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span></span>
@@ -185,7 +185,42 @@ each block is repeated, making it easy to tune the depth of your network.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">model_spec</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: scales</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> my mlp Model Specification (classification)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Main Arguments:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num_input = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num_hidden = 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num_output = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   hidden_units = 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   learn_rate = 0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_batch_size = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_epochs = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_callbacks = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_split = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_data = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_shuffle = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_class_weight = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_sample_weight = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_initial_epoch = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_steps_per_epoch = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_steps = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_batch_size = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_freq = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_verbose = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_view_metrics = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_optimizer = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_loss = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_metrics = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_loss_weights = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_weighted_metrics = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_run_eagerly = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_steps_per_execution = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_jit_compile = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   compile_auto_scale_loss = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   epochs = 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
