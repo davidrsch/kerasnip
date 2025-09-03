@@ -6,7 +6,7 @@
 [![R-CMD-check](https://github.com/davidrsch/kerasnip/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/davidrsch/kerasnip/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of `kerasnip` is to provide a seamless bridge between the `keras` and `tidymodels` ecosystems. It allows for the dynamic creation of `parsnip` model specifications for Keras models, making them fully compatible with `tidymodels` workflows.
+The goal of `kerasnip` is to provide a seamless bridge between the `keras` and `tidymodels` frameworks. It allows for the dynamic creation of `parsnip` model specifications for Keras models, making them fully compatible with `tidymodels` workflows.
 
 ## Installation
 

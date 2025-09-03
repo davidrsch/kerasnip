@@ -4,7 +4,7 @@ Version: 0.0.1.9000
 Authors@R: 
     person("David", "Díaz", , "daviddrsch@gmail.com", role = c("aut", "cre"))
 Description: Provides a seamless bridge between 'keras' and the 'tidymodels'
-    ecosystem. It allows for the dynamic creation of 'parsnip' model
+    frameworks. It allows for the dynamic creation of 'parsnip' model
     specifications for 'keras' models.
 License: MIT + file LICENSE
 Encoding: UTF-8
