@@ -134,15 +134,21 @@ test_that("E2E: Multi-input, single-output functional classification works", {
   on.exit(options(kerasnip.show_removal_messages = TRUE), add = TRUE)
 
   # Define layer blocks
-  input_block_1 <- function(input_shape) layer_input(shape = input_shape, name = "input_1")
-  input_block_2 <- function(input_shape) layer_input(shape = input_shape, name = "input_2")
-  flatten_block <- function(tensor) layer_flatten(tensor)
-  dense_path <- function(tensor, units = 16) {
-    tensor |> layer_dense(units = units, activation = "relu")
+  input_block_1 <- function(input_shape) {
+    keras3::layer_input(shape = input_shape, name = "input_1")
   }
-  concat_block <- function(in_1, in_2) layer_concatenate(list(in_1, in_2))
+  input_block_2 <- function(input_shape) {
+    keras3::layer_input(shape = input_shape, name = "input_2")
+  }
+  flatten_block <- function(tensor) keras3::layer_flatten(tensor)
+  dense_path <- function(tensor, units = 16) {
+    tensor |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  concat_block <- function(in_1, in_2) {
+    keras3::layer_concatenate(list(in_1, in_2))
+  }
   output_block_class <- function(tensor, num_classes) {
-    layer_dense(tensor, units = num_classes, activation = "softmax")
+    keras3::layer_dense(tensor, units = num_classes, activation = "softmax")
   }
 
   model_name <- "multi_in_class"
@@ -157,7 +163,10 @@ test_that("E2E: Multi-input, single-output functional classification works", {
       flatten_b = inp_spec(flatten_block, "input_b"),
       path_a = inp_spec(dense_path, "flatten_a"),
       path_b = inp_spec(dense_path, "flatten_b"),
-      concatenated = inp_spec(concat_block, c(path_a = "in_1", path_b = "in_2")),
+      concatenated = inp_spec(
+        concat_block,
+        c(path_a = "in_1", path_b = "in_2")
+      ),
       output = inp_spec(output_block_class, "concatenated")
     ),
     mode = "classification"
