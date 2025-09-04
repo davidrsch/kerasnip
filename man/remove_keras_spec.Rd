@@ -64,7 +64,7 @@ if (requireNamespace("keras3", quietly = TRUE)) {
 
   # Check it's gone
   !exists("my_temp_model")
-  !"my_temp_model" \%in\% parsnip::show_engines(NULL)$model
+  !model_exists("my_temp_model")
 }
 }
 }

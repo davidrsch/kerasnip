@@ -54,35 +54,49 @@ inspect which architectures are valid.
 \examples{
 \donttest{
 if (requireNamespace("keras3", quietly = TRUE)) {
+library(keras3)
+library(parsnip)
+library(dials)
 
-# 1. Define a kerasnip model specification
+# 1. Define layer blocks
+input_block <- function(model, input_shape) {
+  keras_model_sequential(input_shape = input_shape)
+}
+hidden_block <- function(model, units = 32) {
+  model |> layer_dense(units = units, activation = "relu")
+}
+output_block <- function(model, num_classes) {
+  model |> layer_dense(units = num_classes, activation = "softmax")
+}
+
+# 2. Define a kerasnip model specification
 create_keras_sequential_spec(
-  model_name = "my_mlp",
+  model_name = "my_mlp_grid",
   layer_blocks = list(
-    input_block,
-    hidden_block,
-    output_block
+    input = input_block,
+    hidden = hidden_block,
+    output = output_block
   ),
   mode = "classification"
 )
 
-mlp_spec <- my_mlp(
+mlp_spec <- my_mlp_grid(
   hidden_units = tune(),
   compile_loss = "categorical_crossentropy",
   compile_optimizer = "adam"
 )
 
-# 2. Create a hyperparameter grid
+# 3. Create a hyperparameter grid
 # Include an invalid value (-10) to demonstrate error handling
 param_grid <- tibble::tibble(
   hidden_units = c(32, 64, -10)
 )
 
-# 3. Prepare dummy data
+# 4. Prepare dummy data
 x_train <- matrix(rnorm(100 * 10), ncol = 10)
 y_train <- factor(sample(0:1, 100, replace = TRUE))
 
-# 4. Compile models over the grid
+# 5. Compile models over the grid
 compiled_grid <- compile_keras_grid(
   spec = mlp_spec,
   grid = param_grid,
@@ -91,8 +105,9 @@ compiled_grid <- compile_keras_grid(
 )
 
 print(compiled_grid)
+remove_keras_spec("my_mlp_grid")
 
-# 5. Inspect the results
+# 6. Inspect the results
 # The row with `hidden_units = -10` will show an error.
 }
 }

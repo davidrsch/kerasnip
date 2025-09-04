@@ -57,13 +57,14 @@
 #' # It is called internally by `parsnip::fit()`.
 #' # For example:
 #' \donttest{
+#' library(parsnip)
 #' # create_keras_sequential_spec(...) defines my_sequential_model
 #'
-#' spec <- my_sequential_model(hidden_1_units = 128, fit_epochs = 10) |>
-#'   set_engine("keras")
+#' # spec <- my_sequential_model(hidden_1_units = 128, fit_epochs = 10) |>
+#' #   set_engine("keras")
 #'
-#' # This call to fit() would invoke generic_sequential_fit() internally
-#' fitted_model <- fit(spec, y ~ x, data = training_data)
+#' # # This call to fit() would invoke generic_sequential_fit() internally
+#' # fitted_model <- fit(spec, y ~ x, data = training_data)
 #' }
 #' @keywords internal
 #' @export

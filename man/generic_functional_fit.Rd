@@ -69,13 +69,14 @@ and processed data, passing along any fitting-specific arguments (e.g.,
 # It is called internally by `parsnip::fit()`.
 # For example:
 \donttest{
+library(parsnip)
 # create_keras_functional_spec(...) defines my_functional_model
 
-spec <- my_functional_model(hidden_units = 128, fit_epochs = 10) |>
-  set_engine("keras")
+# spec <- my_functional_model(hidden_units = 128, fit_epochs = 10) |>
+#   set_engine("keras")
 
-# This call to fit() would invoke generic_functional_fit() internally
-fitted_model <- fit(spec, y ~ x, data = training_data)
+# # This call to fit() would invoke generic_functional_fit() internally
+# fitted_model <- fit(spec, y ~ x, data = training_data)
 }
 }
 \keyword{internal}

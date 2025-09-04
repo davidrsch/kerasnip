@@ -416,3 +416,30 @@ get_model_env <- function() {
   current <- utils::getFromNamespace("parsnip", ns = "parsnip")
   current
 }
+
+#' Check if a Kerasnip Model Specification Exists
+#'
+#' @description
+#' This is an internal helper function to check if a model specification has been
+#' registered in the `parsnip` model environment.
+#'
+#' @param model_name A character string giving the name of the model
+#'   specification function to check (e.g., "my_mlp").
+#' @return A logical value, `TRUE` if the model exists, `FALSE` otherwise.
+#' @examples
+#' \donttest{
+#' if (requireNamespace("parsnip", quietly = TRUE)) {
+#'   library(parsnip)
+#'
+#'   # Check for a model that exists in parsnip
+#'   model_exists("mlp")
+#'
+#'   # Check for a model that does not exist
+#'   model_exists("non_existent_model")
+#' }
+#' }
+#' @keywords internal
+#' @export
+model_exists <- function(model_name) {
+  model_name %in% ls(get_model_env())
+}

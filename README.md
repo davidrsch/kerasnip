@@ -4,6 +4,10 @@
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/davidrsch/kerasnip/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/davidrsch/kerasnip/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/davidrsch/kerasnip/graph/badge.svg)](https://app.codecov.io/gh/davidrsch/kerasnip)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/kerasnip)](https://cran.r-project.org/package=kerasnip)
+[![Downloads](https://cranlogs.r-pkg.org/badges/kerasnip)](https://cran.r-project.org/package=kerasnip)
 <!-- badges: end -->
 
 The goal of `kerasnip` is to provide a seamless bridge between the `keras` and `tidymodels` frameworks. It allows for the dynamic creation of `parsnip` model specifications for Keras models, making them fully compatible with `tidymodels` workflows.

@@ -98,7 +98,7 @@ output_block <- function(model, num_classes) {
 
 # 2. Create the spec, providing blocks in the correct order.
 create_keras_sequential_spec(
-model_name = "my_mlp",
+model_name = "my_mlp_seq_spec",
   layer_blocks = list(
     input = input_block,
     hidden = hidden_block,
@@ -109,7 +109,7 @@ model_name = "my_mlp",
 
 # 3. Use the newly created specification function!
 # Note the new arguments `num_hidden` and `hidden_units`.
-model_spec <- my_mlp(
+model_spec <- my_mlp_seq_spec(
   num_hidden = 2,
   hidden_units = 64,
   epochs = 10,
@@ -117,6 +117,7 @@ model_spec <- my_mlp(
 )
 
 print(model_spec)
+remove_keras_spec("my_mlp_seq_spec")
 }
 }
 }

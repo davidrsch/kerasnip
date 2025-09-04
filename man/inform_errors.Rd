@@ -29,10 +29,59 @@ some hyperparameter combinations may lead to invalid Keras models.
 }
 \examples{
 \donttest{
-# Continuing the example from `compile_keras_grid`:
+if (requireNamespace("keras3", quietly = TRUE)) {
+  library(keras3)
+  library(parsnip)
+  library(dials)
 
-# `compiled_grid` contains one row with an error.
-# This will print a formatted summary of that error.
-inform_errors(compiled_grid)
+  # 1. Define layer blocks
+  input_block <- function(model, input_shape) {
+    keras_model_sequential(input_shape = input_shape)
+  }
+  hidden_block <- function(model, units = 32) {
+    model |> layer_dense(units = units, activation = "relu")
+  }
+  output_block <- function(model, num_classes) {
+    model |> layer_dense(units = num_classes, activation = "softmax")
+  }
+
+  # 2. Define a kerasnip model specification
+  create_keras_sequential_spec(
+    model_name = "my_mlp_grid_3",
+    layer_blocks = list(
+      input = input_block,
+      hidden = hidden_block,
+      output = output_block
+    ),
+    mode = "classification"
+  )
+
+  mlp_spec <- my_mlp_grid_3(
+    hidden_units = tune(),
+    compile_loss = "categorical_crossentropy",
+    compile_optimizer = "adam"
+  )
+
+  # 3. Create a hyperparameter grid
+  param_grid <- tibble::tibble(
+    hidden_units = c(32, 64, -10)
+  )
+
+  # 4. Prepare dummy data
+  x_train <- matrix(rnorm(100 * 10), ncol = 10)
+  y_train <- factor(sample(0:1, 100, replace = TRUE))
+
+  # 5. Compile models over the grid
+  compiled_grid <- compile_keras_grid(
+    spec = mlp_spec,
+    grid = param_grid,
+    x = x_train,
+    y = y_train
+  )
+
+  # 6. Inform about errors
+  inform_errors(compiled_grid)
+  remove_keras_spec("my_mlp_grid_3")
+}
 }
 }

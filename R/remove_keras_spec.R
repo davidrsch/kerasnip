@@ -55,7 +55,7 @@
 #'
 #'   # Check it's gone
 #'   !exists("my_temp_model")
-#'   !"my_temp_model" %in% parsnip::show_engines(NULL)$model
+#'   !model_exists("my_temp_model")
 #' }
 #' }
 remove_keras_spec <- function(model_name, env = parent.frame()) {
