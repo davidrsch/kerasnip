@@ -115,35 +115,49 @@ inspect which architectures are valid.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"keras3"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dials.tidymodels.org" class="external-link">dials</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 1. Define a kerasnip model specification</span></span></span>
+<span class="r-in"><span><span class="co"># 1. Define layer blocks</span></span></span>
+<span class="r-in"><span><span class="va">input_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">input_shape</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://keras3.posit.co/reference/keras_model_sequential.html" class="external-link">keras_model_sequential</a></span><span class="op">(</span>input_shape <span class="op">=</span> <span class="va">input_shape</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">hidden_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">units</span> <span class="op">=</span> <span class="fl">32</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">model</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="va">units</span>, activation <span class="op">=</span> <span class="st">"relu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">output_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">num_classes</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">model</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="va">num_classes</span>, activation <span class="op">=</span> <span class="st">"softmax"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 2. Define a kerasnip model specification</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="create_keras_sequential_spec.html">create_keras_sequential_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  model_name <span class="op">=</span> <span class="st">"my_mlp"</span>,</span></span>
+<span class="r-in"><span>  model_name <span class="op">=</span> <span class="st">"my_mlp_grid"</span>,</span></span>
 <span class="r-in"><span>  layer_blocks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="va">input_block</span>,</span></span>
-<span class="r-in"><span>    <span class="va">hidden_block</span>,</span></span>
-<span class="r-in"><span>    <span class="va">output_block</span></span></span>
+<span class="r-in"><span>    input <span class="op">=</span> <span class="va">input_block</span>,</span></span>
+<span class="r-in"><span>    hidden <span class="op">=</span> <span class="va">hidden_block</span>,</span></span>
+<span class="r-in"><span>    output <span class="op">=</span> <span class="va">output_block</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  mode <span class="op">=</span> <span class="st">"classification"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mlp_spec</span> <span class="op">&lt;-</span> <span class="fu">my_mlp</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  hidden_units <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">mlp_spec</span> <span class="op">&lt;-</span> <span class="fu">my_mlp_grid</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  hidden_units <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html" class="external-link">tune</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  compile_loss <span class="op">=</span> <span class="st">"categorical_crossentropy"</span>,</span></span>
 <span class="r-in"><span>  compile_optimizer <span class="op">=</span> <span class="st">"adam"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 2. Create a hyperparameter grid</span></span></span>
+<span class="r-in"><span><span class="co"># 3. Create a hyperparameter grid</span></span></span>
 <span class="r-in"><span><span class="co"># Include an invalid value (-10) to demonstrate error handling</span></span></span>
 <span class="r-in"><span><span class="va">param_grid</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  hidden_units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">64</span>, <span class="op">-</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 3. Prepare dummy data</span></span></span>
+<span class="r-in"><span><span class="co"># 4. Prepare dummy data</span></span></span>
 <span class="r-in"><span><span class="va">x_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 4. Compile models over the grid</span></span></span>
+<span class="r-in"><span><span class="co"># 5. Compile models over the grid</span></span></span>
 <span class="r-in"><span><span class="va">compiled_grid</span> <span class="op">&lt;-</span> <span class="fu">compile_keras_grid</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  spec <span class="op">=</span> <span class="va">mlp_spec</span>,</span></span>
 <span class="r-in"><span>  grid <span class="op">=</span> <span class="va">param_grid</span>,</span></span>
@@ -152,11 +166,25 @@ inspect which architectures are valid.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">compiled_grid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="remove_keras_spec.html">remove_keras_spec</a></span><span class="op">(</span><span class="st">"my_mlp_grid"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 5. Inspect the results</span></span></span>
+<span class="r-in"><span><span class="co"># 6. Inspect the results</span></span></span>
 <span class="r-in"><span><span class="co"># The row with `hidden_units = -10` will show an error.</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'input_block' not found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘parsnip’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:kerasnip’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     get_model_env</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: scales</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   hidden_units compiled_model                           error                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>           32 <span style="color: #949494;">&lt;keras.src.models.sequential.Sequential&gt;</span>  <span style="color: #BB0000;">NA</span>                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>           64 <span style="color: #949494;">&lt;keras.src.models.sequential.Sequential&gt;</span>  <span style="color: #BB0000;">NA</span>                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>          -<span style="color: #BB0000;">10</span> <span style="color: #949494;">&lt;NULL&gt;</span>                                   <span style="color: #949494;">"</span>ValueError: Cannot con…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed from parsnip registry objects: my_mlp_grid, my_mlp_grid_args, my_mlp_grid_encoding, my_mlp_grid_fit, my_mlp_grid_modes, my_mlp_grid_pkgs, my_mlp_grid_predict</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 'my_mlp_grid' from parsnip:::get_model_env()$models</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
