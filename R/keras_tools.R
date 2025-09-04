@@ -20,15 +20,32 @@
 #' @examples
 #' \donttest{
 #' if (requireNamespace("keras3", quietly = TRUE)) {
+#' library(keras3)
+#' library(parsnip)
 #'
-#' # 1. Define and fit a model ----
+#' # 1. Define layer blocks
+#' input_block <- function(model, input_shape) {
+#'   keras_model_sequential(input_shape = input_shape)
+#' }
+#' hidden_block <- function(model, units = 32) {
+#'   model |> layer_dense(units = units, activation = "relu")
+#' }
+#' output_block <- function(model, num_classes) {
+#'   model |> layer_dense(units = num_classes, activation = "softmax")
+#' }
+#'
+#' # 2. Define and fit a model ----
 #' create_keras_sequential_spec(
-#'   model_name = "my_mlp",
-#'   layer_blocks = list(input_block, hidden_block, output_block),
+#'   model_name = "my_mlp_tools",
+#'   layer_blocks = list(
+#'     input = input_block,
+#'     hidden = hidden_block,
+#'     output = output_block
+#'   ),
 #'   mode = "classification"
 #' )
 #'
-#' mlp_spec <- my_mlp(
+#' mlp_spec <- my_mlp_tools(
 #'   hidden_units = 32,
 #'   compile_loss = "categorical_crossentropy",
 #'   compile_optimizer = "adam",
@@ -42,20 +59,21 @@
 #'
 #' fitted_mlp <- fit(mlp_spec, y ~ x, data = train_df)
 #'
-#' # 2. Evaluate the model on new data ----
+#' # 3. Evaluate the model on new data ----
 #' x_test <- matrix(rnorm(50 * 10), ncol = 10)
 #' y_test <- factor(sample(0:1, 50, replace = TRUE))
 #'
 #' eval_metrics <- keras_evaluate(fitted_mlp, x_test, y_test)
 #' print(eval_metrics)
 #'
-#' # 3. Extract the Keras model object ----
+#' # 4. Extract the Keras model object ----
 #' keras_model <- extract_keras_model(fitted_mlp)
 #' summary(keras_model)
 #'
-#' # 4. Extract the training history ----
+#' # 5. Extract the training history ----
 #' history <- extract_keras_history(fitted_mlp)
 #' plot(history)
+#' remove_keras_spec("my_mlp_tools")
 #' }
 #' }
 #' @export

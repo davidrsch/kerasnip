@@ -42,35 +42,49 @@
 #' @examples
 #' \donttest{
 #' if (requireNamespace("keras3", quietly = TRUE)) {
+#' library(keras3)
+#' library(parsnip)
+#' library(dials)
 #'
-#' # 1. Define a kerasnip model specification
+#' # 1. Define layer blocks
+#' input_block <- function(model, input_shape) {
+#'   keras_model_sequential(input_shape = input_shape)
+#' }
+#' hidden_block <- function(model, units = 32) {
+#'   model |> layer_dense(units = units, activation = "relu")
+#' }
+#' output_block <- function(model, num_classes) {
+#'   model |> layer_dense(units = num_classes, activation = "softmax")
+#' }
+#'
+#' # 2. Define a kerasnip model specification
 #' create_keras_sequential_spec(
-#'   model_name = "my_mlp",
+#'   model_name = "my_mlp_grid",
 #'   layer_blocks = list(
-#'     input_block,
-#'     hidden_block,
-#'     output_block
+#'     input = input_block,
+#'     hidden = hidden_block,
+#'     output = output_block
 #'   ),
 #'   mode = "classification"
 #' )
 #'
-#' mlp_spec <- my_mlp(
+#' mlp_spec <- my_mlp_grid(
 #'   hidden_units = tune(),
 #'   compile_loss = "categorical_crossentropy",
 #'   compile_optimizer = "adam"
 #' )
 #'
-#' # 2. Create a hyperparameter grid
+#' # 3. Create a hyperparameter grid
 #' # Include an invalid value (-10) to demonstrate error handling
 #' param_grid <- tibble::tibble(
 #'   hidden_units = c(32, 64, -10)
 #' )
 #'
-#' # 3. Prepare dummy data
+#' # 4. Prepare dummy data
 #' x_train <- matrix(rnorm(100 * 10), ncol = 10)
 #' y_train <- factor(sample(0:1, 100, replace = TRUE))
 #'
-#' # 4. Compile models over the grid
+#' # 5. Compile models over the grid
 #' compiled_grid <- compile_keras_grid(
 #'   spec = mlp_spec,
 #'   grid = param_grid,
@@ -79,8 +93,9 @@
 #' )
 #'
 #' print(compiled_grid)
+#' remove_keras_spec("my_mlp_grid")
 #'
-#' # 5. Inspect the results
+#' # 6. Inspect the results
 #' # The row with `hidden_units = -10` will show an error.
 #' }
 #' }
@@ -194,15 +209,61 @@ compile_keras_grid <- function(spec, grid, x, y) {
 #'
 #' @examples
 #' \donttest{
-#' # Continuing the example from `compile_keras_grid`:
+#' if (requireNamespace("keras3", quietly = TRUE)) {
+#'   library(keras3)
+#'   library(parsnip)
+#'   library(dials)
 #'
-#' # `compiled_grid` contains one row with an error.
-#' valid_grid <- extract_valid_grid(compiled_grid)
+#'   # 1. Define layer blocks
+#'   input_block <- function(model, input_shape) {
+#'     keras_model_sequential(input_shape = input_shape)
+#'   }
+#'   hidden_block <- function(model, units = 32) {
+#'     model |> layer_dense(units = units, activation = "relu")
+#'   }
+#'   output_block <- function(model, num_classes) {
+#'     model |> layer_dense(units = num_classes, activation = "softmax")
+#'   }
 #'
-#' # `valid_grid` now only contains the rows that compiled successfully.
-#' print(valid_grid)
+#'   # 2. Define a kerasnip model specification
+#'   create_keras_sequential_spec(
+#'     model_name = "my_mlp_grid_2",
+#'     layer_blocks = list(
+#'       input = input_block,
+#'       hidden = hidden_block,
+#'       output = output_block
+#'     ),
+#'     mode = "classification"
+#'   )
 #'
-#' # This clean grid can now be passed to tune::tune_grid().
+#'   mlp_spec <- my_mlp_grid_2(
+#'     hidden_units = tune(),
+#'     compile_loss = "categorical_crossentropy",
+#'     compile_optimizer = "adam"
+#'   )
+#'
+#'   # 3. Create a hyperparameter grid
+#'   param_grid <- tibble::tibble(
+#'     hidden_units = c(32, 64, -10)
+#'   )
+#'
+#'   # 4. Prepare dummy data
+#'   x_train <- matrix(rnorm(100 * 10), ncol = 10)
+#'   y_train <- factor(sample(0:1, 100, replace = TRUE))
+#'
+#'   # 5. Compile models over the grid
+#'   compiled_grid <- compile_keras_grid(
+#'     spec = mlp_spec,
+#'     grid = param_grid,
+#'     x = x_train,
+#'     y = y_train
+#'   )
+#'
+#'   # 6. Extract the valid grid
+#'   valid_grid <- extract_valid_grid(compiled_grid)
+#'   print(valid_grid)
+#'   remove_keras_spec("my_mlp_grid_2")
+#' }
 #' }
 #' @export
 extract_valid_grid <- function(compiled_grid) {
@@ -242,11 +303,60 @@ extract_valid_grid <- function(compiled_grid) {
 #'
 #' @examples
 #' \donttest{
-#' # Continuing the example from `compile_keras_grid`:
+#' if (requireNamespace("keras3", quietly = TRUE)) {
+#'   library(keras3)
+#'   library(parsnip)
+#'   library(dials)
 #'
-#' # `compiled_grid` contains one row with an error.
-#' # This will print a formatted summary of that error.
-#' inform_errors(compiled_grid)
+#'   # 1. Define layer blocks
+#'   input_block <- function(model, input_shape) {
+#'     keras_model_sequential(input_shape = input_shape)
+#'   }
+#'   hidden_block <- function(model, units = 32) {
+#'     model |> layer_dense(units = units, activation = "relu")
+#'   }
+#'   output_block <- function(model, num_classes) {
+#'     model |> layer_dense(units = num_classes, activation = "softmax")
+#'   }
+#'
+#'   # 2. Define a kerasnip model specification
+#'   create_keras_sequential_spec(
+#'     model_name = "my_mlp_grid_3",
+#'     layer_blocks = list(
+#'       input = input_block,
+#'       hidden = hidden_block,
+#'       output = output_block
+#'     ),
+#'     mode = "classification"
+#'   )
+#'
+#'   mlp_spec <- my_mlp_grid_3(
+#'     hidden_units = tune(),
+#'     compile_loss = "categorical_crossentropy",
+#'     compile_optimizer = "adam"
+#'   )
+#'
+#'   # 3. Create a hyperparameter grid
+#'   param_grid <- tibble::tibble(
+#'     hidden_units = c(32, 64, -10)
+#'   )
+#'
+#'   # 4. Prepare dummy data
+#'   x_train <- matrix(rnorm(100 * 10), ncol = 10)
+#'   y_train <- factor(sample(0:1, 100, replace = TRUE))
+#'
+#'   # 5. Compile models over the grid
+#'   compiled_grid <- compile_keras_grid(
+#'     spec = mlp_spec,
+#'     grid = param_grid,
+#'     x = x_train,
+#'     y = y_train
+#'   )
+#'
+#'   # 6. Inform about errors
+#'   inform_errors(compiled_grid)
+#'   remove_keras_spec("my_mlp_grid_3")
+#' }
 #' }
 #' @export
 inform_errors <- function(compiled_grid, n = 10) {

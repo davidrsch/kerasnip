@@ -119,6 +119,7 @@
 #'   # model_spec <- my_resnet_spec(num_dense_path = 2, dense_path_units = 32)
 #'
 #'   print(model_spec)
+#'   remove_keras_spec("my_resnet_spec")
 #'   # tune::tunable(model_spec)
 #' }
 #' }
