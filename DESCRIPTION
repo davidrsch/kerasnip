@@ -1,6 +1,6 @@
 Package: kerasnip
 Title: A Bridge Between 'keras' and 'tidymodels'
-Version: 0.0.1.9000
+Version: 0.0.2
 Authors@R: 
     person("David", "Díaz", , "daviddrsch@gmail.com", role = c("aut", "cre"))
 Description: Provides a seamless bridge between 'keras' and the 'tidymodels'

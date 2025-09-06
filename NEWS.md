@@ -1,5 +1,16 @@
 # kerasnip (development version)
 
+# kerasnip 0.0.2
+
+## Improvements
+* Test suite improvements for post-processing and fit helpers (#23).
+
+## Bug Fixes
+* Fixed a bug in the documentation where examples were not self-contained, causing issues with CRAN checks. This involved updating examples to be fully runnable and cleaning up created model specifications (#22).
+* As part of this fix, a new helper function `model_exists()` was introduced and exported.
+
+
+
 # kerasnip 0.0.1
 
 ## New features
