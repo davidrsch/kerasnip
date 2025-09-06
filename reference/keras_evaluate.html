@@ -13,7 +13,7 @@ the loss and any other metrics."><meta property="og:image" content="https://davi
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,15 +96,32 @@ with.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"keras3"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 1. Define and fit a model ----</span></span></span>
+<span class="r-in"><span><span class="co"># 1. Define layer blocks</span></span></span>
+<span class="r-in"><span><span class="va">input_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">input_shape</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://keras3.posit.co/reference/keras_model_sequential.html" class="external-link">keras_model_sequential</a></span><span class="op">(</span>input_shape <span class="op">=</span> <span class="va">input_shape</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">hidden_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">units</span> <span class="op">=</span> <span class="fl">32</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">model</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="va">units</span>, activation <span class="op">=</span> <span class="st">"relu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">output_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">num_classes</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">model</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="va">num_classes</span>, activation <span class="op">=</span> <span class="st">"softmax"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 2. Define and fit a model ----</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="create_keras_sequential_spec.html">create_keras_sequential_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  model_name <span class="op">=</span> <span class="st">"my_mlp"</span>,</span></span>
-<span class="r-in"><span>  layer_blocks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">input_block</span>, <span class="va">hidden_block</span>, <span class="va">output_block</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  model_name <span class="op">=</span> <span class="st">"my_mlp_tools"</span>,</span></span>
+<span class="r-in"><span>  layer_blocks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    input <span class="op">=</span> <span class="va">input_block</span>,</span></span>
+<span class="r-in"><span>    hidden <span class="op">=</span> <span class="va">hidden_block</span>,</span></span>
+<span class="r-in"><span>    output <span class="op">=</span> <span class="va">output_block</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  mode <span class="op">=</span> <span class="st">"classification"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mlp_spec</span> <span class="op">&lt;-</span> <span class="fu">my_mlp</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">mlp_spec</span> <span class="op">&lt;-</span> <span class="fu">my_mlp_tools</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  hidden_units <span class="op">=</span> <span class="fl">32</span>,</span></span>
 <span class="r-in"><span>  compile_loss <span class="op">=</span> <span class="st">"categorical_crossentropy"</span>,</span></span>
 <span class="r-in"><span>  compile_optimizer <span class="op">=</span> <span class="st">"adam"</span>,</span></span>
@@ -118,22 +135,42 @@ with.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fitted_mlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">mlp_spec</span>, <span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">train_df</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 2. Evaluate the model on new data ----</span></span></span>
+<span class="r-in"><span><span class="co"># 3. Evaluate the model on new data ----</span></span></span>
 <span class="r-in"><span><span class="va">x_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">eval_metrics</span> <span class="op">&lt;-</span> <span class="fu">keras_evaluate</span><span class="op">(</span><span class="va">fitted_mlp</span>, <span class="va">x_test</span>, <span class="va">y_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_metrics</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 3. Extract the Keras model object ----</span></span></span>
+<span class="r-in"><span><span class="co"># 4. Extract the Keras model object ----</span></span></span>
 <span class="r-in"><span><span class="va">keras_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_keras_model.html">extract_keras_model</a></span><span class="op">(</span><span class="va">fitted_mlp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">keras_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 4. Extract the training history ----</span></span></span>
+<span class="r-in"><span><span class="co"># 5. Extract the training history ----</span></span></span>
 <span class="r-in"><span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_keras_history.html">extract_keras_history</a></span><span class="op">(</span><span class="va">fitted_mlp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">history</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="remove_keras_spec.html">remove_keras_spec</a></span><span class="op">(</span><span class="st">"my_mlp_tools"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'input_block' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $accuracy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $loss</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.724391</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Model: "sequential_9"</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ┃<span style="font-weight: bold;"> Layer (type)                      </span>┃<span style="font-weight: bold;"> Output Shape             </span>┃<span style="font-weight: bold;">       Param # </span>┃</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ dense_15 (<span style="color: #0087FF;">Dense</span>)                  │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │           <span style="color: #00AF00;">352</span> │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ dense_16 (<span style="color: #0087FF;">Dense</span>)                  │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">2</span>)                │            <span style="color: #00AF00;">66</span> │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> └───────────────────────────────────┴──────────────────────────┴───────────────┘</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">1,256</span> (4.91 KB)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">418</span> (1.63 KB)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;"> Non-trainable params: </span><span style="color: #00AF00;">0</span> (0.00 B)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;"> Optimizer params: </span><span style="color: #00AF00;">838</span> (3.28 KB)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed from parsnip registry objects: my_mlp_tools, my_mlp_tools_args, my_mlp_tools_encoding, my_mlp_tools_fit, my_mlp_tools_modes, my_mlp_tools_pkgs, my_mlp_tools_predict</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 'my_mlp_tools' from parsnip:::get_model_env()$models</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

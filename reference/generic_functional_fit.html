@@ -13,7 +13,7 @@ kerasnip functional model specification is used."><meta property="og:image" cont
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -123,15 +123,14 @@ and processed data, passing along any fitting-specific arguments (e.g.,
 <span class="r-in"><span><span class="co"># It is called internally by `parsnip::fit()`.</span></span></span>
 <span class="r-in"><span><span class="co"># For example:</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># create_keras_functional_spec(...) defines my_functional_model</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">my_functional_model</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fl">128</span>, fit_epochs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in my_functional_model(hidden_units = 128, fit_epochs = 10):</span> could not find function "my_functional_model"</span>
+<span class="r-in"><span><span class="co"># spec &lt;- my_functional_model(hidden_units = 128, fit_epochs = 10) |&gt;</span></span></span>
+<span class="r-in"><span><span class="co">#   set_engine("keras")</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># This call to fit() would invoke generic_functional_fit() internally</span></span></span>
-<span class="r-in"><span><span class="va">fitted_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">spec</span>, <span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">training_data</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'spec' not found</span>
+<span class="r-in"><span><span class="co"># # This call to fit() would invoke generic_functional_fit() internally</span></span></span>
+<span class="r-in"><span><span class="co"># fitted_model &lt;- fit(spec, y ~ x, data = training_data)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

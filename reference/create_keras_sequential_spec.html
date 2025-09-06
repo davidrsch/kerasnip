@@ -15,7 +15,7 @@ topologies, see create_keras_functional_spec()."><meta property="og:image" conte
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -165,7 +165,7 @@ each block is repeated, making it easy to tune the depth of your network.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 2. Create the spec, providing blocks in the correct order.</span></span></span>
 <span class="r-in"><span><span class="fu">create_keras_sequential_spec</span><span class="op">(</span></span></span>
-<span class="r-in"><span>model_name <span class="op">=</span> <span class="st">"my_mlp"</span>,</span></span>
+<span class="r-in"><span>model_name <span class="op">=</span> <span class="st">"my_mlp_seq_spec"</span>,</span></span>
 <span class="r-in"><span>  layer_blocks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    input <span class="op">=</span> <span class="va">input_block</span>,</span></span>
 <span class="r-in"><span>    hidden <span class="op">=</span> <span class="va">hidden_block</span>,</span></span>
@@ -176,7 +176,7 @@ each block is repeated, making it easy to tune the depth of your network.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 3. Use the newly created specification function!</span></span></span>
 <span class="r-in"><span><span class="co"># Note the new arguments `num_hidden` and `hidden_units`.</span></span></span>
-<span class="r-in"><span><span class="va">model_spec</span> <span class="op">&lt;-</span> <span class="fu">my_mlp</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">model_spec</span> <span class="op">&lt;-</span> <span class="fu">my_mlp_seq_spec</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  num_hidden <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  hidden_units <span class="op">=</span> <span class="fl">64</span>,</span></span>
 <span class="r-in"><span>  epochs <span class="op">=</span> <span class="fl">10</span>,</span></span>
@@ -184,9 +184,9 @@ each block is repeated, making it easy to tune the depth of your network.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">model_spec</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="remove_keras_spec.html">remove_keras_spec</a></span><span class="op">(</span><span class="st">"my_mlp_seq_spec"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: scales</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> my mlp Model Specification (classification)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> my mlp seq spec Model Specification (classification)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Main Arguments:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num_input = structure(list(), class = "rlang_zap")</span>
@@ -220,6 +220,8 @@ each block is repeated, making it easy to tune the depth of your network.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   compile_auto_scale_loss = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   epochs = 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed from parsnip registry objects: my_mlp_seq_spec, my_mlp_seq_spec_args, my_mlp_seq_spec_encoding, my_mlp_seq_spec_fit, my_mlp_seq_spec_modes, my_mlp_seq_spec_pkgs, my_mlp_seq_spec_predict</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 'my_mlp_seq_spec' from parsnip:::get_model_env()$models</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

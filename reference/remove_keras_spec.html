@@ -13,7 +13,7 @@ registrations within the parsnip package."><meta property="og:image" content="ht
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,12 +124,12 @@ the cleanup.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># Check it's gone</span></span></span>
 <span class="r-in"><span>  <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/exists.html" class="external-link">exists</a></span><span class="op">(</span><span class="st">"my_temp_model"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">!</span><span class="st">"my_temp_model"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/show_engines.html" class="external-link">show_engines</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span><span class="op">$</span><span class="va">model</span></span></span>
+<span class="r-in"><span>  <span class="op">!</span><span class="fu"><a href="model_exists.html">model_exists</a></span><span class="op">(</span><span class="st">"my_temp_model"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `model`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed from parsnip registry objects: my_temp_model, my_temp_model_args, my_temp_model_encoding, my_temp_model_fit, my_temp_model_modes, my_temp_model_pkgs, my_temp_model_predict</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 'my_temp_model' from parsnip:::get_model_env()$models</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in parsnip::show_engines(NULL):</span> `x` must be a single character string.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

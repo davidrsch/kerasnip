@@ -15,7 +15,7 @@ ecosystem."><meta property="og:image" content="https://davidrsch.github.io/keras
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -199,13 +199,9 @@ in the environment specified by the <code>env</code> argument.</p>
 <span class="r-in"><span>  <span class="co"># model_spec &lt;- my_resnet_spec(num_dense_path = 2, dense_path_units = 32)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">model_spec</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="remove_keras_spec.html">remove_keras_spec</a></span><span class="op">(</span><span class="st">"my_resnet_spec"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="co"># tune::tunable(model_spec)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘parsnip’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:kerasnip’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     get_model_env</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> my resnet spec Model Specification (regression)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Main Arguments:</span>
@@ -241,6 +237,8 @@ in the environment specified by the <code>env</code> argument.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   compile_auto_scale_loss = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   epochs = 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed from parsnip registry objects: my_resnet_spec, my_resnet_spec_args, my_resnet_spec_encoding, my_resnet_spec_fit, my_resnet_spec_modes, my_resnet_spec_pkgs, my_resnet_spec_predict</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 'my_resnet_spec' from parsnip:::get_model_env()$models</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
