@@ -86,7 +86,16 @@ test_that("keras_postprocess_probs handles multi-output (named list) correctly",
   names(results) <- c("output1", "output2")
   processed <- keras_postprocess_probs(results, mock_object_multi_output)
   expect_s3_class(processed, "tbl_df")
-  expect_equal(names(processed), c(".pred_output1_classA", ".pred_output1_classB", ".pred_output2_typeX", ".pred_output2_typeY", ".pred_output2_typeZ"))
+  expect_equal(
+    names(processed),
+    c(
+      ".pred_output1_classA",
+      ".pred_output1_classB",
+      ".pred_output2_typeX",
+      ".pred_output2_typeY",
+      ".pred_output2_typeZ"
+    )
+  )
   expect_equal(processed$.pred_output1_classA, c(0.1, 0.2))
   expect_equal(processed$.pred_output2_typeX, c(0.3, 0.5))
 })
