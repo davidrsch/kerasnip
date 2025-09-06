@@ -212,7 +212,10 @@ test_that("keras_postprocess_classes handles multi-output (binary, single column
   processed <- keras_postprocess_classes(results, mock_object_multi_output_binary)
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), c(".pred_class_output1"))
-  expect_equal(as.character(processed$.pred_class_output1), c("positive", "negative", "negative", "positive")) # Expected based on 0.5 threshold
+  expect_equal(
+    as.character(processed$.pred_class_output1),
+    c("positive", "negative", "negative", "positive")
+  ) # Expected based on 0.5 threshold
   expect_true(is.factor(processed$.pred_class_output1))
   expect_equal(levels(processed$.pred_class_output1), c("negative", "positive"))
 })
