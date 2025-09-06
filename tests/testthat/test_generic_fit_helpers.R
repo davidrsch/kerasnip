@@ -103,7 +103,10 @@ test_that("collect_compile_args handles named list of metrics (multi-output) cor
       dummy_metric_obj_5 <- structure(list(), class = "dummy_metric_5")
       args_all_obj_metrics <- collect_compile_args(
         all_args = list(
-          compile_metrics = list(out1 = dummy_metric_obj_4, out2 = dummy_metric_obj_5)
+          compile_metrics = list(
+            out1 = dummy_metric_obj_4,
+            out2 = dummy_metric_obj_5
+          )
         ),
         learn_rate = 0.01,
         default_loss = list(out1 = "mse", out2 = "mae"),
