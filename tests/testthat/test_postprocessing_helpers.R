@@ -126,7 +126,10 @@ test_that("keras_postprocess_classes handles single output (multiclass) correctl
   processed <- keras_postprocess_classes(results, mock_object_single_output)
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), ".pred_class")
-  expect_equal(as.character(processed$.pred_class), c("versicolor", "virginica"))
+  expect_equal(
+    as.character(processed$.pred_class),
+    c("versicolor", "virginica")
+  )
   expect_true(is.factor(processed$.pred_class))
   expect_equal(levels(processed$.pred_class), c("setosa", "versicolor", "virginica"))
 })
