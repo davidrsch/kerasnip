@@ -173,7 +173,10 @@ test_that("keras_postprocess_classes handles multi-output (named list) correctly
   expect_true(is.factor(processed$.pred_class_output1))
   expect_true(is.factor(processed$.pred_class_output2))
   expect_equal(levels(processed$.pred_class_output1), c("classA", "classB"))
-  expect_equal(levels(processed$.pred_class_output2), c("typeX", "typeY", "typeZ"))
+  expect_equal(
+    levels(processed$.pred_class_output2),
+    c("typeX", "typeY", "typeZ")
+  )
 })
 
 test_that("keras_postprocess_classes handles multi-output with NULL levels fallback", {
