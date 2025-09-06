@@ -55,9 +55,21 @@ test_that("keras_postprocess_numeric handles multi-output (named list) correctly
 # --- Tests for keras_postprocess_probs ---
 
 test_that("keras_postprocess_probs handles single output (matrix) correctly", {
-  results <- matrix(c(0.1, 0.9, 0.0,  # Example probabilities for 3 classes
-                      0.2, 0.1, 0.7,
-                      0.3, 0.3, 0.4), ncol = 3, byrow = TRUE)
+  results <- matrix(
+    c(
+      0.1,
+      0.9,
+      0.0, # Example probabilities for 3 classes
+      0.2,
+      0.1,
+      0.7,
+      0.3,
+      0.3,
+      0.4
+    ),
+    ncol = 3,
+    byrow = TRUE
+  )
   processed <- keras_postprocess_probs(results, mock_object_single_output)
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), c("setosa", "versicolor", "virginica")) # Updated expected names
