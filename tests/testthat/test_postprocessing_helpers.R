@@ -113,7 +113,10 @@ test_that("keras_postprocess_probs handles multi-output with NULL levels fallbac
   class(mock_object_null_lvl) <- "model_fit"
   processed <- keras_postprocess_probs(results, mock_object_null_lvl)
   expect_s3_class(processed, "tbl_df")
-  expect_equal(names(processed), c(".pred_output1_class1", ".pred_output1_class2"))
+  expect_equal(
+    names(processed),
+    c(".pred_output1_class1", ".pred_output1_class2")
+  )
 })
 
 # --- Tests for keras_postprocess_classes ---
