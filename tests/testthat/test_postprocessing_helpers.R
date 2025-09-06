@@ -131,7 +131,10 @@ test_that("keras_postprocess_classes handles single output (multiclass) correctl
     c("versicolor", "virginica")
   )
   expect_true(is.factor(processed$.pred_class))
-  expect_equal(levels(processed$.pred_class), c("setosa", "versicolor", "virginica"))
+  expect_equal(
+    levels(processed$.pred_class),
+    c("setosa", "versicolor", "virginica")
+  )
 })
 
 test_that("keras_postprocess_classes handles single output (binary) correctly", {
