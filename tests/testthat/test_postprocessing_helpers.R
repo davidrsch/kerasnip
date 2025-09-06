@@ -209,7 +209,10 @@ test_that("keras_postprocess_classes handles multi-output (binary, single column
     )
   )
   class(mock_object_multi_output_binary) <- "model_fit"
-  processed <- keras_postprocess_classes(results, mock_object_multi_output_binary)
+  processed <- keras_postprocess_classes(
+    results,
+    mock_object_multi_output_binary
+  )
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), c(".pred_class_output1"))
   expect_equal(
