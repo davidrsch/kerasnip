@@ -66,9 +66,22 @@ register_model_args <- function(model_name, parsnip_names) {
     if (startsWith(arg, "num_")) {
       dials_fun <- "num_terms"
     } else {
-      base_arg <- sub(".*_", "", arg)
-      idx <- match(base_arg, keras_dials_map$keras_arg)
-      dials_fun <- if (!is.na(idx)) keras_dials_map$dials_fun[idx] else arg
+      # First, try to match the full argument name
+      idx <- match(arg, keras_dials_map$keras_arg)
+      if (!is.na(idx)) {
+        dials_fun <- keras_dials_map$dials_fun[idx]
+      } else {
+        # If no full match, try to match the base name (e.g., "units" from "dense_units")
+        base_arg <- sub(".*_", "", arg)
+        idx <- match(base_arg, keras_dials_map$keras_arg)
+        dials_fun <- if (!is.na(idx)) keras_dials_map$dials_fun[idx] else arg
+      }
+    }
+
+    pkg <- if (dials_fun %in% c("loss_function_keras", "optimizer_function")) {
+      "kerasnip"
+    } else {
+      "dials"
     }
 
     parsnip::set_model_arg(
@@ -76,7 +89,7 @@ register_model_args <- function(model_name, parsnip_names) {
       eng = "keras",
       parsnip = arg,
       original = arg,
-      func = list(pkg = "dials", fun = dials_fun),
+      func = list(pkg = pkg, fun = dials_fun),
       has_submodel = FALSE
     )
   }
