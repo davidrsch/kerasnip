@@ -21,6 +21,7 @@ guides:
       - functional_api
       - workflows_sequential
       - workflows_functional
+      - tuning_fit_compile_args
 
 # examples:
 
@@ -88,6 +89,9 @@ navbar:
           href: articles/workflows_sequential.html
         - text: "Functional API"
           href: articles/workflows_functional.html
+        - text: "Tuning"
+        - text: "Tuning Fit and Compile Arguments"
+          href: articles/tuning_fit_compile_args.html
     github:
       icon: fa-github
       href: https://github.com/davidrsch/kerasnip
