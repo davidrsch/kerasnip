@@ -46,6 +46,8 @@
     <li><h6 class="dropdown-header" data-toc-skip>Workflows</h6></li>
     <li><a class="dropdown-item" href="../articles/workflows_sequential.html">Sequential Model</a></li>
     <li><a class="dropdown-item" href="../articles/workflows_functional.html">Functional API</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tuning</h6></li>
+    <li><a class="dropdown-item" href="../articles/tuning_fit_compile_args.html">Tuning Fit and Compile Arguments</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -328,15 +330,15 @@ block definitions.</p>
 <span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 46ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 48ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_output_1 .pred_output_2</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.591 …        0.510 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.419 …        0.452 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.419 …        0.409 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.323 …        0.517 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.470 …        0.567 …</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.557 …        0.624 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.406 …        0.500 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.323 …        0.429 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.323 …        0.583 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.402 …        0.597 …</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

@@ -46,6 +46,8 @@
     <li><h6 class="dropdown-header" data-toc-skip>Workflows</h6></li>
     <li><a class="dropdown-item" href="../articles/workflows_sequential.html">Sequential Model</a></li>
     <li><a class="dropdown-item" href="../articles/workflows_functional.html">Functional API</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tuning</h6></li>
+    <li><a class="dropdown-item" href="../articles/tuning_fit_compile_args.html">Tuning Fit and Compile Arguments</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -162,7 +164,7 @@ dataset, reshape the predictors, and convert the outcome to a factor for
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mnist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://keras3.posit.co/reference/dataset_mnist.html" class="external-link">dataset_mnist</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">       0/11490434</span> <span style="color: #BBBBBB;">━━━━━━━━━━━━━━━━━━━━</span> <span style="font-weight: bold;">0s</span> 0s/step<span style="font-weight: bold;"> 4251648/11490434</span> <span style="color: #00BB00;">━━━━━━━</span><span style="color: #BBBBBB;">━━━━━━━━━━━━━</span> <span style="font-weight: bold;">0s</span> 0us/step<span style="font-weight: bold;">11490434/11490434</span> <span style="color: #00BB00;">━━━━━━━━━━━━━━━━━━━━</span> <span style="font-weight: bold;">0s</span> 0us/step</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">       0/11490434</span> <span style="color: #BBBBBB;">━━━━━━━━━━━━━━━━━━━━</span> <span style="font-weight: bold;">0s</span> 0s/step<span style="font-weight: bold;"> 1024000/11490434</span> <span style="color: #00BB00;">━</span><span style="color: #BBBBBB;">━━━━━━━━━━━━━━━━━━━</span> <span style="font-weight: bold;">0s</span> 0us/step<span style="font-weight: bold;">11010048/11490434</span> <span style="color: #00BB00;">━━━━━━━━━━━━━━━━━━━</span><span style="color: #BBBBBB;">━</span> <span style="font-weight: bold;">0s</span> 0us/step<span style="font-weight: bold;">11490434/11490434</span> <span style="color: #00BB00;">━━━━━━━━━━━━━━━━━━━━</span> <span style="font-weight: bold;">0s</span> 0us/step</span></span>
 <span><span class="va">x_train</span> <span class="op">&lt;-</span> <span class="va">mnist</span><span class="op">$</span><span class="va">train</span><span class="op">$</span><span class="va">x</span></span>
 <span><span class="va">y_train</span> <span class="op">&lt;-</span> <span class="va">mnist</span><span class="op">$</span><span class="va">train</span><span class="op">$</span><span class="va">y</span></span>
 <span><span class="va">x_test</span> <span class="op">&lt;-</span> <span class="va">mnist</span><span class="op">$</span><span class="va">test</span><span class="op">$</span><span class="va">x</span></span>
@@ -329,12 +331,12 @@ and any other metrics that were specified during the model compilation
 step.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mlp_fit</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/keras_evaluate.html">keras_evaluate</a></span><span class="op">(</span><span class="va">x_test</span>, <span class="va">y_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 313/313 - 0s - 1ms/step - accuracy: 0.9829 - loss: 0.0803</span></span>
+<span><span class="co">#&gt; 313/313 - 0s - 1ms/step - accuracy: 0.9807 - loss: 0.0945</span></span>
 <span><span class="co">#&gt; $accuracy</span></span>
-<span><span class="co">#&gt; [1] 0.9829</span></span>
+<span><span class="co">#&gt; [1] 0.9807</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $loss</span></span>
-<span><span class="co">#&gt; [1] 0.08030113</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.09452158</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="making-predictions">Making Predictions<a class="anchor" aria-label="anchor" href="#making-predictions"></a>
@@ -348,7 +350,7 @@ labels.</p>
 <code class="sourceCode R"><span><span class="co"># Predict the class for the first 5 images in the test set</span></span>
 <span><span class="va">class_preds</span> <span class="op">&lt;-</span> <span class="va">mlp_fit</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">test_df</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 40ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 41ms/step</span></span>
 <span><span class="va">class_preds</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 1</span></span></span>
 <span><span class="co">#&gt;   .pred_class</span></span>
@@ -366,17 +368,17 @@ column for each of the 10 classes (0-9).</p>
 <code class="sourceCode R"><span><span class="co"># Predict probabilities for the first 5 images</span></span>
 <span><span class="va">prob_preds</span> <span class="op">&lt;-</span> <span class="va">mlp_fit</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">test_df</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 22ms/step</span></span>
 <span><span class="va">prob_preds</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
 <span><span class="co">#&gt;    .pred_0   .pred_1  .pred_2  .pred_3   .pred_4  .pred_5  .pred_6  .pred_7</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 5.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span> 1.01 <span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span> 2.49<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 4.01 <span style="color: #949494;">e</span><span style="color: #BB0000;">-20</span> 4.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-18</span> 1.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-27</span> 1   <span style="color: #949494;">e</span>+ 0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1.80<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span> 1.53 <span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1   <span style="color: #949494;">e</span>+ 0 7.19<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 2.94 <span style="color: #949494;">e</span><span style="color: #BB0000;">-23</span> 4.49<span style="color: #949494;">e</span><span style="color: #BB0000;">-21</span> 3.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-21</span> 1.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-18</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 3.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.000<span style="color: #949494;">e</span>+ 0 2.57<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 3.33 <span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 5.62<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 9.17<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.39<span style="color: #949494;">e</span><span style="color: #BB0000;">- 6</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1   <span style="color: #949494;">e</span>+ 0 2.43 <span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 4.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 6.56 <span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.95<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 4.36<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 7.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1.55<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 2.07 <span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 1.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 1.000<span style="color: #949494;">e</span>+ 0 4.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 1.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 8.63<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.000<span style="color: #949494;">e</span>+ 0 2.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.30 <span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 5.88<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 9.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 7.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-20</span> 6.78 <span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span> 4.81<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span> 1.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 4.73 <span style="color: #949494;">e</span><span style="color: #BB0000;">-22</span> 2.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span> 3.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span> 1   <span style="color: #949494;">e</span>+ 0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span> 3.80 <span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1   <span style="color: #949494;">e</span>+ 0 5.51<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 6.38 <span style="color: #949494;">e</span><span style="color: #BB0000;">-30</span> 3.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-25</span> 1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span> 9.45<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 5.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.000<span style="color: #949494;">e</span>+ 0 7.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 2.36<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 4.75 <span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 6.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 7.55<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1   <span style="color: #949494;">e</span>+ 0 1.43 <span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.64<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 2.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 5.70 <span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 2.61<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 3.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 6.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.76 <span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 1.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 1.000<span style="color: #949494;">e</span>+ 0 3.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.76<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 9.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span> 1.000<span style="color: #949494;">e</span>+ 0 1.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 2.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.17 <span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 2.30<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 2.35<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.68<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: .pred_8 &lt;dbl&gt;, .pred_9 &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>We can then compare the predicted class to the actual class for these
 images to see how the model is performing.</p>
@@ -393,12 +395,12 @@ images to see how the model is performing.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 12</span></span></span>
 <span><span class="co">#&gt;   .pred_class  .pred_0   .pred_1  .pred_2  .pred_3   .pred_4  .pred_5  .pred_6</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 7           5.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span> 1.01 <span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span> 2.49<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 4.01 <span style="color: #949494;">e</span><span style="color: #BB0000;">-20</span> 4.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-18</span> 1.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-27</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2           1.80<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span> 1.53 <span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1   <span style="color: #949494;">e</span>+ 0 7.19<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 2.94 <span style="color: #949494;">e</span><span style="color: #BB0000;">-23</span> 4.49<span style="color: #949494;">e</span><span style="color: #BB0000;">-21</span> 3.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-21</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1           3.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.000<span style="color: #949494;">e</span>+ 0 2.57<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 3.33 <span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 5.62<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 9.17<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0           1   <span style="color: #949494;">e</span>+ 0 2.43 <span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 4.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 6.56 <span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.95<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 4.36<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4           1.55<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 2.07 <span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 1.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 1.000<span style="color: #949494;">e</span>+ 0 4.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 1.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1           1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.000<span style="color: #949494;">e</span>+ 0 2.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.30 <span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 5.88<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 9.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 7           7.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-20</span> 6.78 <span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span> 4.81<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span> 1.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 4.73 <span style="color: #949494;">e</span><span style="color: #BB0000;">-22</span> 2.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span> 3.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2           1.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span> 3.80 <span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1   <span style="color: #949494;">e</span>+ 0 5.51<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 6.38 <span style="color: #949494;">e</span><span style="color: #BB0000;">-30</span> 3.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-25</span> 1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-19</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1           5.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.000<span style="color: #949494;">e</span>+ 0 7.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 2.36<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 4.75 <span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 6.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0           1   <span style="color: #949494;">e</span>+ 0 1.43 <span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.64<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 2.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 5.70 <span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 2.61<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4           6.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.76 <span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> 1.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 1.000<span style="color: #949494;">e</span>+ 0 3.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1           9.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span> 1.000<span style="color: #949494;">e</span>+ 0 1.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 2.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.17 <span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 2.30<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 2.35<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: .pred_7 &lt;dbl&gt;, .pred_8 &lt;dbl&gt;, .pred_9 &lt;dbl&gt;, y &lt;fct&gt;</span></span></span></code></pre></div>
 </div>
 </div>
@@ -469,87 +471,87 @@ tunable model.</p>
 <span>  metrics <span class="op">=</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">accuracy</span><span class="op">)</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu">control_grid</span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">FALSE</span>, save_workflow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 38ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 37ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 37ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 36ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 38ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 37ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span></code></pre></div>
+<span><span class="co">#&gt; 2/2 - 0s - 38ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span></code></pre></div>
 <p>Finally, we can inspect the results to find which architecture
 performed the best. First, a summary table:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -558,11 +560,11 @@ performed the best. First, a summary table:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 9</span></span></span>
 <span><span class="co">#&gt;   num_hidden_1 hidden_1_units hidden_1_rate .metric  .estimator  mean     n</span></span>
 <span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            2            256           0.3 accuracy multiclass 0.810     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            3            256           0.2 accuracy multiclass 0.800     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            2            256           0.2 accuracy multiclass 0.790     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            3            256           0.3 accuracy multiclass 0.790     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            1            256           0.2 accuracy multiclass 0.780     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            2            256         0.3   accuracy multiclass 0.800     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            1            160         0.400 accuracy multiclass 0.790     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            2            160         0.2   accuracy multiclass 0.780     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            2            160         0.3   accuracy multiclass 0.780     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            2            160         0.400 accuracy multiclass 0.780     3</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: std_err &lt;dbl&gt;, .config &lt;chr&gt;</span></span></span></code></pre></div>
 <p>Now that we’ve identified the best-performing hyperparameters, our
 final step is to create and train the final model. We use
