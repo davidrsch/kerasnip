@@ -1,0 +1,194 @@
+---
+title: "Tuning Fit and Compile Arguments"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tuning Fit and Compile Arguments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = reticulate::py_module_available("keras")
+)
+# Suppress verbose Keras output for the vignette
+options(keras.fit_verbose = 0)
+set.seed(123)
+```
+
+## Introduction
+
+While `kerasnip` makes it easy to tune the architecture of a Keras model (e.g., the number of layers or the number of units in a layer), it is often just as important to tune the parameters that control the training process itself. `kerasnip` exposes these parameters through special `fit_*` and `compile_*` arguments in the model specification.
+
+This vignette provides a comprehensive example of how to tune these arguments within a `tidymodels` workflow. We will tune:
+
+*   **`fit_epochs`**: The number of training epochs.
+*   **`fit_batch_size`**: The number of samples per gradient update.
+*   **`compile_optimizer`**: The optimization algorithm (e.g., "adam", "sgd").
+*   **`compile_loss`**: The loss function used for training.
+*   **`learn_rate`**: The learning rate for the optimizer.
+
+## Setup
+
+First, we load the necessary packages.
+
+```{r load-packages}
+library(kerasnip)
+library(tidymodels)
+library(keras3)
+```
+
+## Data Preparation
+
+We will use the classic `iris` dataset for this example. It's a simple, small dataset, which is ideal for demonstrating the tuning process without long training times.
+
+```{r data-prep}
+# Split data into training and testing sets
+set.seed(123)
+iris_split <- initial_split(iris, prop = 0.8, strata = Species)
+iris_train <- training(iris_split)
+iris_test <- testing(iris_split)
+
+# Create cross-validation folds for tuning
+iris_folds <- vfold_cv(iris_train, v = 3, strata = Species)
+```
+
+## Define a `kerasnip` Model
+
+We'll create a very simple sequential model with a single dense layer. This keeps the focus on tuning the `fit_*` and `compile_*` arguments rather than the model architecture.
+
+```{r define-kerasnip-model}
+# Define layer blocks
+input_block <- function(model, input_shape) {
+  keras_model_sequential(input_shape = input_shape)
+}
+dense_block <- function(model, units = 10) {
+  model |> layer_dense(units = units, activation = "relu")
+}
+output_block <- function(model, num_classes) {
+  model |> layer_dense(units = num_classes, activation = "softmax")
+}
+
+# Create the kerasnip model specification function
+create_keras_sequential_spec(
+  model_name = "iris_mlp",
+  layer_blocks = list(
+    input = input_block,
+    dense = dense_block,
+    output = output_block
+  ),
+  mode = "classification"
+)
+```
+
+## Define the Tunable Specification
+
+Now, we create an instance of our `iris_mlp` model. We set the arguments we want to optimize to `tune()`.
+
+```{r define-tune-spec}
+# Define the tunable model specification
+tune_spec <- iris_mlp(
+  dense_units = 16, # Keep architecture fixed for this example
+  fit_epochs = tune(),
+  fit_batch_size = tune(),
+  compile_optimizer = tune(),
+  compile_loss = tune(),
+  learn_rate = tune()
+) |>
+  set_engine("keras")
+
+print(tune_spec)
+```
+
+## Create Workflow and Tuning Grid
+
+Next, we create a `workflow` and define the search space for our hyperparameters using `dials`. `kerasnip` provides special `dials` parameter functions for `optimizer` and `loss`.
+
+```{r create-workflow-grid}
+# Create a simple recipe
+iris_recipe <- recipe(Species ~ ., data = iris_train) |>
+  step_normalize(all_numeric_predictors())
+
+# Create the workflow
+tune_wf <- workflow() |>
+  add_recipe(iris_recipe) |>
+  add_model(tune_spec)
+
+# Define the tuning grid
+params <- extract_parameter_set_dials(tune_wf) |>
+  update(
+    fit_epochs = epochs(c(10, 30)),
+    fit_batch_size = batch_size(c(16, 64), trans = NULL),
+    compile_optimizer = optimizer_function(values = c("adam", "sgd", "rmsprop")),
+    compile_loss = loss_function_keras(values = c("categorical_crossentropy", "kl_divergence")),
+    learn_rate = learn_rate(c(0.001, 0.01), trans = NULL)
+  )
+
+set.seed(456)
+tuning_grid <- grid_regular(params, levels = 2)
+
+tuning_grid
+```
+
+## Tune the Model
+
+With the workflow and grid defined, we can now run the hyperparameter tuning using `tune_grid()`.
+
+```{r tune-model, cache=TRUE}
+tune_res <- tune_grid(
+  tune_wf,
+  resamples = iris_folds,
+  grid = tuning_grid,
+  metrics = metric_set(accuracy, roc_auc),
+  control = control_grid(save_pred = FALSE, save_workflow = TRUE, verbose = FALSE)
+)
+```
+
+## Inspect the Results
+
+Let's examine the results to see how the different combinations of fitting and compilation parameters performed.
+
+```{r inspect-results}
+# Show the best performing models based on accuracy
+show_best(tune_res, metric = "accuracy")
+
+# Plot the results
+autoplot(tune_res) + theme_minimal()
+
+# Select the best hyperparameters
+best_params <- select_best(tune_res, metric = "accuracy")
+print(best_params)
+```
+
+The results show that `tune` has successfully explored different optimizers, loss functions, learning rates, epochs, and batch sizes, identifying the combination that yields the best accuracy.
+
+## Finalize and Fit
+
+Finally, we finalize our workflow with the best-performing hyperparameters and fit the model one last time on the full training dataset.
+
+```{r finalize-fit}
+# Finalize the workflow
+final_wf <- finalize_workflow(tune_wf, best_params)
+
+# Fit the final model
+final_fit <- fit(final_wf, data = iris_train)
+
+print(final_fit)
+```
+
+We can now use this `final_fit` object to make predictions on the test set.
+
+```{r predict}
+# Make predictions
+predictions <- predict(final_fit, new_data = iris_test)
+
+# Evaluate performance
+bind_cols(predictions, iris_test) |>
+  accuracy(truth = Species, estimate = .pred_class)
+```
+
+## Conclusion
+
+This vignette demonstrated how to tune the crucial `fit_*` and `compile_*` arguments of a Keras model within the `tidymodels` framework using `kerasnip`. By exposing these as tunable parameters, `kerasnip` gives you full control over the training process, allowing you to optimize not just the model's architecture, but also how it learns.
