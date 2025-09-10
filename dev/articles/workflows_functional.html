@@ -48,6 +48,8 @@
     <li><a class="dropdown-item" href="../articles/workflows_functional.html">Functional API</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>Tuning</h6></li>
     <li><a class="dropdown-item" href="../articles/tuning_fit_compile_args.html">Tuning Fit and Compile Arguments</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Applications</h6></li>
+    <li><a class="dropdown-item" href="../articles/applications.html">Transfer Learning</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -468,210 +470,139 @@ cross-validation and find the best hyperparameters.</p>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
@@ -682,42 +613,111 @@ cross-validation and find the best hyperparameters.</p>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span></code></pre></div>
@@ -733,8 +733,8 @@ combinations performed best.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 10</span></span></span>
 <span><span class="co">#&gt;   processed_numerical_units processed_neighborhood_units processed_bldg_units</span></span>
 <span><span class="co">#&gt;                       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                       128                           64                   40</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                       128                           64                   64</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                       128                           64                   64</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                       128                           64                   40</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7 more variables: processed_condition_units &lt;int&gt;, .metric &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   .estimator &lt;chr&gt;, mean &lt;dbl&gt;, n &lt;int&gt;, std_err &lt;dbl&gt;, .config &lt;chr&gt;</span></span></span>
 <span></span>
@@ -747,7 +747,7 @@ combinations performed best.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
 <span><span class="co">#&gt;   processed_numerical_units processed_neighborhood_units processed_bldg_units</span></span>
 <span><span class="co">#&gt;                       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                       128                           64                   40</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                       128                           64                   64</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: processed_condition_units &lt;int&gt;, .config &lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -781,7 +781,7 @@ fit the model on the entire training dataset.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; $fit</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_257"</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_255"</span></span></span>
 <span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓</span></span>
 <span><span class="co">#&gt; ┃<span style="font-weight: bold;"> Layer (type)          </span>┃<span style="font-weight: bold;"> Output Shape      </span>┃<span style="font-weight: bold;">     Param # </span>┃<span style="font-weight: bold;"> Connected to       </span>┃</span></span>
 <span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩</span></span>
@@ -797,33 +797,33 @@ fit the model on the entire training dataset.</p>
 <span><span class="co">#&gt; │ condition_input       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">9</span>)      │           <span style="color: #00AF00;">0</span> │ -                  │</span></span>
 <span><span class="co">#&gt; │ (<span style="color: #0087FF;">InputLayer</span>)          │                   │             │                    │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1028 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">128</span>)    │       <span style="color: #00AF00;">1,408</span> │ numerical_input[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ dense_1020 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">128</span>)    │       <span style="color: #00AF00;">1,408</span> │ numerical_input[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1029 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │       <span style="color: #00AF00;">1,856</span> │ neighborhood_inpu… │</span></span>
+<span><span class="co">#&gt; │ dense_1021 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │       <span style="color: #00AF00;">1,856</span> │ neighborhood_inpu… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1030 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">40</span>)     │         <span style="color: #00AF00;">200</span> │ bldg_input[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
+<span><span class="co">#&gt; │ dense_1022 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">320</span> │ bldg_input[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1031 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">640</span> │ condition_input[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ dense_1023 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">640</span> │ condition_input[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ concatenate_257       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">296</span>)    │           <span style="color: #00AF00;">0</span> │ dense_1028[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_1029[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │                       │                   │             │ dense_1030[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │                       │                   │             │ dense_1031[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
+<span><span class="co">#&gt; │ concatenate_255       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">320</span>)    │           <span style="color: #00AF00;">0</span> │ dense_1020[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_1021[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │                       │                   │             │ dense_1022[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │                       │                   │             │ dense_1023[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ output (<span style="color: #0087FF;">Dense</span>)        │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │         <span style="color: #00AF00;">297</span> │ concatenate_257[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ output (<span style="color: #0087FF;">Dense</span>)        │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │         <span style="color: #00AF00;">321</span> │ concatenate_255[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; └───────────────────────┴───────────────────┴─────────────┴────────────────────┘</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">13,205</span> (51.59 KB)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">4,401</span> (17.19 KB)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">13,637</span> (53.27 KB)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">4,545</span> (17.75 KB)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Non-trainable params: </span><span style="color: #00AF00;">0</span> (0.00 B)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;"> Optimizer params: </span><span style="color: #00AF00;">8,804</span> (34.39 KB)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Optimizer params: </span><span style="color: #00AF00;">9,092</span> (35.52 KB)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $history</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Final epoch (plot to see history):</span></span>
-<span><span class="co">#&gt;                    loss: 1,219,250,688</span></span>
-<span><span class="co">#&gt;     mean_absolute_error: 21,643</span></span>
-<span><span class="co">#&gt;                val_loss: 6,201,005,056</span></span>
-<span><span class="co">#&gt; val_mean_absolute_error: 59,750 </span></span>
+<span><span class="co">#&gt;                    loss: 1,205,636,864</span></span>
+<span><span class="co">#&gt;     mean_absolute_error: 21,342</span></span>
+<span><span class="co">#&gt;                val_loss: 6,172,818,432</span></span>
+<span><span class="co">#&gt; val_mean_absolute_error: 59,829 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $lvl</span></span>
 <span><span class="co">#&gt; NULL</span></span>
@@ -844,7 +844,7 @@ for further inspection.</p>
 <span>  <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html" class="external-link">extract_fit_parsnip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extract_keras_model.html">extract_keras_model</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_257"</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_255"</span></span></span>
 <span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓</span></span>
 <span><span class="co">#&gt; ┃<span style="font-weight: bold;"> Layer (type)          </span>┃<span style="font-weight: bold;"> Output Shape      </span>┃<span style="font-weight: bold;">     Param # </span>┃<span style="font-weight: bold;"> Connected to       </span>┃</span></span>
 <span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩</span></span>
@@ -860,25 +860,25 @@ for further inspection.</p>
 <span><span class="co">#&gt; │ condition_input       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">9</span>)      │           <span style="color: #00AF00;">0</span> │ -                  │</span></span>
 <span><span class="co">#&gt; │ (<span style="color: #0087FF;">InputLayer</span>)          │                   │             │                    │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1028 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">128</span>)    │       <span style="color: #00AF00;">1,408</span> │ numerical_input[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ dense_1020 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">128</span>)    │       <span style="color: #00AF00;">1,408</span> │ numerical_input[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1029 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │       <span style="color: #00AF00;">1,856</span> │ neighborhood_inpu… │</span></span>
+<span><span class="co">#&gt; │ dense_1021 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │       <span style="color: #00AF00;">1,856</span> │ neighborhood_inpu… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1030 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">40</span>)     │         <span style="color: #00AF00;">200</span> │ bldg_input[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
+<span><span class="co">#&gt; │ dense_1022 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">320</span> │ bldg_input[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1031 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">640</span> │ condition_input[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ dense_1023 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">640</span> │ condition_input[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ concatenate_257       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">296</span>)    │           <span style="color: #00AF00;">0</span> │ dense_1028[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_1029[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │                       │                   │             │ dense_1030[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │                       │                   │             │ dense_1031[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
+<span><span class="co">#&gt; │ concatenate_255       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">320</span>)    │           <span style="color: #00AF00;">0</span> │ dense_1020[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_1021[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │                       │                   │             │ dense_1022[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │                       │                   │             │ dense_1023[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ output (<span style="color: #0087FF;">Dense</span>)        │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │         <span style="color: #00AF00;">297</span> │ concatenate_257[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ output (<span style="color: #0087FF;">Dense</span>)        │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │         <span style="color: #00AF00;">321</span> │ concatenate_255[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; └───────────────────────┴───────────────────┴─────────────┴────────────────────┘</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">13,205</span> (51.59 KB)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">4,401</span> (17.19 KB)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">13,637</span> (53.27 KB)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">4,545</span> (17.75 KB)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Non-trainable params: </span><span style="color: #00AF00;">0</span> (0.00 B)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;"> Optimizer params: </span><span style="color: #00AF00;">8,804</span> (34.39 KB)</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="font-weight: bold;"> Optimizer params: </span><span style="color: #00AF00;">9,092</span> (35.52 KB)</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot the Keras model</span></span>
 <span><span class="va">final_ames_fit</span> <span class="op">|&gt;</span></span>
@@ -917,12 +917,12 @@ model’s performance.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   Sale_Price   .pred</span></span>
 <span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     <span style="text-decoration: underline;">105</span>000  <span style="text-decoration: underline;">93</span>147.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     <span style="text-decoration: underline;">172</span>000 <span style="text-decoration: underline;">161</span>135.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     <span style="text-decoration: underline;">189</span>900 <span style="text-decoration: underline;">192</span>176.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     <span style="text-decoration: underline;">115</span>000 <span style="text-decoration: underline;">126</span>696.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     <span style="text-decoration: underline;">395</span>192 <span style="text-decoration: underline;">267</span>117.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     <span style="text-decoration: underline;">214</span>000 <span style="text-decoration: underline;">215</span>119.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     <span style="text-decoration: underline;">105</span>000  <span style="text-decoration: underline;">97</span>173.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     <span style="text-decoration: underline;">172</span>000 <span style="text-decoration: underline;">160</span>855.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     <span style="text-decoration: underline;">189</span>900 <span style="text-decoration: underline;">192</span>848.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     <span style="text-decoration: underline;">115</span>000 <span style="text-decoration: underline;">128</span>617.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     <span style="text-decoration: underline;">395</span>192 <span style="text-decoration: underline;">269</span>471.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     <span style="text-decoration: underline;">214</span>000 <span style="text-decoration: underline;">214</span>436.</span></span>
 <span></span>
 <span><span class="co"># Evaluate performance using yardstick metrics</span></span>
 <span><span class="va">metrics_results</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span></span>
@@ -939,9 +939,9 @@ model’s performance.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> rmse    standard   <span style="text-decoration: underline;">51</span>065.   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mae     standard   <span style="text-decoration: underline;">31</span>188.   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> rsq     standard       0.779</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> rmse    standard   <span style="text-decoration: underline;">50</span>775.   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mae     standard   <span style="text-decoration: underline;">30</span>975.   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> rsq     standard       0.784</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
