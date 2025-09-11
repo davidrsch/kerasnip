@@ -9,7 +9,7 @@ articles:
   tuning_fit_compile_args: tuning_fit_compile_args.html
   workflows_functional: workflows_functional.html
   workflows_sequential: workflows_sequential.html
-last_built: 2025-09-10T22:45Z
+last_built: 2025-09-11T10:21Z
 urls:
   reference: https://davidrsch.github.io/kerasnip/reference
   article: https://davidrsch.github.io/kerasnip/articles

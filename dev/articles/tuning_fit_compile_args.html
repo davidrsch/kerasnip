@@ -121,7 +121,7 @@ optimizer.</li>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.9     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.1</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dials       </span> 1.4.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">rsample     </span> 1.3.1</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr       </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tailor      </span> 0.1.0</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 3.5.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 4.0.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.0.9     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 2.0.0</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">modeldata   </span> 1.5.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflows   </span> 1.3.0</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.3.3     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.1</span></span>
@@ -295,11 +295,103 @@ tuning using <code>tune_grid()</code>.</p>
 <span>  metrics <span class="op">=</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">accuracy</span>, <span class="va">roc_auc</span><span class="op">)</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu">control_grid</span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">FALSE</span>, save_workflow <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 10ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 10ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
@@ -323,7 +415,39 @@ tuning using <code>tune_grid()</code>.</p>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 10ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
@@ -335,158 +459,34 @@ tuning using <code>tune_grid()</code>.</p>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 12ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 13ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 12ms/step</span></span></code></pre></div>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="inspect-the-results">Inspect the Results<a class="anchor" aria-label="anchor" href="#inspect-the-results"></a>
@@ -499,8 +499,8 @@ fitting and compilation parameters performed.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 11</span></span></span>
 <span><span class="co">#&gt;   learn_rate fit_batch_size fit_epochs compile_optimizer compile_loss    .metric</span></span>
 <span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       0.01             16         30 adam              kl_divergence   accura…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>       0.01             16         30 adam              categorical_cr… accura…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       0.01             16         30 adam              categorical_cr… accura…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>       0.01             16         30 adam              kl_divergence   accura…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>       0.01             64         30 adam              categorical_cr… accura…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>       0.01             64         30 adam              kl_divergence   accura…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>       0.01             16         10 adam              kl_divergence   accura…</span></span>
@@ -516,9 +516,9 @@ fitting and compilation parameters performed.</p>
 <span><span class="va">best_params</span> <span class="op">&lt;-</span> <span class="fu">select_best</span><span class="op">(</span><span class="va">tune_res</span>, metric <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">best_params</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
-<span><span class="co">#&gt;   learn_rate fit_batch_size fit_epochs compile_optimizer compile_loss  .config  </span></span>
-<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       0.01             16         30 adam              kl_divergence pre0_mod…</span></span></code></pre></div>
+<span><span class="co">#&gt;   learn_rate fit_batch_size fit_epochs compile_optimizer compile_loss    .config</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       0.01             16         30 adam              categorical_cr… pre0_m…</span></span></code></pre></div>
 <p>The results show that <code>tune</code> has successfully explored
 different optimizers, loss functions, learning rates, epochs, and batch
 sizes, identifying the combination that yields the best accuracy.</p>
@@ -565,7 +565,7 @@ dataset.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Final epoch (plot to see history):</span></span>
 <span><span class="co">#&gt; accuracy: 0.9833</span></span>
-<span><span class="co">#&gt;     loss: 0.04706 </span></span>
+<span><span class="co">#&gt;     loss: 0.04836 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $lvl</span></span>
 <span><span class="co">#&gt; [1] "setosa"     "versicolor" "virginica" </span></span>
@@ -584,7 +584,7 @@ dataset.</p>
 <span><span class="co">#&gt;     else ncol(x_proc)</span></span>
 <span><span class="co">#&gt;     list(x_proc = x_proc, input_shape = input_shape)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55954b67a0b8&gt;</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x55d2590f3178&gt;</span></span>
 <span><span class="co">#&gt; &lt;environment: namespace:kerasnip&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $process_y</span></span>
@@ -605,7 +605,7 @@ on the test set.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Make predictions</span></span>
 <span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">final_fit</span>, new_data <span class="op">=</span> <span class="va">iris_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 36ms/step</span></span>
 <span></span>
 <span><span class="co"># Evaluate performance</span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="va">predictions</span>, <span class="va">iris_test</span><span class="op">)</span> <span class="op">|&gt;</span></span>
