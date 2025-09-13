@@ -142,7 +142,6 @@ get_keras_object <- function(
   name
 }
 
-
 #' Process Predictor Input for Keras (Functional API)
 #'
 #' @description
