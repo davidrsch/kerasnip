@@ -22,6 +22,8 @@ guides:
       - workflows_sequential
       - workflows_functional
       - tuning_fit_compile_args
+      - applications
+      - autoplot_uniqueness
 
 # examples:
 
@@ -92,6 +94,8 @@ navbar:
         - text: "Tuning"
         - text: "Tuning Fit and Compile Arguments"
           href: articles/tuning_fit_compile_args.html
+        - text: "Ensuring autoplot Uniqueness"
+          href: articles/autoplot_uniqueness.html
         - text: "Applications"
         - text: "Transfer Learning"
           href: articles/applications.html
