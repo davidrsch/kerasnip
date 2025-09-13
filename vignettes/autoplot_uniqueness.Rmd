@@ -121,8 +121,8 @@ params <- tune::extract_parameter_set_dials(tune_wf)
 # The `id`s provided in tune() are automatically detected and used here.
 params <- params |>
   update(
-    dense1_units = hidden_units(range = c(4L, 8L)),
-    dense2_units = hidden_units(range = c(4L, 8L))
+    dense_layer_one_units = hidden_units(range = c(4L, 8L)),
+    dense_layer_two_units = hidden_units(range = c(4L, 8L))
   )
 
 grid <- dials::grid_regular(params, levels = 2)
