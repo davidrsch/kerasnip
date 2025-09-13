@@ -3,13 +3,14 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   applications: applications.html
+  autoplot_uniqueness: autoplot_uniqueness.html
   functional_api: functional_api.html
   getting_started: getting_started.html
   sequential_model: sequential_model.html
   tuning_fit_compile_args: tuning_fit_compile_args.html
   workflows_functional: workflows_functional.html
   workflows_sequential: workflows_sequential.html
-last_built: 2025-09-11T10:21Z
+last_built: 2025-09-13T12:23Z
 urls:
   reference: https://davidrsch.github.io/kerasnip/reference
   article: https://davidrsch.github.io/kerasnip/articles
