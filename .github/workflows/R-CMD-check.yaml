@@ -87,6 +87,12 @@ jobs:
         run: |
           echo "RETICULATE_PYTHON=$(Rscript -e 'cat(reticulate::py_exe())')" >> $GITHUB_ENV
 
+      - name: Limit TensorFlow threads (macOS workaround)
+        if: runner.os == 'macOS'
+        run: |
+          echo "TF_NUM_INTRAOP_THREADS=1" >> $GITHUB_ENV
+          echo "TF_NUM_INTEROP_THREADS=1" >> $GITHUB_ENV
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
