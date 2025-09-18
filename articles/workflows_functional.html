@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,11 @@
     <li><h6 class="dropdown-header" data-toc-skip>Workflows</h6></li>
     <li><a class="dropdown-item" href="../articles/workflows_sequential.html">Sequential Model</a></li>
     <li><a class="dropdown-item" href="../articles/workflows_functional.html">Functional API</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tuning</h6></li>
+    <li><a class="dropdown-item" href="../articles/tuning_fit_compile_args.html">Tuning Fit and Compile Arguments</a></li>
+    <li><a class="dropdown-item" href="../articles/autoplot_uniqueness.html">Ensuring autoplot Uniqueness</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Applications</h6></li>
+    <li><a class="dropdown-item" href="../articles/applications.html">Transfer Learning</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -97,15 +102,15 @@ modeling and tuning.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kerasnip</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────────── tidymodels 1.4.0 ──</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.9     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dials       </span> 1.4.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">rsample     </span> 1.3.1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr       </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble      </span> 3.3.0</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 3.5.2     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.0.9     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 2.0.0</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">modeldata   </span> 1.5.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflows   </span> 1.3.0</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.3.3     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr       </span> 1.1.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">yardstick   </span> 1.3.2</span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────────── tidymodels 1.4.1 ──</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.10     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dials       </span> 1.4.2      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">rsample     </span> 1.3.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr       </span> 1.1.4      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tailor      </span> 0.1.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 4.0.0      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.0.9      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 2.0.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">modeldata   </span> 1.5.1      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflows   </span> 1.3.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.3.3      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr       </span> 1.1.0      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">yardstick   </span> 1.3.2</span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────────── tidymodels_conflicts() ──</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">purrr</span>::<span style="color: #00BB00;">discard()</span> masks <span style="color: #0000BB;">scales</span>::discard()</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span>  masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
@@ -150,12 +155,12 @@ training and testing sets.</p>
 <span></span>
 <span><span class="co"># Split data into training and testing sets</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames_df</span>, prop <span class="op">=</span> <span class="fl">0.8</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span>
-<span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
-<span><span class="va">ames_test</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
+<span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">initial_split</a></span><span class="op">(</span><span class="va">ames_df</span>, prop <span class="op">=</span> <span class="fl">0.8</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span>
+<span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
+<span><span class="va">ames_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create cross-validation folds for tuning</span></span>
-<span><span class="va">ames_folds</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">ames_train</span>, v <span class="op">=</span> <span class="fl">5</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">ames_folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/vfold_cv.html" class="external-link">vfold_cv</a></span><span class="op">(</span><span class="va">ames_train</span>, v <span class="op">=</span> <span class="fl">5</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="recipe-for-preprocessing">Recipe for Preprocessing<a class="anchor" aria-label="anchor" href="#recipe-for-preprocessing"></a>
@@ -341,9 +346,9 @@ arguments are prefixed with their corresponding block names (e.g.,
 <p>A <code>workflow</code> combines the recipe and the model
 specification.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ames_wf</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">add_recipe</span><span class="op">(</span><span class="va">ames_recipe</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">functional_mlp_spec</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ames_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_recipe.html" class="external-link">add_recipe</a></span><span class="op">(</span><span class="va">ames_recipe</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html" class="external-link">add_model</a></span><span class="op">(</span><span class="va">functional_mlp_spec</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ames_wf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════════════════</span></span>
@@ -462,6 +467,7 @@ cross-validation and find the best hyperparameters.</p>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://finetune.tidymodels.org/reference/control_race.html" class="external-link">control_race</a></span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">TRUE</span>, save_workflow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 16ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
@@ -479,138 +485,7 @@ cross-validation and find the best hyperparameters.</p>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 1s - 35ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
@@ -668,13 +543,48 @@ cross-validation and find the best hyperparameters.</p>
 <span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
@@ -709,6 +619,100 @@ cross-validation and find the best hyperparameters.</p>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 15/15 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
 <span><span class="co">#&gt; 15/15 - 0s - 6ms/step</span></span>
@@ -779,7 +783,7 @@ fit the model on the entire training dataset.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; $fit</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_258"</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_257"</span></span></span>
 <span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓</span></span>
 <span><span class="co">#&gt; ┃<span style="font-weight: bold;"> Layer (type)          </span>┃<span style="font-weight: bold;"> Output Shape      </span>┃<span style="font-weight: bold;">     Param # </span>┃<span style="font-weight: bold;"> Connected to       </span>┃</span></span>
 <span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩</span></span>
@@ -795,20 +799,20 @@ fit the model on the entire training dataset.</p>
 <span><span class="co">#&gt; │ condition_input       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">9</span>)      │           <span style="color: #00AF00;">0</span> │ -                  │</span></span>
 <span><span class="co">#&gt; │ (<span style="color: #0087FF;">InputLayer</span>)          │                   │             │                    │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1032 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">128</span>)    │       <span style="color: #00AF00;">1,408</span> │ numerical_input[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ dense_1028 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">128</span>)    │       <span style="color: #00AF00;">1,408</span> │ numerical_input[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1033 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │       <span style="color: #00AF00;">1,856</span> │ neighborhood_inpu… │</span></span>
+<span><span class="co">#&gt; │ dense_1029 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │       <span style="color: #00AF00;">1,856</span> │ neighborhood_inpu… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1034 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">320</span> │ bldg_input[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
+<span><span class="co">#&gt; │ dense_1030 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">320</span> │ bldg_input[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1035 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">640</span> │ condition_input[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ dense_1031 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">640</span> │ condition_input[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ concatenate_258       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">320</span>)    │           <span style="color: #00AF00;">0</span> │ dense_1032[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_1033[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │                       │                   │             │ dense_1034[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │                       │                   │             │ dense_1035[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
+<span><span class="co">#&gt; │ concatenate_257       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">320</span>)    │           <span style="color: #00AF00;">0</span> │ dense_1028[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_1029[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │                       │                   │             │ dense_1030[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │                       │                   │             │ dense_1031[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ output (<span style="color: #0087FF;">Dense</span>)        │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │         <span style="color: #00AF00;">321</span> │ concatenate_258[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ output (<span style="color: #0087FF;">Dense</span>)        │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │         <span style="color: #00AF00;">321</span> │ concatenate_257[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; └───────────────────────┴───────────────────┴─────────────┴────────────────────┘</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">13,637</span> (53.27 KB)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">4,545</span> (17.75 KB)</span></span>
@@ -818,10 +822,10 @@ fit the model on the entire training dataset.</p>
 <span><span class="co">#&gt; $history</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Final epoch (plot to see history):</span></span>
-<span><span class="co">#&gt;                    loss: 1,200,798,720</span></span>
-<span><span class="co">#&gt;     mean_absolute_error: 21,272</span></span>
-<span><span class="co">#&gt;                val_loss: 5,954,076,160</span></span>
-<span><span class="co">#&gt; val_mean_absolute_error: 58,467 </span></span>
+<span><span class="co">#&gt;                    loss: 1,173,250,816</span></span>
+<span><span class="co">#&gt;     mean_absolute_error: 21,028</span></span>
+<span><span class="co">#&gt;                val_loss: 6,292,939,776</span></span>
+<span><span class="co">#&gt; val_mean_absolute_error: 60,300 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $lvl</span></span>
 <span><span class="co">#&gt; NULL</span></span>
@@ -842,7 +846,7 @@ for further inspection.</p>
 <span>  <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html" class="external-link">extract_fit_parsnip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extract_keras_model.html">extract_keras_model</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_258"</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "functional_257"</span></span></span>
 <span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓</span></span>
 <span><span class="co">#&gt; ┃<span style="font-weight: bold;"> Layer (type)          </span>┃<span style="font-weight: bold;"> Output Shape      </span>┃<span style="font-weight: bold;">     Param # </span>┃<span style="font-weight: bold;"> Connected to       </span>┃</span></span>
 <span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩</span></span>
@@ -858,20 +862,20 @@ for further inspection.</p>
 <span><span class="co">#&gt; │ condition_input       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">9</span>)      │           <span style="color: #00AF00;">0</span> │ -                  │</span></span>
 <span><span class="co">#&gt; │ (<span style="color: #0087FF;">InputLayer</span>)          │                   │             │                    │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1032 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">128</span>)    │       <span style="color: #00AF00;">1,408</span> │ numerical_input[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ dense_1028 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">128</span>)    │       <span style="color: #00AF00;">1,408</span> │ numerical_input[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1033 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │       <span style="color: #00AF00;">1,856</span> │ neighborhood_inpu… │</span></span>
+<span><span class="co">#&gt; │ dense_1029 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │       <span style="color: #00AF00;">1,856</span> │ neighborhood_inpu… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1034 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">320</span> │ bldg_input[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
+<span><span class="co">#&gt; │ dense_1030 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">320</span> │ bldg_input[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1035 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">640</span> │ condition_input[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ dense_1031 (<span style="color: #0087FF;">Dense</span>)    │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">64</span>)     │         <span style="color: #00AF00;">640</span> │ condition_input[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ concatenate_258       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">320</span>)    │           <span style="color: #00AF00;">0</span> │ dense_1032[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_1033[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │                       │                   │             │ dense_1034[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
-<span><span class="co">#&gt; │                       │                   │             │ dense_1035[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
+<span><span class="co">#&gt; │ concatenate_257       │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">320</span>)    │           <span style="color: #00AF00;">0</span> │ dense_1028[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │ (<span style="color: #0087FF;">Concatenate</span>)         │                   │             │ dense_1029[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │                       │                   │             │ dense_1030[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>],  │</span></span>
+<span><span class="co">#&gt; │                       │                   │             │ dense_1031[<span style="color: #00AF00;">0</span>][<span style="color: #00AF00;">0</span>]   │</span></span>
 <span><span class="co">#&gt; ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤</span></span>
-<span><span class="co">#&gt; │ output (<span style="color: #0087FF;">Dense</span>)        │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │         <span style="color: #00AF00;">321</span> │ concatenate_258[<span style="color: #00AF00;">0</span>… │</span></span>
+<span><span class="co">#&gt; │ output (<span style="color: #0087FF;">Dense</span>)        │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">1</span>, <span style="color: #00AF00;">1</span>)      │         <span style="color: #00AF00;">321</span> │ concatenate_257[<span style="color: #00AF00;">0</span>… │</span></span>
 <span><span class="co">#&gt; └───────────────────────┴───────────────────┴─────────────┴────────────────────┘</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">13,637</span> (53.27 KB)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">4,545</span> (17.75 KB)</span></span>
@@ -915,12 +919,12 @@ model’s performance.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   Sale_Price   .pred</span></span>
 <span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     <span style="text-decoration: underline;">105</span>000  <span style="text-decoration: underline;">98</span>474.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     <span style="text-decoration: underline;">172</span>000 <span style="text-decoration: underline;">158</span>799.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     <span style="text-decoration: underline;">189</span>900 <span style="text-decoration: underline;">193</span>350.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     <span style="text-decoration: underline;">115</span>000 <span style="text-decoration: underline;">127</span>675.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     <span style="text-decoration: underline;">395</span>192 <span style="text-decoration: underline;">267</span>154.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     <span style="text-decoration: underline;">214</span>000 <span style="text-decoration: underline;">212</span>004.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     <span style="text-decoration: underline;">105</span>000  <span style="text-decoration: underline;">97</span>397.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     <span style="text-decoration: underline;">172</span>000 <span style="text-decoration: underline;">160</span>653.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     <span style="text-decoration: underline;">189</span>900 <span style="text-decoration: underline;">193</span>086.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     <span style="text-decoration: underline;">115</span>000 <span style="text-decoration: underline;">127</span>432.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     <span style="text-decoration: underline;">395</span>192 <span style="text-decoration: underline;">261</span>470.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     <span style="text-decoration: underline;">214</span>000 <span style="text-decoration: underline;">213</span>254.</span></span>
 <span></span>
 <span><span class="co"># Evaluate performance using yardstick metrics</span></span>
 <span><span class="va">metrics_results</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span></span>
@@ -937,9 +941,9 @@ model’s performance.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> rmse    standard   <span style="text-decoration: underline;">50</span>292.   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mae     standard   <span style="text-decoration: underline;">30</span>588.   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> rsq     standard       0.790</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> rmse    standard   <span style="text-decoration: underline;">51</span>390.   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mae     standard   <span style="text-decoration: underline;">30</span>947.   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> rsq     standard       0.783</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

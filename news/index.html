@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,6 +24,11 @@
     <li><h6 class="dropdown-header" data-toc-skip>Workflows</h6></li>
     <li><a class="dropdown-item" href="../articles/workflows_sequential.html">Sequential Model</a></li>
     <li><a class="dropdown-item" href="../articles/workflows_functional.html">Functional API</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tuning</h6></li>
+    <li><a class="dropdown-item" href="../articles/tuning_fit_compile_args.html">Tuning Fit and Compile Arguments</a></li>
+    <li><a class="dropdown-item" href="../articles/autoplot_uniqueness.html">Ensuring autoplot Uniqueness</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Applications</h6></li>
+    <li><a class="dropdown-item" href="../articles/applications.html">Transfer Learning</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -42,7 +47,24 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="kerasnip-development-version">kerasnip (development version)<a class="anchor" aria-label="anchor" href="#kerasnip-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.0.3" id="kerasnip-003">kerasnip 0.0.3<a class="anchor" aria-label="anchor" href="#kerasnip-003"></a></h2><p class="text-muted">CRAN release: 2025-09-18</p>
+<div class="section level3">
+<h3 id="improvements-0-0-3">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-0-3"></a></h3>
+<ul><li>Added comprehensive end-to-end tests for tuning <code>fit_*</code> and <code>compile_*</code> parameters, and for <code>autoplot</code> uniqueness with multiple similar parameters.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-0-3">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-0-3"></a></h3>
+<ul><li>Added new vignettes:
+<ul><li>“Transfer Learning with Keras Applications”</li>
+<li>“Tuning Multiple Similar Parameters: Ensuring <code>autoplot</code> Uniqueness”</li>
+<li>“Tuning Fit and Compile Arguments”</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-0-3">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-3"></a></h3>
+<ul><li>Enhanced <code>register_model_args</code> to improve matching of Keras arguments to <code>dials</code> functions and correctly assign package sources for <code>dials</code> parameters.</li>
+<li>Refined <code>remove_keras_spec</code> to be more precise in removing model specifications, preventing unintended removal of other objects.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.2" id="kerasnip-002">kerasnip 0.0.2<a class="anchor" aria-label="anchor" href="#kerasnip-002"></a></h2>
