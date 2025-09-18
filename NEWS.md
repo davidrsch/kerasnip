@@ -1,4 +1,17 @@
-# kerasnip (development version)
+# kerasnip 0.0.3
+
+## Improvements
+*   Added comprehensive end-to-end tests for tuning `fit_*` and `compile_*` parameters, and for `autoplot` uniqueness with multiple similar parameters.
+
+## Documentation
+*   Added new vignettes:
+    *   "Transfer Learning with Keras Applications"
+    *   "Tuning Multiple Similar Parameters: Ensuring `autoplot` Uniqueness"
+    *   "Tuning Fit and Compile Arguments"
+
+## Bug fixes
+*   Enhanced `register_model_args` to improve matching of Keras arguments to `dials` functions and correctly assign package sources for `dials` parameters.
+*   Refined `remove_keras_spec` to be more precise in removing model specifications, preventing unintended removal of other objects.
 
 # kerasnip 0.0.2
 
