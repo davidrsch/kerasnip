@@ -58,16 +58,6 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Keras backend
-        # The keras3 package is installed by the previous step (as a dependency)
-        # This step installs the required Python libraries (e.g., tensorflow).
-        run: keras3::install_keras(envname = "r-reticulate")
-        shell: Rscript {0}
-
-      - name: Export reticulate Python
-        run: |
-          echo "RETICULATE_PYTHON=$(Rscript -e 'cat(reticulate::py_exe())')" >> $GITHUB_ENV
-
       - name: Install system dependencies for vignettes (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -86,6 +76,16 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+
+      - name: Install Keras backend
+        # The keras3 package is installed by the previous step (as a dependency)
+        # This step installs the required Python libraries (e.g., tensorflow).
+        run: keras3::install_keras(envname = "r-reticulate")
+        shell: Rscript {0}
+
+      - name: Export reticulate Python
+        run: |
+          echo "RETICULATE_PYTHON=$(Rscript -e 'cat(reticulate::py_exe())')" >> $GITHUB_ENV
 
       - uses: r-lib/actions/check-r-package@v2
         with:
