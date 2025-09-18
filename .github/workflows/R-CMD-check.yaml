@@ -58,9 +58,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Export python executable for reticulate
+      - name: Export reticulate Python
         run: |
-          echo "RETICULATE_PYTHON=$(python -c 'import sys; print(sys.executable)')" >> $GITHUB_ENV
+          echo "RETICULATE_PYTHON=$(Rscript -e 'cat(reticulate::py_exe())')" >> $GITHUB_ENV
 
       - name: Install system dependencies for vignettes (Linux)
         if: runner.os == 'Linux'
