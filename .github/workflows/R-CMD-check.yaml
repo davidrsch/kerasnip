@@ -70,7 +70,7 @@ jobs:
 
       - name: Install system dependencies for vignettes (macOS)
         if: runner.os == 'macOS'
-        run:  brew install qpdf ghostscript graphviz
+        run: brew install graphviz
 
       - name: Install system dependencies for vignettes (Windows)
         if: runner.os == 'Windows'
