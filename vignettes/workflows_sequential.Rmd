@@ -32,10 +32,10 @@ First, we load the necessary packages.
 library(kerasnip)
 library(tidymodels)
 library(keras3)
-library(dplyr)          # For data manipulation
-library(ggplot2)        # For plotting
-library(future)         # For parallel processing
-library(finetune)       # For racing
+library(dplyr) # For data manipulation
+library(ggplot2) # For plotting
+library(future) # For parallel processing
+library(finetune) # For racing
 ```
 
 ## Data Preparation

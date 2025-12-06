@@ -125,10 +125,16 @@ collect_spec_args <- function(
 #'     to the provided string. This is the common case for blocks that take a
 #'     single tensor input.
 #' 2.  **Multiple Input Mapping**: If `input_map` is a named character vector,
-#'     it provides an explicit mapping from new argument names (the names of the
-#'     vector) to the original argument names in the `block` function (the values
-#'     of the vector). This is used for blocks with multiple inputs, like a
-#'     concatenation layer.
+#'     the **names must match the argument names of `block`** and each value
+#'     must be the name of an upstream layer block whose output should be fed
+#'     into that argument. This orientation matches the
+#'     syntax (e.g., `c(numeric = "processed_numerical")`). This is used for
+#'     blocks with multiple inputs, like a concatenation layer.
+#'
+#' _Note_: Prior releases accepted the opposite orientation
+#' (`c(processed_numerical = "numeric")`). Existing code written in that style
+#' must flip the names/values when upgrading to this version.
+
 #'
 #' @param block A function that defines a Keras layer or a set of layers. The
 #'   first arguments should be the input tensor(s).
@@ -164,7 +170,7 @@ collect_spec_args <- function(
 #'   path_b = inp_spec(dense_block, "main_input"),
 #'   concatenated = inp_spec(
 #'     concat_block,
-#'     c(path_a = "input_a", path_b = "input_b")
+#'     c(input_a = "path_a", input_b = "path_b")
 #'   ),
 #'   output = inp_spec(output_block, "concatenated")
 #' )
@@ -188,19 +194,19 @@ inp_spec <- function(block, input_map) {
     # Case 1: Single string, rename first argument
     names(new_formals)[1] <- input_map
   } else if (is.character(input_map) && !is.null(names(input_map))) {
-    # Case 2: Named vector for mapping
-    if (!all(input_map %in% original_names)) {
-      missing_args <- input_map[!input_map %in% original_names]
+    # Case 2: Named vector for mapping (argument-first)
+    if (!all(names(input_map) %in% original_names)) {
+      missing_args <- names(input_map)[!names(input_map) %in% original_names]
       stop(paste(
         "Argument(s)",
         paste(shQuote(missing_args), collapse = ", "),
         "not found in the block function."
       ))
     }
-    # Use match() for a more concise, vectorized replacement of names
+
     new_names <- original_names
-    match_indices <- match(input_map, original_names)
-    new_names[match_indices] <- names(input_map)
+    match_indices <- match(names(input_map), original_names)
+    new_names[match_indices] <- unname(input_map)
     names(new_formals) <- new_names
   } else {
     stop("`input_map` must be a single string or a named character vector.")

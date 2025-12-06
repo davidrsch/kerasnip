@@ -115,10 +115,10 @@ create_keras_functional_spec(
     processed_2 = inp_spec(dense_path_2, "input_2"),
     concatenated = inp_spec(
       concat_block,
-      c(processed_1 = "input_a", processed_2 = "input_b")
+      c(input_a = "processed_1", input_b = "processed_2")
     ),
     output_1 = inp_spec(output_block_1, "concatenated"), # New output block 1
-    output_2 = inp_spec(output_block_2, "concatenated")  # New output block 2
+    output_2 = inp_spec(output_block_2, "concatenated") # New output block 2
   ),
   mode = "regression" # Still regression, but will have two columns in y
 )
@@ -159,7 +159,7 @@ train_df <- tibble::tibble(
     function(i) x_data_2[i, , drop = FALSE]
   ),
   output_1 = y_data_1, # Named output 1
-  output_2 = y_data_2  # Named output 2
+  output_2 = y_data_2 # Named output 2
 )
 
 rec <- recipe(output_1 + output_2 ~ input_1 + input_2, data = train_df)

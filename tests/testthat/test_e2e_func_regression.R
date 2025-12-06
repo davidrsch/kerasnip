@@ -23,7 +23,7 @@ test_that("E2E: Functional spec (regression) works", {
       path_b = inp_spec(path_block, "main_input"),
       concatenated = inp_spec(
         concat_block,
-        c(path_a = "input_a", path_b = "input_b")
+        c(input_a = "path_a", input_b = "path_b")
       ),
       output = inp_spec(output_block_reg, "concatenated")
     ),
@@ -74,7 +74,7 @@ test_that("E2E: Functional regression works with named predictors in formula", {
       path_b = inp_spec(path_block, "main_input"),
       concatenated = inp_spec(
         concat_block,
-        c(path_a = "input_a", path_b = "input_b")
+        c(input_a = "path_a", input_b = "path_b")
       ),
       output = inp_spec(output_block_reg, "concatenated")
     ),
@@ -185,7 +185,7 @@ test_that("E2E: Multi-input, multi-output functional regression works", {
       path_b = inp_spec(dense_path, "input_b"),
       concatenated = inp_spec(
         concat_block,
-        c(path_a = "in_1", path_b = "in_2")
+        c(in_1 = "path_a", in_2 = "path_b")
       ),
       output_1 = inp_spec(output_block_1, "concatenated"),
       output_2 = inp_spec(output_block_2, "concatenated")

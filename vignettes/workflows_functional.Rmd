@@ -32,10 +32,10 @@ First, we load the necessary packages.
 library(kerasnip)
 library(tidymodels)
 library(keras3)
-library(dplyr)       # For data manipulation
-library(ggplot2)     # For plotting
-library(future)      # For parallel processing
-library(finetune)    # For racing
+library(dplyr) # For data manipulation
+library(ggplot2) # For plotting
+library(future) # For parallel processing
+library(finetune) # For racing
 ```
 
 ## Data Preparation
@@ -149,10 +149,10 @@ create_keras_functional_spec(
     combined_features = inp_spec(
       concatenate_features,
       c(
-        processed_numerical = "numeric",
-        processed_neighborhood = "neighborhood",
-        processed_bldg = "bldg",
-        processed_condition = "condition"
+        numeric = "processed_numerical",
+        neighborhood = "processed_neighborhood",
+        bldg = "processed_bldg",
+        condition = "processed_condition"
       )
     ),
     output = inp_spec(output_regression, "combined_features")
@@ -288,7 +288,7 @@ final_ames_fit |>
   plot(show_shapes = TRUE)
 ```
 
-![Model](images/model_plot_shapes_fs.png){fig-alt="A picture showing the model shape"}
+![Model](images/model_plot_shapes_wf.png){fig-alt="A picture showing the model shape"}
 
 ```{r inspect-final-keras-model-history}
 # Plot the training history

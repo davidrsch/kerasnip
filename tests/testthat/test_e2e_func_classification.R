@@ -28,7 +28,7 @@ test_that("E2E: Functional spec (classification) works", {
       path_b = inp_spec(path_block, "main_input"),
       concatenated = inp_spec(
         concat_block,
-        c(path_a = "input_a", path_b = "input_b")
+        c(input_a = "path_a", input_b = "path_b")
       ),
       output = inp_spec(output_block_class, "concatenated")
     ),
@@ -165,7 +165,7 @@ test_that("E2E: Multi-input, single-output functional classification works", {
       path_b = inp_spec(dense_path, "flatten_b"),
       concatenated = inp_spec(
         concat_block,
-        c(path_a = "in_1", path_b = "in_2")
+        c(in_1 = "path_a", in_2 = "path_b")
       ),
       output = inp_spec(output_block_class, "concatenated")
     ),
@@ -230,7 +230,7 @@ test_that("E2E: Functional spec with pre-constructed optimizer works", {
       path_b = inp_spec(path_block, "main_input"),
       concatenated = inp_spec(
         concat_block,
-        c(path_a = "input_a", path_b = "input_b")
+        c(input_a = "path_a", input_b = "path_b")
       ),
       output = inp_spec(output_block_class, "concatenated")
     ),
@@ -283,7 +283,7 @@ test_that("E2E: Functional spec with string loss works", {
       path_b = inp_spec(path_block, "main_input"),
       concatenated = inp_spec(
         concat_block,
-        c(path_a = "input_a", path_b = "input_b")
+        c(input_a = "path_a", input_b = "path_b")
       ),
       output = inp_spec(output_block_class, "concatenated")
     ),

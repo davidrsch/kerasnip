@@ -16,6 +16,35 @@ test_that("inp_spec throws error for mismatched input_map names", {
 })
 
 
+test_that("inp_spec supports argument-first mapping", {
+  block_with_args <- function(numeric, categorical) {
+    list(numeric = numeric, categorical = categorical)
+  }
+  mapper <- c(
+    numeric = "processed_numeric",
+    categorical = "processed_categorical"
+  )
+  wrapped <- kerasnip:::inp_spec(block_with_args, mapper)
+
+  expect_identical(
+    names(formals(wrapped))[1:2],
+    c("processed_numeric", "processed_categorical")
+  )
+  res <- wrapped(processed_numeric = 10, processed_categorical = 20)
+  expect_identical(res$numeric, 10)
+  expect_identical(res$categorical, 20)
+})
+
+test_that("inp_spec rejects the legacy input_map orientation", {
+  block_with_args <- function(input_a, input_b) {}
+  legacy_mapper <- c(processed_a = "input_a", processed_b = "input_b")
+  expect_error(
+    kerasnip:::inp_spec(block_with_args, legacy_mapper),
+    "not found in the block function"
+  )
+})
+
+
 test_that("inp_spec throws error for invalid input_map type", {
   block_with_args <- function(a) {}
   expect_error(

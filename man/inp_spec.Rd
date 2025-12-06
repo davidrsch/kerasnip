@@ -37,11 +37,16 @@ the wrapper function renames the \emph{first} argument of the \code{block} funct
 to the provided string. This is the common case for blocks that take a
 single tensor input.
 \item \strong{Multiple Input Mapping}: If \code{input_map} is a named character vector,
-it provides an explicit mapping from new argument names (the names of the
-vector) to the original argument names in the \code{block} function (the values
-of the vector). This is used for blocks with multiple inputs, like a
-concatenation layer.
+the \strong{names must match the argument names of \code{block}} and each value
+must be the name of an upstream layer block whose output should be fed
+into that argument. This orientation matches the
+syntax (e.g., \code{c(numeric = "processed_numerical")}). This is used for
+blocks with multiple inputs, like a concatenation layer.
 }
+
+\emph{Note}: Prior releases accepted the opposite orientation
+(\code{c(processed_numerical = "numeric")}). Existing code written in that style
+must flip the names/values when upgrading to this version.
 }
 \examples{
 \donttest{
@@ -68,7 +73,7 @@ layer_blocks <- list(
   path_b = inp_spec(dense_block, "main_input"),
   concatenated = inp_spec(
     concat_block,
-    c(path_a = "input_a", path_b = "input_b")
+    c(input_a = "path_a", input_b = "path_b")
   ),
   output = inp_spec(output_block, "concatenated")
 )

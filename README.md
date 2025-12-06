@@ -1,13 +1,14 @@
-
 # kerasnip
 
 <!-- badges: start -->
+
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/davidrsch/kerasnip/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/davidrsch/kerasnip/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/davidrsch/kerasnip/graph/badge.svg)](https://app.codecov.io/gh/davidrsch/kerasnip)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/kerasnip)](https://cran.r-project.org/package=kerasnip)
 [![Downloads](https://cranlogs.r-pkg.org/badges/kerasnip)](https://cran.r-project.org/package=kerasnip)
+
 <!-- badges: end -->
 
 The goal of `kerasnip` is to provide a seamless bridge between the `keras` and `tidymodels` frameworks. It allows for the dynamic creation of `parsnip` model specifications for Keras models, making them fully compatible with `tidymodels` workflows.
@@ -112,8 +113,7 @@ create_keras_functional_spec(
     main_input = input_block,
     path_a = inp_spec(path_block, "main_input"),
     path_b = inp_spec(path_block, "main_input"),
-    concatenated = inp_spec(concat_block, c(path_a = "input_a", path_b = "input_b")),
-    # The output block must be named 'output'.
+    concatenated = inp_spec(concat_block, c(input_a = "path_a", input_b = "path_b")),
     output = inp_spec(output_block, "concatenated")
   ),
   mode = "regression"
@@ -136,6 +136,7 @@ fit(spec, mpg ~ ., data = mtcars) |>
 #> 4  18.6
 #> 5  17.9
 ```
+
 ### Example 3: Tuning a Sequential MLP Architecture
 
 This example demonstrates how to tune the number of dense layers and the rate of a final dropout layer, showcasing how to tune both architecture and block hyperparameters simultaneously.
@@ -210,8 +211,8 @@ tune_res <- tune_grid(
 # 6. Show the best architecture
 show_best(tune_res, metric = "rmse")
 #> # A tibble: 5 × 7
-#>   num_dense dense_units dropout_rate .metric .estimator .mean .config              
-#>       <int>       <int>        <dbl> <chr>   <chr>      <dbl> <chr>                
+#>   num_dense dense_units dropout_rate .metric .estimator .mean .config
+#>       <int>       <int>        <dbl> <chr>   <chr>      <dbl> <chr>
 #> 1         1          64          0.1 rmse    standard    2.92 Preprocessor1_Model02
 #> 2         1          64          0.5 rmse    standard    3.02 Preprocessor1_Model08
 #> 3         3          64          0.1 rmse    standard    3.15 Preprocessor1_Model04
