@@ -401,6 +401,12 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -433,6 +439,130 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -485,30 +615,6 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -532,119 +638,6 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -666,13 +659,11 @@ combinations performed best.
 ``` r
 # Show the best performing models based on RMSE
 show_best(ames_tune_results, metric = "rmse", n = 5)
-#> # A tibble: 4 × 10
+#> # A tibble: 2 × 10
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
 #> 1                       128                           64                   64
 #> 2                       128                           64                   40
-#> 3                       128                           64                   16
-#> 4                       128                           64                   64
 #> # ℹ 7 more variables: processed_condition_units <int>, .metric <chr>,
 #> #   .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -720,7 +711,7 @@ print(final_ames_fit)
 #> 
 #> ── Model ───────────────────────────────────────────────────────────────────────
 #> $fit
-#> Model: "functional_264"
+#> Model: "functional_257"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -736,20 +727,20 @@ print(final_ames_fit)
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1056 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1028 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1057 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1029 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1058 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
+#> │ dense_1030 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1059 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1031 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_264       │ (None, 1, 320)    │           0 │ dense_1056[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1057[0][0],  │
-#> │                       │                   │             │ dense_1058[0][0],  │
-#> │                       │                   │             │ dense_1059[0][0]   │
+#> │ concatenate_257       │ (None, 1, 320)    │           0 │ dense_1028[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1029[0][0],  │
+#> │                       │                   │             │ dense_1030[0][0],  │
+#> │                       │                   │             │ dense_1031[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_264[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_257[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
 #>  Total params: 13,637 (53.27 KB)
 #>  Trainable params: 4,545 (17.75 KB)
@@ -759,10 +750,10 @@ print(final_ames_fit)
 #> $history
 #> 
 #> Final epoch (plot to see history):
-#>                    loss: 1,185,266,304
-#>     mean_absolute_error: 21,106
-#>                val_loss: 6,248,739,328
-#> val_mean_absolute_error: 60,278 
+#>                    loss: 1,183,665,664
+#>     mean_absolute_error: 21,118
+#>                val_loss: 6,149,310,464
+#> val_mean_absolute_error: 59,552 
 #> 
 #> $lvl
 #> NULL
@@ -785,7 +776,7 @@ final_ames_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
   summary()
-#> Model: "functional_264"
+#> Model: "functional_257"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -801,20 +792,20 @@ final_ames_fit |>
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1056 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1028 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1057 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1029 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1058 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
+#> │ dense_1030 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1059 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1031 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_264       │ (None, 1, 320)    │           0 │ dense_1056[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1057[0][0],  │
-#> │                       │                   │             │ dense_1058[0][0],  │
-#> │                       │                   │             │ dense_1059[0][0]   │
+#> │ concatenate_257       │ (None, 1, 320)    │           0 │ dense_1028[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1029[0][0],  │
+#> │                       │                   │             │ dense_1030[0][0],  │
+#> │                       │                   │             │ dense_1031[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_264[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_257[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
 #>  Total params: 13,637 (53.27 KB)
 #>  Trainable params: 4,545 (17.75 KB)
@@ -864,12 +855,12 @@ print(head(ames_results))
 #> # A tibble: 6 × 2
 #>   Sale_Price   .pred
 #>        <int>   <dbl>
-#> 1     105000  96931.
-#> 2     172000 163861.
-#> 3     189900 193167.
-#> 4     115000 126597.
-#> 5     395192 268664.
-#> 6     214000 215256.
+#> 1     105000  98008.
+#> 2     172000 161664.
+#> 3     189900 193386.
+#> 4     115000 127545.
+#> 5     395192 267440.
+#> 6     214000 213320.
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -886,7 +877,7 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard   51165.   
-#> 2 mae     standard   31099.   
-#> 3 rsq     standard       0.780
+#> 1 rmse    standard   50750.   
+#> 2 mae     standard   30780.   
+#> 3 rsq     standard       0.787
 ```

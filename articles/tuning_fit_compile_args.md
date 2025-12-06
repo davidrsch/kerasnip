@@ -211,21 +211,25 @@ tune_res <- tune_grid(
 )
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
@@ -233,39 +237,19 @@ tune_res <- tune_grid(
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
@@ -275,31 +259,47 @@ tune_res <- tune_grid(
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
@@ -309,53 +309,87 @@ tune_res <- tune_grid(
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 12ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
@@ -364,42 +398,8 @@ tune_res <- tune_grid(
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 ```
 
@@ -416,9 +416,9 @@ show_best(tune_res, metric = "accuracy")
 #>        <dbl>          <int>      <int> <chr>             <chr>           <chr>  
 #> 1       0.01             16         30 adam              categorical_cr… accura…
 #> 2       0.01             16         30 adam              kl_divergence   accura…
-#> 3       0.01             64         30 adam              kl_divergence   accura…
-#> 4       0.01             16         10 adam              kl_divergence   accura…
-#> 5       0.01             64         30 adam              categorical_cr… accura…
+#> 3       0.01             64         30 adam              categorical_cr… accura…
+#> 4       0.01             64         30 adam              kl_divergence   accura…
+#> 5       0.01             16         10 adam              kl_divergence   accura…
 #> # ℹ 5 more variables: .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>,
 #> #   .config <chr>
 
@@ -485,7 +485,7 @@ print(final_fit)
 #> 
 #> Final epoch (plot to see history):
 #> accuracy: 0.975
-#>     loss: 0.05032 
+#>     loss: 0.04713 
 #> 
 #> $lvl
 #> [1] "setosa"     "versicolor" "virginica" 
@@ -504,7 +504,7 @@ print(final_fit)
 #>     else ncol(x_proc)
 #>     list(x_proc = x_proc, input_shape = input_shape)
 #> }
-#> <bytecode: 0x55d5fab40c38>
+#> <bytecode: 0x55b5a00b8748>
 #> <environment: namespace:kerasnip>
 #> 
 #> $process_y
@@ -528,7 +528,7 @@ set.
 ``` r
 # Make predictions
 predictions <- predict(final_fit, new_data = iris_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 35ms/step
 
 # Evaluate performance
 bind_cols(predictions, iris_test) |>
@@ -536,7 +536,7 @@ bind_cols(predictions, iris_test) |>
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy multiclass     0.967
+#> 1 accuracy multiclass     0.933
 ```
 
 ## Conclusion
