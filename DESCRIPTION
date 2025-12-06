@@ -1,6 +1,6 @@
 Package: kerasnip
 Title: A Bridge Between 'keras' and 'tidymodels'
-Version: 0.0.3.900
+Version: 0.1.0
 Authors@R: 
     person("David", "Díaz", , "daviddrsch@gmail.com", role = c("aut", "cre"))
 Description: Provides a seamless bridge between 'keras' and the 'tidymodels'
@@ -9,7 +9,7 @@ Description: Provides a seamless bridge between 'keras' and the 'tidymodels'
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports:
     abind,
     parsnip (>= 1.0.0),
