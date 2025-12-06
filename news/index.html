@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,22 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.0" id="kerasnip-010">kerasnip 0.1.0<a class="anchor" aria-label="anchor" href="#kerasnip-010"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-1-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0"></a></h3>
+<ul><li>
+<code><a href="../reference/inp_spec.html">inp_spec()</a></code> now interprets named vectors in an argument-first orientation (<code>c(input_a = "processed_1")</code>). Existing code that used the previous upstream-first style must swap the names and values.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-1-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-0"></a></h3>
+<ul><li>Updated README, vignettes, and reference docs to reflect the new <code><a href="../reference/inp_spec.html">inp_spec()</a></code> mapping semantics and added guidance for migrating older code.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-0-1-0">Testing<a class="anchor" aria-label="anchor" href="#testing-0-1-0"></a></h3>
+<ul><li>Added a regression test that fails fast when the legacy mapping orientation is supplied.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.3" id="kerasnip-003">kerasnip 0.0.3<a class="anchor" aria-label="anchor" href="#kerasnip-003"></a></h2><p class="text-muted">CRAN release: 2025-09-18</p>
 <div class="section level3">
@@ -124,7 +140,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

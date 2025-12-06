@@ -15,7 +15,7 @@ verbose anonymous functions."><meta property="og:image" content="https://davidrs
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,11 +98,15 @@ the wrapper function renames the <em>first</em> argument of the <code>block</cod
 to the provided string. This is the common case for blocks that take a
 single tensor input.</p></li>
 <li><p><strong>Multiple Input Mapping</strong>: If <code>input_map</code> is a named character vector,
-it provides an explicit mapping from new argument names (the names of the
-vector) to the original argument names in the <code>block</code> function (the values
-of the vector). This is used for blocks with multiple inputs, like a
-concatenation layer.</p></li>
-</ol></div>
+the <strong>names must match the argument names of <code>block</code></strong> and each value
+must be the name of an upstream layer block whose output should be fed
+into that argument. This orientation matches the
+syntax (e.g., <code>c(numeric = "processed_numerical")</code>). This is used for
+blocks with multiple inputs, like a concatenation layer.</p></li>
+</ol><p><em>Note</em>: Prior releases accepted the opposite orientation
+(<code>c(processed_numerical = "numeric")</code>). Existing code written in that style
+must flip the names/values when upgrading to this version.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -130,7 +134,7 @@ concatenation layer.</p></li>
 <span class="r-in"><span>  path_b <span class="op">=</span> <span class="fu">inp_spec</span><span class="op">(</span><span class="va">dense_block</span>, <span class="st">"main_input"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  concatenated <span class="op">=</span> <span class="fu">inp_spec</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="va">concat_block</span>,</span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>path_a <span class="op">=</span> <span class="st">"input_a"</span>, path_b <span class="op">=</span> <span class="st">"input_b"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>input_a <span class="op">=</span> <span class="st">"path_a"</span>, input_b <span class="op">=</span> <span class="st">"path_b"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  output <span class="op">=</span> <span class="fu">inp_spec</span><span class="op">(</span><span class="va">output_block</span>, <span class="st">"concatenated"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -146,7 +150,7 @@ concatenation layer.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
