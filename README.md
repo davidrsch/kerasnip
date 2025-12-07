@@ -7,7 +7,8 @@
 [![Codecov test
 coverage](https://codecov.io/gh/davidrsch/kerasnip/graph/badge.svg)](https://app.codecov.io/gh/davidrsch/kerasnip)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/kerasnip)](https://cran.r-project.org/package=kerasnip)
-[![Downloads](https://cranlogs.r-pkg.org/badges/kerasnip)](https://cran.r-project.org/package=kerasnip)
+[![Downloads](https://cranlogs.r-pkg.org/badges/last-month/kerasnip)](https://cran.r-project.org/package=kerasnip)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/kerasnip)](https://cran.r-project.org/package=kerasnip)
 
 <!-- badges: end -->
 
