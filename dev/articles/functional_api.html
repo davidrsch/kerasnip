@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.3.900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -149,14 +149,14 @@ inputs, which is not possible with the sequential API.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kerasnip</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────────── tidymodels 1.4.1 ──</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.10     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.11     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.1 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dials       </span> 1.4.2      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">rsample     </span> 1.3.1 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr       </span> 1.1.4      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tailor      </span> 0.1.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 4.0.0      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1 </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.0.9      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 2.0.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 4.0.1      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.0.9      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 2.0.1 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">modeldata   </span> 1.5.1      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflows   </span> 1.3.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.3.3      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.1 </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr       </span> 1.1.0      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">yardstick   </span> 1.3.2</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.4.0      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr       </span> 1.2.0      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">yardstick   </span> 1.3.2</span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────────── tidymodels_conflicts() ──</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">purrr</span>::<span style="color: #00BB00;">discard()</span> masks <span style="color: #0000BB;">scales</span>::discard()</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span>  masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
@@ -232,10 +232,10 @@ node names defined in the <code>layer_blocks</code> list.</p>
 <span>    processed_2 <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">dense_path_2</span>, <span class="st">"input_2"</span><span class="op">)</span>,</span>
 <span>    concatenated <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span></span>
 <span>      <span class="va">concat_block</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>processed_1 <span class="op">=</span> <span class="st">"input_a"</span>, processed_2 <span class="op">=</span> <span class="st">"input_b"</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>input_a <span class="op">=</span> <span class="st">"processed_1"</span>, input_b <span class="op">=</span> <span class="st">"processed_2"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    output_1 <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">output_block_1</span>, <span class="st">"concatenated"</span><span class="op">)</span>, <span class="co"># New output block 1</span></span>
-<span>    output_2 <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">output_block_2</span>, <span class="st">"concatenated"</span><span class="op">)</span>  <span class="co"># New output block 2</span></span>
+<span>    output_2 <span class="op">=</span> <span class="fu"><a href="../reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">output_block_2</span>, <span class="st">"concatenated"</span><span class="op">)</span> <span class="co"># New output block 2</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  mode <span class="op">=</span> <span class="st">"regression"</span> <span class="co"># Still regression, but will have two columns in y</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -317,7 +317,7 @@ block definitions.</p>
 <span>    <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">x_data_2</span><span class="op">[</span><span class="va">i</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  output_1 <span class="op">=</span> <span class="va">y_data_1</span>, <span class="co"># Named output 1</span></span>
-<span>  output_2 <span class="op">=</span> <span class="va">y_data_2</span>  <span class="co"># Named output 2</span></span>
+<span>  output_2 <span class="op">=</span> <span class="va">y_data_2</span> <span class="co"># Named output 2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">output_1</span> <span class="op">+</span> <span class="va">output_2</span> <span class="op">~</span> <span class="va">input_1</span> <span class="op">+</span> <span class="va">input_2</span>, data <span class="op">=</span> <span class="va">train_df</span><span class="op">)</span></span>
@@ -333,15 +333,15 @@ block definitions.</p>
 <span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 46ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 54ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_output_1 .pred_output_2</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.508 …        0.507 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.344 …        0.478 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.355 …        0.409 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.431 …        0.545 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.422 …        0.559 …</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.548 …        0.614 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.541 …        0.365 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.415 …        0.551 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.418 …        0.644 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.541 …        0.534 …</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -501,7 +501,7 @@ with <code>parsnip</code>, <code>dials</code>, and
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
