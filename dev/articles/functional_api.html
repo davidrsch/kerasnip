@@ -76,7 +76,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Building Functional Models with kerasnip</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/davidrsch/kerasnip/blob/main/vignettes/functional_api.Rmd" class="external-link"><code>vignettes/functional_api.Rmd</code></a></small>
       <div class="d-none name"><code>functional_api.Rmd</code></div>
     </div>
 
@@ -146,7 +146,7 @@ inputs, which is not possible with the sequential API.</p>
 </h3>
 <p>First, we load the necessary packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kerasnip</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────────── tidymodels 1.4.1 ──</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.11     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.1 </span></span>
@@ -333,15 +333,15 @@ block definitions.</p>
 <span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 54ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 45ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_output_1 .pred_output_2</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.548 …        0.614 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.541 …        0.365 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.415 …        0.551 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.418 …        0.644 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.541 …        0.534 …</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.739 …        0.586 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.467 …        0.479 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.356 …        0.529 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.406 …        0.622 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.564 …        0.560 …</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

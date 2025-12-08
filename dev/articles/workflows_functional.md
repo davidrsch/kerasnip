@@ -392,263 +392,265 @@ ames_tune_results <- tune_race_anova(
   metrics = metric_set(rmse, mae, rsq),
   control = control_race(save_pred = TRUE, save_workflow = TRUE)
 )
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
 ```
 
 ## Inspect Tuning Results
@@ -659,12 +661,11 @@ combinations performed best.
 ``` r
 # Show the best performing models based on RMSE
 show_best(ames_tune_results, metric = "rmse", n = 5)
-#> # A tibble: 3 × 10
+#> # A tibble: 2 × 10
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
 #> 1                       128                           64                   64
 #> 2                       128                           64                   40
-#> 3                       128                           64                   16
 #> # ℹ 7 more variables: processed_condition_units <int>, .metric <chr>,
 #> #   .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -712,7 +713,7 @@ print(final_ames_fit)
 #> 
 #> ── Model ───────────────────────────────────────────────────────────────────────
 #> $fit
-#> Model: "functional_257"
+#> Model: "functional_259"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -728,20 +729,20 @@ print(final_ames_fit)
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1028 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1036 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1029 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1037 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1030 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
+#> │ dense_1038 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1031 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1039 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_257       │ (None, 1, 320)    │           0 │ dense_1028[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1029[0][0],  │
-#> │                       │                   │             │ dense_1030[0][0],  │
-#> │                       │                   │             │ dense_1031[0][0]   │
+#> │ concatenate_259       │ (None, 1, 320)    │           0 │ dense_1036[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1037[0][0],  │
+#> │                       │                   │             │ dense_1038[0][0],  │
+#> │                       │                   │             │ dense_1039[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_257[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_259[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
 #>  Total params: 13,637 (53.27 KB)
 #>  Trainable params: 4,545 (17.75 KB)
@@ -751,10 +752,10 @@ print(final_ames_fit)
 #> $history
 #> 
 #> Final epoch (plot to see history):
-#>                    loss: 1,178,855,296
-#>     mean_absolute_error: 21,043
-#>                val_loss: 6,263,413,760
-#> val_mean_absolute_error: 60,360 
+#>                    loss: 1,213,748,224
+#>     mean_absolute_error: 21,299
+#>                val_loss: 6,135,004,672
+#> val_mean_absolute_error: 59,544 
 #> 
 #> $lvl
 #> NULL
@@ -777,7 +778,7 @@ final_ames_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
   summary()
-#> Model: "functional_257"
+#> Model: "functional_259"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -793,20 +794,20 @@ final_ames_fit |>
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1028 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1036 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1029 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1037 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1030 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
+#> │ dense_1038 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1031 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1039 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_257       │ (None, 1, 320)    │           0 │ dense_1028[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1029[0][0],  │
-#> │                       │                   │             │ dense_1030[0][0],  │
-#> │                       │                   │             │ dense_1031[0][0]   │
+#> │ concatenate_259       │ (None, 1, 320)    │           0 │ dense_1036[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1037[0][0],  │
+#> │                       │                   │             │ dense_1038[0][0],  │
+#> │                       │                   │             │ dense_1039[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_257[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_259[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
 #>  Total params: 13,637 (53.27 KB)
 #>  Trainable params: 4,545 (17.75 KB)
@@ -844,7 +845,7 @@ model’s performance.
 ``` r
 # Make predictions on the test set
 ames_test_pred <- predict(final_ames_fit, new_data = ames_test)
-#> 19/19 - 0s - 6ms/step
+#> 19/19 - 0s - 5ms/step
 
 # Combine predictions with actuals
 ames_results <- tibble::tibble(
@@ -856,12 +857,12 @@ print(head(ames_results))
 #> # A tibble: 6 × 2
 #>   Sale_Price   .pred
 #>        <int>   <dbl>
-#> 1     105000  96468.
-#> 2     172000 161810.
-#> 3     189900 193872.
-#> 4     115000 125622.
-#> 5     395192 266871.
-#> 6     214000 212433.
+#> 1     105000  98535.
+#> 2     172000 159300.
+#> 3     189900 191801.
+#> 4     115000 130246.
+#> 5     395192 267506.
+#> 6     214000 210394.
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -878,7 +879,7 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard   51240.   
-#> 2 mae     standard   31026.   
-#> 3 rsq     standard       0.783
+#> 1 rmse    standard   50638.   
+#> 2 mae     standard   30815.   
+#> 3 rsq     standard       0.789
 ```

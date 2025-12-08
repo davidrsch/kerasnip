@@ -43,7 +43,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-
+      <small>Source: <a href="https://github.com/davidrsch/kerasnip/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -89,11 +89,11 @@
 <h2 class="pkg-version" data-toc-text="0.0.2" id="kerasnip-002">kerasnip 0.0.2<a class="anchor" aria-label="anchor" href="#kerasnip-002"></a></h2>
 <div class="section level3">
 <h3 id="improvements-0-0-2">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-0-2"></a></h3>
-<ul><li>Test suite improvements for post-processing and fit helpers (#23).</li>
+<ul><li>Test suite improvements for post-processing and fit helpers (<a href="https://github.com/davidrsch/kerasnip/issues/23" class="external-link">#23</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-0-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-2"></a></h3>
-<ul><li>Fixed a bug in the documentation where examples were not self-contained, causing issues with CRAN checks. This involved updating examples to be fully runnable and cleaning up created model specifications (#22).</li>
+<ul><li>Fixed a bug in the documentation where examples were not self-contained, causing issues with CRAN checks. This involved updating examples to be fully runnable and cleaning up created model specifications (<a href="https://github.com/davidrsch/kerasnip/issues/22" class="external-link">#22</a>).</li>
 <li>As part of this fix, a new helper function <code><a href="../reference/model_exists.html">model_exists()</a></code> was introduced and exported.</li>
 </ul></div>
 </div>
@@ -101,13 +101,13 @@
 <h2 class="pkg-version" data-toc-text="0.0.1" id="kerasnip-001">kerasnip 0.0.1<a class="anchor" aria-label="anchor" href="#kerasnip-001"></a></h2><p class="text-muted">CRAN release: 2025-09-03</p>
 <div class="section level3">
 <h3 id="new-features-0-0-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-1"></a></h3>
-<ul><li>Added support for <strong>functional API</strong> (<code><a href="../reference/create_keras_functional_spec.html">create_keras_functional_spec()</a></code>) (#6).</li>
-<li>Introduced <strong>custom steps</strong>, including <code>step_collapse</code> for collapsing columns in list columns (#20).</li>
-<li>Added <strong>evaluation helpers</strong>: <code><a href="../reference/keras_evaluate.html">keras_evaluate()</a></code>, extractors for summary and history (#12).</li>
-<li>Introduced modularized helpers for <strong>build and compile</strong> of keras models (#14).</li>
-<li>Added <strong>sequential workflow</strong> and <strong>functional workflow</strong> examples and vignettes (#20).</li>
+<ul><li>Added support for <strong>functional API</strong> (<code><a href="../reference/create_keras_functional_spec.html">create_keras_functional_spec()</a></code>) (<a href="https://github.com/davidrsch/kerasnip/issues/6" class="external-link">#6</a>).</li>
+<li>Introduced <strong>custom steps</strong>, including <code>step_collapse</code> for collapsing columns in list columns (<a href="https://github.com/davidrsch/kerasnip/issues/20" class="external-link">#20</a>).</li>
+<li>Added <strong>evaluation helpers</strong>: <code><a href="../reference/keras_evaluate.html">keras_evaluate()</a></code>, extractors for summary and history (<a href="https://github.com/davidrsch/kerasnip/issues/12" class="external-link">#12</a>).</li>
+<li>Introduced modularized helpers for <strong>build and compile</strong> of keras models (<a href="https://github.com/davidrsch/kerasnip/issues/14" class="external-link">#14</a>).</li>
+<li>Added <strong>sequential workflow</strong> and <strong>functional workflow</strong> examples and vignettes (<a href="https://github.com/davidrsch/kerasnip/issues/20" class="external-link">#20</a>).</li>
 <li>Added new <strong>tests</strong> to improve coverage.</li>
-<li>Added <strong>pkgdown site improvements</strong> (favicon, documentation pages, guides) (#10, #16, #18 and #20).</li>
+<li>Added <strong>pkgdown site improvements</strong> (favicon, documentation pages, guides) (<a href="https://github.com/davidrsch/kerasnip/issues/10" class="external-link">#10</a>, <a href="https://github.com/davidrsch/kerasnip/issues/16" class="external-link">#16</a>, <a href="https://github.com/davidrsch/kerasnip/issues/18" class="external-link">#18</a> and <a href="https://github.com/davidrsch/kerasnip/issues/20" class="external-link">#20</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-0-0-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-0-1"></a></h3>
@@ -119,14 +119,14 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-0-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-1"></a></h3>
 <ul><li>Fixed issues with <strong>compile_</strong> and <strong>fit_</strong> argument handling.</li>
-<li>Fixed issues with <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> and <code><a href="https://rdrr.io/pkg/tensorflow/man/evaluate.html" class="external-link">evaluate()</a></code> to handle multiple outputs correctly (#18).</li>
+<li>Fixed issues with <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> and <code><a href="https://rdrr.io/pkg/tensorflow/man/evaluate.html" class="external-link">evaluate()</a></code> to handle multiple outputs correctly (<a href="https://github.com/davidrsch/kerasnip/issues/18" class="external-link">#18</a>).</li>
 <li>Fixed documentation typos and pkgdown errors.</li>
 <li>Fixed utils issues and missing dependencies.</li>
 <li>Fixed warnings and CRAN check issues.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-0-0-1">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-0-1"></a></h3>
-<ul><li>Changed <code>fit</code> interface to use formula, supporting list columns (#18).</li>
+<ul><li>Changed <code>fit</code> interface to use formula, supporting list columns (<a href="https://github.com/davidrsch/kerasnip/issues/18" class="external-link">#18</a>).</li>
 </ul></div>
 </div>
     <div class="section level2">

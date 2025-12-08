@@ -51,14 +51,16 @@ CRAN release: 2025-09-18
 
 ### Improvements
 
-- Test suite improvements for post-processing and fit helpers (#23).
+- Test suite improvements for post-processing and fit helpers
+  ([\#23](https://github.com/davidrsch/kerasnip/issues/23)).
 
 ### Bug Fixes
 
 - Fixed a bug in the documentation where examples were not
   self-contained, causing issues with CRAN checks. This involved
   updating examples to be fully runnable and cleaning up created model
-  specifications (#22).
+  specifications
+  ([\#22](https://github.com/davidrsch/kerasnip/issues/22)).
 - As part of this fix, a new helper function
   [`model_exists()`](https://davidrsch.github.io/kerasnip/dev/reference/model_exists.md)
   was introduced and exported.
@@ -71,19 +73,24 @@ CRAN release: 2025-09-03
 
 - Added support for **functional API**
   ([`create_keras_functional_spec()`](https://davidrsch.github.io/kerasnip/dev/reference/create_keras_functional_spec.md))
-  (#6).
+  ([\#6](https://github.com/davidrsch/kerasnip/issues/6)).
 - Introduced **custom steps**, including `step_collapse` for collapsing
-  columns in list columns (#20).
+  columns in list columns
+  ([\#20](https://github.com/davidrsch/kerasnip/issues/20)).
 - Added **evaluation helpers**:
   [`keras_evaluate()`](https://davidrsch.github.io/kerasnip/dev/reference/keras_evaluate.md),
-  extractors for summary and history (#12).
+  extractors for summary and history
+  ([\#12](https://github.com/davidrsch/kerasnip/issues/12)).
 - Introduced modularized helpers for **build and compile** of keras
-  models (#14).
+  models ([\#14](https://github.com/davidrsch/kerasnip/issues/14)).
 - Added **sequential workflow** and **functional workflow** examples and
-  vignettes (#20).
+  vignettes ([\#20](https://github.com/davidrsch/kerasnip/issues/20)).
 - Added new **tests** to improve coverage.
 - Added **pkgdown site improvements** (favicon, documentation pages,
-  guides) (#10, \#16, \#18 and \#20).
+  guides) ([\#10](https://github.com/davidrsch/kerasnip/issues/10),
+  [\#16](https://github.com/davidrsch/kerasnip/issues/16),
+  [\#18](https://github.com/davidrsch/kerasnip/issues/18) and
+  [\#20](https://github.com/davidrsch/kerasnip/issues/20)).
 
 ### Improvements
 
@@ -97,14 +104,16 @@ CRAN release: 2025-09-03
 - Fixed issues with **compile\_** and **fit\_** argument handling.
 - Fixed issues with [`predict()`](https://rdrr.io/r/stats/predict.html)
   and [`evaluate()`](https://rdrr.io/pkg/tensorflow/man/evaluate.html)
-  to handle multiple outputs correctly (#18).
+  to handle multiple outputs correctly
+  ([\#18](https://github.com/davidrsch/kerasnip/issues/18)).
 - Fixed documentation typos and pkgdown errors.
 - Fixed utils issues and missing dependencies.
 - Fixed warnings and CRAN check issues.
 
 ### Breaking changes
 
-- Changed `fit` interface to use formula, supporting list columns (#18).
+- Changed `fit` interface to use formula, supporting list columns
+  ([\#18](https://github.com/davidrsch/kerasnip/issues/18)).
 
 ## kerasnip 0.0.0.9000
 
