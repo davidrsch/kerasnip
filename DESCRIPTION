@@ -1,13 +1,22 @@
 Package: kerasnip
+Type: Package
 Title: A Bridge Between 'keras' and 'tidymodels'
 Version: 0.1.0.900
 Authors@R: 
-    person("David", "Díaz", , "daviddrsch@gmail.com", role = c("aut", "cre"))
+    person(
+        "David",
+        "Díaz",
+        role = c("aut", "cph", "cre"),
+        email = "daviddrsch@gmail.com",
+        comment = c(ORCID = "0000-0002-0927-9795")
+    )
 Description: Provides a seamless bridge between 'keras' and the 'tidymodels'
     frameworks. It allows for the dynamic creation of 'parsnip' model
     specifications for 'keras' models.
-License: MIT + file LICENSE
 Encoding: UTF-8
+License: MIT + file LICENSE
+URL: https://davidrsch.github.io/kerasnip/, https://github.com/davidrsch/kerasnip
+BugReports: https://github.com/davidrsch/kerasnip/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Imports:
