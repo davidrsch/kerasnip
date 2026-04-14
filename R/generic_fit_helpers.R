@@ -22,7 +22,8 @@ collect_compile_args <- function(
   all_args,
   learn_rate,
   default_loss,
-  default_metrics
+  default_metrics,
+  get_object_fn = get_keras_object
 ) {
   compile_arg_names <- names(all_args)[startsWith(names(all_args), "compile_")]
   user_compile_args <- all_args[compile_arg_names]
@@ -36,7 +37,7 @@ collect_compile_args <- function(
   if (!is.null(optimizer_arg)) {
     if (is.character(optimizer_arg)) {
       # Resolve string to object, passing the learn_rate
-      final_compile_args$optimizer <- get_keras_object(
+      final_compile_args$optimizer <- get_object_fn(
         optimizer_arg,
         "optimizer",
         learning_rate = learn_rate
@@ -60,11 +61,11 @@ collect_compile_args <- function(
     loss_arg <- user_compile_args$loss %||% default_loss
     if (is.character(loss_arg) && length(loss_arg) == 1) {
       # Single loss string for all outputs
-      final_compile_args$loss <- get_keras_object(loss_arg, "loss")
+      final_compile_args$loss <- get_object_fn(loss_arg, "loss")
     } else if (is.list(loss_arg) && !is.null(names(loss_arg))) {
       # Named list of losses
       final_compile_args$loss <- lapply(loss_arg, function(l) {
-        if (is.character(l)) get_keras_object(l, "loss") else l
+        if (is.character(l)) get_object_fn(l, "loss") else l
       })
     } else {
       stop(
@@ -75,7 +76,7 @@ collect_compile_args <- function(
     # Single output
     loss_arg <- user_compile_args$loss %||% default_loss
     if (is.character(loss_arg)) {
-      final_compile_args$loss <- get_keras_object(loss_arg, "loss")
+      final_compile_args$loss <- get_object_fn(loss_arg, "loss")
     } else {
       final_compile_args$loss <- loss_arg
     }
@@ -88,11 +89,11 @@ collect_compile_args <- function(
     metrics_arg <- user_compile_args$metrics %||% default_metrics
     if (is.character(metrics_arg) && length(metrics_arg) == 1) {
       # Single metric string for all outputs
-      final_compile_args$metrics <- get_keras_object(metrics_arg, "metric")
+      final_compile_args$metrics <- get_object_fn(metrics_arg, "metric")
     } else if (is.list(metrics_arg) && !is.null(names(metrics_arg))) {
       # Named list of metrics
       final_compile_args$metrics <- lapply(metrics_arg, function(m) {
-        if (is.character(m)) get_keras_object(m, "metric") else m
+        if (is.character(m)) get_object_fn(m, "metric") else m
       })
     } else {
       stop(
@@ -105,7 +106,7 @@ collect_compile_args <- function(
     if (is.character(metrics_arg)) {
       final_compile_args$metrics <- lapply(
         metrics_arg,
-        get_keras_object,
+        get_object_fn,
         "metric"
       )
     } else {

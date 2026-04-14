@@ -1,21 +1,11 @@
-# Mock get_keras_object to isolate the logic of collect_compile_args
+# Mock get_keras_object to isolate the logic of collect_compile_args.
+# Passed directly as get_object_fn to avoid any namespace manipulation.
 mock_get_keras_object <- function(name, type, ...) {
-  # Return a simple string representation for testing purposes
   paste0("mocked_", type, "_", name)
 }
 
-# Mock optimizer to avoid keras dependency
-mock_optimizer_adam <- function(...) {
-  "mocked_optimizer_adam"
-}
-
 test_that("collect_compile_args handles single-output cases correctly", {
-  testthat::local_mocked_bindings(
-    get_keras_object = mock_get_keras_object,
-    .env = as.environment("package:kerasnip")
-  )
-
-  # Case 1: Single output, non-character loss and metrics
+  # Case 1: Single output, non-character loss and metrics (get_object_fn not called)
   dummy_loss_obj <- structure(list(), class = "dummy_loss")
   dummy_metric_obj <- structure(list(), class = "dummy_metric")
 
@@ -26,18 +16,14 @@ test_that("collect_compile_args handles single-output cases correctly", {
     ),
     learn_rate = 0.01,
     default_loss = "mse",
-    default_metrics = "mae"
+    default_metrics = "mae",
+    get_object_fn = mock_get_keras_object
   )
   expect_equal(args$loss, dummy_loss_obj)
   expect_equal(args$metrics, list(dummy_metric_obj))
 })
 
 test_that("collect_compile_args handles multi-output cases correctly", {
-  testthat::local_mocked_bindings(
-    get_keras_object = mock_get_keras_object,
-    .env = as.environment("package:kerasnip")
-  )
-
   # Case 2: Multi-output, single string for loss and metrics
   args <- collect_compile_args(
     all_args = list(
@@ -46,7 +32,8 @@ test_that("collect_compile_args handles multi-output cases correctly", {
     ),
     learn_rate = 0.01,
     default_loss = list(out1 = "mse", out2 = "mae"),
-    default_metrics = list(out1 = "mse", out2 = "mae")
+    default_metrics = list(out1 = "mse", out2 = "mae"),
+    get_object_fn = mock_get_keras_object
   )
   expect_equal(args$loss, "mocked_loss_categorical_crossentropy")
   expect_equal(args$metrics, "mocked_metric_accuracy")
@@ -59,18 +46,14 @@ test_that("collect_compile_args handles multi-output cases correctly", {
     ),
     learn_rate = 0.01,
     default_loss = list(out1 = "mse", out2 = "mae"),
-    default_metrics = list(out1 = "mse", out2 = "mae")
+    default_metrics = list(out1 = "mse", out2 = "mae"),
+    get_object_fn = mock_get_keras_object
   )
   expect_equal(args_mixed$loss$out1, "mocked_loss_mae")
   expect_equal(args_mixed$loss$out2, dummy_loss_obj_2)
 })
 
 test_that("collect_compile_args handles named list of metrics (multi-output) correctly", {
-  testthat::local_mocked_bindings(
-    get_keras_object = mock_get_keras_object,
-    .env = as.environment("package:kerasnip")
-  )
-
   # Test case: Named list of metrics with mixed types (character and object)
   dummy_metric_obj_3 <- structure(list(), class = "dummy_metric_3")
   args_mixed_metrics <- collect_compile_args(
@@ -79,7 +62,8 @@ test_that("collect_compile_args handles named list of metrics (multi-output) cor
     ),
     learn_rate = 0.01,
     default_loss = list(out1 = "mse", out2 = "mae"),
-    default_metrics = list(out1 = "mse", out2 = "mae") # Important: default_metrics must be a named list for this path
+    default_metrics = list(out1 = "mse", out2 = "mae"),
+    get_object_fn = mock_get_keras_object
   )
   expect_equal(args_mixed_metrics$metrics$out1, "mocked_metric_accuracy")
   expect_equal(args_mixed_metrics$metrics$out2, dummy_metric_obj_3)
@@ -91,7 +75,8 @@ test_that("collect_compile_args handles named list of metrics (multi-output) cor
     ),
     learn_rate = 0.01,
     default_loss = list(out1 = "mse", out2 = "mae"),
-    default_metrics = list(out1 = "mse", out2 = "mae")
+    default_metrics = list(out1 = "mse", out2 = "mae"),
+    get_object_fn = mock_get_keras_object
   )
   expect_equal(args_all_char_metrics$metrics$out1, "mocked_metric_accuracy")
   expect_equal(args_all_char_metrics$metrics$out2, "mocked_metric_mse")
@@ -108,7 +93,8 @@ test_that("collect_compile_args handles named list of metrics (multi-output) cor
     ),
     learn_rate = 0.01,
     default_loss = list(out1 = "mse", out2 = "mae"),
-    default_metrics = list(out1 = "mse", out2 = "mae")
+    default_metrics = list(out1 = "mse", out2 = "mae"),
+    get_object_fn = mock_get_keras_object
   )
   expect_equal(args_all_obj_metrics$metrics$out1, dummy_metric_obj_4)
   expect_equal(args_all_obj_metrics$metrics$out2, dummy_metric_obj_5)
@@ -121,7 +107,8 @@ test_that("collect_compile_args throws errors for invalid multi-output args", {
       all_args = list(compile_loss = list("a", "b")), # Unnamed list
       learn_rate = 0.01,
       default_loss = list(out1 = "mse", out2 = "mae"),
-      default_metrics = list(out1 = "mse", out2 = "mae")
+      default_metrics = list(out1 = "mse", out2 = "mae"),
+      get_object_fn = mock_get_keras_object
     ),
     "For multiple outputs, 'compile_loss' must be a single string or a named list of losses."
   )
@@ -132,7 +119,8 @@ test_that("collect_compile_args throws errors for invalid multi-output args", {
       all_args = list(compile_metrics = list("a", "b")), # Unnamed list
       learn_rate = 0.01,
       default_loss = list(out1 = "mse", out2 = "mae"),
-      default_metrics = list(out1 = "mse", out2 = "mae")
+      default_metrics = list(out1 = "mse", out2 = "mae"),
+      get_object_fn = mock_get_keras_object
     ),
     "For multiple outputs, 'compile_metrics' must be a single string or a named list of metrics."
   )
