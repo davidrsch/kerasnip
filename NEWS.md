@@ -1,27 +1,43 @@
-# kerasnip (development version)
-
 # kerasnip 0.1.1
 
 ## Bug Fixes
 
-- Fixed `predict()` failing with "Model not registered" after saving and reloading
-  a kerasnip workflow in a new R session (#38). `predict()` now automatically
-  replays the parsnip registration from metadata stored on the spec — no manual
-  step required after `bundle::unbundle()` or `readRDS()`.
+- Fixed `predict()` failing with "Model not registered" after saving and
+  reloading a kerasnip workflow in a new R session (#38). `predict()` now
+  automatically replays the parsnip registration from metadata stored on the
+  spec — no manual step required after `bundle::unbundle()` or `readRDS()`.
+- Fixed `get_keras_object()` returning bare class constructors instead of
+  instances for loss and metric objects, which caused `save_model()` to fail
+  when those objects were passed to `compile()` (#42).
+- Fixed `predict()` and `keras_evaluate()` / `extract_keras_model()` silently
+  failing when the Python external pointer became invalid after an RDS
+  round-trip. Both functions now detect the invalid pointer via
+  `reticulate::py_validate_xptr()` and transparently restore the model from
+  the serialized bytes stored in the fit object (#42).
 
-## New features
+## New Features
 
-- Every spec instance now carries `kerasnip_spec` class and embedded metadata
-  (`kerasnip_layer_blocks`, `kerasnip_functional`), enabling transparent
-  auto-registration on predict (closes #39).
-- `fit()` on a kerasnip spec now tags the result with `kerasnip_model_fit` class
-  to enable the auto-registration dispatch.
+- Every spec instance now carries the `kerasnip_spec` class and embedded
+  metadata (`kerasnip_layer_blocks`, `kerasnip_functional`), enabling
+  transparent auto-registration on predict (closes #39).
+- `fit()` on a kerasnip spec now tags the result with `kerasnip_model_fit`
+  class to enable the auto-registration dispatch.
+- At fit time the Keras model is serialized to a raw byte vector (`.keras`
+  format) stored in the `model_fit` object. This makes plain `saveRDS()` /
+  `readRDS()` fully supported without any extra steps (#42).
+- `bundle::bundle()` / `unbundle()` is now also supported as an alternative
+  persistence strategy for MLOps and deployment workflows (#42).
 
 ## Documentation
 
-- Added a "Saving and Reloading Your Model" section to the Sequential Workflows
-  and Functional Workflows vignettes, and a `@section` to both spec function
-  reference pages explaining the `bundle::bundle()` workflow (closes #40).
+- Added the `saving_and_reloading` vignette explaining both the `saveRDS` and
+  `bundle` workflows, with a comparison table and a description of the
+  auto-restore mechanism (#42).
+- Corrected the "Save and Reload" sections in the Sequential Workflows and
+  Functional Workflows vignettes, which previously stated that `saveRDS` does
+  not work (#42).
+- Added a `@section` to both spec function reference pages explaining the
+  `bundle::bundle()` workflow (closes #40).
 
 # kerasnip 0.1.0
 
