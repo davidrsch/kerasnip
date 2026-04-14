@@ -15,7 +15,7 @@ ecosystem."><meta property="og:image" content="https://davidrsch.github.io/keras
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@ ecosystem."><meta property="og:image" content="https://davidrsch.github.io/keras
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create a Custom Keras Functional API Model Specification for Tidymodels</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/davidrsch/kerasnip/blob/main/R/create_keras_functional_spec.R" class="external-link"><code>R/create_keras_functional_spec.R</code></a></small>
       <div class="d-none name"><code>create_keras_functional_spec.Rd</code></div>
     </div>
 
@@ -134,12 +134,13 @@ is as follows:</p><ol><li><p>The <strong>names of the elements</strong> in the <
 of the nodes in your graph (e.g., <code>main_input</code>, <code>dense_path</code>, <code>output</code>).</p></li>
 <li><p>The <strong>names of the arguments</strong> in each block function specify its inputs.
 A block function like <code>my_block &lt;- function(input_a, input_b, ...)</code>
-declares that it needs input from the nodes named <code>input_a</code> and <code>input_b</code>.
-<code>kerasnip</code> will automatically supply the output tensors from those nodes
-when calling <code>my_block</code>.</p></li>
+declares that it needs input from the nodes named <code>input_a</code> and
+<code>input_b</code>. <code>kerasnip</code> will automatically supply the output tensors from
+those nodes when calling <code>my_block</code>.</p></li>
 </ol><p>There are two special requirements:</p><ul><li><p><strong>Input Block</strong>: The first block in the list is treated as the input
 node. Its function should not take other blocks as input, but it can have
-an <code>input_shape</code> argument, which is supplied automatically during fitting.</p></li>
+an <code>input_shape</code> argument, which is supplied automatically during
+fitting.</p></li>
 <li><p><strong>Output Block</strong>: Exactly one block must be named <code>"output"</code>. The tensor
 returned by this block is used as the final output of the Keras model.</p></li>
 </ul><p>A key feature is the automatic creation of <code>num_{block_name}</code> arguments
@@ -148,6 +149,25 @@ is repeated, making it easy to tune the depth of your network. A block can
 only be repeated if it has exactly one input from another block in the graph.</p>
 <p>The new model specification function and its <code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code> method are created
 in the environment specified by the <code>env</code> argument.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="saving-and-reloading-models">Saving and Reloading Models<a class="anchor" aria-label="anchor" href="#saving-and-reloading-models"></a></h2>
+
+
+<p>To save a fitted workflow and reload it in a new R session, use
+<code><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">bundle::bundle()</a></code> before saving — this is required to preserve the Keras
+model weights:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/bundle" class="external-link">bundle</a></span><span class="op">)</span></span>
+<span><span class="va">bundled</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">bundle</a></span><span class="op">(</span><span class="va">fitted_workflow</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">bundled</span>, <span class="st">"model.rds"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># New session:</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/bundle" class="external-link">bundle</a></span><span class="op">)</span></span>
+<span><span class="va">fitted_workflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">unbundle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"model.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fitted_workflow</span>, new_data <span class="op">=</span> <span class="va">test_data</span><span class="op">)</span>  <span class="co"># works</span></span></code></pre><p></p></div>
+<p>Plain <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> without <code>bundle()</code> does not preserve Keras weights, but
+<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> will still auto-register the parsnip model type from metadata
+stored on the spec.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -185,12 +205,18 @@ in the environment specified by the <code>env</code> argument.</p>
 <span class="r-in"><span>      main_input <span class="op">=</span> <span class="va">input_block</span>,</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>      <span class="co"># The argument `main_input` connects this block to the input node.</span></span></span>
-<span class="r-in"><span>      dense_path <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">main_input</span>, <span class="va">units</span> <span class="op">=</span> <span class="fl">32</span><span class="op">)</span> <span class="fu">dense_block</span><span class="op">(</span><span class="va">main_input</span>, <span class="va">units</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      dense_path <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">main_input</span>, <span class="va">units</span> <span class="op">=</span> <span class="fl">32</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="fu">dense_block</span><span class="op">(</span><span class="va">main_input</span>, <span class="va">units</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="op">}</span>,</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>      <span class="co"># This block's arguments connect it to the original input AND the dense layer.</span></span></span>
-<span class="r-in"><span>      add_residual <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">main_input</span>, <span class="va">dense_path</span><span class="op">)</span> <span class="fu">add_block</span><span class="op">(</span><span class="va">main_input</span>, <span class="va">dense_path</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="co"># This block's arguments connect it to the original input AND the dense</span></span></span>
+<span class="r-in"><span>      <span class="co"># layer.</span></span></span>
+<span class="r-in"><span>      add_residual <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">main_input</span>, <span class="va">dense_path</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="fu">add_block</span><span class="op">(</span><span class="va">main_input</span>, <span class="va">dense_path</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="op">}</span>,</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>      <span class="co"># This block must be named 'output'. It connects to the residual add layer.</span></span></span>
+<span class="r-in"><span>      <span class="co"># This block must be named 'output'. It connects to the residual add</span></span></span>
+<span class="r-in"><span>      <span class="co"># layer.</span></span></span>
 <span class="r-in"><span>      output <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">add_residual</span><span class="op">)</span> <span class="fu">output_block_reg</span><span class="op">(</span><span class="va">add_residual</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    mode <span class="op">=</span> <span class="st">"regression"</span></span></span>
@@ -200,7 +226,8 @@ in the environment specified by the <code>env</code> argument.</p>
 <span class="r-in"><span>  <span class="co"># The `dense_path_units` argument was created automatically.</span></span></span>
 <span class="r-in"><span>  <span class="va">model_spec</span> <span class="op">&lt;-</span> <span class="fu">my_resnet_spec</span><span class="op">(</span>dense_path_units <span class="op">=</span> <span class="fl">64</span>, epochs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># You could also tune the number of dense layers since it has a single input:</span></span></span>
+<span class="r-in"><span>  <span class="co"># You could also tune the number of dense layers since it has a single</span></span></span>
+<span class="r-in"><span>  <span class="co"># input:</span></span></span>
 <span class="r-in"><span>  <span class="co"># model_spec &lt;- my_resnet_spec(num_dense_path = 2, dense_path_units = 32)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">model_spec</span><span class="op">)</span></span></span>

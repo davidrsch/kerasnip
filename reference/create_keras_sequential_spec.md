@@ -94,6 +94,27 @@ A key feature of this function is the automatic creation of
 control how many times each block is repeated, making it easy to tune
 the depth of your network.
 
+## Saving and Reloading Models
+
+To save a fitted workflow and reload it in a new R session, use
+[`bundle::bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+before saving — this is required to preserve the Keras model weights:
+
+    library(bundle)
+    bundled <- bundle(fitted_workflow)
+    saveRDS(bundled, "model.rds")
+
+    # New session:
+    library(kerasnip); library(bundle)
+    fitted_workflow <- unbundle(readRDS("model.rds"))
+    predict(fitted_workflow, new_data = test_data)  # works
+
+Plain [`saveRDS()`](https://rdrr.io/r/base/readRDS.html) without
+[`bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+does not preserve Keras weights, but
+[`predict()`](https://rdrr.io/r/stats/predict.html) will still
+auto-register the parsnip model type from metadata stored on the spec.
+
 ## See also
 
 [`remove_keras_spec()`](https://davidrsch.github.io/kerasnip/reference/remove_keras_spec.md),
@@ -110,7 +131,8 @@ library(parsnip)
 library(dials)
 
 # 1. Define layer blocks for a complete model.
-# The first block must initialize the model. `input_shape` is passed automatically.
+# The first block must initialize the model. `input_shape` is passed
+# automatically.
 input_block <- function(model, input_shape) {
   keras_model_sequential(input_shape = input_shape)
 }

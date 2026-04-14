@@ -28,7 +28,9 @@ compile_keras_grid(spec, grid, x, y)
 
   A `tibble` or `data.frame` containing the grid of hyperparameters to
   evaluate. Each row represents a unique model architecture to be
-  compiled.
+  compiled. Must have at least one row. To build the model once using
+  only the arguments already set on `spec` (e.g. for architecture
+  inspection), pass `tibble::tibble(.rows = 1L)`.
 
 - x:
 
@@ -138,7 +140,7 @@ remove_keras_spec("my_mlp_grid")
 #>          <dbl> <list>                                   <chr>                   
 #> 1           32 <keras.src.models.sequential.Sequential>  NA                     
 #> 2           64 <keras.src.models.sequential.Sequential>  NA                     
-#> 3          -10 <NULL>                                   "ValueError: Cannot con…
+#> 3          -10 <NULL>                                   "ValueError: Received a…
 #> Removed from parsnip registry objects: my_mlp_grid, my_mlp_grid_args, my_mlp_grid_encoding, my_mlp_grid_fit, my_mlp_grid_modes, my_mlp_grid_pkgs, my_mlp_grid_predict
 #> Removed 'my_mlp_grid' from parsnip:::get_model_env()$models
 # }

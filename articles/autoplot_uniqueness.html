@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Tuning Multiple Similar Parameters: Ensuring `autoplot` Uniqueness</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/davidrsch/kerasnip/blob/main/vignettes/autoplot_uniqueness.Rmd" class="external-link"><code>vignettes/autoplot_uniqueness.Rmd</code></a></small>
       <div class="d-none name"><code>autoplot_uniqueness.Rmd</code></div>
     </div>
 
@@ -134,7 +134,7 @@ distinguish.</p>
 <p>Let’s define a simple sequential Keras model with two dense
 layers:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kerasnip</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -289,22 +289,22 @@ resamples and a simple dataset.</p>
 <span>  grid <span class="op">=</span> <span class="va">grid</span>,</span>
 <span>  control <span class="op">=</span> <span class="va">control</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 19ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 8ms/step</span></span>
 <span><span class="co">#&gt; 3/3 - 0s - 18ms/step</span></span>
 <span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 3/3 - 0s - 18ms/step</span></span>
 <span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 19ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 8ms/step</span></span>
 <span><span class="co">#&gt; 3/3 - 0s - 18ms/step</span></span>
 <span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
 <span><span class="co">#&gt; 3/3 - 0s - 18ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 8ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 19ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 8ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 19ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 8ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tune_res</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Tuning results</span></span>
@@ -325,7 +325,7 @@ generate separate plots for each tuned parameter.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Assert that autoplot works without error</span></span>
 <span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">tune_res</span><span class="op">)</span></span></code></pre></div>
-<p><img src="autoplot_uniqueness_files/figure-html/autoplot_results-1.png" class="r-plt" width="672"></p>
+<p><img src="autoplot_uniqueness_files/figure-html/autoplot_results-1.png" class="r-plt" alt="" width="672"></p>
 <p>As you can see, <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> successfully generates a plot
 showing the performance across the different values for
 <code>dense_layer_one_units</code> and

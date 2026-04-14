@@ -1,6 +1,89 @@
 # Changelog
 
+## kerasnip (development version)
+
+## kerasnip 0.1.1
+
+### Bug Fixes
+
+- Fixed [`predict()`](https://rdrr.io/r/stats/predict.html) failing with
+  “Model not registered” after saving and reloading a kerasnip workflow
+  in a new R session
+  ([\#38](https://github.com/davidrsch/kerasnip/issues/38)).
+  [`predict()`](https://rdrr.io/r/stats/predict.html) now automatically
+  replays the parsnip registration from metadata stored on the spec — no
+  manual step required after
+  [`bundle::unbundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+  or [`readRDS()`](https://rdrr.io/r/base/readRDS.html).
+- Fixed `get_keras_object()` returning bare class constructors instead
+  of instances for loss and metric objects, which caused
+  [`save_model()`](https://keras3.posit.co/reference/save_model.html) to
+  fail when those objects were passed to
+  [`compile()`](https://generics.r-lib.org/reference/compile.html)
+  ([\#42](https://github.com/davidrsch/kerasnip/issues/42)).
+- Fixed [`predict()`](https://rdrr.io/r/stats/predict.html) and
+  [`keras_evaluate()`](https://davidrsch.github.io/kerasnip/reference/keras_evaluate.md)
+  /
+  [`extract_keras_model()`](https://davidrsch.github.io/kerasnip/reference/extract_keras_model.md)
+  silently failing when the Python external pointer became invalid after
+  an RDS round-trip. Both functions now detect the invalid pointer via
+  [`reticulate::py_validate_xptr()`](https://rstudio.github.io/reticulate/reference/py_is_null_xptr.html)
+  and transparently restore the model from the serialized bytes stored
+  in the fit object
+  ([\#42](https://github.com/davidrsch/kerasnip/issues/42)).
+- Fixed CRAN NOTE: added missing `importFrom(stats, predict)` so
+  `predict.kerasnip_model_fit` is correctly resolved from the `stats`
+  namespace.
+- Fixed
+  [`compile_keras_grid()`](https://davidrsch.github.io/kerasnip/reference/compile_keras_grid.md)
+  crashing with a `vctrs_error_subscript_oob` error when passed a
+  zero-row tibble
+  (e.g. [`tibble::tibble()`](https://tibble.tidyverse.org/reference/tibble.html)).
+  The function now stops early with an informative message. Use
+  `tibble::tibble(.rows = 1L)` to build the model once with the spec’s
+  current arguments and no hyperparameter variation.
+
+### New Features
+
+- Every spec instance now carries the `kerasnip_spec` class and embedded
+  metadata (`kerasnip_layer_blocks`, `kerasnip_functional`), enabling
+  transparent auto-registration on predict (closes
+  [\#39](https://github.com/davidrsch/kerasnip/issues/39)).
+- [`fit()`](https://generics.r-lib.org/reference/fit.html) on a kerasnip
+  spec now tags the result with `kerasnip_model_fit` class to enable the
+  auto-registration dispatch.
+- At fit time the Keras model is serialized to a raw byte vector
+  (`.keras` format) stored in the `model_fit` object. This makes plain
+  [`saveRDS()`](https://rdrr.io/r/base/readRDS.html) /
+  [`readRDS()`](https://rdrr.io/r/base/readRDS.html) fully supported
+  without any extra steps
+  ([\#42](https://github.com/davidrsch/kerasnip/issues/42)).
+- [`bundle::bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+  /
+  [`unbundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+  is now also supported as an alternative persistence strategy for MLOps
+  and deployment workflows
+  ([\#42](https://github.com/davidrsch/kerasnip/issues/42)).
+
+### Documentation
+
+- Added the `saving_and_reloading` vignette explaining both the
+  `saveRDS` and `bundle` workflows, with a comparison table and a
+  description of the auto-restore mechanism
+  ([\#42](https://github.com/davidrsch/kerasnip/issues/42)).
+- Corrected the “Save and Reload” sections in the Sequential Workflows
+  and Functional Workflows vignettes, which previously stated that
+  `saveRDS` does not work
+  ([\#42](https://github.com/davidrsch/kerasnip/issues/42)).
+- Added a `@section` to both spec function reference pages explaining
+  the
+  [`bundle::bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+  workflow (closes
+  [\#40](https://github.com/davidrsch/kerasnip/issues/40)).
+
 ## kerasnip 0.1.0
+
+CRAN release: 2025-12-06
 
 ### Breaking changes
 
@@ -49,14 +132,16 @@ CRAN release: 2025-09-18
 
 ### Improvements
 
-- Test suite improvements for post-processing and fit helpers (#23).
+- Test suite improvements for post-processing and fit helpers
+  ([\#23](https://github.com/davidrsch/kerasnip/issues/23)).
 
 ### Bug Fixes
 
 - Fixed a bug in the documentation where examples were not
   self-contained, causing issues with CRAN checks. This involved
   updating examples to be fully runnable and cleaning up created model
-  specifications (#22).
+  specifications
+  ([\#22](https://github.com/davidrsch/kerasnip/issues/22)).
 - As part of this fix, a new helper function
   [`model_exists()`](https://davidrsch.github.io/kerasnip/reference/model_exists.md)
   was introduced and exported.
@@ -69,19 +154,24 @@ CRAN release: 2025-09-03
 
 - Added support for **functional API**
   ([`create_keras_functional_spec()`](https://davidrsch.github.io/kerasnip/reference/create_keras_functional_spec.md))
-  (#6).
+  ([\#6](https://github.com/davidrsch/kerasnip/issues/6)).
 - Introduced **custom steps**, including `step_collapse` for collapsing
-  columns in list columns (#20).
+  columns in list columns
+  ([\#20](https://github.com/davidrsch/kerasnip/issues/20)).
 - Added **evaluation helpers**:
   [`keras_evaluate()`](https://davidrsch.github.io/kerasnip/reference/keras_evaluate.md),
-  extractors for summary and history (#12).
+  extractors for summary and history
+  ([\#12](https://github.com/davidrsch/kerasnip/issues/12)).
 - Introduced modularized helpers for **build and compile** of keras
-  models (#14).
+  models ([\#14](https://github.com/davidrsch/kerasnip/issues/14)).
 - Added **sequential workflow** and **functional workflow** examples and
-  vignettes (#20).
+  vignettes ([\#20](https://github.com/davidrsch/kerasnip/issues/20)).
 - Added new **tests** to improve coverage.
 - Added **pkgdown site improvements** (favicon, documentation pages,
-  guides) (#10, \#16, \#18 and \#20).
+  guides) ([\#10](https://github.com/davidrsch/kerasnip/issues/10),
+  [\#16](https://github.com/davidrsch/kerasnip/issues/16),
+  [\#18](https://github.com/davidrsch/kerasnip/issues/18) and
+  [\#20](https://github.com/davidrsch/kerasnip/issues/20)).
 
 ### Improvements
 
@@ -95,14 +185,16 @@ CRAN release: 2025-09-03
 - Fixed issues with **compile\_** and **fit\_** argument handling.
 - Fixed issues with [`predict()`](https://rdrr.io/r/stats/predict.html)
   and [`evaluate()`](https://rdrr.io/pkg/tensorflow/man/evaluate.html)
-  to handle multiple outputs correctly (#18).
+  to handle multiple outputs correctly
+  ([\#18](https://github.com/davidrsch/kerasnip/issues/18)).
 - Fixed documentation typos and pkgdown errors.
 - Fixed utils issues and missing dependencies.
 - Fixed warnings and CRAN check issues.
 
 ### Breaking changes
 
-- Changed `fit` interface to use formula, supporting list columns (#18).
+- Changed `fit` interface to use formula, supporting list columns
+  ([\#18](https://github.com/davidrsch/kerasnip/issues/18)).
 
 ## kerasnip 0.0.0.9000
 

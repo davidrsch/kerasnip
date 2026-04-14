@@ -6,11 +6,12 @@ articles:
   autoplot_uniqueness: autoplot_uniqueness.html
   functional_api: functional_api.html
   getting_started: getting_started.html
+  saving_and_reloading: saving_and_reloading.html
   sequential_model: sequential_model.html
   tuning_fit_compile_args: tuning_fit_compile_args.html
   workflows_functional: workflows_functional.html
   workflows_sequential: workflows_sequential.html
-last_built: 2025-12-06T10:25Z
+last_built: 2026-04-14T20:41Z
 urls:
   reference: https://davidrsch.github.io/kerasnip/reference
   article: https://davidrsch.github.io/kerasnip/articles

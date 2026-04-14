@@ -15,7 +15,7 @@ topologies, see create_keras_functional_spec()."><meta property="og:image" conte
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@ topologies, see create_keras_functional_spec()."><meta property="og:image" conte
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create a Custom Keras Sequential Model Specification for Tidymodels</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/davidrsch/kerasnip/blob/main/R/create_keras_sequential_spec.R" class="external-link"><code>R/create_keras_sequential_spec.R</code></a></small>
       <div class="d-none name"><code>create_keras_sequential_spec.Rd</code></div>
     </div>
 
@@ -135,9 +135,29 @@ which <code>kerasnip</code> will provide automatically during fitting.</p></li>
 <li><p><strong>Subsequent blocks</strong> add layers to the model.</p></li>
 <li><p>The <strong>final block</strong> should add the output layer. For classification, it
 can accept a <code>num_classes</code> argument, which is provided automatically.</p></li>
-</ol><p>A key feature of this function is the automatic creation of <code>num_{block_name}</code>
-arguments (e.g., <code>num_hidden</code>). This allows you to control how many times
-each block is repeated, making it easy to tune the depth of your network.</p>
+</ol><p>A key feature of this function is the automatic creation of
+<code>num_{block_name}</code> arguments (e.g., <code>num_hidden</code>). This allows you to
+control how many times each block is repeated, making it easy to tune the
+depth of your network.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="saving-and-reloading-models">Saving and Reloading Models<a class="anchor" aria-label="anchor" href="#saving-and-reloading-models"></a></h2>
+
+
+<p>To save a fitted workflow and reload it in a new R session, use
+<code><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">bundle::bundle()</a></code> before saving — this is required to preserve the Keras
+model weights:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/bundle" class="external-link">bundle</a></span><span class="op">)</span></span>
+<span><span class="va">bundled</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">bundle</a></span><span class="op">(</span><span class="va">fitted_workflow</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">bundled</span>, <span class="st">"model.rds"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># New session:</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/bundle" class="external-link">bundle</a></span><span class="op">)</span></span>
+<span><span class="va">fitted_workflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">unbundle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"model.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fitted_workflow</span>, new_data <span class="op">=</span> <span class="va">test_data</span><span class="op">)</span>  <span class="co"># works</span></span></code></pre><p></p></div>
+<p>Plain <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> without <code><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">bundle()</a></code> does not preserve Keras weights, but
+<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> will still auto-register the parsnip model type from metadata
+stored on the spec.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -154,7 +174,8 @@ each block is repeated, making it easy to tune the depth of your network.</p>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dials.tidymodels.org" class="external-link">dials</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 1. Define layer blocks for a complete model.</span></span></span>
-<span class="r-in"><span><span class="co"># The first block must initialize the model. `input_shape` is passed automatically.</span></span></span>
+<span class="r-in"><span><span class="co"># The first block must initialize the model. `input_shape` is passed</span></span></span>
+<span class="r-in"><span><span class="co"># automatically.</span></span></span>
 <span class="r-in"><span><span class="va">input_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">input_shape</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://keras3.posit.co/reference/keras_model_sequential.html" class="external-link">keras_model_sequential</a></span><span class="op">(</span>input_shape <span class="op">=</span> <span class="va">input_shape</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

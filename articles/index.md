@@ -10,6 +10,8 @@
   kerasnip](https://davidrsch.github.io/kerasnip/articles/functional_api.md):
 - [Getting Started with
   kerasnip](https://davidrsch.github.io/kerasnip/articles/getting_started.md):
+- [Saving and Reloading Fitted Kerasnip
+  Workflows](https://davidrsch.github.io/kerasnip/articles/saving_and_reloading.md):
 - [The Sequential Model with
   kerasnip](https://davidrsch.github.io/kerasnip/articles/sequential_model.md):
 - [Tuning Fit and Compile

@@ -11,7 +11,7 @@ This ensures that kerasnip is always up-to-date with your Keras version."><meta 
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@ This ensures that kerasnip is always up-to-date with your Keras version."><meta 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Dynamically Discovered Keras Objects</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/davidrsch/kerasnip/blob/main/R/zzz.R" class="external-link"><code>R/zzz.R</code></a></small>
       <div class="d-none name"><code>keras_objects.Rd</code></div>
     </div>
 
@@ -68,16 +68,16 @@ This ensures that <code>kerasnip</code> is always up-to-date with your Keras ver
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>An object of class <code>character</code> of length 12.</p>
-<p>An object of class <code>character</code> of length 21.</p>
+    <p>An object of class <code>character</code> of length 13.</p>
+<p>An object of class <code>character</code> of length 22.</p>
 <p>An object of class <code>character</code> of length 32.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>These objects are primarily used to provide the default <code>values</code> for the <code>dials</code>
-parameter functions, <code><a href="optimizer_function.html">optimizer_function()</a></code> and <code><a href="loss_function_keras.html">loss_function_keras()</a></code>. This
-allows for tab-completion in IDEs and validation of optimizer and loss names
-when tuning models.</p>
+    <p>These objects are primarily used to provide the default <code>values</code> for the
+<code>dials</code> parameter functions, <code><a href="optimizer_function.html">optimizer_function()</a></code> and
+<code><a href="loss_function_keras.html">loss_function_keras()</a></code>. This allows for tab-completion in IDEs and
+validation of optimizer and loss names when tuning models.</p>
 <p>The discovery process in <code>.onLoad()</code> scrapes the <code>keras3</code> namespace for
 functions matching <code>optimizer_*</code>, <code>loss_*</code>, and <code>metric_*</code> patterns.</p>
     </div>

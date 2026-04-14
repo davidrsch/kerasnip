@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,11 +43,40 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-
+      <small>Source: <a href="https://github.com/davidrsch/kerasnip/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="kerasnip-010">kerasnip 0.1.0<a class="anchor" aria-label="anchor" href="#kerasnip-010"></a></h2>
+<h2 class="pkg-version" data-toc-text="development version" id="kerasnip-development-version">kerasnip (development version)<a class="anchor" aria-label="anchor" href="#kerasnip-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="kerasnip-011">kerasnip 0.1.1<a class="anchor" aria-label="anchor" href="#kerasnip-011"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1"></a></h3>
+<ul><li>Fixed <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> failing with “Model not registered” after saving and reloading a kerasnip workflow in a new R session (<a href="https://github.com/davidrsch/kerasnip/issues/38" class="external-link">#38</a>). <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> now automatically replays the parsnip registration from metadata stored on the spec — no manual step required after <code><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">bundle::unbundle()</a></code> or <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code>.</li>
+<li>Fixed <code>get_keras_object()</code> returning bare class constructors instead of instances for loss and metric objects, which caused <code><a href="https://keras3.posit.co/reference/save_model.html" class="external-link">save_model()</a></code> to fail when those objects were passed to <code><a href="https://generics.r-lib.org/reference/compile.html" class="external-link">compile()</a></code> (<a href="https://github.com/davidrsch/kerasnip/issues/42" class="external-link">#42</a>).</li>
+<li>Fixed <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> and <code><a href="../reference/keras_evaluate.html">keras_evaluate()</a></code> / <code><a href="../reference/extract_keras_model.html">extract_keras_model()</a></code> silently failing when the Python external pointer became invalid after an RDS round-trip. Both functions now detect the invalid pointer via <code><a href="https://rstudio.github.io/reticulate/reference/py_is_null_xptr.html" class="external-link">reticulate::py_validate_xptr()</a></code> and transparently restore the model from the serialized bytes stored in the fit object (<a href="https://github.com/davidrsch/kerasnip/issues/42" class="external-link">#42</a>).</li>
+<li>Fixed CRAN NOTE: added missing <code>importFrom(stats, predict)</code> so <code>predict.kerasnip_model_fit</code> is correctly resolved from the <code>stats</code> namespace.</li>
+<li>Fixed <code><a href="../reference/compile_keras_grid.html">compile_keras_grid()</a></code> crashing with a <code>vctrs_error_subscript_oob</code> error when passed a zero-row tibble (e.g. <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble()</a></code>). The function now stops early with an informative message. Use <code>tibble::tibble(.rows = 1L)</code> to build the model once with the spec’s current arguments and no hyperparameter variation.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-1-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-1"></a></h3>
+<ul><li>Every spec instance now carries the <code>kerasnip_spec</code> class and embedded metadata (<code>kerasnip_layer_blocks</code>, <code>kerasnip_functional</code>), enabling transparent auto-registration on predict (closes <a href="https://github.com/davidrsch/kerasnip/issues/39" class="external-link">#39</a>).</li>
+<li>
+<code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> on a kerasnip spec now tags the result with <code>kerasnip_model_fit</code> class to enable the auto-registration dispatch.</li>
+<li>At fit time the Keras model is serialized to a raw byte vector (<code>.keras</code> format) stored in the <code>model_fit</code> object. This makes plain <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> / <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code> fully supported without any extra steps (<a href="https://github.com/davidrsch/kerasnip/issues/42" class="external-link">#42</a>).</li>
+<li>
+<code><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">bundle::bundle()</a></code> / <code><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">unbundle()</a></code> is now also supported as an alternative persistence strategy for MLOps and deployment workflows (<a href="https://github.com/davidrsch/kerasnip/issues/42" class="external-link">#42</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-1-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-1"></a></h3>
+<ul><li>Added the <code>saving_and_reloading</code> vignette explaining both the <code>saveRDS</code> and <code>bundle</code> workflows, with a comparison table and a description of the auto-restore mechanism (<a href="https://github.com/davidrsch/kerasnip/issues/42" class="external-link">#42</a>).</li>
+<li>Corrected the “Save and Reload” sections in the Sequential Workflows and Functional Workflows vignettes, which previously stated that <code>saveRDS</code> does not work (<a href="https://github.com/davidrsch/kerasnip/issues/42" class="external-link">#42</a>).</li>
+<li>Added a <code>@section</code> to both spec function reference pages explaining the <code><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">bundle::bundle()</a></code> workflow (closes <a href="https://github.com/davidrsch/kerasnip/issues/40" class="external-link">#40</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.0" id="kerasnip-010">kerasnip 0.1.0<a class="anchor" aria-label="anchor" href="#kerasnip-010"></a></h2><p class="text-muted">CRAN release: 2025-12-06</p>
 <div class="section level3">
 <h3 id="breaking-changes-0-1-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0"></a></h3>
 <ul><li>
@@ -86,11 +115,11 @@
 <h2 class="pkg-version" data-toc-text="0.0.2" id="kerasnip-002">kerasnip 0.0.2<a class="anchor" aria-label="anchor" href="#kerasnip-002"></a></h2>
 <div class="section level3">
 <h3 id="improvements-0-0-2">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-0-2"></a></h3>
-<ul><li>Test suite improvements for post-processing and fit helpers (#23).</li>
+<ul><li>Test suite improvements for post-processing and fit helpers (<a href="https://github.com/davidrsch/kerasnip/issues/23" class="external-link">#23</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-0-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-2"></a></h3>
-<ul><li>Fixed a bug in the documentation where examples were not self-contained, causing issues with CRAN checks. This involved updating examples to be fully runnable and cleaning up created model specifications (#22).</li>
+<ul><li>Fixed a bug in the documentation where examples were not self-contained, causing issues with CRAN checks. This involved updating examples to be fully runnable and cleaning up created model specifications (<a href="https://github.com/davidrsch/kerasnip/issues/22" class="external-link">#22</a>).</li>
 <li>As part of this fix, a new helper function <code><a href="../reference/model_exists.html">model_exists()</a></code> was introduced and exported.</li>
 </ul></div>
 </div>
@@ -98,13 +127,13 @@
 <h2 class="pkg-version" data-toc-text="0.0.1" id="kerasnip-001">kerasnip 0.0.1<a class="anchor" aria-label="anchor" href="#kerasnip-001"></a></h2><p class="text-muted">CRAN release: 2025-09-03</p>
 <div class="section level3">
 <h3 id="new-features-0-0-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-1"></a></h3>
-<ul><li>Added support for <strong>functional API</strong> (<code><a href="../reference/create_keras_functional_spec.html">create_keras_functional_spec()</a></code>) (#6).</li>
-<li>Introduced <strong>custom steps</strong>, including <code>step_collapse</code> for collapsing columns in list columns (#20).</li>
-<li>Added <strong>evaluation helpers</strong>: <code><a href="../reference/keras_evaluate.html">keras_evaluate()</a></code>, extractors for summary and history (#12).</li>
-<li>Introduced modularized helpers for <strong>build and compile</strong> of keras models (#14).</li>
-<li>Added <strong>sequential workflow</strong> and <strong>functional workflow</strong> examples and vignettes (#20).</li>
+<ul><li>Added support for <strong>functional API</strong> (<code><a href="../reference/create_keras_functional_spec.html">create_keras_functional_spec()</a></code>) (<a href="https://github.com/davidrsch/kerasnip/issues/6" class="external-link">#6</a>).</li>
+<li>Introduced <strong>custom steps</strong>, including <code>step_collapse</code> for collapsing columns in list columns (<a href="https://github.com/davidrsch/kerasnip/issues/20" class="external-link">#20</a>).</li>
+<li>Added <strong>evaluation helpers</strong>: <code><a href="../reference/keras_evaluate.html">keras_evaluate()</a></code>, extractors for summary and history (<a href="https://github.com/davidrsch/kerasnip/issues/12" class="external-link">#12</a>).</li>
+<li>Introduced modularized helpers for <strong>build and compile</strong> of keras models (<a href="https://github.com/davidrsch/kerasnip/issues/14" class="external-link">#14</a>).</li>
+<li>Added <strong>sequential workflow</strong> and <strong>functional workflow</strong> examples and vignettes (<a href="https://github.com/davidrsch/kerasnip/issues/20" class="external-link">#20</a>).</li>
 <li>Added new <strong>tests</strong> to improve coverage.</li>
-<li>Added <strong>pkgdown site improvements</strong> (favicon, documentation pages, guides) (#10, #16, #18 and #20).</li>
+<li>Added <strong>pkgdown site improvements</strong> (favicon, documentation pages, guides) (<a href="https://github.com/davidrsch/kerasnip/issues/10" class="external-link">#10</a>, <a href="https://github.com/davidrsch/kerasnip/issues/16" class="external-link">#16</a>, <a href="https://github.com/davidrsch/kerasnip/issues/18" class="external-link">#18</a> and <a href="https://github.com/davidrsch/kerasnip/issues/20" class="external-link">#20</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-0-0-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-0-1"></a></h3>
@@ -116,14 +145,14 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-0-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-1"></a></h3>
 <ul><li>Fixed issues with <strong>compile_</strong> and <strong>fit_</strong> argument handling.</li>
-<li>Fixed issues with <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> and <code><a href="https://rdrr.io/pkg/tensorflow/man/evaluate.html" class="external-link">evaluate()</a></code> to handle multiple outputs correctly (#18).</li>
+<li>Fixed issues with <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> and <code><a href="https://rdrr.io/pkg/tensorflow/man/evaluate.html" class="external-link">evaluate()</a></code> to handle multiple outputs correctly (<a href="https://github.com/davidrsch/kerasnip/issues/18" class="external-link">#18</a>).</li>
 <li>Fixed documentation typos and pkgdown errors.</li>
 <li>Fixed utils issues and missing dependencies.</li>
 <li>Fixed warnings and CRAN check issues.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-0-0-1">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-0-1"></a></h3>
-<ul><li>Changed <code>fit</code> interface to use formula, supporting list columns (#18).</li>
+<ul><li>Changed <code>fit</code> interface to use formula, supporting list columns (<a href="https://github.com/davidrsch/kerasnip/issues/18" class="external-link">#18</a>).</li>
 </ul></div>
 </div>
     <div class="section level2">

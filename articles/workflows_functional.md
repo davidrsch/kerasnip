@@ -21,14 +21,14 @@ First, we load the necessary packages.
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.4.1 ──
-#> ✔ broom        1.0.11     ✔ recipes      1.3.1 
-#> ✔ dials        1.4.2      ✔ rsample      1.3.1 
-#> ✔ dplyr        1.1.4      ✔ tailor       0.1.0 
-#> ✔ ggplot2      4.0.1      ✔ tidyr        1.3.1 
-#> ✔ infer        1.0.9      ✔ tune         2.0.1 
+#> ✔ broom        1.0.12     ✔ recipes      1.3.2 
+#> ✔ dials        1.4.3      ✔ rsample      1.3.2 
+#> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
+#> ✔ ggplot2      4.0.2      ✔ tidyr        1.3.2 
+#> ✔ infer        1.1.0      ✔ tune         2.0.1 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
-#> ✔ parsnip      1.4.0      ✔ workflowsets 1.1.1 
-#> ✔ purrr        1.2.0      ✔ yardstick    1.3.2
+#> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
+#> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
 #> ✖ purrr::discard() masks scales::discard()
 #> ✖ dplyr::filter()  masks stats::filter()
@@ -40,6 +40,9 @@ library(keras3)
 #> The following object is masked from 'package:yardstick':
 #> 
 #>     get_weights
+#> The following object is masked from 'package:infer':
+#> 
+#>     generate
 library(dplyr) # For data manipulation
 library(ggplot2) # For plotting
 library(future) # For parallel processing
@@ -401,12 +404,6 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -425,24 +422,7 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
+#> 15/15 - 1s - 40ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -464,91 +444,7 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 8ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -598,6 +494,85 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -632,10 +607,12 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
@@ -649,6 +626,32 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
 ```
 
 ## Inspect Tuning Results
@@ -659,11 +662,10 @@ combinations performed best.
 ``` r
 # Show the best performing models based on RMSE
 show_best(ames_tune_results, metric = "rmse", n = 5)
-#> # A tibble: 2 × 10
+#> # A tibble: 1 × 10
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
 #> 1                       128                           64                   64
-#> 2                       128                           64                   40
 #> # ℹ 7 more variables: processed_condition_units <int>, .metric <chr>,
 #> #   .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -747,22 +749,22 @@ print(final_ames_fit)
 #>  Non-trainable params: 0 (0.00 B)
 #>  Optimizer params: 9,092 (35.52 KB)
 #> 
-#> $history
-#> 
-#> Final epoch (plot to see history):
-#>                    loss: 1,183,665,664
-#>     mean_absolute_error: 21,118
-#>                val_loss: 6,149,310,464
-#> val_mean_absolute_error: 59,552 
-#> 
-#> $lvl
-#> NULL
-#> 
-#> $process_x
-#> function (x) 
+#> $keras_bytes
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 74 0b 6e a3 40 00 00 00 40 00
+#>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
+#>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 34 2e 30 22 2c 20 22
+#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 34 2d 31 34
+#>    [97] 40 32 31 3a 32 39 3a 30 39 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 9c cc 6f ab 4b 20 00 00 4b 20 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 2e 73 72
+#>   [169] 63 2e 6d 6f 64 65 6c 73 2e 66 75 6e 63 74 69 6f 6e 61 6c 22 2c 20 22 63
+#>   [193] 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 46 75 6e 63 74 69 6f 6e 61 6c 22
+#>   [217] 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 75
+#>   [241] 6e 63 74 69 6f 6e 61 6c 5f 32 35 37 22 2c 20 22 74 72 61 69 6e 61 62 6c
+#>   [265] 65 22 3a 20 74 72 75 65 2c 20 22 6c 61 79 65 72 73 22 3a 20 5b 7b 22 6d
 #> 
 #> ...
-#> and 88 more lines.
+#> and 4258 more lines.
 ```
 
 ### Inspect Final Model
@@ -855,12 +857,12 @@ print(head(ames_results))
 #> # A tibble: 6 × 2
 #>   Sale_Price   .pred
 #>        <int>   <dbl>
-#> 1     105000  98008.
-#> 2     172000 161664.
-#> 3     189900 193386.
-#> 4     115000 127545.
-#> 5     395192 267440.
-#> 6     214000 213320.
+#> 1     105000  96559.
+#> 2     172000 160787.
+#> 3     189900 192629.
+#> 4     115000 127401.
+#> 5     395192 266341.
+#> 6     214000 211903.
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -877,7 +879,49 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard   50750.   
-#> 2 mae     standard   30780.   
-#> 3 rsq     standard       0.787
+#> 1 rmse    standard   51517.   
+#> 2 mae     standard   31364.   
+#> 3 rsq     standard       0.779
 ```
+
+## Saving and Reloading Your Model
+
+`kerasnip` serializes the Keras model weights to bytes at fit time and
+stores them alongside the workflow object. This means plain
+[`saveRDS()`](https://rdrr.io/r/base/readRDS.html) /
+[`readRDS()`](https://rdrr.io/r/base/readRDS.html) **works out of the
+box** — the underlying Keras model is restored automatically the first
+time [`predict()`](https://rdrr.io/r/stats/predict.html) is called on
+the reloaded object.
+
+``` r
+# Save
+saveRDS(fit_wf, "my_model.rds")
+
+# Reload — no extra steps needed
+fit_wf <- readRDS("my_model.rds")
+predict(fit_wf, new_data = new_data)  # model restored automatically
+```
+
+If you need a fully self-contained bundle suitable for deployment with
+`vetiver` or other MLOps tools, use
+[`bundle::bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+instead:
+
+``` r
+library(bundle)
+
+# Save as a portable bundle
+bundled <- bundle(fit_wf)
+saveRDS(bundled, "my_model_bundle.rds")
+
+# Reload in any R session
+library(kerasnip)
+library(bundle)
+fit_wf <- unbundle(readRDS("my_model_bundle.rds"))
+predict(fit_wf, new_data = new_data)
+```
+
+See
+[`vignette("saving_and_reloading")`](https://davidrsch.github.io/kerasnip/articles/saving_and_reloading.md)
+for a detailed comparison of both approaches.

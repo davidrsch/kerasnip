@@ -11,7 +11,7 @@ occurred."><meta property="og:image" content="https://davidrsch.github.io/kerasn
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@ occurred."><meta property="og:image" content="https://davidrsch.github.io/kerasn
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Inform About Compilation Errors</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/davidrsch/kerasnip/blob/main/R/compile_keras_grid.R" class="external-link"><code>R/compile_keras_grid.R</code></a></small>
       <div class="d-none name"><code>inform_errors.Rd</code></div>
     </div>
 
@@ -67,7 +67,8 @@ occurred.</p>
 
 
 <dl><dt id="arg-compiled-grid">compiled_grid<a class="anchor" aria-label="anchor" href="#arg-compiled-grid"></a></dt>
-<dd><p>A tibble, the result of a call to <code><a href="compile_keras_grid.html">compile_keras_grid()</a></code>.</p></dd>
+<dd><p>A tibble, the result of a call to
+<code><a href="compile_keras_grid.html">compile_keras_grid()</a></code>.</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
@@ -153,7 +154,7 @@ some hyperparameter combinations may lead to invalid Keras models.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Hyperparameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> hidden_units: -10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Error Message:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ValueError: Cannot convert '(10, -10)' to a shape. Negative dimensions are not allowed.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ValueError: Received an invalid value for `units`, expected a positive integer. Received: units=-10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Run `reticulate::py_last_error()` for details.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed from parsnip registry objects: my_mlp_grid_3, my_mlp_grid_3_args, my_mlp_grid_3_encoding, my_mlp_grid_3_fit, my_mlp_grid_3_modes, my_mlp_grid_3_pkgs, my_mlp_grid_3_predict</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 'my_mlp_grid_3' from parsnip:::get_model_env()$models</span>
