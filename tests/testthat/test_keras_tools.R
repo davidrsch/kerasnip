@@ -47,9 +47,9 @@ test_that("get_keras_object returns instances not constructors", {
   loss_obj <- get_keras_object("mse", "loss")
   metric_obj <- get_keras_object("mean_squared_error", "metric")
 
-  # Must be instances (Python objects), not R functions
-  expect_false(is.function(loss_obj) && is.character(loss_obj))
-  expect_false(is.function(metric_obj))
+  # Must be instances (Python objects), not the bare constructor functions
+  expect_false(identical(loss_obj, keras3::loss_mean_squared_error))
+  expect_false(identical(metric_obj, keras3::metric_mean_squared_error))
 
   # Must be serialisable (the original bug: class objects fail get_config)
   model <- keras3::keras_model_sequential(input_shape = 1L) |>
@@ -63,25 +63,14 @@ test_that("get_keras_object returns instances not constructors", {
   expect_type(keras_model_to_bytes(model), "raw")
 })
 
-test_that("keras_model_to_bytes warns when model compiled with constructor", {
+test_that("keras_model_to_bytes warns when save_model fails", {
   skip_if_no_keras()
 
-  # Compile with a metric constructor (not an instance) — this is the exact
-  # bug that was fixed in get_keras_object(). keras3::save_model() fails with
-  # "Metric.get_config() missing positional argument: self" because it expects
-  # an instance to call get_config() on, not the class itself.
-  model <- keras3::keras_model_sequential(input_shape = 1L) |>
-    keras3::layer_dense(units = 1L)
-  keras3::compile(
-    model,
-    optimizer = "adam",
-    loss = "mse",
-    # constructor, not instance
-    metrics = list(keras3::metric_mean_squared_error)
-  )
-
+  # Passing a plain R object (not a Keras model) forces save_model() to
+  # throw, which exercises the warning path in keras_model_to_bytes()
+  # independently of Keras version or compilation arguments.
   expect_warning(
-    keras_model_to_bytes(model),
-    "Could not serialize the Keras model to bytes"
+    keras_model_to_bytes(1L),
+    "Could not serialize"
   )
 })

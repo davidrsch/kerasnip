@@ -159,11 +159,14 @@ predict.kerasnip_model_fit <- function(object, new_data, ...) {
 
   # Restore Keras model from serialized bytes if the Python object has been
   # invalidated (e.g. by saveRDS()/readRDS() within the same session, or after
-  # bundle()/unbundle()).
+  # bundle()/unbundle()). reticulate::py_validate_xptr() performs a direct
+  # C-level check and throws the same "Unable to access object" error that
+  # would otherwise surface later during predict(); catching it here lets us
+  # restore the model transparently before dispatching to parsnip.
   if (!is.null(object$fit$keras_bytes)) {
     is_valid <- tryCatch(
       {
-        object$fit$fit$name # lightweight attribute access to verify the xptr
+        reticulate::py_validate_xptr(object$fit$fit)
         TRUE
       },
       error = function(e) FALSE

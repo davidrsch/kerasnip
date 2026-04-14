@@ -110,7 +110,7 @@ keras_evaluate <- function(object, x, y = NULL, ...) {
   # 4. Call the underlying Keras evaluate method
   keras_model <- tryCatch(
     {
-      object$fit$fit$name
+      reticulate::py_validate_xptr(object$fit$fit)
       object$fit$fit
     },
     error = function(e) {
@@ -143,7 +143,7 @@ keras_evaluate <- function(object, x, y = NULL, ...) {
 extract_keras_model <- function(object) {
   tryCatch(
     {
-      object$fit$fit$name
+      reticulate::py_validate_xptr(object$fit$fit)
       object$fit$fit
     },
     error = function(e) {
