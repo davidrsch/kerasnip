@@ -1,8 +1,8 @@
 #' Build and Compile a Keras Sequential Model
 #'
 #' @description
-#' This internal helper function constructs and compiles a Keras sequential model
-#' based on a list of layer blocks and other parameters. It handles data
+#' This internal helper function constructs and compiles a Keras sequential
+#' model based on a list of layer blocks and other parameters. It handles data
 #' processing, dynamic architecture construction, and model compilation.
 #'
 #' @param x A data frame or matrix of predictors.
@@ -14,7 +14,7 @@
 #'
 #' @return A compiled Keras model object.
 #' @noRd
-build_and_compile_sequential_model <- function(
+build_compile_seq_model <- function(
   x,
   y,
   layer_blocks,
@@ -23,21 +23,17 @@ build_and_compile_sequential_model <- function(
   # --- 0. Argument & Data Preparation ---
   all_args <- list(...)
   learn_rate <- all_args$learn_rate %||% 0.01
-  verbose <- all_args$verbose %||% 0
 
   # Process x input
   x_processed <- process_x_sequential(x)
-  x_proc <- x_processed$x_proc
   input_shape <- x_processed$input_shape
 
   # Process y input
   y_processed <- process_y_sequential(y)
 
-  # Determine is_classification, class_levels, and num_classes
+  # Determine is_classification and num_classes
   is_classification <- y_processed$is_classification
-  class_levels <- y_processed$class_levels
   num_classes <- y_processed$num_classes
-  y_mat <- y_processed$y_proc
 
   # Determine default compile arguments based on mode
   default_loss <- if (is_classification) {
@@ -119,14 +115,14 @@ build_and_compile_sequential_model <- function(
   )
   rlang::exec(keras3::compile, model, !!!compile_args)
 
-  return(model)
+  model
 }
 
 #' Build and Compile a Keras Functional Model
 #'
 #' @description
-#' This internal helper function constructs and compiles a Keras functional model
-#' based on a list of layer blocks and other parameters. It handles data
+#' This internal helper function constructs and compiles a Keras functional
+#' model based on a list of layer blocks and other parameters. It handles data
 #' processing, dynamic architecture construction (including multiple inputs and
 #' branches), and model compilation.
 #'
@@ -135,13 +131,14 @@ build_and_compile_sequential_model <- function(
 #' @param y A vector or data frame of outcomes. Can handle multiple outputs if
 #'   provided as a data frame with multiple columns.
 #' @param layer_blocks A named list of functions that define the building blocks
-#'   of the model graph. Connections are defined by referencing other block names.
+#'   of the model graph. Connections are defined by referencing other block
+#'   names.
 #' @param ... Additional arguments passed to the function, including layer
 #'   hyperparameters, repetition counts for blocks, and compile/fit arguments.
 #'
 #' @return A compiled Keras model object.
 #' @noRd
-build_and_compile_functional_model <- function(
+build_compile_func_model <- function(
   x,
   y,
   layer_blocks,
@@ -150,11 +147,9 @@ build_and_compile_functional_model <- function(
   # --- 0. Argument & Data Preparation ---
   all_args <- list(...)
   learn_rate <- all_args$learn_rate %||% 0.01
-  verbose <- all_args$verbose %||% 0
 
   # Process x input
   x_processed <- process_x_functional(x)
-  x_proc <- x_processed$x_proc
   input_shape <- x_processed$input_shape
 
   # Process y input
@@ -196,7 +191,8 @@ build_and_compile_functional_model <- function(
     }
   } else {
     # Single output case
-    # Determine is_classification and num_classes from the top-level class_levels
+    # Determine is_classification and num_classes from the top-level class
+    # levels
     is_classification <- !is.null(y_processed$class_levels) &&
       length(y_processed$class_levels) > 0
     num_classes <- if (is_classification) {
@@ -221,7 +217,7 @@ build_and_compile_functional_model <- function(
     }
   }
 
-  # --- 2. Dynamic Model Architecture Construction (DIFFERENT from sequential) ---
+  # --- 2. Dynamic Model Architecture Construction (DIFFERENT from sequential)
   # Create a list to store the output tensors of each block.  The names of the
   # list elements correspond to the block names.
   block_outputs <- list()
@@ -238,8 +234,10 @@ build_and_compile_functional_model <- function(
 
     if (length(input_block_names_in_spec) != length(input_shape)) {
       stop(
-        "Mismatch between named inputs from process_x and named input blocks in layer_blocks. ",
-        "Ensure all processed inputs have a corresponding named input block in your model specification."
+        "Mismatch between named inputs from process_x and ",
+        "named input blocks in layer_blocks. ",
+        "Ensure all processed inputs have a corresponding ",
+        "named input block in your model specification."
       )
     }
 
@@ -253,7 +251,7 @@ build_and_compile_functional_model <- function(
       !(names(layer_blocks) %in% input_block_names_in_spec)
     ]
   } else {
-    # Single input case (original logic, but now also collecting for model_input_tensors)
+    # Single input case (now also collecting for model_input_tensors)
     first_block_name <- names(layer_blocks)[1]
     first_block_fn <- layer_blocks[[first_block_name]]
     current_input_tensor <- first_block_fn(input_shape = input_shape)
@@ -262,7 +260,8 @@ build_and_compile_functional_model <- function(
     remaining_layer_blocks_names <- names(layer_blocks)[-1]
   }
 
-  # Iterate through the remaining blocks, connecting and repeating them as needed.
+  # Iterate through the remaining blocks, connecting and repeating them
+  # as needed.
   for (block_name in remaining_layer_blocks_names) {
     block_fn <- layer_blocks[[block_name]]
     block_fmls <- rlang::fn_fmls(block_fn)
@@ -281,7 +280,8 @@ build_and_compile_functional_model <- function(
     }
 
     # --- Get Hyperparameters for this block ---
-    # Hyperparameters are formals that are NOT other block names (graph connections)
+    # Hyperparameters are formals that are NOT other block names
+    # (graph connections)
     hyperparam_names <- setdiff(block_fml_names, names(layer_blocks))
     user_hyperparams <- list()
     for (hp_name in hyperparam_names) {
@@ -383,7 +383,8 @@ build_and_compile_functional_model <- function(
     block_outputs[[block_name]] <- current_tensor
   }
 
-  # The last layer must be named 'output' or match the names of y_processed outputs
+  # The last layer must be named 'output' or match the names of
+  # y_processed outputs
   final_output_tensors <- list()
 
   # Check if y_processed$y_proc is a named list, indicating multiple outputs)
@@ -431,5 +432,5 @@ build_and_compile_functional_model <- function(
   )
   rlang::exec(keras3::compile, model, !!!compile_args)
 
-  return(model)
+  model
 }

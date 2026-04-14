@@ -3,6 +3,42 @@
   if (is.null(x) || inherits(x, "rlang_zap")) y else x
 }
 
+# Serialize a fitted Keras model to a raw byte vector using the native .keras
+# format. The bytes are stored alongside the Python object so the model can be
+# restored after saveRDS()/readRDS() or bundle()/unbundle() invalidates the
+# reticulate external pointer. Issues a warning and returns NULL if save_model
+# fails so that fit() is not aborted, but the user is informed that the saved
+# object will not support predict() after reload.
+keras_model_to_bytes <- function(model) {
+  tryCatch(
+    {
+      tmp <- tempfile(fileext = ".keras")
+      on.exit(unlink(tmp), add = TRUE)
+      keras3::save_model(model, tmp)
+      readBin(tmp, "raw", n = file.size(tmp))
+    },
+    error = function(e) {
+      warning(
+        "Could not serialize the Keras model to bytes. ",
+        "The fitted model will not support predict() after ",
+        "saveRDS()/readRDS() or bundle()/unbundle().\n",
+        "Underlying error: ",
+        conditionMessage(e),
+        call. = FALSE
+      )
+      NULL
+    }
+  )
+}
+
+# Restore a Keras model from the raw bytes produced by keras_model_to_bytes().
+keras_model_from_bytes <- function(bytes) {
+  tmp <- tempfile(fileext = ".keras")
+  on.exit(unlink(tmp), add = TRUE)
+  writeBin(bytes, tmp)
+  keras3::load_model(tmp)
+}
+
 # Environments to store user-registered custom functions
 .kerasnip_custom_objects <- new.env(parent = emptyenv())
 .kerasnip_custom_objects$optimizers <- list()
@@ -95,11 +131,13 @@ register_keras_metric <- function(name, metric_fn) {
 #' @details
 #' The lookup order is:
 #' 1.  User-registered custom objects via `register_keras_*()`.
-#' 2.  Standard Keras constructors in the `keras3` package (e.g., `optimizer_adam`).
-#' 3.  If not found, the original string is returned, assuming Keras can handle it.
+#' 2.  Standard Keras constructors in the `keras3` package
+#'     (e.g., `optimizer_adam`).
+#' 3.  If not found, the original string is returned, assuming Keras can handle
+#'     it.
 #'
-#' For optimizers, it also passes along any `...` arguments (like `learning_rate`)
-#' to the constructor function.
+#' For optimizers, it also passes along any `...` arguments
+#' (like `learning_rate`) to the constructor function.
 #'
 #' @param name The string name of the object.
 #' @param type The type of object ("optimizer", "loss", or "metric").
@@ -135,7 +173,11 @@ get_keras_object <- function(
     if (type == "optimizer") {
       return(rlang::exec(keras_fn, !!!list(...)))
     }
-    return(keras_fn)
+    # For loss and metric, call the constructor to get an instance.
+    # Passing the class object (not an instance) compiles fine but causes
+    # keras3::save_model() to fail with "Metric.get_config() missing
+    # positional argument: self".
+    return(keras_fn())
   }
 
   # 3. If not found, assume it's a string Keras understands directly
@@ -151,7 +193,8 @@ get_keras_object <- function(
 #'
 #' @param x A data frame or matrix of predictors.
 #' @return A list containing:
-#'   - `x_proc`: The processed predictor data (matrix or array, or list of arrays).
+#'   - `x_proc`: The processed predictor data (matrix or array, or list of
+#'     arrays).
 #'   - `input_shape`: The determined input shape(s) for the Keras model.
 #' @keywords internal
 #' @export
@@ -186,8 +229,8 @@ process_x_functional <- function(x) {
 #' @description
 #' Preprocesses outcome data (`y`) into a format suitable for Keras models
 #' built with the Functional API. Handles both regression (numeric) and
-#' classification (factor) outcomes, including one-hot encoding for classification,
-#' and supports multiple outputs.
+#' classification (factor) outcomes, including one-hot encoding for
+#' classification, and supports multiple outputs.
 #'
 #' @param y A vector or data frame of outcomes.
 #' @param is_classification Logical, optional. If `TRUE`, treats `y` as
@@ -198,9 +241,12 @@ process_x_functional <- function(x) {
 #' @return A list containing:
 #'   - `y_proc`: The processed outcome data (matrix or one-hot encoded array,
 #'     or list of these for multiple outputs).
-#'   - `is_classification`: Logical, indicating if `y` was treated as classification.
-#'   - `num_classes`: Integer, the number of classes for classification, or `NULL`.
-#'   - `class_levels`: Character vector, the factor levels for classification, or `NULL`.
+#'   - `is_classification`: Logical, indicating if `y` was treated as
+#'     classification.
+#'   - `num_classes`: Integer, the number of classes for classification, or
+#'     `NULL`.
+#'   - `class_levels`: Character vector, the factor levels for classification,
+#'     or `NULL`.
 #' @importFrom keras3 to_categorical
 #' @keywords internal
 #' @export
@@ -242,10 +288,11 @@ process_y_functional <- function(
         y_proc_single <- as.matrix(current_y)
       }
       y_proc_list[[col_name]] <- y_proc_single
-      class_levels_list[[col_name]] <- current_class_levels # Store class levels for each output
+      # Store class levels for each output
+      class_levels_list[[col_name]] <- current_class_levels
     }
     # Return a list containing y_proc_list and class_levels_list
-    return(list(y_proc = y_proc_list, class_levels = class_levels_list))
+    list(y_proc = y_proc_list, class_levels = class_levels_list)
   } else {
     # Original single output case
     if (is.null(is_classification)) {
@@ -267,12 +314,12 @@ process_y_functional <- function(
     } else {
       y_proc <- as.matrix(y)
     }
-    return(list(
+    list(
       y_proc = y_proc,
       class_levels = class_levels,
       is_classification = is_classification,
       num_classes = num_classes
-    ))
+    )
   }
 }
 
@@ -316,9 +363,12 @@ process_x_sequential <- function(x) {
 #'   classification outcomes. If `NULL` (default), determined from `levels(y)`.
 #' @return A list containing:
 #'   - `y_proc`: The processed outcome data (matrix or one-hot encoded array).
-#'   - `is_classification`: Logical, indicating if `y` was treated as classification.
-#'   - `num_classes`: Integer, the number of classes for classification, or `NULL`.
-#'   - `class_levels`: Character vector, the factor levels for classification, or `NULL`.
+#'   - `is_classification`: Logical, indicating if `y` was treated as
+#'     classification.
+#'   - `num_classes`: Integer, the number of classes for classification, or
+#'     `NULL`.
+#'   - `class_levels`: Character vector, the factor levels for classification,
+#'     or `NULL`.
 #' @importFrom keras3 to_categorical
 #' @keywords internal
 #' @export
@@ -362,9 +412,9 @@ process_y_sequential <- function(
 ##' Get Parsnip's Model Environment
 #'
 #' @description
-#' This is an internal helper function to retrieve the environment where `parsnip`
-#' stores its model definitions. It is used to dynamically interact with the
-#' `parsnip` infrastructure.
+#' This is an internal helper function to retrieve the environment where
+#' `parsnip` stores its model definitions. It is used to dynamically
+#' interact with the `parsnip` infrastructure.
 #'
 #' @return The `parsnip` model environment.
 #' @examples
@@ -381,8 +431,8 @@ get_model_env <- function() {
 #' Check if a Kerasnip Model Specification Exists
 #'
 #' @description
-#' This is an internal helper function to check if a model specification has been
-#' registered in the `parsnip` model environment.
+#' This is an internal helper function to check if a model specification has
+#' been registered in the `parsnip` model environment.
 #'
 #' @param model_name A character string giving the name of the model
 #'   specification function to check (e.g., "my_mlp").

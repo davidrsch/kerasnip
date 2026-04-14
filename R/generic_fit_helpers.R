@@ -12,17 +12,21 @@
 #' top-level `learn_rate` if necessary. It also resolves string names for `loss`
 #' and `metrics` using `get_keras_object()`.
 #'
-#' @param all_args The list of all arguments passed to the fitting function's `...`.
+#' @param all_args The list of all arguments passed to the fitting
+#'   function's `...`.
 #' @param learn_rate The top-level `learn_rate` parameter.
-#' @param default_loss The default loss function to use if not provided. Can be a single value or a named list.
-#' @param default_metrics The default metric(s) to use if not provided. Can be a single value or a named list of vectors/single values.
+#' @param default_loss The default loss function to use if not provided. Can
+#'   be a single value or a named list.
+#' @param default_metrics The default metric(s) to use if not provided. Can
+#'   be a single value or a named list of vectors/single values.
 #' @return A named list of arguments ready to be passed to `keras3::compile()`.
 #' @noRd
 collect_compile_args <- function(
   all_args,
   learn_rate,
   default_loss,
-  default_metrics
+  default_metrics,
+  get_object_fn = get_keras_object
 ) {
   compile_arg_names <- names(all_args)[startsWith(names(all_args), "compile_")]
   user_compile_args <- all_args[compile_arg_names]
@@ -36,7 +40,7 @@ collect_compile_args <- function(
   if (!is.null(optimizer_arg)) {
     if (is.character(optimizer_arg)) {
       # Resolve string to object, passing the learn_rate
-      final_compile_args$optimizer <- get_keras_object(
+      final_compile_args$optimizer <- get_object_fn(
         optimizer_arg,
         "optimizer",
         learning_rate = learn_rate
@@ -60,22 +64,23 @@ collect_compile_args <- function(
     loss_arg <- user_compile_args$loss %||% default_loss
     if (is.character(loss_arg) && length(loss_arg) == 1) {
       # Single loss string for all outputs
-      final_compile_args$loss <- get_keras_object(loss_arg, "loss")
+      final_compile_args$loss <- get_object_fn(loss_arg, "loss")
     } else if (is.list(loss_arg) && !is.null(names(loss_arg))) {
       # Named list of losses
       final_compile_args$loss <- lapply(loss_arg, function(l) {
-        if (is.character(l)) get_keras_object(l, "loss") else l
+        if (is.character(l)) get_object_fn(l, "loss") else l
       })
     } else {
       stop(
-        "For multiple outputs, 'compile_loss' must be a single string or a named list of losses."
+        "For multiple outputs, 'compile_loss' must be a single string",
+        " or a named list of losses."
       )
     }
   } else {
     # Single output
     loss_arg <- user_compile_args$loss %||% default_loss
     if (is.character(loss_arg)) {
-      final_compile_args$loss <- get_keras_object(loss_arg, "loss")
+      final_compile_args$loss <- get_object_fn(loss_arg, "loss")
     } else {
       final_compile_args$loss <- loss_arg
     }
@@ -88,15 +93,16 @@ collect_compile_args <- function(
     metrics_arg <- user_compile_args$metrics %||% default_metrics
     if (is.character(metrics_arg) && length(metrics_arg) == 1) {
       # Single metric string for all outputs
-      final_compile_args$metrics <- get_keras_object(metrics_arg, "metric")
+      final_compile_args$metrics <- get_object_fn(metrics_arg, "metric")
     } else if (is.list(metrics_arg) && !is.null(names(metrics_arg))) {
       # Named list of metrics
       final_compile_args$metrics <- lapply(metrics_arg, function(m) {
-        if (is.character(m)) get_keras_object(m, "metric") else m
+        if (is.character(m)) get_object_fn(m, "metric") else m
       })
     } else {
       stop(
-        "For multiple outputs, 'compile_metrics' must be a single string or a named list of metrics."
+        "For multiple outputs, 'compile_metrics' must be a single string",
+        " or a named list of metrics."
       )
     }
   } else {
@@ -105,7 +111,7 @@ collect_compile_args <- function(
     if (is.character(metrics_arg)) {
       final_compile_args$metrics <- lapply(
         metrics_arg,
-        get_keras_object,
+        get_object_fn,
         "metric"
       )
     } else {
@@ -118,7 +124,8 @@ collect_compile_args <- function(
     !names(user_compile_args) %in% c("optimizer", "loss", "metrics")
   ]
   final_compile_args <- c(final_compile_args, other_args)
-  # Filter out arguments that are NULL or rlang_zap before passing to keras3::compile
+  # Filter out arguments that are NULL or rlang_zap before passing to
+  # keras3::compile
   final_compile_args <- final_compile_args[
     !vapply(
       final_compile_args,
@@ -145,7 +152,8 @@ collect_compile_args <- function(
 #' @param x_proc The processed predictor data.
 #' @param y_mat The processed outcome data.
 #' @param verbose The verbosity level.
-#' @param all_args The list of all arguments passed to the fitting function's `...`.
+#' @param all_args The list of all arguments passed to the fitting
+#'   function's `...`.
 #' @return A named list of arguments ready to be passed to `keras3::fit()`.
 #' @noRd
 collect_fit_args <- function(
@@ -168,7 +176,8 @@ collect_fit_args <- function(
 
   merged_args <- utils::modifyList(base_args, user_fit_args)
 
-  # Filter out arguments that are NULL or rlang_zap before passing to keras3::fit
+  # Filter out arguments that are NULL or rlang_zap before passing to
+  # keras3::fit
   merged_args <- merged_args[
     !vapply(
       merged_args,

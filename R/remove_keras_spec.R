@@ -2,16 +2,17 @@
 #'
 #' @description
 #' This function completely removes a model specification that was previously
-#' created by [create_keras_sequential_spec()] or [create_keras_functional_spec()].
-#' It cleans up both the function in the user's environment and all associated
-#' registrations within the `parsnip` package.
+#' created by [create_keras_sequential_spec()] or
+#' [create_keras_functional_spec()]. It cleans up both the function in the
+#' user's environment and all associated registrations within the `parsnip`
+#' package.
 #'
 #' @details
 #' This function is essential for cleanly unloading a dynamically created model.
 #' It performs three main actions:
 #' \enumerate{
-#'   \item It removes the model specification function (e.g., `my_mlp()`) and its
-#'     corresponding `update()` method from the specified environment.
+#'   \item It removes the model specification function (e.g., `my_mlp()`) and
+#'     its corresponding `update()` method from the specified environment.
 #'   \item It searches `parsnip`'s internal model environment for all objects
 #'     whose names start with the `model_name` and removes them. This purges
 #'     the fit methods, argument definitions, and other registrations.
@@ -22,8 +23,8 @@
 #'
 #' @param model_name A character string giving the name of the model
 #'   specification function to remove (e.g., "my_mlp").
-#' @param env The environment from which to remove the function and its `update()`
-#'   method. Defaults to the calling environment (`parent.frame()`).
+#' @param env The environment from which to remove the function and its
+#'   `update()` method. Defaults to the calling environment (`parent.frame()`).
 #' @return Invisibly returns `TRUE` after attempting to remove the objects.
 #' @seealso [create_keras_sequential_spec()], [create_keras_functional_spec()]
 #' @export

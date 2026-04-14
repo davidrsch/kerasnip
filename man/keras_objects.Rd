@@ -8,9 +8,9 @@
 \alias{keras_metrics}
 \title{Dynamically Discovered Keras Objects}
 \format{
-An object of class \code{character} of length 12.
+An object of class \code{character} of length 13.
 
-An object of class \code{character} of length 21.
+An object of class \code{character} of length 22.
 
 An object of class \code{character} of length 32.
 }

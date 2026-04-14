@@ -88,6 +88,27 @@ The new model specification function and its \code{update()} method are created
 in the environment specified by the \code{env} argument.
 }
 
+\section{Saving and Reloading Models}{
+
+To save a fitted workflow and reload it in a new R session, use
+\code{bundle::bundle()} before saving — this is required to preserve the Keras
+model weights:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(bundle)
+bundled <- bundle(fitted_workflow)
+saveRDS(bundled, "model.rds")
+
+# New session:
+library(kerasnip); library(bundle)
+fitted_workflow <- unbundle(readRDS("model.rds"))
+predict(fitted_workflow, new_data = test_data)  # works
+}\if{html}{\out{</div>}}
+
+Plain \code{saveRDS()} without \code{bundle()} does not preserve Keras weights, but
+\code{predict()} will still auto-register the parsnip model type from metadata
+stored on the spec.
+}
+
 \examples{
 \donttest{
 if (requireNamespace("keras3", quietly = TRUE)) {

@@ -9,7 +9,8 @@
 #' - `parsnip::set_new_model()`: Declares the new model.
 #' - `parsnip::set_model_mode()`: Sets the mode (e.g., "regression").
 #' - `parsnip::set_model_engine()`: Sets the engine to "keras".
-#' - `parsnip::set_dependency()`: Declares the dependency on the `keras3` package.
+#' - `parsnip::set_dependency()`: Declares the dependency on the `keras3`
+#'   package.
 #' - `parsnip::set_encoding()`: Specifies data preprocessing requirements.
 #'
 #' @param model_name The name of the new model.

@@ -4,6 +4,21 @@ y_train <- iris$Species
 train_df <- tibble(x = I(x_train), y = y_train)
 # --- Tests ---
 
+test_that("compile_keras_grid errors if spec is not a model_spec", {
+  expect_error(
+    compile_keras_grid("not_a_spec", data.frame(), NULL, NULL),
+    "`spec` must be a `parsnip` model specification."
+  )
+})
+
+test_that("compile_keras_grid errors if grid is not a data frame", {
+  spec <- parsnip::rand_forest()
+  expect_error(
+    compile_keras_grid(spec, "not_a_df", NULL, NULL),
+    "`grid` must be a data frame or tibble."
+  )
+})
+
 test_that("compile_keras_grid works for sequential models", {
   skip_on_cran()
 

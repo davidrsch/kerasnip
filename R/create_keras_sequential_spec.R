@@ -44,9 +44,10 @@
 #' 3.  The **final block** should add the output layer. For classification, it
 #'     can accept a `num_classes` argument, which is provided automatically.
 #'
-#' A key feature of this function is the automatic creation of `num_{block_name}`
-#' arguments (e.g., `num_hidden`). This allows you to control how many times
-#' each block is repeated, making it easy to tune the depth of your network.
+#' A key feature of this function is the automatic creation of
+#' `num_{block_name}` arguments (e.g., `num_hidden`). This allows you to
+#' control how many times each block is repeated, making it easy to tune the
+#' depth of your network.
 #'
 #' @importFrom rlang enquos dots_list arg_match env_poke
 #' @importFrom parsnip update_dot_check
@@ -59,6 +60,26 @@
 #' @seealso [remove_keras_spec()], [parsnip::new_model_spec()],
 #'   [create_keras_functional_spec()]
 #'
+#' @section Saving and Reloading Models:
+#' To save a fitted workflow and reload it in a new R session, use
+#' `bundle::bundle()` before saving — this is required to preserve the Keras
+#' model weights:
+#'
+#' ```r
+#' library(bundle)
+#' bundled <- bundle(fitted_workflow)
+#' saveRDS(bundled, "model.rds")
+#'
+#' # New session:
+#' library(kerasnip); library(bundle)
+#' fitted_workflow <- unbundle(readRDS("model.rds"))
+#' predict(fitted_workflow, new_data = test_data)  # works
+#' ```
+#'
+#' Plain `saveRDS()` without `bundle()` does not preserve Keras weights, but
+#' `predict()` will still auto-register the parsnip model type from metadata
+#' stored on the spec.
+#'
 #' @export
 #' @examples
 #' \donttest{
@@ -68,7 +89,8 @@
 #' library(dials)
 #'
 #' # 1. Define layer blocks for a complete model.
-#' # The first block must initialize the model. `input_shape` is passed automatically.
+#' # The first block must initialize the model. `input_shape` is passed
+#' # automatically.
 #' input_block <- function(model, input_shape) {
 #'   keras_model_sequential(input_shape = input_shape)
 #' }

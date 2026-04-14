@@ -17,14 +17,15 @@
 #'   \item Other arguments are mapped based on their suffix (e.g., `dense_units`
 #'     is mapped based on `units`). The internal `keras_dials_map` object
 #'     contains common mappings like `units` -> `dials::hidden_units()`.
-#'   \item Arguments for `compile_loss` and `compile_optimizer` are mapped to custom
-#'     `dials` parameter functions (`loss_function_keras()` and `optimizer_function()`)
-#'     that are part of the `kerasnip` package itself. The function correctly
-#'     sets the `pkg` for these to `kerasnip`.
+#'   \item Arguments for `compile_loss` and `compile_optimizer` are mapped to
+#'     custom `dials` parameter functions (`loss_function_keras()` and
+#'     `optimizer_function()`) that are part of the `kerasnip` package itself.
+#'     The function correctly sets the `pkg` for these to `kerasnip`.
 #' }
 #'
 #' @param model_name The name of the new model specification.
-#' @param parsnip_names A character vector of all argument names to be registered.
+#' @param parsnip_names A character vector of all argument names to be
+#'   registered.
 #' @return Invisibly returns `NULL`. Called for its side effects.
 #' @noRd
 register_model_args <- function(model_name, parsnip_names) {
@@ -71,7 +72,8 @@ register_model_args <- function(model_name, parsnip_names) {
       if (!is.na(idx)) {
         dials_fun <- keras_dials_map$dials_fun[idx]
       } else {
-        # If no full match, try to match the base name (e.g., "units" from "dense_units")
+        # If no full match, try to match the base name (e.g., "units" from
+        # "dense_units")
         base_arg <- sub(".*_", "", arg)
         idx <- match(base_arg, keras_dials_map$keras_arg)
         dials_fun <- if (!is.na(idx)) keras_dials_map$dials_fun[idx] else arg

@@ -207,8 +207,7 @@ inp_spec <- function(block, input_map) {
     }
 
     new_names <- original_names
-    match_indices <- match(names(input_map), original_names)
-    new_names[match_indices] <- unname(input_map)
+    new_names[match(names(input_map), original_names)] <- unname(input_map)
     names(new_formals) <- new_names
   } else {
     stop("`input_map` must be a single string or a named character vector.")

@@ -1,18 +1,20 @@
 #' Register the `update()` S3 Method
 #'
 #' @description
-#' Creates and registers an `update()` S3 method for the new model specification.
-#' This method is essential for tuning with `dials` and `tune`, as it allows
-#' the tuning machinery to modify model parameters after the spec has been created.
+#' Creates and registers an `update()` S3 method for the new model
+#' specification. This method is essential for tuning with `dials`
+#' and `tune`, as it allows the tuning machinery to modify model
+#' parameters after the spec has been created.
 #'
 #' @details
-#' This function uses `rlang` metaprogramming to dynamically construct a complete
-#' `update.{{model_name}}` function. The process involves:
+#' This function uses `rlang` metaprogramming to dynamically
+#' construct a complete `update.{{model_name}}` function.
+#' The process involves:
 #' \enumerate{
 #'   \item Building a function signature that includes `object`, `parameters`,
 #'     `...`, `fresh`, and all the tunable parameters from `parsnip_names`.
-#'   \item Creating a function body that captures all the arguments into quosures
-#'     and passes them to `parsnip::update_spec()`.
+#'   \item Creating a function body that captures all the arguments into
+#'     quosures and passes them to `parsnip::update_spec()`.
 #'   \item Registering this new function as an S3 method for the generic
 #'     `update()` in the specified environment, so S3 dispatch can find it.
 #' }
@@ -56,8 +58,34 @@ register_update_method <- function(model_name, parsnip_names, env) {
     .ns = "parsnip"
   )
 
+  # parsnip::update_spec() ends with new_model_spec(), which strips any extra
+  # classes and attributes from the spec. Re-attach kerasnip_spec and the
+  # metadata attrs that predict.kerasnip_model_fit needs for auto-registration.
+  result_assign <- rlang::expr(result <- !!update_spec_call)
+
+  restore_class_expr <- rlang::expr(
+    class(result) <- c(class(result)[1L], "kerasnip_spec", class(result)[-1L])
+  )
+  restore_blocks_expr <- rlang::expr(
+    attr(result, "kerasnip_layer_blocks") <- attr(
+      object,
+      "kerasnip_layer_blocks"
+    )
+  )
+  restore_functional_expr <- rlang::expr(
+    attr(result, "kerasnip_functional") <- attr(object, "kerasnip_functional")
+  )
+
   # Combine them into the final body
-  update_body <- rlang::call2("{", args_enquo_list_expr, update_spec_call)
+  update_body <- rlang::call2(
+    "{",
+    args_enquo_list_expr,
+    result_assign,
+    restore_class_expr,
+    restore_blocks_expr,
+    restore_functional_expr,
+    rlang::sym("result")
+  )
 
   # Create and register the S3 method
   update_func <- rlang::new_function(
