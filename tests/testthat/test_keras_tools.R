@@ -38,7 +38,7 @@ test_that("keras_model_from_bytes restores a valid model", {
 
   expect_true(inherits(restored, "keras.src.models.sequential.Sequential"))
   x <- matrix(1:3, ncol = 1)
-  expect_equal(dim(keras3::predict(restored, x)), c(3L, 1L))
+  expect_equal(dim(predict(restored, x)), c(3L, 1L))
 })
 
 test_that("get_keras_object returns instances not constructors", {
