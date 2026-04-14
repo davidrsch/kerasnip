@@ -19,6 +19,26 @@ fit.kerasnip_spec <- function(object, ...) {
   result
 }
 
+#' fit_xy Method for kerasnip Spec Objects
+#'
+#' @description
+#' S3 method for `fit_xy()` dispatched on `kerasnip_spec` objects. Workflows
+#' route through `fit_xy` rather than `fit`, so this method ensures the
+#' `kerasnip_model_fit` class is attached in the workflow fitting path as well.
+#'
+#' @param object A `kerasnip_spec` model specification.
+#' @param ... Passed to `parsnip::fit_xy.model_spec()`.
+#' @return A `model_fit` object with the additional `kerasnip_model_fit` class
+#'   prepended to its class vector.
+#' @keywords internal
+#' @importFrom generics fit_xy
+#' @exportS3Method generics::fit_xy
+fit_xy.kerasnip_spec <- function(object, ...) {
+  result <- NextMethod()
+  class(result) <- c("kerasnip_model_fit", class(result))
+  result
+}
+
 #' Predict Method for kerasnip Model Fits
 #'
 #' @description
