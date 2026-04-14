@@ -40,7 +40,7 @@ fit_seq_workflow <- function(model_name) {
     recipes::recipe(mpg ~ ., data = mtcars),
     spec
   )
-  fit(wf, data = mtcars)
+  workflows::fit(wf, data = mtcars)
 }
 
 fit_func_workflow <- function(model_name) {
@@ -55,7 +55,7 @@ fit_func_workflow <- function(model_name) {
     recipes::recipe(mpg ~ ., data = mtcars),
     spec
   )
-  fit(wf, data = mtcars)
+  workflows::fit(wf, data = mtcars)
 }
 
 # ============================================================

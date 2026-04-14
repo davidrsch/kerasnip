@@ -11,7 +11,7 @@
 #' The function orchestrates the three main steps of the model fitting process:
 #' \enumerate{
 #'   \item \strong{Build and Compile:} It calls
-#'     `build_and_compile_functional_model()` to construct the Keras model
+#'     `build_compile_func_model()` to construct the Keras model
 #'     architecture based on the provided `layer_blocks` and hyperparameters.
 #'   \item \strong{Process Data:} It preprocesses the input (`x`) and output
 #'     (`y`) data into the format expected by Keras.
@@ -87,7 +87,7 @@ generic_functional_fit <- function(
   }
   y <- data[, y_names, drop = FALSE]
   # --- 1. Build and Compile Model ---
-  model <- build_and_compile_functional_model(x, y, layer_blocks, ...)
+  model <- build_compile_func_model(x, y, layer_blocks, ...)
 
   # --- 2. Model Fitting ---
   all_args <- list(...)

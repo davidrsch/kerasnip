@@ -130,9 +130,9 @@ compile_keras_grid <- function(spec, grid, x, y) {
     purrr::pluck(2)
 
   build_fn <- if (any(grepl("sequential", fit_fun_char))) {
-    build_and_compile_sequential_model
+    build_compile_seq_model
   } else if (any(grepl("functional", fit_fun_char))) {
-    build_and_compile_functional_model
+    build_compile_func_model
   } else {
     stop("Unsupported fit function in model spec.")
   }

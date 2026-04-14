@@ -14,7 +14,7 @@
 #'
 #' @return A compiled Keras model object.
 #' @noRd
-build_and_compile_sequential_model <- function(
+build_compile_seq_model <- function(
   x,
   y,
   layer_blocks,
@@ -23,21 +23,17 @@ build_and_compile_sequential_model <- function(
   # --- 0. Argument & Data Preparation ---
   all_args <- list(...)
   learn_rate <- all_args$learn_rate %||% 0.01
-  verbose <- all_args$verbose %||% 0
 
   # Process x input
   x_processed <- process_x_sequential(x)
-  x_proc <- x_processed$x_proc
   input_shape <- x_processed$input_shape
 
   # Process y input
   y_processed <- process_y_sequential(y)
 
-  # Determine is_classification, class_levels, and num_classes
+  # Determine is_classification and num_classes
   is_classification <- y_processed$is_classification
-  class_levels <- y_processed$class_levels
   num_classes <- y_processed$num_classes
-  y_mat <- y_processed$y_proc
 
   # Determine default compile arguments based on mode
   default_loss <- if (is_classification) {
@@ -142,7 +138,7 @@ build_and_compile_sequential_model <- function(
 #'
 #' @return A compiled Keras model object.
 #' @noRd
-build_and_compile_functional_model <- function(
+build_compile_func_model <- function(
   x,
   y,
   layer_blocks,
@@ -151,11 +147,9 @@ build_and_compile_functional_model <- function(
   # --- 0. Argument & Data Preparation ---
   all_args <- list(...)
   learn_rate <- all_args$learn_rate %||% 0.01
-  verbose <- all_args$verbose %||% 0
 
   # Process x input
   x_processed <- process_x_functional(x)
-  x_proc <- x_processed$x_proc
   input_shape <- x_processed$input_shape
 
   # Process y input

@@ -206,15 +206,15 @@ test_that("keras_postprocess_classes handles multi-output binary single col", {
     output1 = matrix(c(0.6, 0.4, 0.2, 0.8), ncol = 1, byrow = TRUE)
   )
   names(results) <- "output1"
-  mock_object_multi_output_binary <- list(
+  mock_multi_output_bin <- list(
     fit = list(
       lvl = list(output1 = c("negative", "positive")) # Levels for binary output
     )
   )
-  class(mock_object_multi_output_binary) <- "model_fit"
+  class(mock_multi_output_bin) <- "model_fit"
   processed <- keras_postprocess_classes(
     results,
-    mock_object_multi_output_binary
+    mock_multi_output_bin
   )
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), c(".pred_class_output1"))
