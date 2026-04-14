@@ -149,9 +149,10 @@ y_dummy_df <- tibble::tibble(y = y_dummy)
 
 
 # Use compile_keras_grid to get the model summary
+# A one-row grid with no extra hyperparameters builds the spec as-is.
 compilation_results <- compile_keras_grid(
   spec = cnn_spec,
-  grid = tibble::tibble(),
+  grid = tibble::tibble(.rows = 1L),
   x = x_dummy_df,
   y = y_dummy_df
 )

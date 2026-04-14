@@ -25,7 +25,9 @@
 #'   `create_keras_sequential_spec()` or `create_keras_functional_spec()`.
 #' @param grid A `tibble` or `data.frame` containing the grid of hyperparameters
 #'   to evaluate. Each row represents a unique model architecture to be
-#'   compiled.
+#'   compiled. Must have at least one row. To build the model once using only
+#'   the arguments already set on `spec` (e.g. for architecture inspection),
+#'   pass `tibble::tibble(.rows = 1L)`.
 #' @param x A data frame or matrix of predictors. This is used to infer the
 #'   `input_shape` for the Keras model.
 #' @param y A vector or factor of outcomes. This is used to infer the output
@@ -111,6 +113,11 @@ compile_keras_grid <- function(spec, grid, x, y) {
   }
   if (!is.data.frame(grid)) {
     stop("`grid` must be a data frame or tibble.")
+  }
+  if (nrow(grid) == 0L) {
+    stop(
+      "`grid` must have at least one row. Use `tibble::tibble(.rows = 1)` to build the model with the spec's current arguments and no hyperparameter variation."
+    )
   }
 
   model_env <- get_model_env()

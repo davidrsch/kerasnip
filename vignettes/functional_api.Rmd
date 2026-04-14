@@ -213,9 +213,10 @@ x_dummy_df <- tibble::tibble(
 y_dummy_df <- tibble::tibble(output_1 = y_dummy_1, output_2 = y_dummy_2)
 
 # Use compile_keras_grid to get the model
+# A one-row grid with no extra hyperparameters builds the spec as-is.
 compilation_results <- compile_keras_grid(
   spec = spec,
-  grid = tibble::tibble(),
+  grid = tibble::tibble(.rows = 1L),
   x = x_dummy_df,
   y = y_dummy_df
 )

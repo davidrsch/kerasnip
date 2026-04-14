@@ -19,6 +19,61 @@ test_that("compile_keras_grid errors if grid is not a data frame", {
   )
 })
 
+test_that("compile_keras_grid errors if grid has zero rows", {
+  spec <- parsnip::rand_forest()
+  expect_error(
+    compile_keras_grid(spec, tibble::tibble(), NULL, NULL),
+    "`grid` must have at least one row"
+  )
+})
+
+test_that("compile_keras_grid works with single-row empty grid (no tuning columns)", {
+  skip_on_cran()
+
+  model_name <- "test_seq_spec_compile_notuning"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_sequential_spec(
+    model_name = model_name,
+    mode = "classification",
+    layer_blocks = list(
+      dense = function(model, units = 32) {
+        if (is.null(model)) {
+          keras3::keras_model_sequential(input_shape = 4L) |>
+            keras3::layer_dense(units = units, activation = "relu")
+        } else {
+          model |> keras3::layer_dense(units = units, activation = "relu")
+        }
+      },
+      output = function(model, num_classes) {
+        model |>
+          keras3::layer_dense(units = num_classes, activation = "softmax")
+      }
+    )
+  )
+
+  spec <- test_seq_spec_compile_notuning(dense_units = 16L) |>
+    set_engine("keras")
+
+  # tibble(.rows = 1L) = "build once with the spec's current args, no tuning"
+  results <- compile_keras_grid(
+    spec,
+    tibble::tibble(.rows = 1L),
+    select(train_df, x),
+    select(train_df, y)
+  )
+
+  expect_s3_class(results, "tbl_df")
+  expect_equal(nrow(results), 1L)
+  expect_true("compiled_model" %in% names(results))
+  expect_true("error" %in% names(results))
+  expect_true(is.na(results$error[[1L]]))
+  expect_true(inherits(
+    results$compiled_model[[1L]],
+    "keras.src.models.model.Model"
+  ))
+})
+
 test_that("compile_keras_grid works for sequential models", {
   skip_on_cran()
 
