@@ -12,7 +12,7 @@
 #'   prepended to its class vector.
 #' @keywords internal
 #' @importFrom generics fit
-#' @export
+#' @exportS3Method generics::fit
 fit.kerasnip_spec <- function(object, ...) {
   result <- NextMethod()
   class(result) <- c("kerasnip_model_fit", class(result))
@@ -45,7 +45,7 @@ fit.kerasnip_spec <- function(object, ...) {
 #' @param ... Passed to the parsnip predict method.
 #' @return A tibble of predictions.
 #' @keywords internal
-#' @export
+#' @exportS3Method stats::predict
 predict.kerasnip_model_fit <- function(object, new_data, ...) {
   model_name <- class(object)[2L]
 
