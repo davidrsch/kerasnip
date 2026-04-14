@@ -24,6 +24,7 @@ guides:
       - tuning_fit_compile_args
       - applications
       - autoplot_uniqueness
+      - save_load_models
 
 # examples:
 
@@ -36,6 +37,7 @@ reference:
       - create_keras_functional_spec
       - inp_spec
       - remove_keras_spec
+      - reregister_keras_spec
 
   - title: "Registration Helpers"
     desc: >
