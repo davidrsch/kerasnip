@@ -56,8 +56,8 @@
 #'   environment and register the model with `parsnip` so it can be used within
 #'   the `tidymodels` framework.
 #'
-#' @seealso [remove_keras_spec()], [parsnip::new_model_spec()],
-#'   [create_keras_functional_spec()]
+#' @seealso [remove_keras_spec()], [reregister_keras_spec()],
+#'   [parsnip::new_model_spec()], [create_keras_functional_spec()]
 #'
 #' @export
 #' @examples
