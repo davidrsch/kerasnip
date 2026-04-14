@@ -166,7 +166,7 @@ mlp_spec <- mnist_mlp(
   hidden_1_units = 256,
   hidden_1_rate = 0.4,
   hidden_2_rate = 0.3,
-  hidden_2_units =  128,
+  hidden_2_units = 128,
   compile_loss = "categorical_crossentropy",
   compile_optimizer = optimizer_rmsprop(),
   compile_metrics = c("accuracy"),
@@ -334,4 +334,12 @@ final_fit |>
   plot()
 ```
 
-This result shows that `tune` has tested various network depths, widths, and dropout rates, successfully finding the best-performing combination within the search space. By using `kerasnip`, we were able to integrate this complex architectural tuning directly into a standard `tidymodels` workflow.
+This result shows that `tune` has tested various network depths, widths, and dropout rates, successfully finding the best-performing combination within the search space. By using `kerasnip`, we were able to integrate this complex architectu
+
+## Saving Your Model
+
+Once you have a fitted workflow you are happy with, you will want to save it
+for later use or deployment. Plain `saveRDS()` alone is not sufficient for
+kerasnip models — see the dedicated vignette
+`vignette("save_load_models", package = "kerasnip")` for the complete
+workflow using `bundle` and `reregister_keras_spec()`.ral tuning directly into a standard `tidymodels` workflow.
