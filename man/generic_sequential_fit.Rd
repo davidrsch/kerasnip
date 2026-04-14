@@ -16,16 +16,16 @@ passed down from the \code{parsnip::fit()} call.}
 \item{layer_blocks}{A named list of layer block functions. This is passed
 internally from the \code{parsnip} model specification.}
 
-\item{...}{Additional arguments passed down from the model specification. These
-can include:
+\item{...}{Additional arguments passed down from the model specification.
+These can include:
 \itemize{
 \item \strong{Layer Parameters:} Arguments for the layer blocks, prefixed
 with the block name (e.g., \code{dense_units = 64}).
-\item \strong{Architecture Parameters:} Arguments to control the number of
-times a block is repeated, in the format \verb{num_\{block_name\}} (e.g.,
+\item \strong{Architecture Parameters:} Arguments to control the number
+of times a block is repeated, in the format \verb{num_\{block_name\}} (e.g.,
 \code{num_dense = 2}).
-\item \strong{Compile Parameters:} Arguments to customize model compilation,
-prefixed with \code{compile_} (e.g., \code{compile_loss = "mae"},
+\item \strong{Compile Parameters:} Arguments to customize model
+compilation, prefixed with \code{compile_} (e.g., \code{compile_loss = "mae"},
 \code{compile_optimizer = "sgd"}).
 \item \strong{Fit Parameters:} Arguments to customize model fitting,
 prefixed with \code{fit_} (e.g., \code{fit_callbacks = list(...)},
@@ -44,8 +44,8 @@ classification) or \code{NULL} (for regression).
 }
 }
 \description{
-This function serves as the internal engine for fitting \code{kerasnip} models that
-are based on the Keras sequential API. It is not intended to be called
+This function serves as the internal engine for fitting \code{kerasnip} models
+that are based on the Keras sequential API. It is not intended to be called
 directly by the user. The function is invoked by \code{parsnip::fit()} when a
 \code{kerasnip} sequential model specification is used.
 }
@@ -55,10 +55,10 @@ Generic Fitting Function for Sequential Keras Models
 The function orchestrates the three main steps of the model fitting process:
 \enumerate{
 \item \strong{Build and Compile:} It calls
-\code{build_and_compile_sequential_model()} to construct the Keras model
+\code{build_compile_seq_model()} to construct the Keras model
 architecture based on the provided \code{layer_blocks} and hyperparameters.
-\item \strong{Process Data:} It preprocesses the input (\code{x}) and output (\code{y})
-data into the format expected by Keras.
+\item \strong{Process Data:} It preprocesses the input (\code{x}) and output
+(\code{y}) data into the format expected by Keras.
 \item \strong{Fit Model:} It calls \code{keras3::fit()} with the compiled model
 and processed data, passing along any fitting-specific arguments (e.g.,
 \code{epochs}, \code{batch_size}, \code{callbacks}).

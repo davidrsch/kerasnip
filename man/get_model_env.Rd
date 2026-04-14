@@ -10,9 +10,9 @@ get_model_env()
 The \code{parsnip} model environment.
 }
 \description{
-This is an internal helper function to retrieve the environment where \code{parsnip}
-stores its model definitions. It is used to dynamically interact with the
-\code{parsnip} infrastructure.
+This is an internal helper function to retrieve the environment where
+\code{parsnip} stores its model definitions. It is used to dynamically
+interact with the \code{parsnip} infrastructure.
 }
 \examples{
 \donttest{

@@ -7,7 +7,8 @@
 inform_errors(compiled_grid, n = 10)
 }
 \arguments{
-\item{compiled_grid}{A tibble, the result of a call to \code{compile_keras_grid()}.}
+\item{compiled_grid}{A tibble, the result of a call to
+\code{compile_keras_grid()}.}
 
 \item{n}{A single integer for the maximum number of distinct errors to
 display in detail.}

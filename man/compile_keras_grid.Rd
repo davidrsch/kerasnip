@@ -11,7 +11,8 @@ compile_keras_grid(spec, grid, x, y)
 \code{create_keras_sequential_spec()} or \code{create_keras_functional_spec()}.}
 
 \item{grid}{A \code{tibble} or \code{data.frame} containing the grid of hyperparameters
-to evaluate. Each row represents a unique model architecture to be compiled.}
+to evaluate. Each row represents a unique model architecture to be
+compiled.}
 
 \item{x}{A data frame or matrix of predictors. This is used to infer the
 \code{input_shape} for the Keras model.}

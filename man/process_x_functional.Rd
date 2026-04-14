@@ -12,7 +12,8 @@ process_x_functional(x)
 \value{
 A list containing:
 \itemize{
-\item \code{x_proc}: The processed predictor data (matrix or array, or list of arrays).
+\item \code{x_proc}: The processed predictor data (matrix or array, or list of
+arrays).
 \item \code{input_shape}: The determined input shape(s) for the Keras model.
 }
 }

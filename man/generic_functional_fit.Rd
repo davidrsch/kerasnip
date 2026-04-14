@@ -44,8 +44,8 @@ classification) or \code{NULL} (for regression).
 }
 }
 \description{
-This function serves as the internal engine for fitting \code{kerasnip} models that
-are based on the Keras functional API. It is not intended to be called
+This function serves as the internal engine for fitting \code{kerasnip} models
+that are based on the Keras functional API. It is not intended to be called
 directly by the user. The function is invoked by \code{parsnip::fit()} when a
 \code{kerasnip} functional model specification is used.
 }
@@ -55,10 +55,10 @@ Generic Fitting Function for Functional Keras Models
 The function orchestrates the three main steps of the model fitting process:
 \enumerate{
 \item \strong{Build and Compile:} It calls
-\code{build_and_compile_functional_model()} to construct the Keras model
+\code{build_compile_func_model()} to construct the Keras model
 architecture based on the provided \code{layer_blocks} and hyperparameters.
-\item \strong{Process Data:} It preprocesses the input (\code{x}) and output (\code{y})
-data into the format expected by Keras.
+\item \strong{Process Data:} It preprocesses the input (\code{x}) and output
+(\code{y}) data into the format expected by Keras.
 \item \strong{Fit Model:} It calls \code{keras3::fit()} with the compiled model
 and processed data, passing along any fitting-specific arguments (e.g.,
 \code{epochs}, \code{batch_size}, \code{callbacks}).

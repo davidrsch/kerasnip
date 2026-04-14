@@ -7,7 +7,8 @@
 extract_valid_grid(compiled_grid)
 }
 \arguments{
-\item{compiled_grid}{A tibble, the result of a call to \code{compile_keras_grid()}.}
+\item{compiled_grid}{A tibble, the result of a call to
+\code{compile_keras_grid()}.}
 }
 \value{
 A tibble containing the subset of the original grid that resulted in

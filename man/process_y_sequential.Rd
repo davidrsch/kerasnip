@@ -20,9 +20,12 @@ classification outcomes. If \code{NULL} (default), determined from \code{levels(
 A list containing:
 \itemize{
 \item \code{y_proc}: The processed outcome data (matrix or one-hot encoded array).
-\item \code{is_classification}: Logical, indicating if \code{y} was treated as classification.
-\item \code{num_classes}: Integer, the number of classes for classification, or \code{NULL}.
-\item \code{class_levels}: Character vector, the factor levels for classification, or \code{NULL}.
+\item \code{is_classification}: Logical, indicating if \code{y} was treated as
+classification.
+\item \code{num_classes}: Integer, the number of classes for classification, or
+\code{NULL}.
+\item \code{class_levels}: Character vector, the factor levels for classification,
+or \code{NULL}.
 }
 }
 \description{

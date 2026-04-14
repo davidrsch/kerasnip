@@ -14,8 +14,8 @@ specification function to check (e.g., "my_mlp").}
 A logical value, \code{TRUE} if the model exists, \code{FALSE} otherwise.
 }
 \description{
-This is an internal helper function to check if a model specification has been
-registered in the \code{parsnip} model environment.
+This is an internal helper function to check if a model specification has
+been registered in the \code{parsnip} model environment.
 }
 \examples{
 \donttest{

@@ -65,16 +65,17 @@ is as follows:
 of the nodes in your graph (e.g., \code{main_input}, \code{dense_path}, \code{output}).
 \item The \strong{names of the arguments} in each block function specify its inputs.
 A block function like \verb{my_block <- function(input_a, input_b, ...)}
-declares that it needs input from the nodes named \code{input_a} and \code{input_b}.
-\code{kerasnip} will automatically supply the output tensors from those nodes
-when calling \code{my_block}.
+declares that it needs input from the nodes named \code{input_a} and
+\code{input_b}. \code{kerasnip} will automatically supply the output tensors from
+those nodes when calling \code{my_block}.
 }
 
 There are two special requirements:
 \itemize{
 \item \strong{Input Block}: The first block in the list is treated as the input
 node. Its function should not take other blocks as input, but it can have
-an \code{input_shape} argument, which is supplied automatically during fitting.
+an \code{input_shape} argument, which is supplied automatically during
+fitting.
 \item \strong{Output Block}: Exactly one block must be named \code{"output"}. The tensor
 returned by this block is used as the final output of the Keras model.
 }
@@ -138,12 +139,18 @@ if (requireNamespace("keras3", quietly = TRUE)) {
       main_input = input_block,
 
       # The argument `main_input` connects this block to the input node.
-      dense_path = function(main_input, units = 32) dense_block(main_input, units),
+      dense_path = function(main_input, units = 32) {
+        dense_block(main_input, units)
+      },
 
-      # This block's arguments connect it to the original input AND the dense layer.
-      add_residual = function(main_input, dense_path) add_block(main_input, dense_path),
+      # This block's arguments connect it to the original input AND the dense
+      # layer.
+      add_residual = function(main_input, dense_path) {
+        add_block(main_input, dense_path)
+      },
 
-      # This block must be named 'output'. It connects to the residual add layer.
+      # This block must be named 'output'. It connects to the residual add
+      # layer.
       output = function(add_residual) output_block_reg(add_residual)
     ),
     mode = "regression"
@@ -153,7 +160,8 @@ if (requireNamespace("keras3", quietly = TRUE)) {
   # The `dense_path_units` argument was created automatically.
   model_spec <- my_resnet_spec(dense_path_units = 64, epochs = 10)
 
-  # You could also tune the number of dense layers since it has a single input:
+  # You could also tune the number of dense layers since it has a single
+  # input:
   # model_spec <- my_resnet_spec(num_dense_path = 2, dense_path_units = 32)
 
   print(model_spec)

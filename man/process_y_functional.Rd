@@ -21,15 +21,18 @@ A list containing:
 \itemize{
 \item \code{y_proc}: The processed outcome data (matrix or one-hot encoded array,
 or list of these for multiple outputs).
-\item \code{is_classification}: Logical, indicating if \code{y} was treated as classification.
-\item \code{num_classes}: Integer, the number of classes for classification, or \code{NULL}.
-\item \code{class_levels}: Character vector, the factor levels for classification, or \code{NULL}.
+\item \code{is_classification}: Logical, indicating if \code{y} was treated as
+classification.
+\item \code{num_classes}: Integer, the number of classes for classification, or
+\code{NULL}.
+\item \code{class_levels}: Character vector, the factor levels for classification,
+or \code{NULL}.
 }
 }
 \description{
 Preprocesses outcome data (\code{y}) into a format suitable for Keras models
 built with the Functional API. Handles both regression (numeric) and
-classification (factor) outcomes, including one-hot encoding for classification,
-and supports multiple outputs.
+classification (factor) outcomes, including one-hot encoding for
+classification, and supports multiple outputs.
 }
 \keyword{internal}

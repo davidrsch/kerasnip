@@ -69,9 +69,10 @@ which \code{kerasnip} will provide automatically during fitting.
 can accept a \code{num_classes} argument, which is provided automatically.
 }
 
-A key feature of this function is the automatic creation of \verb{num_\{block_name\}}
-arguments (e.g., \code{num_hidden}). This allows you to control how many times
-each block is repeated, making it easy to tune the depth of your network.
+A key feature of this function is the automatic creation of
+\verb{num_\{block_name\}} arguments (e.g., \code{num_hidden}). This allows you to
+control how many times each block is repeated, making it easy to tune the
+depth of your network.
 }
 
 \section{Saving and Reloading Models}{
@@ -103,7 +104,8 @@ library(parsnip)
 library(dials)
 
 # 1. Define layer blocks for a complete model.
-# The first block must initialize the model. `input_shape` is passed automatically.
+# The first block must initialize the model. `input_shape` is passed
+# automatically.
 input_block <- function(model, input_shape) {
   keras_model_sequential(input_shape = input_shape)
 }

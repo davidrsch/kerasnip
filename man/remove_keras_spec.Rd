@@ -10,24 +10,25 @@ remove_keras_spec(model_name, env = parent.frame())
 \item{model_name}{A character string giving the name of the model
 specification function to remove (e.g., "my_mlp").}
 
-\item{env}{The environment from which to remove the function and its \code{update()}
-method. Defaults to the calling environment (\code{parent.frame()}).}
+\item{env}{The environment from which to remove the function and its
+\code{update()} method. Defaults to the calling environment (\code{parent.frame()}).}
 }
 \value{
 Invisibly returns \code{TRUE} after attempting to remove the objects.
 }
 \description{
 This function completely removes a model specification that was previously
-created by \code{\link[=create_keras_sequential_spec]{create_keras_sequential_spec()}} or \code{\link[=create_keras_functional_spec]{create_keras_functional_spec()}}.
-It cleans up both the function in the user's environment and all associated
-registrations within the \code{parsnip} package.
+created by \code{\link[=create_keras_sequential_spec]{create_keras_sequential_spec()}} or
+\code{\link[=create_keras_functional_spec]{create_keras_functional_spec()}}. It cleans up both the function in the
+user's environment and all associated registrations within the \code{parsnip}
+package.
 }
 \details{
 This function is essential for cleanly unloading a dynamically created model.
 It performs three main actions:
 \enumerate{
-\item It removes the model specification function (e.g., \code{my_mlp()}) and its
-corresponding \code{update()} method from the specified environment.
+\item It removes the model specification function (e.g., \code{my_mlp()}) and
+its corresponding \code{update()} method from the specified environment.
 \item It searches \code{parsnip}'s internal model environment for all objects
 whose names start with the \code{model_name} and removes them. This purges
 the fit methods, argument definitions, and other registrations.

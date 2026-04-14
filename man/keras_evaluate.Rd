@@ -24,8 +24,8 @@ with.
 \description{
 This function provides an \code{kera_evaluate()} method for \code{model_fit} objects
 created by \code{kerasnip}. It preprocesses the new data into the format expected
-by Keras and then calls \code{keras3::evaluate()} on the underlying model to compute
-the loss and any other metrics.
+by Keras and then calls \code{keras3::evaluate()} on the underlying model to
+compute the loss and any other metrics.
 }
 \details{
 Evaluate a Fitted Kerasnip Model on New Data

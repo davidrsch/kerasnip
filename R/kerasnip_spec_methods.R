@@ -136,6 +136,7 @@ fit_xy.kerasnip_spec <- function(object, ...) {
 #' @param ... Passed to the parsnip predict method.
 #' @return A tibble of predictions.
 #' @keywords internal
+#' @importFrom stats predict
 #' @exportS3Method stats::predict
 predict.kerasnip_model_fit <- function(object, new_data, ...) {
   model_name <- class(object$spec)[1L]

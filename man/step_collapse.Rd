@@ -36,8 +36,8 @@ have been estimated.}
 default is "predictor_matrix".}
 
 \item{skip}{A logical. Should the step be skipped when the recipe is
-baked by \verb{[bake.recipe()]}? While all operations are baked when \code{prep} is run,
-skipping when \code{bake} is run may be other times when it is desirable to
+baked by \verb{[bake.recipe()]}? While all operations are baked when \code{prep} is
+run, skipping when \code{bake} is run may be other times when it is desirable to
 skip a processing step.}
 
 \item{id}{A character string that is unique to this step to identify it.}
