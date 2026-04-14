@@ -5,7 +5,8 @@ mock_get_keras_object <- function(name, type, ...) {
 }
 
 test_that("collect_compile_args handles single-output cases correctly", {
-  # Case 1: Single output, non-character loss and metrics (get_object_fn not called)
+  # Case 1: Single output, non-character loss and metrics
+  # (get_object_fn not called)
   dummy_loss_obj <- structure(list(), class = "dummy_loss")
   dummy_metric_obj <- structure(list(), class = "dummy_metric")
 
@@ -53,7 +54,7 @@ test_that("collect_compile_args handles multi-output cases correctly", {
   expect_equal(args_mixed$loss$out2, dummy_loss_obj_2)
 })
 
-test_that("collect_compile_args handles named list of metrics (multi-output) correctly", {
+test_that("collect_compile_args handles named list of metrics (multi-output)", {
   # Test case: Named list of metrics with mixed types (character and object)
   dummy_metric_obj_3 <- structure(list(), class = "dummy_metric_3")
   args_mixed_metrics <- collect_compile_args(
@@ -110,7 +111,7 @@ test_that("collect_compile_args throws errors for invalid multi-output args", {
       default_metrics = list(out1 = "mse", out2 = "mae"),
       get_object_fn = mock_get_keras_object
     ),
-    "For multiple outputs, 'compile_loss' must be a single string or a named list of losses."
+    "For multiple outputs, 'compile_loss' must be a single string"
   )
 
   # Case 5: Multi-output, invalid metrics argument
@@ -122,6 +123,6 @@ test_that("collect_compile_args throws errors for invalid multi-output args", {
       default_metrics = list(out1 = "mse", out2 = "mae"),
       get_object_fn = mock_get_keras_object
     ),
-    "For multiple outputs, 'compile_metrics' must be a single string or a named list of metrics."
+    "For multiple outputs, 'compile_metrics' must be a single string"
   )
 })

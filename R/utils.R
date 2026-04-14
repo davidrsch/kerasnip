@@ -6,12 +6,29 @@
 # Serialize a fitted Keras model to a raw byte vector using the native .keras
 # format. The bytes are stored alongside the Python object so the model can be
 # restored after saveRDS()/readRDS() or bundle()/unbundle() invalidates the
-# reticulate external pointer.
+# reticulate external pointer. Issues a warning and returns NULL if save_model
+# fails so that fit() is not aborted, but the user is informed that the saved
+# object will not support predict() after reload.
 keras_model_to_bytes <- function(model) {
-  tmp <- tempfile(fileext = ".keras")
-  on.exit(unlink(tmp), add = TRUE)
-  keras3::save_model(model, tmp)
-  readBin(tmp, "raw", n = file.size(tmp))
+  tryCatch(
+    {
+      tmp <- tempfile(fileext = ".keras")
+      on.exit(unlink(tmp), add = TRUE)
+      keras3::save_model(model, tmp)
+      readBin(tmp, "raw", n = file.size(tmp))
+    },
+    error = function(e) {
+      warning(
+        "Could not serialize the Keras model to bytes. ",
+        "The fitted model will not support predict() after ",
+        "saveRDS()/readRDS() or bundle()/unbundle().\n",
+        "Underlying error: ",
+        conditionMessage(e),
+        call. = FALSE
+      )
+      NULL
+    }
+  )
 }
 
 # Restore a Keras model from the raw bytes produced by keras_model_to_bytes().
@@ -156,7 +173,11 @@ get_keras_object <- function(
     if (type == "optimizer") {
       return(rlang::exec(keras_fn, !!!list(...)))
     }
-    return(keras_fn)
+    # For loss and metric, call the constructor to get an instance.
+    # Passing the class object (not an instance) compiles fine but causes
+    # keras3::save_model() to fail with "Metric.get_config() missing
+    # positional argument: self".
+    return(keras_fn())
   }
 
   # 3. If not found, assume it's a string Keras understands directly

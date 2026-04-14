@@ -5,10 +5,10 @@
 #' discovered from the installed `keras3` package when `kerasnip` is loaded.
 #' This ensures that `kerasnip` is always up-to-date with your Keras version.
 #' @details
-#' These objects are primarily used to provide the default `values` for the `dials`
-#' parameter functions, [optimizer_function()] and [loss_function_keras()]. This
-#' allows for tab-completion in IDEs and validation of optimizer and loss names
-#' when tuning models.
+#' These objects are primarily used to provide the default `values` for the
+#' `dials` parameter functions, [optimizer_function()] and
+#' [loss_function_keras()]. This allows for tab-completion in IDEs and
+#' validation of optimizer and loss names when tuning models.
 #'
 #' The discovery process in `.onLoad()` scrapes the `keras3` namespace for
 #' functions matching `optimizer_*`, `loss_*`, and `metric_*` patterns.
@@ -50,12 +50,13 @@ keras_compile_arg_names <- NULL
 #'     dynamically generate the `fit_*` and `compile_*` arguments for the
 #'     model specification, allowing users to control fitting and compilation
 #'     directly from the spec.
-#'   \item Listing all functions in the `keras3` namespace that match the patterns
-#'     `optimizer_*`, `loss_*`, and `metric_*`.
-#'   \item For each function, it attempts to extract the default value of the `name`
-#'     argument (e.g., for `keras3::optimizer_adam()`, it extracts `"adam"`).
-#'   \item It populates the exported vectors with these discovered names. For metrics,
-#'     it also adds a list of common string aliases that Keras accepts.
+#'   \item Listing all functions in the `keras3` namespace that match the
+#'     patterns `optimizer_*`, `loss_*`, and `metric_*`.
+#'   \item For each function, it attempts to extract the default value of
+#'     the `name` argument (e.g., for `keras3::optimizer_adam()`, it extracts
+#'     `"adam"`).
+#'   \item It populates the exported vectors with these discovered names. For
+#'     metrics, it also adds a list of common string aliases that Keras accepts.
 #' }
 #' This dynamic discovery ensures that `kerasnip` automatically supports all
 #' objects available in the user's installed version of Keras.
@@ -64,7 +65,8 @@ keras_compile_arg_names <- NULL
 .onLoad <- function(libname, pkgname) {
   py_require(c("keras", "pydot", "scipy", "pandas", "Pillow", "ipython"))
 
-  # Helper to get the default string name from a Keras function's `name` argument
+  # Helper to get the default string name from a Keras function's `name`
+  # argument
   get_keras_default_name <- function(fn_name, keras_ns) {
     fn <- get(fn_name, envir = keras_ns)
     args <- formals(fn)

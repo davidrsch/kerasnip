@@ -6,7 +6,7 @@ dat <- data.frame(
 )
 
 test_that("step_collapse works with basic selectors", {
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = dat) |>
     step_collapse(x1, x2)
 
   prepped_rec <- prep(rec)
@@ -21,7 +21,7 @@ test_that("step_collapse works with basic selectors", {
 })
 
 test_that("step_collapse works with tidyselect helpers", {
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = dat) |>
     step_collapse(starts_with("x"))
 
   prepped_rec <- prep(rec)
@@ -36,7 +36,7 @@ test_that("step_collapse works with tidyselect helpers", {
 })
 
 test_that("new_col argument works", {
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = dat) |>
     step_collapse(x1, x2, new_col = "collapsed_predictors")
 
   prepped_rec <- prep(rec)
@@ -46,7 +46,7 @@ test_that("new_col argument works", {
 })
 
 test_that("skip argument works", {
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = dat) |>
     step_collapse(x1, x2, skip = TRUE)
 
   prepped_rec <- prep(rec)
@@ -57,7 +57,7 @@ test_that("skip argument works", {
 })
 
 test_that("print method works", {
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = dat) |>
     step_collapse(x1, x2)
 
   expect_snapshot(print(rec$steps[[1]]))
@@ -67,15 +67,15 @@ test_that("print method works", {
 })
 
 test_that("print method works for prepped recipe", {
-  rec <- recipe(y ~ ., data = dat) %>%
-    step_collapse(x1, x2) %>%
+  rec <- recipe(y ~ ., data = dat) |>
+    step_collapse(x1, x2) |>
     prep()
 
   expect_snapshot(print(rec$steps[[1]]))
 })
 
 test_that("step_collapse handles no selectors", {
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = dat) |>
     step_collapse()
 
   prepped_rec <- prep(rec)
@@ -86,7 +86,7 @@ test_that("step_collapse handles no selectors", {
 })
 
 test_that("step_collapse handles selectors that don't match", {
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = dat) |>
     step_collapse(non_existent_col)
 
   expect_error(prep(rec))

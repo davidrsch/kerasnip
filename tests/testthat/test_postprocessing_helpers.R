@@ -20,7 +20,7 @@ class(mock_object_multi_output) <- "model_fit"
 
 # --- Tests for keras_postprocess_numeric ---
 
-test_that("keras_postprocess_numeric handles single output (matrix) correctly", {
+test_that("keras_postprocess_numeric handles single output (matrix)", {
   results <- matrix(c(0.1, 0.2, 0.3), ncol = 1)
   processed <- keras_postprocess_numeric(results, mock_object_single_output)
   expect_s3_class(processed, "tbl_df")
@@ -28,17 +28,17 @@ test_that("keras_postprocess_numeric handles single output (matrix) correctly", 
   expect_equal(processed$.pred, c(0.1, 0.2, 0.3))
 })
 
-test_that("keras_postprocess_numeric handles single output (named list with one element) correctly", {
+test_that("keras_postprocess_numeric handles single output (named list)", {
   results <- list(output1 = matrix(c(0.1, 0.2, 0.3), ncol = 1))
   names(results) <- "output1"
   processed <- keras_postprocess_numeric(results, mock_object_multi_output)
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), ".pred")
-  expect_equal(processed$.pred, matrix(c(0.1, 0.2, 0.3), ncol = 1)) # Changed expected
+  expect_equal(processed$.pred, matrix(c(0.1, 0.2, 0.3), ncol = 1))
 })
 
 
-test_that("keras_postprocess_numeric handles multi-output (named list) correctly", {
+test_that("keras_postprocess_numeric handles multi-output (named list)", {
   results <- list(
     output1 = matrix(c(0.1, 0.2), ncol = 1),
     output2 = matrix(c(0.4, 0.5), ncol = 1)
@@ -72,13 +72,13 @@ test_that("keras_postprocess_probs handles single output (matrix) correctly", {
   )
   processed <- keras_postprocess_probs(results, mock_object_single_output)
   expect_s3_class(processed, "tbl_df")
-  expect_equal(names(processed), c("setosa", "versicolor", "virginica")) # Updated expected names
-  expect_equal(processed$setosa, c(0.1, 0.2, 0.3)) # Access by correct column name
-  expect_equal(processed$versicolor, c(0.9, 0.1, 0.3)) # Access by correct column name
-  expect_equal(processed$virginica, c(0.0, 0.7, 0.4)) # Access by correct column name
+  expect_equal(names(processed), c("setosa", "versicolor", "virginica"))
+  expect_equal(processed$setosa, c(0.1, 0.2, 0.3))
+  expect_equal(processed$versicolor, c(0.9, 0.1, 0.3))
+  expect_equal(processed$virginica, c(0.0, 0.7, 0.4))
 })
 
-test_that("keras_postprocess_probs handles multi-output (named list) correctly", {
+test_that("keras_postprocess_probs handles multi-output (named list)", {
   results <- list(
     output1 = matrix(c(0.1, 0.9, 0.2, 0.8), ncol = 2, byrow = TRUE),
     output2 = matrix(c(0.3, 0.4, 0.3, 0.5, 0.2, 0.3), ncol = 3, byrow = TRUE)
@@ -100,7 +100,7 @@ test_that("keras_postprocess_probs handles multi-output (named list) correctly",
   expect_equal(processed$.pred_output2_typeX, c(0.3, 0.5))
 })
 
-test_that("keras_postprocess_probs handles multi-output with NULL levels fallback", {
+test_that("keras_postprocess_probs handles multi-output with NULL levels", {
   results <- list(
     output1 = matrix(c(0.1, 0.9, 0.2, 0.8), ncol = 2, byrow = TRUE)
   )
@@ -121,7 +121,7 @@ test_that("keras_postprocess_probs handles multi-output with NULL levels fallbac
 
 # --- Tests for keras_postprocess_classes ---
 
-test_that("keras_postprocess_classes handles single output (multiclass) correctly", {
+test_that("keras_postprocess_classes handles single output (multiclass)", {
   results <- matrix(c(0.1, 0.8, 0.1, 0.2, 0.1, 0.7), ncol = 3, byrow = TRUE)
   processed <- keras_postprocess_classes(results, mock_object_single_output)
   expect_s3_class(processed, "tbl_df")
@@ -137,7 +137,7 @@ test_that("keras_postprocess_classes handles single output (multiclass) correctl
   )
 })
 
-test_that("keras_postprocess_classes handles single output (binary) correctly", {
+test_that("keras_postprocess_classes handles single output (binary)", {
   results <- matrix(c(0.6, 0.4), ncol = 1) # Changed to single column
   mock_object_binary_lvl <- list(
     fit = list(
@@ -148,15 +148,15 @@ test_that("keras_postprocess_classes handles single output (binary) correctly", 
   processed <- keras_postprocess_classes(results, mock_object_binary_lvl)
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), ".pred_class")
-  expect_equal(as.character(processed$.pred_class), c("positive", "negative")) # Changed expected
+  expect_equal(as.character(processed$.pred_class), c("positive", "negative"))
   expect_true(is.factor(processed$.pred_class))
   expect_equal(levels(processed$.pred_class), c("negative", "positive"))
 })
 
-test_that("keras_postprocess_classes handles multi-output (named list) correctly", {
+test_that("keras_postprocess_classes handles multi-output (named list)", {
   results <- list(
-    output1 = matrix(c(0.1, 0.9, 0.2, 0.8), ncol = 2, byrow = TRUE), # Binary
-    output2 = matrix(c(0.3, 0.4, 0.3, 0.5, 0.2, 0.3), ncol = 3, byrow = TRUE) # Multiclass
+    output1 = matrix(c(0.1, 0.9, 0.2, 0.8), ncol = 2, byrow = TRUE),
+    output2 = matrix(c(0.3, 0.4, 0.3, 0.5, 0.2, 0.3), ncol = 3, byrow = TRUE)
   )
   names(results) <- c("output1", "output2")
   processed <- keras_postprocess_classes(results, mock_object_multi_output)
@@ -179,7 +179,7 @@ test_that("keras_postprocess_classes handles multi-output (named list) correctly
   )
 })
 
-test_that("keras_postprocess_classes handles multi-output with NULL levels fallback", {
+test_that("keras_postprocess_classes handles multi-output with NULL levels", {
   results <- list(
     output1 = matrix(c(0.6, 0.4, 0.2, 0.8), ncol = 2, byrow = TRUE) # Binary
   )
@@ -201,9 +201,9 @@ test_that("keras_postprocess_classes handles multi-output with NULL levels fallb
   expect_equal(levels(processed$.pred_class_output1), c("class1", "class2"))
 })
 
-test_that("keras_postprocess_classes handles multi-output (binary, single column) correctly", {
+test_that("keras_postprocess_classes handles multi-output binary single col", {
   results <- list(
-    output1 = matrix(c(0.6, 0.4, 0.2, 0.8), ncol = 1, byrow = TRUE) # Single column binary output
+    output1 = matrix(c(0.6, 0.4, 0.2, 0.8), ncol = 1, byrow = TRUE)
   )
   names(results) <- "output1"
   mock_object_multi_output_binary <- list(

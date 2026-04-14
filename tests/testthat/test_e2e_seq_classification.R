@@ -1,4 +1,4 @@
-test_that("E2E: Classification spec generation, fitting, and prediction works", {
+test_that("E2E: Classification spec generation, fitting, prediction", {
   skip_if_no_keras()
 
   input_block_class <- function(model, input_shape) {

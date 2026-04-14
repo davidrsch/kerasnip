@@ -102,7 +102,7 @@ test_that("fit() tags result with kerasnip_model_fit class", {
 # Test 3: predict() auto-registers after simulated reload (sequential)
 # ============================================================
 
-test_that("predict() auto-registers sequential spec when registration is missing", {
+test_that("predict() auto-registers sequential spec when missing", {
   skip_if_no_keras()
 
   model_name <- "sl_auto_seq"
@@ -132,7 +132,7 @@ test_that("predict() auto-registers sequential spec when registration is missing
 # Test 4: predict() auto-registers after simulated reload (functional)
 # ============================================================
 
-test_that("predict() auto-registers functional spec when registration is missing", {
+test_that("predict() auto-registers functional spec when missing", {
   skip_if_no_keras()
 
   model_name <- "sl_auto_func"

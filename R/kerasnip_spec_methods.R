@@ -173,5 +173,9 @@ predict.kerasnip_model_fit <- function(object, new_data, ...) {
     }
   }
 
-  NextMethod()
+  # Strip our class and dispatch explicitly. NextMethod() re-uses the original
+  # call arguments, not locally modified ones, so the restored model above
+  # would not be forwarded via NextMethod().
+  class(object) <- class(object)[class(object) != "kerasnip_model_fit"]
+  predict(object, new_data = new_data, ...)
 }

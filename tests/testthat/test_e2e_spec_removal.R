@@ -65,7 +65,7 @@ test_that("E2E: Model spec removal is not too aggressive", {
   expect_true(exists(model_name_2, inherits = FALSE))
   expect_no_error(parsnip:::check_model_doesnt_exist(model_name))
   expect_error(parsnip:::check_model_doesnt_exist(model_name_2))
-  
+
   # cleanup
   remove_keras_spec(model_name_2)
 })

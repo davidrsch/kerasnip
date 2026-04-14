@@ -30,29 +30,29 @@
 #' @noRd
 register_model_args <- function(model_name, parsnip_names) {
   keras_dials_map <- tibble::tribble(
-    ~keras_arg            ,
-    ~dials_fun            ,
-    "units"               ,
-    "hidden_units"        ,
-    "filters"             ,
-    "hidden_units"        ,
-    "kernel_size"         ,
-    "kernel_size"         ,
-    "pool_size"           ,
-    "pool_size"           ,
-    "dropout"             ,
-    "dropout"             ,
-    "rate"                ,
-    "dropout"             ,
-    "learn_rate"          ,
-    "learn_rate"          ,
-    "fit_epochs"          ,
-    "epochs"              ,
-    "fit_batch_size"      ,
-    "batch_size"          ,
-    "compile_loss"        , # parsnip arg
-    "loss_function_keras" , # dials function from kerasnip
-    "compile_optimizer"   , # parsnip arg
+    ~keras_arg,
+    ~dials_fun,
+    "units",
+    "hidden_units",
+    "filters",
+    "hidden_units",
+    "kernel_size",
+    "kernel_size",
+    "pool_size",
+    "pool_size",
+    "dropout",
+    "dropout",
+    "rate",
+    "dropout",
+    "learn_rate",
+    "learn_rate",
+    "fit_epochs",
+    "epochs",
+    "fit_batch_size",
+    "batch_size",
+    "compile_loss", # parsnip arg
+    "loss_function_keras", # dials function from kerasnip
+    "compile_optimizer", # parsnip arg
     "optimizer_function" # dials function from kerasnip
   )
 

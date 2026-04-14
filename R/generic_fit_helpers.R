@@ -72,7 +72,8 @@ collect_compile_args <- function(
       })
     } else {
       stop(
-        "For multiple outputs, 'compile_loss' must be a single string or a named list of losses."
+        "For multiple outputs, 'compile_loss' must be a single string",
+        " or a named list of losses."
       )
     }
   } else {
@@ -100,7 +101,8 @@ collect_compile_args <- function(
       })
     } else {
       stop(
-        "For multiple outputs, 'compile_metrics' must be a single string or a named list of metrics."
+        "For multiple outputs, 'compile_metrics' must be a single string",
+        " or a named list of metrics."
       )
     }
   } else {
