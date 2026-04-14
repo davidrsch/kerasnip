@@ -125,8 +125,8 @@ build_and_compile_sequential_model <- function(
 #' Build and Compile a Keras Functional Model
 #'
 #' @description
-#' This internal helper function constructs and compiles a Keras functional model
-#' based on a list of layer blocks and other parameters. It handles data
+#' This internal helper function constructs and compiles a Keras functional
+#' model based on a list of layer blocks and other parameters. It handles data
 #' processing, dynamic architecture construction (including multiple inputs and
 #' branches), and model compilation.
 #'

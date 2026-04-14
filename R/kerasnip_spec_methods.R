@@ -1,3 +1,30 @@
+#' set_args Method for kerasnip Spec Objects
+#'
+#' @description
+#' S3 method for `set_args()` dispatched on `kerasnip_spec` objects.
+#' `parsnip::set_args.model_spec()` calls `new_model_spec()`, which strips any
+#' extra classes and attributes. This wrapper saves and re-attaches the
+#' `kerasnip_layer_blocks` and `kerasnip_functional` metadata attributes (and
+#' the `kerasnip_spec` class) after `NextMethod()` has done its work.
+#'
+#' @param object A `kerasnip_spec` model specification.
+#' @param ... Named model arguments to update, passed to
+#'   `parsnip::set_args.model_spec()`.
+#' @return A `model_spec` object with the `kerasnip_spec` class and metadata
+#'   attributes re-attached.
+#' @keywords internal
+#' @importFrom parsnip set_args
+#' @exportS3Method parsnip::set_args
+set_args.kerasnip_spec <- function(object, ...) {
+  layer_blocks <- attr(object, "kerasnip_layer_blocks")
+  functional <- attr(object, "kerasnip_functional")
+  result <- NextMethod()
+  class(result) <- c(class(result)[1L], "kerasnip_spec", class(result)[-1L])
+  attr(result, "kerasnip_layer_blocks") <- layer_blocks
+  attr(result, "kerasnip_functional") <- functional
+  result
+}
+
 #' set_engine Method for kerasnip Spec Objects
 #'
 #' @description
