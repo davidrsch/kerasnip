@@ -56,8 +56,34 @@ register_update_method <- function(model_name, parsnip_names, env) {
     .ns = "parsnip"
   )
 
+  # parsnip::update_spec() ends with new_model_spec(), which strips any extra
+  # classes and attributes from the spec. Re-attach kerasnip_spec and the
+  # metadata attrs that predict.kerasnip_model_fit needs for auto-registration.
+  result_assign <- rlang::expr(result <- !!update_spec_call)
+
+  restore_class_expr <- rlang::expr(
+    class(result) <- c(class(result)[1L], "kerasnip_spec", class(result)[-1L])
+  )
+  restore_blocks_expr <- rlang::expr(
+    attr(result, "kerasnip_layer_blocks") <- attr(
+      object,
+      "kerasnip_layer_blocks"
+    )
+  )
+  restore_functional_expr <- rlang::expr(
+    attr(result, "kerasnip_functional") <- attr(object, "kerasnip_functional")
+  )
+
   # Combine them into the final body
-  update_body <- rlang::call2("{", args_enquo_list_expr, update_spec_call)
+  update_body <- rlang::call2(
+    "{",
+    args_enquo_list_expr,
+    result_assign,
+    restore_class_expr,
+    restore_blocks_expr,
+    restore_functional_expr,
+    rlang::sym("result")
+  )
 
   # Create and register the S3 method
   update_func <- rlang::new_function(
