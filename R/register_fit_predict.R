@@ -133,7 +133,7 @@ keras_postprocess_numeric <- function(results, object) {
       # If only one output, but still a list, name it .pred
       colnames(combined_preds) <- ".pred"
     }
-    return(combined_preds)
+    combined_preds
   } else {
     # Single output case: results is a matrix/array
     tibble::tibble(.pred = as.vector(results))
@@ -160,17 +160,18 @@ keras_postprocess_probs <- function(results, object) {
       results,
       names(results),
       function(res, name) {
-        lvls <- object$fit$lvl[[name]] # Assuming object$fit$lvl is a named list of levels
+        lvls <- object$fit$lvl[[name]]
+        # Assuming object$fit$lvl is a named list of levels
         if (is.null(lvls)) {
           # Fallback if levels are not specifically named for this output
-          lvls <- paste0("class", 1:ncol(res))
+          lvls <- paste0("class", seq_len(ncol(res)))
         }
         colnames(res) <- lvls
         tibble::as_tibble(res, .name_repair = "unique") |>
           dplyr::rename_with(~ paste0(".pred_", name, "_", .x))
       }
     )
-    return(combined_preds)
+    combined_preds
   } else {
     # Single output case: results is a matrix/array
     # The levels are now nested inside the fit object
@@ -200,10 +201,12 @@ keras_postprocess_classes <- function(results, object) {
       results,
       names(results),
       function(res, name) {
-        lvls <- object$fit$lvl[[name]] # Assuming object$fit$lvl is a named list of levels
+        lvls <- object$fit$lvl[[name]]
+        # Assuming object$fit$lvl is a named list of levels
         if (is.null(lvls)) {
           # Fallback if levels are not specifically named for this output
-          lvls <- paste0("class", 1:ncol(res)) # This might not be correct for classes, but a placeholder
+          lvls <- paste0("class", seq_len(ncol(res)))
+          # This might not be correct for classes, but a placeholder
         }
 
         if (ncol(res) == 1) {
@@ -220,7 +223,7 @@ keras_postprocess_classes <- function(results, object) {
           dplyr::rename_with(~ paste0(".pred_class_", name))
       }
     )
-    return(combined_preds)
+    combined_preds
   } else {
     # Single output case: results is a matrix/array
     # The levels are now nested inside the fit object
