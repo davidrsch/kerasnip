@@ -70,6 +70,26 @@
 #' @seealso [remove_keras_spec()], [parsnip::new_model_spec()],
 #'   [create_keras_sequential_spec()]
 #'
+#' @section Saving and Reloading Models:
+#' To save a fitted workflow and reload it in a new R session, use
+#' `bundle::bundle()` before saving — this is required to preserve the Keras
+#' model weights:
+#'
+#' ```r
+#' library(bundle)
+#' bundled <- bundle(fitted_workflow)
+#' saveRDS(bundled, "model.rds")
+#'
+#' # New session:
+#' library(kerasnip); library(bundle)
+#' fitted_workflow <- unbundle(readRDS("model.rds"))
+#' predict(fitted_workflow, new_data = test_data)  # works
+#' ```
+#'
+#' Plain `saveRDS()` without `bundle()` does not preserve Keras weights, but
+#' `predict()` will still auto-register the parsnip model type from metadata
+#' stored on the spec.
+#'
 #' @export
 #' @examples
 #' \donttest{

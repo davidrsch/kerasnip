@@ -285,3 +285,25 @@ print(metrics_results)
 conf_mat(penguin_results, truth = species, estimate = .pred_class) |>
   autoplot(type = "heatmap")
 ```
+
+## Saving and Reloading Your Model
+
+Plain `saveRDS()` does **not** preserve the underlying Keras model weights.
+Use `bundle::bundle()` before saving to make a fitted workflow fully portable:
+
+```r
+library(bundle)
+
+# Save
+bundled <- bundle(fit_wf)
+saveRDS(bundled, "my_model.rds")
+
+# Reload in a new R session
+library(kerasnip)
+library(bundle)
+fit_wf <- unbundle(readRDS("my_model.rds"))
+predict(fit_wf, new_data = new_data)
+```
+
+`predict()` will automatically restore the parsnip model registration — no
+extra step is needed after `unbundle()`.
