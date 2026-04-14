@@ -8,39 +8,44 @@
 #' @details
 #' The function assembles the documentation in a structured way:
 #' \itemize{
-#'   \item \strong{Title & Description:} A title is generated from the `model_name`,
-#'     and the description indicates which `kerasnip` function created it.
-#'   \item \strong{Parameters (`@param`):} It documents several groups of parameters:
+#'   \item \strong{Title & Description:} A title is generated from the
+#'      `model_name`, and the description indicates which `kerasnip` function
+#'      created it.
+#'   \item \strong{Parameters (`@param`):} It documents several groups of
+#'      parameters:
 #'     \itemize{
-#'       \item Block-specific hyperparameters (e.g., `dense_units`), introspecting
-#'         `layer_blocks` to find default values.
+#'       \item Block-specific hyperparameters (e.g., `dense_units`),
+#'          introspecting `layer_blocks` to find default values.
 #'       \item Architecture parameters (e.g., `num_dense`).
 #'       \item Global training parameters (e.g., `epochs`, `learn_rate`).
 #'       \item Compilation override parameters (e.g., `compile_loss`).
 #'     }
 #'   \item \strong{Sections (`@section`):} It creates dedicated sections for:
 #'     \itemize{
-#'       \item \strong{Model Architecture:} Explains how the model is built, with
-#'         different content for the Sequential vs. Functional API (controlled
-#'         by the `functional` flag).
+#'       \item \strong{Model Architecture:} Explains how the model is built,
+#'         with different content for the Sequential vs. Functional API
+#'         (controlled by the `functional` flag).
 #'       \item \strong{Model Fitting:} Explains how to pass arguments to
 #'         `keras3::fit()` using the `fit_` prefix.
 #'       \item \strong{Model Compilation:} Explains the default compilation
 #'         behavior and how to override it using the `compile_` prefix.
 #'     }
 #'   \item \strong{Other Tags:} Adds `@seealso` to link to relevant `kerasnip`
-#'     functions and `@export` to make the generated function available to users.
+#'     functions and `@export` to make the generated function available to
+#'     users.
 #' }
 #'
-#' @param model_name A character string for the model's name, used to generate the documentation title.
-#' @param layer_blocks The named list of user-provided layer block functions. This is
-#'   introspected to find default values for block-specific parameters.
-#' @param all_args A named list of all arguments for the new function's signature,
-#'   used to determine which `@param` tags to generate.
+#' @param model_name A character string for the model's name, used to generate
+#'   the documentation title.
+#' @param layer_blocks The named list of user-provided layer block functions.
+#'   This is introspected to find default values for block-specific parameters.
+#' @param all_args A named list of all arguments for the new function's
+#'   signature, used to determine which `@param` tags to generate.
 #' @param functional A logical. If `TRUE`, generates documentation specific to
-#'   the Functional API. If `FALSE`, generates documentation for the Sequential API.
-#' @return A single string containing the full Roxygen documentation, ready to be
-#'   attached to a function using `comment()`.
+#'   the Functional API. If `FALSE`, generates documentation for the Sequential
+#'   API.
+#' @return A single string containing the full Roxygen documentation, ready to
+#'   be attached to a function using `comment()`.
 #' @noRd
 generate_roxygen_docs <- function(
   model_name,
@@ -152,7 +157,9 @@ generate_roxygen_docs <- function(
   # Document special `learn_rate` param
   param_docs <- c(
     param_docs,
-    "@param learn_rate The learning rate for the default Adam optimizer. This is ignored if `compile_optimizer` is provided as a pre-built Keras optimizer object."
+    "@param learn_rate The learning rate for the default Adam optimizer.",
+    "  This is ignored if `compile_optimizer` is provided as a pre-built",
+    "  Keras optimizer object."
   )
 
   # Document compile params
@@ -163,7 +170,8 @@ generate_roxygen_docs <- function(
         paste0(
           "@param ",
           p,
-          " Argument to `keras3::compile()`. See the 'Model Compilation' section."
+          " Argument to `keras3::compile()`. See the ",
+          "'Model Compilation' section."
         )
       })
     )
@@ -187,8 +195,10 @@ generate_roxygen_docs <- function(
   param_docs <- c(
     param_docs,
     paste0(
-      "@param ... Additional arguments passed to the Keras engine. Use this for arguments to `keras3::fit()` or `keras3::compile()` ",
-      "that are not exposed as top-level arguments."
+      "@param ... Additional arguments passed to the Keras engine. ",
+      "Use this for arguments to `keras3::fit()` or ",
+      "`keras3::compile()` that are not exposed as top-level ",
+      "arguments."
     )
   )
 
@@ -196,20 +206,28 @@ generate_roxygen_docs <- function(
   if (isTRUE(functional)) {
     architecture_section <- c(
       "#' @section Model Architecture (Functional API):",
-      "#' The Keras model is constructed using the Functional API. Each layer block function's arguments",
-      "#' determine its inputs. For example, a block `function(input_a, input_b, ...)` will be connected",
-      "#' to the outputs of the `input_a` and `input_b` blocks. You can also repeat a block by setting",
-      "#' the `num_{block_name}` argument, provided the block has a single input tensor.",
-      "#' The first block in `layer_blocks` is assumed to be the input layer and should not have inputs from other layers."
+      "#' The Keras model is constructed using the Functional API.",
+      "#' Each layer block function's arguments determine its inputs.",
+      "#' For example, a block `function(input_a, input_b, ...)` will be",
+      "#' connected to the outputs of the `input_a` and `input_b` blocks.",
+      "#' You can also repeat a block by setting the `num_{block_name}`",
+      "#' argument, provided the block has a single input tensor.",
+      "#' The first block in `layer_blocks` is assumed to be the input",
+      "#' layer and should not have inputs from other layers."
     )
     see_also_fit <- "generic_functional_fit()"
     see_also_create <- "create_keras_functional_spec()"
   } else {
     architecture_section <- c(
       "#' @section Model Architecture (Sequential API):",
-      "#' The Keras model is constructed by sequentially applying the layer blocks in the order they were provided to `create_keras_sequential_spec()`.",
-      "#' You can control the number of times each block is repeated by setting the `num_{block_name}` argument (e.g., `num_dense = 2`).",
-      "#' This allows for dynamically creating deeper or more complex architectures during tuning."
+      "#' The Keras model is constructed by sequentially applying",
+      "#' the layer blocks in the order they were provided to",
+      "#' `create_keras_sequential_spec()`.",
+      "#' You can control the number of times each block is repeated",
+      "#' by setting the `num_{block_name}` argument (e.g.,",
+      "#' `num_dense = 2`).",
+      "#' This allows for dynamically creating deeper or more complex",
+      "#' architectures during tuning."
     )
     see_also_fit <- "generic_sequential_fit()"
     see_also_create <- "create_keras_sequential_spec()"
@@ -217,11 +235,21 @@ generate_roxygen_docs <- function(
 
   compilation_section <- c(
     "#' @section Model Compilation:",
-    "#' The model is compiled with a default optimizer, loss function, and metric based on the model's mode. You can override these defaults by providing arguments prefixed with `compile_`.",
+    "#' The model is compiled with a default optimizer, loss function,",
+    "#' and metric based on the model's mode. You can override these",
+    "#' defaults by providing arguments prefixed with `compile_`.",
     "#' \\itemize{",
-    "#'   \\item \\strong{Optimizer}: Defaults to `keras3::optimizer_adam()` using the `learn_rate` argument. Override with `compile_optimizer` (e.g., `\"sgd\"` or `keras3::optimizer_sgd(...)`).",
-    "#'   \\item \\strong{Loss}: Defaults to `\"mean_squared_error\"` for regression and `\"categorical_crossentropy\"` or `\"binary_crossentropy\"` for classification. Override with `compile_loss`.",
-    "#'   \\item \\strong{Metrics}: Defaults to `\"mean_absolute_error\"` for regression and `\"accuracy\"` for classification. Override with `compile_metrics` (e.g., `c(\"mae\", \"mape\")`).",
+    "#'   \\item \\strong{Optimizer}: Defaults to `keras3::optimizer_adam()`",
+    "#'     using the `learn_rate` argument. Override with",
+    "#'     `compile_optimizer` (e.g., `\"sgd\"` or",
+    "#'     `keras3::optimizer_sgd(...)`).",
+    "#'   \\item \\strong{Loss}: Defaults to `\"mean_squared_error\"` for",
+    "#'     regression and `\"categorical_crossentropy\"` or",
+    "#'     `\"binary_crossentropy\"` for classification. Override with",
+    "#'     `compile_loss`.",
+    "#'   \\item \\strong{Metrics}: Defaults to `\"mean_absolute_error\"` for",
+    "#'     regression and `\"accuracy\"` for classification. Override with",
+    "#'     `compile_metrics` (e.g., `c(\"mae\", \"mape\")`).",
     "#' }",
     paste0(
       "#' For more details, see the documentation for `kerasnip::",
@@ -232,9 +260,12 @@ generate_roxygen_docs <- function(
 
   fitting_section <- c(
     "#' @section Model Fitting:",
-    "#' The model is fit using `keras3::fit()`. You can pass any argument to this function by prefixing it with `fit_`.",
-    "#' For example, to add Keras callbacks, you can pass `fit_callbacks = list(callback_early_stopping())`.",
-    "#' Common arguments include `fit_epochs`, `fit_batch_size`, and `fit_validation_split`."
+    "#' The model is fit using `keras3::fit()`. You can pass any",
+    "#' argument to this function by prefixing it with `fit_`.",
+    "#' For example, to add Keras callbacks, you can pass",
+    "#' `fit_callbacks = list(callback_early_stopping())`.",
+    "#' Common arguments include `fit_epochs`, `fit_batch_size`,",
+    "#' and `fit_validation_split`."
   )
 
   # Other tags

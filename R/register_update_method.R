@@ -1,18 +1,20 @@
 #' Register the `update()` S3 Method
 #'
 #' @description
-#' Creates and registers an `update()` S3 method for the new model specification.
-#' This method is essential for tuning with `dials` and `tune`, as it allows
-#' the tuning machinery to modify model parameters after the spec has been created.
+#' Creates and registers an `update()` S3 method for the new model
+#' specification. This method is essential for tuning with `dials`
+#' and `tune`, as it allows the tuning machinery to modify model
+#' parameters after the spec has been created.
 #'
 #' @details
-#' This function uses `rlang` metaprogramming to dynamically construct a complete
-#' `update.{{model_name}}` function. The process involves:
+#' This function uses `rlang` metaprogramming to dynamically
+#' construct a complete `update.{{model_name}}` function.
+#' The process involves:
 #' \enumerate{
 #'   \item Building a function signature that includes `object`, `parameters`,
 #'     `...`, `fresh`, and all the tunable parameters from `parsnip_names`.
-#'   \item Creating a function body that captures all the arguments into quosures
-#'     and passes them to `parsnip::update_spec()`.
+#'   \item Creating a function body that captures all the arguments into
+#'     quosures and passes them to `parsnip::update_spec()`.
 #'   \item Registering this new function as an S3 method for the generic
 #'     `update()` in the specified environment, so S3 dispatch can find it.
 #' }

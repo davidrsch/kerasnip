@@ -24,7 +24,8 @@
 #' @param spec A `parsnip` model specification created by
 #'   `create_keras_sequential_spec()` or `create_keras_functional_spec()`.
 #' @param grid A `tibble` or `data.frame` containing the grid of hyperparameters
-#'   to evaluate. Each row represents a unique model architecture to be compiled.
+#'   to evaluate. Each row represents a unique model architecture to be
+#'   compiled.
 #' @param x A data frame or matrix of predictors. This is used to infer the
 #'   `input_shape` for the Keras model.
 #' @param y A vector or factor of outcomes. This is used to infer the output
@@ -100,7 +101,8 @@
 #' }
 #' }
 #' @importFrom dplyr bind_rows filter select
-#' @importFrom cli cli_h1 cli_alert_danger cli_h2 cli_text cli_bullets cli_code cli_alert_info cli_alert_success
+#' @importFrom cli cli_h1 cli_alert_danger cli_h2 cli_text cli_bullets
+#' @importFrom cli cli_code cli_alert_info cli_alert_success
 #' @export
 compile_keras_grid <- function(spec, grid, x, y) {
   # Input validation
@@ -141,7 +143,7 @@ compile_keras_grid <- function(spec, grid, x, y) {
     purrr::pluck("defaults") |>
     purrr::pluck("layer_blocks")
   # Prepare to store results
-  results <- purrr::map(1:nrow(grid), function(i) {
+  results <- purrr::map(seq_len(nrow(grid)), function(i) {
     params <- as.list(grid[i, ])
     active_args <- purrr::discard(spec$args, function(arg) {
       inherits(rlang::get_expr(arg), "rlang_zap")
@@ -201,7 +203,8 @@ compile_keras_grid <- function(spec, grid, x, y) {
 #' problematic hyperparameter combinations before proceeding to the full
 #' `tune::tune_grid()`.
 #'
-#' @param compiled_grid A tibble, the result of a call to `compile_keras_grid()`.
+#' @param compiled_grid A tibble, the result of a call to
+#' `compile_keras_grid()`.
 #'
 #' @return A tibble containing the subset of the original grid that resulted in
 #'   a successful model compilation. The `compiled_model` and `error` columns
@@ -294,7 +297,8 @@ extract_valid_grid <- function(compiled_grid) {
 #' This is most useful for interactive debugging of complex tuning grids where
 #' some hyperparameter combinations may lead to invalid Keras models.
 #'
-#' @param compiled_grid A tibble, the result of a call to `compile_keras_grid()`.
+#' @param compiled_grid A tibble, the result of a call to
+#' `compile_keras_grid()`.
 #' @param n A single integer for the maximum number of distinct errors to
 #'   display in detail.
 #'
@@ -375,7 +379,7 @@ inform_errors <- function(compiled_grid, n = 10) {
       "{nrow(error_grid)} of {nrow(compiled_grid)} models failed to compile."
     )
 
-    for (i in 1:min(nrow(error_grid), n)) {
+    for (i in seq_len(min(nrow(error_grid), n))) {
       row <- error_grid[i, ]
       params <- row |> dplyr::select(-c(compiled_model, error))
       cli::cli_h2("Error {i}/{nrow(error_grid)}")

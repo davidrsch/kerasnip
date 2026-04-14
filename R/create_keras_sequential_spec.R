@@ -44,9 +44,10 @@
 #' 3.  The **final block** should add the output layer. For classification, it
 #'     can accept a `num_classes` argument, which is provided automatically.
 #'
-#' A key feature of this function is the automatic creation of `num_{block_name}`
-#' arguments (e.g., `num_hidden`). This allows you to control how many times
-#' each block is repeated, making it easy to tune the depth of your network.
+#' A key feature of this function is the automatic creation of
+#' `num_{block_name}` arguments (e.g., `num_hidden`). This allows you to
+#' control how many times each block is repeated, making it easy to tune the
+#' depth of your network.
 #'
 #' @importFrom rlang enquos dots_list arg_match env_poke
 #' @importFrom parsnip update_dot_check
@@ -88,7 +89,8 @@
 #' library(dials)
 #'
 #' # 1. Define layer blocks for a complete model.
-#' # The first block must initialize the model. `input_shape` is passed automatically.
+#' # The first block must initialize the model. `input_shape` is passed
+#' # automatically.
 #' input_block <- function(model, input_shape) {
 #'   keras_model_sequential(input_shape = input_shape)
 #' }

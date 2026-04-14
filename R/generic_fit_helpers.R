@@ -12,10 +12,13 @@
 #' top-level `learn_rate` if necessary. It also resolves string names for `loss`
 #' and `metrics` using `get_keras_object()`.
 #'
-#' @param all_args The list of all arguments passed to the fitting function's `...`.
+#' @param all_args The list of all arguments passed to the fitting
+#'   function's `...`.
 #' @param learn_rate The top-level `learn_rate` parameter.
-#' @param default_loss The default loss function to use if not provided. Can be a single value or a named list.
-#' @param default_metrics The default metric(s) to use if not provided. Can be a single value or a named list of vectors/single values.
+#' @param default_loss The default loss function to use if not provided. Can
+#'   be a single value or a named list.
+#' @param default_metrics The default metric(s) to use if not provided. Can
+#'   be a single value or a named list of vectors/single values.
 #' @return A named list of arguments ready to be passed to `keras3::compile()`.
 #' @noRd
 collect_compile_args <- function(
@@ -119,7 +122,8 @@ collect_compile_args <- function(
     !names(user_compile_args) %in% c("optimizer", "loss", "metrics")
   ]
   final_compile_args <- c(final_compile_args, other_args)
-  # Filter out arguments that are NULL or rlang_zap before passing to keras3::compile
+  # Filter out arguments that are NULL or rlang_zap before passing to
+  # keras3::compile
   final_compile_args <- final_compile_args[
     !vapply(
       final_compile_args,
@@ -146,7 +150,8 @@ collect_compile_args <- function(
 #' @param x_proc The processed predictor data.
 #' @param y_mat The processed outcome data.
 #' @param verbose The verbosity level.
-#' @param all_args The list of all arguments passed to the fitting function's `...`.
+#' @param all_args The list of all arguments passed to the fitting
+#'   function's `...`.
 #' @return A named list of arguments ready to be passed to `keras3::fit()`.
 #' @noRd
 collect_fit_args <- function(
@@ -169,7 +174,8 @@ collect_fit_args <- function(
 
   merged_args <- utils::modifyList(base_args, user_fit_args)
 
-  # Filter out arguments that are NULL or rlang_zap before passing to keras3::fit
+  # Filter out arguments that are NULL or rlang_zap before passing to
+  # keras3::fit
   merged_args <- merged_args[
     !vapply(
       merged_args,

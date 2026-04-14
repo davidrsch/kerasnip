@@ -157,5 +157,21 @@ predict.kerasnip_model_fit <- function(object, new_data, ...) {
     )
   }
 
+  # Restore Keras model from serialized bytes if the Python object has been
+  # invalidated (e.g. by saveRDS()/readRDS() within the same session, or after
+  # bundle()/unbundle()).
+  if (!is.null(object$fit$keras_bytes)) {
+    is_valid <- tryCatch(
+      {
+        object$fit$fit$name # lightweight attribute access to verify the xptr
+        TRUE
+      },
+      error = function(e) FALSE
+    )
+    if (!is_valid) {
+      object$fit$fit <- keras_model_from_bytes(object$fit$keras_bytes)
+    }
+  }
+
   NextMethod()
 }

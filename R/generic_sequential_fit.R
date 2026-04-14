@@ -2,8 +2,8 @@
 #'
 #' @title Internal Fitting Engine for Sequential API Models
 #' @description
-#' This function serves as the internal engine for fitting `kerasnip` models that
-#' are based on the Keras sequential API. It is not intended to be called
+#' This function serves as the internal engine for fitting `kerasnip` models
+#' that are based on the Keras sequential API. It is not intended to be called
 #' directly by the user. The function is invoked by `parsnip::fit()` when a
 #' `kerasnip` sequential model specification is used.
 #'
@@ -13,8 +13,8 @@
 #'   \item \strong{Build and Compile:} It calls
 #'     `build_and_compile_sequential_model()` to construct the Keras model
 #'     architecture based on the provided `layer_blocks` and hyperparameters.
-#'   \item \strong{Process Data:} It preprocesses the input (`x`) and output (`y`)
-#'     data into the format expected by Keras.
+#'   \item \strong{Process Data:} It preprocesses the input (`x`) and output
+#'     (`y`) data into the format expected by Keras.
 #'   \item \strong{Fit Model:} It calls `keras3::fit()` with the compiled model
 #'     and processed data, passing along any fitting-specific arguments (e.g.,
 #'     `epochs`, `batch_size`, `callbacks`).
@@ -26,16 +26,16 @@
 #'   `parsnip::fit()` call.
 #' @param layer_blocks A named list of layer block functions. This is passed
 #'   internally from the `parsnip` model specification.
-#' @param ... Additional arguments passed down from the model specification. These
-#'   can include:
+#' @param ... Additional arguments passed down from the model specification.
+#'   These can include:
 #'   \itemize{
 #'     \item \strong{Layer Parameters:} Arguments for the layer blocks, prefixed
 #'       with the block name (e.g., `dense_units = 64`).
-#'     \item \strong{Architecture Parameters:} Arguments to control the number of
-#'       times a block is repeated, in the format `num_{block_name}` (e.g.,
+#'     \item \strong{Architecture Parameters:} Arguments to control the number
+#'       of times a block is repeated, in the format `num_{block_name}` (e.g.,
 #'       `num_dense = 2`).
-#'     \item \strong{Compile Parameters:} Arguments to customize model compilation,
-#'       prefixed with `compile_` (e.g., `compile_loss = "mae"`,
+#'     \item \strong{Compile Parameters:} Arguments to customize model
+#'       compilation, prefixed with `compile_` (e.g., `compile_loss = "mae"`,
 #'       `compile_optimizer = "sgd"`).
 #'     \item \strong{Fit Parameters:} Arguments to customize model fitting,
 #'       prefixed with `fit_` (e.g., `fit_callbacks = list(...)`,
@@ -74,7 +74,8 @@ generic_sequential_fit <- function(
   layer_blocks,
   ...
 ) {
-  # Separate predictors and outcomes from the processed data frame provided by parsnip
+  # Separate predictors and outcomes from the processed data frame provided by
+  # parsnip
   y_names <- all.vars(formula[[2]])
   x_names <- all.vars(formula[[3]])
 
@@ -109,8 +110,10 @@ generic_sequential_fit <- function(
   # --- 3. Return value ---
   list(
     fit = model, # The raw Keras model object
+    keras_bytes = keras_model_to_bytes(model), # Bytes for RDS-safe restore
     history = history, # The training history
-    lvl = y_processed$class_levels, # Factor levels for classification, NULL for regression
+    # Factor levels for classification, NULL for regression
+    lvl = y_processed$class_levels,
     process_x = process_x_sequential,
     process_y = process_y_sequential
   )

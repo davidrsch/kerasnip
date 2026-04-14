@@ -4,8 +4,8 @@
 #' @description
 #' This function provides an `kera_evaluate()` method for `model_fit` objects
 #' created by `kerasnip`. It preprocesses the new data into the format expected
-#' by Keras and then calls `keras3::evaluate()` on the underlying model to compute
-#' the loss and any other metrics.
+#' by Keras and then calls `keras3::evaluate()` on the underlying model to
+#' compute the loss and any other metrics.
 #'
 #' @param object A `model_fit` object produced by a `kerasnip` specification.
 #' @param x A data frame or matrix of new predictor data.
@@ -108,7 +108,18 @@ keras_evaluate <- function(object, x, y = NULL, ...) {
   }
 
   # 4. Call the underlying Keras evaluate method
-  keras_model <- object$fit$fit
+  keras_model <- tryCatch(
+    {
+      object$fit$fit$name
+      object$fit$fit
+    },
+    error = function(e) {
+      if (is.null(object$fit$keras_bytes)) {
+        stop(e)
+      }
+      keras_model_from_bytes(object$fit$keras_bytes)
+    }
+  )
   keras3::evaluate(keras_model, x = x_proc, y = y_proc, ...)
 }
 
@@ -130,7 +141,18 @@ keras_evaluate <- function(object, x, y = NULL, ...) {
 #' @seealso keras_evaluate, extract_keras_history
 #' @export
 extract_keras_model <- function(object) {
-  object$fit$fit
+  tryCatch(
+    {
+      object$fit$fit$name
+      object$fit$fit
+    },
+    error = function(e) {
+      if (is.null(object$fit$keras_bytes)) {
+        stop(e)
+      }
+      keras_model_from_bytes(object$fit$keras_bytes)
+    }
+  )
 }
 
 #' Extract Keras Training History

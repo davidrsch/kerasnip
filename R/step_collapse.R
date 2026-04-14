@@ -18,8 +18,8 @@
 #' @param new_col A character string for the name of the new list-column. The
 #'   default is "predictor_matrix".
 #' @param skip A logical. Should the step be skipped when the recipe is
-#'   baked by `[bake.recipe()]`? While all operations are baked when `prep` is run,
-#'   skipping when `bake` is run may be other times when it is desirable to
+#'   baked by `[bake.recipe()]`? While all operations are baked when `prep` is
+#'   run, skipping when `bake` is run may be other times when it is desirable to
 #'   skip a processing step.
 #' @param id A character string that is unique to this step to identify it.
 #'
