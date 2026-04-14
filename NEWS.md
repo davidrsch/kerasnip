@@ -7,6 +7,8 @@
 - Fixed `predict()` failing with "Model not registered" after saving and reloading a kerasnip workflow in a new R session (#38). `predict()` now automatically replays the parsnip registration from metadata stored on the spec — no manual step required after `bundle::unbundle()` or `readRDS()`.
 - Fixed `get_keras_object()` returning bare class constructors instead of instances for loss and metric objects, which caused `save_model()` to fail when those objects were passed to `compile()` (#42).
 - Fixed `predict()` and `keras_evaluate()` / `extract_keras_model()` silently failing when the Python external pointer became invalid after an RDS round-trip. Both functions now detect the invalid pointer via `reticulate::py_validate_xptr()` and transparently restore the model from the serialized bytes stored in the fit object (#42).
+- Fixed CRAN NOTE: added missing `importFrom(stats, predict)` so `predict.kerasnip_model_fit` is correctly resolved from the `stats` namespace.
+- Fixed `compile_keras_grid()` crashing with a `vctrs_error_subscript_oob` error when passed a zero-row tibble (e.g. `tibble::tibble()`). The function now stops early with an informative message. Use `tibble::tibble(.rows = 1L)` to build the model once with the spec's current arguments and no hyperparameter variation.
 
 ## New Features
 
