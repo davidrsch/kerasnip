@@ -1,5 +1,28 @@
 # kerasnip (development version)
 
+# kerasnip 0.1.1
+
+## Bug Fixes
+
+- Fixed `predict()` failing with "Model not registered" after saving and reloading
+  a kerasnip workflow in a new R session (#38). `predict()` now automatically
+  replays the parsnip registration from metadata stored on the spec — no manual
+  step required after `bundle::unbundle()` or `readRDS()`.
+
+## New features
+
+- Every spec instance now carries `kerasnip_spec` class and embedded metadata
+  (`kerasnip_layer_blocks`, `kerasnip_functional`), enabling transparent
+  auto-registration on predict (closes #39).
+- `fit()` on a kerasnip spec now tags the result with `kerasnip_model_fit` class
+  to enable the auto-registration dispatch.
+
+## Documentation
+
+- Added a "Saving and Reloading Your Model" section to the Sequential Workflows
+  and Functional Workflows vignettes, and a `@section` to both spec function
+  reference pages explaining the `bundle::bundle()` workflow (closes #40).
+
 # kerasnip 0.1.0
 
 ## Breaking changes
