@@ -330,22 +330,36 @@ print(metrics_results)
 
 ## Saving and Reloading Your Model
 
-Plain `saveRDS()` does **not** preserve the underlying Keras model weights.
-Use `bundle::bundle()` before saving to make a fitted workflow fully portable:
+`kerasnip` serializes the Keras model weights to bytes at fit time and stores
+them alongside the workflow object. This means plain `saveRDS()` / `readRDS()`
+**works out of the box** — the underlying Keras model is restored automatically
+the first time `predict()` is called on the reloaded object.
+
+```r
+# Save
+saveRDS(fit_wf, "my_model.rds")
+
+# Reload — no extra steps needed
+fit_wf <- readRDS("my_model.rds")
+predict(fit_wf, new_data = new_data)  # model restored automatically
+```
+
+If you need a fully self-contained bundle suitable for deployment with
+`vetiver` or other MLOps tools, use `bundle::bundle()` instead:
 
 ```r
 library(bundle)
 
-# Save
+# Save as a portable bundle
 bundled <- bundle(fit_wf)
-saveRDS(bundled, "my_model.rds")
+saveRDS(bundled, "my_model_bundle.rds")
 
-# Reload in a new R session
+# Reload in any R session
 library(kerasnip)
 library(bundle)
-fit_wf <- unbundle(readRDS("my_model.rds"))
+fit_wf <- unbundle(readRDS("my_model_bundle.rds"))
 predict(fit_wf, new_data = new_data)
 ```
 
-`predict()` will automatically restore the parsnip model registration — no
-extra step is needed after `unbundle()`.
+See `vignette("saving_and_reloading")` for a detailed comparison of both
+approaches.

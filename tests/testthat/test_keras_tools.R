@@ -74,3 +74,26 @@ test_that("keras_model_to_bytes warns when save_model fails", {
     "Could not serialize"
   )
 })
+
+test_that("keras_evaluate with y=NULL skips y-processing and re-throws on bad xptr", {
+  skip_if_no_keras()
+
+  # Mock fit object: valid processing functions, invalid Python object, no bytes.
+  # This exercises:
+  #   - line 98: y_proc <- NULL  (y = NULL path taken)
+  #   - line 99: if (!is.null(y)) FALSE  (y branch skipped)
+  #   - line 118: stop(e)  (xptr invalid, no keras_bytes to restore from)
+  mock_fit <- list(
+    fit = list(
+      fit = 1L,
+      keras_bytes = NULL,
+      process_x = function(x, ...) list(x_proc = as.matrix(x)),
+      process_y = function(y, ...) list(y_proc = as.integer(y))
+    )
+  )
+  class(mock_fit) <- "model_fit"
+
+  x_new <- as.data.frame(matrix(rnorm(4), nrow = 1))
+
+  expect_error(keras_evaluate(mock_fit, x_new, y = NULL))
+})
