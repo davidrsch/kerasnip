@@ -70,7 +70,7 @@ build_spec_function <- function(
       method = NULL,
       engine = NULL
     )
-    class(result) <- c("kerasnip_spec", class(result))
+    class(result) <- c(class(result)[1L], "kerasnip_spec", class(result)[-1L])
     attr(result, "kerasnip_layer_blocks") <- captured_layer_blocks
     attr(result, "kerasnip_functional") <- captured_functional
     result

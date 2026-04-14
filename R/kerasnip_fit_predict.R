@@ -47,7 +47,7 @@ fit.kerasnip_spec <- function(object, ...) {
 #' @keywords internal
 #' @exportS3Method stats::predict
 predict.kerasnip_model_fit <- function(object, new_data, ...) {
-  model_name <- class(object)[2L]
+  model_name <- class(object$spec)[1L]
 
   if (!model_exists(model_name)) {
     spec <- object$spec
