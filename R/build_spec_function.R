@@ -50,6 +50,11 @@ build_spec_function <- function(
 
   quos_call <- rlang::call2("quos", rlang::sym("..."), .ns = "rlang")
 
+  # Capture layer_blocks and functional flag at spec-creation time so that
+  # every instance of the spec carries the data needed for reregister_keras_spec().
+  captured_layer_blocks <- layer_blocks
+  captured_functional <- functional
+
   body <- rlang::expr({
     # Capture both explicit args and ... to pass to the fit impl
     # Named arguments are captured into a list of quosures.
@@ -57,7 +62,7 @@ build_spec_function <- function(
     # ... arguments are captured into a separate list of quosures.
     dot_args <- !!quos_call
     args <- c(main_args, dot_args)
-    parsnip::new_model_spec(
+    result <- parsnip::new_model_spec(
       !!model_name,
       args = args,
       eng_args = NULL,
@@ -65,6 +70,9 @@ build_spec_function <- function(
       method = NULL,
       engine = NULL
     )
+    attr(result, "kerasnip_layer_blocks") <- captured_layer_blocks
+    attr(result, "kerasnip_functional") <- captured_functional
+    result
   })
 
   # Add ... to the function signature to capture any other compile arguments
