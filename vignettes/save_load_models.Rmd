@@ -1,0 +1,195 @@
+---
+title: "Saving, Reloading, and Sharing kerasnip Models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Saving, Reloading, and Sharing kerasnip Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    eval = FALSE
+)
+```
+
+## Overview
+
+Once you have fitted a kerasnip workflow, you will naturally want to save it —
+whether to deploy it, share it with a collaborator, or simply reload it later
+without re-training. This vignette explains why the default approaches fail and
+what to do instead.
+
+## Why plain `saveRDS()` fails
+
+Saving a fitted workflow with `saveRDS()` and loading it in a new R session will
+break prediction. There are two distinct root causes.
+
+### Root cause 1: parsnip registrations are session-scoped
+
+`create_keras_sequential_spec()` and `create_keras_functional_spec()` work by
+making side-effect calls to parsnip's internal API (`set_new_model()`,
+`set_model_mode()`, `set_model_engine()`, `set_fit()`, `set_pred()`, etc.).
+These registrations live in parsnip's internal environment, which is **never
+serialized**. After `library(kerasnip)` in a fresh R session, parsnip has no
+knowledge of your custom model type.
+
+When you call `predict()` on the loaded workflow, parsnip tries to look up the
+encoding for your model type and fails:
+
+```
+Error in `get_encoding()`:
+! Model "basic_mlp" has not been registered.
+```
+
+### Root cause 2: Keras Python objects cannot survive `saveRDS()`
+
+The fitted Keras model inside your workflow stores references to Python objects.
+These references are process-specific and are lost when R serializes the object
+with `saveRDS()`. Loading the result in a new process leaves the Keras model in
+a broken state, even before you try to predict.
+
+## The recommended workflow
+
+The `bundle` package (from the tidymodels ecosystem) solves root cause 2 by
+using Keras's own native serialization to safely capture the Python model.
+`kerasnip`'s `reregister_keras_spec()` function solves root cause 1 by
+replaying the parsnip registration from metadata embedded in the spec object.
+Together they give you a complete, portable save/load workflow.
+
+### Setup
+
+```{r setup}
+library(kerasnip)
+library(keras3)
+library(workflows)
+library(bundle)
+```
+
+### Session 1 — define, fit, and save
+
+```{r session-1}
+# Define your layer blocks as usual
+input_block <- function(model, input_shape) {
+    keras_model_sequential(input_shape = input_shape)
+}
+hidden_block <- function(model, units = 64) {
+    model |> layer_dense(units = units, activation = "relu")
+}
+output_block <- function(model) {
+    model |> layer_dense(units = 1)
+}
+
+# Create the spec
+create_keras_sequential_spec(
+    model_name = "basic_mlp",
+    layer_blocks = list(
+        input  = input_block,
+        hidden = hidden_block,
+        output = output_block
+    ),
+    mode = "regression"
+)
+
+# Build and fit a workflow
+wf <- workflow() |>
+    add_model(basic_mlp(
+        fit_epochs = 10,
+        compile_loss = "mean_squared_error"
+    )) |>
+    add_formula(mpg ~ .)
+
+fit_wf <- fit(wf, data = mtcars)
+
+# Bundle handles Keras native serialization; saveRDS handles the R object
+bundled <- bundle(fit_wf)
+saveRDS(bundled, file = "my_model.rds")
+```
+
+### Session 2 — load and predict
+
+```{r session-2}
+library(kerasnip)
+library(bundle)
+
+# 1. Load the bundled object
+bundled <- readRDS("my_model.rds")
+
+# 2. Unbundle — bundle restores the Keras Python model
+fit_wf <- unbundle(bundled)
+
+# 3. Re-register — kerasnip restores the parsnip registration
+reregister_keras_spec(fit_wf)
+
+# 4. Predict as usual
+predict(fit_wf, new_data = head(mtcars))
+```
+
+## Lightweight alternative: skip `bundle` when weights aren't needed
+
+If you only need to share the *specification* (for example, to restore the
+parsnip registration and re-create the constructor function, but you intend to
+re-fit the model from scratch), you can skip `bundle` entirely and use plain
+`saveRDS()` combined with `reregister_keras_spec()`.
+
+```{r plain-saverds}
+# Session 1 — save only the fitted workflow (weights will be broken,
+# but the spec metadata is sufficient for re-registration)
+saveRDS(fit_wf, file = "my_spec.rds")
+
+# Session 2
+library(kerasnip)
+
+fit_wf <- readRDS("my_spec.rds")
+reregister_keras_spec(fit_wf) # restores parsnip registration + basic_mlp()
+
+# You can now re-fit:
+refit_wf <- fit(
+    workflow() |>
+        add_model(basic_mlp(fit_epochs = 10, compile_loss = "mse")) |>
+        add_formula(mpg ~ .),
+    data = mtcars
+)
+predict(refit_wf, new_data = head(mtcars))
+```
+
+Note that in this path, calling `predict()` directly on the loaded `fit_wf`
+will still fail because the Keras weights are lost — `bundle` is required if you
+need predictions from the original fitted model.
+
+## What `reregister_keras_spec()` does
+
+`reregister_keras_spec()` reads metadata that kerasnip (>= 0.1.1) automatically
+embeds in every spec object at creation time — specifically the `layer_blocks`
+list and whether the Functional or Sequential API was used. It then replays the
+full parsnip registration and also re-creates the named constructor function
+(e.g. `basic_mlp()`) in your calling environment.
+
+It accepts either a spec object or a fitted workflow:
+
+```{r reregister-usage}
+# From a workflow (most common after loading)
+reregister_keras_spec(fit_wf)
+
+# From a bare spec
+spec <- extract_spec_parsnip(fit_wf)
+reregister_keras_spec(spec)
+```
+
+## Backward compatibility
+
+The embedded metadata was introduced in kerasnip 0.1.1. Specs created with
+older versions do not carry it. Calling `reregister_keras_spec()` on such a spec
+will produce a clear error message directing you to call
+`create_keras_sequential_spec()` or `create_keras_functional_spec()` manually.
+
+## What to share with collaborators
+
+To allow a collaborator to load your model and predict without re-training,
+share the output of `bundle()` saved as an `.rds` file. They will need:
+
+- `library(kerasnip)` — to load the package and get `reregister_keras_spec()`
+- `library(bundle)` — to call `unbundle()`
+- Then the three-line load sequence from Session 2 above
