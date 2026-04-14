@@ -62,14 +62,14 @@ First, we load the necessary packages.
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.4.1 ──
-#> ✔ broom        1.0.11     ✔ recipes      1.3.1 
-#> ✔ dials        1.4.2      ✔ rsample      1.3.1 
-#> ✔ dplyr        1.1.4      ✔ tailor       0.1.0 
-#> ✔ ggplot2      4.0.1      ✔ tidyr        1.3.1 
-#> ✔ infer        1.0.9      ✔ tune         2.0.1 
+#> ✔ broom        1.0.12     ✔ recipes      1.3.2 
+#> ✔ dials        1.4.3      ✔ rsample      1.3.2 
+#> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
+#> ✔ ggplot2      4.0.2      ✔ tidyr        1.3.2 
+#> ✔ infer        1.1.0      ✔ tune         2.0.1 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
-#> ✔ parsnip      1.4.0      ✔ workflowsets 1.1.1 
-#> ✔ purrr        1.2.0      ✔ yardstick    1.3.2
+#> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
+#> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
 #> ✖ purrr::discard() masks scales::discard()
 #> ✖ dplyr::filter()  masks stats::filter()
@@ -81,6 +81,9 @@ library(keras3)
 #> The following object is masked from 'package:yardstick':
 #> 
 #>     get_weights
+#> The following object is masked from 'package:infer':
+#> 
+#>     generate
 
 # Silence the startup messages from remove_keras_spec
 options(kerasnip.show_removal_messages = FALSE)
@@ -250,15 +253,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 45ms/step
+#> 1/1 - 0s - 47ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>      <dbl[,1,1]>    <dbl[,1,1]>
-#> 1        0.739 …        0.586 …
-#> 2        0.467 …        0.479 …
-#> 3        0.356 …        0.529 …
-#> 4        0.406 …        0.622 …
-#> 5        0.564 …        0.560 …
+#> 1        0.496 …        0.491 …
+#> 2        0.339 …        0.417 …
+#> 3        0.284 …        0.297 …
+#> 4        0.292 …        0.411 …
+#> 5        0.461 …        0.566 …
 ```
 
 ## A common debugging workflow: `compile_keras_grid()`

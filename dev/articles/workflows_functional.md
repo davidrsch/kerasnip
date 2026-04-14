@@ -21,14 +21,14 @@ First, we load the necessary packages.
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.4.1 ──
-#> ✔ broom        1.0.11     ✔ recipes      1.3.1 
-#> ✔ dials        1.4.2      ✔ rsample      1.3.1 
-#> ✔ dplyr        1.1.4      ✔ tailor       0.1.0 
-#> ✔ ggplot2      4.0.1      ✔ tidyr        1.3.1 
-#> ✔ infer        1.0.9      ✔ tune         2.0.1 
+#> ✔ broom        1.0.12     ✔ recipes      1.3.2 
+#> ✔ dials        1.4.3      ✔ rsample      1.3.2 
+#> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
+#> ✔ ggplot2      4.0.2      ✔ tidyr        1.3.2 
+#> ✔ infer        1.1.0      ✔ tune         2.0.1 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
-#> ✔ parsnip      1.4.0      ✔ workflowsets 1.1.1 
-#> ✔ purrr        1.2.0      ✔ yardstick    1.3.2
+#> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
+#> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
 #> ✖ purrr::discard() masks scales::discard()
 #> ✖ dplyr::filter()  masks stats::filter()
@@ -40,6 +40,9 @@ library(keras3)
 #> The following object is masked from 'package:yardstick':
 #> 
 #>     get_weights
+#> The following object is masked from 'package:infer':
+#> 
+#>     generate
 library(dplyr) # For data manipulation
 library(ggplot2) # For plotting
 library(future) # For parallel processing
@@ -428,8 +431,7 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -475,49 +477,21 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 1s - 88ms/step
 #> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 8ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -603,6 +577,38 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -661,11 +667,13 @@ combinations performed best.
 ``` r
 # Show the best performing models based on RMSE
 show_best(ames_tune_results, metric = "rmse", n = 5)
-#> # A tibble: 2 × 10
+#> # A tibble: 4 × 10
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
 #> 1                       128                           64                   64
 #> 2                       128                           64                   40
+#> 3                       128                           64                   16
+#> 4                       128                           64                   64
 #> # ℹ 7 more variables: processed_condition_units <int>, .metric <chr>,
 #> #   .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -713,7 +721,7 @@ print(final_ames_fit)
 #> 
 #> ── Model ───────────────────────────────────────────────────────────────────────
 #> $fit
-#> Model: "functional_259"
+#> Model: "functional_262"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -729,20 +737,20 @@ print(final_ames_fit)
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1036 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1048 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1037 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1049 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1038 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
+#> │ dense_1050 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1039 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1051 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_259       │ (None, 1, 320)    │           0 │ dense_1036[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1037[0][0],  │
-#> │                       │                   │             │ dense_1038[0][0],  │
-#> │                       │                   │             │ dense_1039[0][0]   │
+#> │ concatenate_262       │ (None, 1, 320)    │           0 │ dense_1048[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1049[0][0],  │
+#> │                       │                   │             │ dense_1050[0][0],  │
+#> │                       │                   │             │ dense_1051[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_259[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_262[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
 #>  Total params: 13,637 (53.27 KB)
 #>  Trainable params: 4,545 (17.75 KB)
@@ -752,10 +760,10 @@ print(final_ames_fit)
 #> $history
 #> 
 #> Final epoch (plot to see history):
-#>                    loss: 1,213,748,224
-#>     mean_absolute_error: 21,299
-#>                val_loss: 6,135,004,672
-#> val_mean_absolute_error: 59,544 
+#>                    loss: 1,190,860,800
+#>     mean_absolute_error: 21,185
+#>                val_loss: 6,127,467,008
+#> val_mean_absolute_error: 59,437 
 #> 
 #> $lvl
 #> NULL
@@ -778,7 +786,7 @@ final_ames_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
   summary()
-#> Model: "functional_259"
+#> Model: "functional_262"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -794,20 +802,20 @@ final_ames_fit |>
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1036 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1048 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1037 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1049 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1038 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
+#> │ dense_1050 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1039 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1051 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_259       │ (None, 1, 320)    │           0 │ dense_1036[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1037[0][0],  │
-#> │                       │                   │             │ dense_1038[0][0],  │
-#> │                       │                   │             │ dense_1039[0][0]   │
+#> │ concatenate_262       │ (None, 1, 320)    │           0 │ dense_1048[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1049[0][0],  │
+#> │                       │                   │             │ dense_1050[0][0],  │
+#> │                       │                   │             │ dense_1051[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_259[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_262[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
 #>  Total params: 13,637 (53.27 KB)
 #>  Trainable params: 4,545 (17.75 KB)
@@ -857,12 +865,12 @@ print(head(ames_results))
 #> # A tibble: 6 × 2
 #>   Sale_Price   .pred
 #>        <int>   <dbl>
-#> 1     105000  98535.
-#> 2     172000 159300.
-#> 3     189900 191801.
-#> 4     115000 130246.
-#> 5     395192 267506.
-#> 6     214000 210394.
+#> 1     105000  95775.
+#> 2     172000 162386.
+#> 3     189900 193117.
+#> 4     115000 127380.
+#> 5     395192 267928.
+#> 6     214000 213390.
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -879,7 +887,7 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard   50638.   
-#> 2 mae     standard   30815.   
-#> 3 rsq     standard       0.789
+#> 1 rmse    standard   50697.   
+#> 2 mae     standard   30784.   
+#> 3 rsq     standard       0.786
 ```

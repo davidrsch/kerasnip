@@ -4,6 +4,8 @@
 
 ## kerasnip 0.1.0
 
+CRAN release: 2025-12-06
+
 ### Breaking changes
 
 - [`inp_spec()`](https://davidrsch.github.io/kerasnip/dev/reference/inp_spec.md)

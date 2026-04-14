@@ -102,7 +102,7 @@ if (requireNamespace("keras3", quietly = TRUE)) {
 #> Hyperparameters:
 #> hidden_units: -10
 #> Error Message:
-#> ValueError: Cannot convert '(10, -10)' to a shape. Negative dimensions are not allowed.
+#> ValueError: Received an invalid value for `units`, expected a positive integer. Received: units=-10
 #> Run `reticulate::py_last_error()` for details.
 #> Removed from parsnip registry objects: my_mlp_grid_3, my_mlp_grid_3_args, my_mlp_grid_3_encoding, my_mlp_grid_3_fit, my_mlp_grid_3_modes, my_mlp_grid_3_pkgs, my_mlp_grid_3_predict
 #> Removed 'my_mlp_grid_3' from parsnip:::get_model_env()$models
