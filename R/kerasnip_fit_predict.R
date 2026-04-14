@@ -1,3 +1,33 @@
+#' set_engine Method for kerasnip Spec Objects
+#'
+#' @description
+#' S3 method for `set_engine()` dispatched on `kerasnip_spec` objects.
+#' `parsnip::set_engine.model_spec()` internally calls `new_model_spec()`,
+#' which re-creates the spec from scratch with only `c(cls, "model_spec")` as
+#' the class vector — stripping `kerasnip_spec` and any custom attributes. This
+#' wrapper preserves the `kerasnip_layer_blocks` and `kerasnip_functional`
+#' metadata attributes and re-attaches them (along with the `kerasnip_spec`
+#' class) after `NextMethod()` has done its work.
+#'
+#' @param object A `kerasnip_spec` model specification.
+#' @param engine A character string naming the engine (e.g., `"keras"`).
+#' @param ... Additional engine-specific arguments passed to
+#'   `parsnip::set_engine.model_spec()`.
+#' @return A `model_spec` object with the `kerasnip_spec` class and metadata
+#'   attributes re-attached.
+#' @keywords internal
+#' @importFrom parsnip set_engine
+#' @exportS3Method parsnip::set_engine
+set_engine.kerasnip_spec <- function(object, engine, ...) {
+  layer_blocks <- attr(object, "kerasnip_layer_blocks")
+  functional <- attr(object, "kerasnip_functional")
+  result <- NextMethod()
+  class(result) <- c(class(result)[1L], "kerasnip_spec", class(result)[-1L])
+  attr(result, "kerasnip_layer_blocks") <- layer_blocks
+  attr(result, "kerasnip_functional") <- functional
+  result
+}
+
 #' Fit Method for kerasnip Spec Objects
 #'
 #' @description
@@ -5,6 +35,12 @@
 #' the standard parsnip `fit.model_spec()` and then tags the result with the
 #' `kerasnip_model_fit` class so that `predict.kerasnip_model_fit()` is
 #' dispatched on subsequent calls.
+#'
+#' `kerasnip_spec` is stripped from the class before `NextMethod()` to prevent
+#' parsnip's internal `specific_model()` helper from returning more than one
+#' model-class entry, which would break registry lookups. The custom metadata
+#' attributes remain on the object and are thus stored inside the resulting
+#' `model_fit$spec`.
 #'
 #' @param object A `kerasnip_spec` model specification.
 #' @param ... Passed to `parsnip::fit.model_spec()`.
@@ -14,6 +50,7 @@
 #' @importFrom generics fit
 #' @exportS3Method generics::fit
 fit.kerasnip_spec <- function(object, ...) {
+  class(object) <- class(object)[class(object) != "kerasnip_spec"]
   result <- NextMethod()
   class(result) <- c("kerasnip_model_fit", class(result))
   result
@@ -26,6 +63,12 @@ fit.kerasnip_spec <- function(object, ...) {
 #' route through `fit_xy` rather than `fit`, so this method ensures the
 #' `kerasnip_model_fit` class is attached in the workflow fitting path as well.
 #'
+#' `kerasnip_spec` is stripped from the class before `NextMethod()` to prevent
+#' parsnip's internal `specific_model()` helper from returning more than one
+#' model-class entry, which would break registry lookups. The custom metadata
+#' attributes remain on the object and are thus stored inside the resulting
+#' `model_fit$spec`.
+#'
 #' @param object A `kerasnip_spec` model specification.
 #' @param ... Passed to `parsnip::fit_xy.model_spec()`.
 #' @return A `model_fit` object with the additional `kerasnip_model_fit` class
@@ -34,6 +77,7 @@ fit.kerasnip_spec <- function(object, ...) {
 #' @importFrom generics fit_xy
 #' @exportS3Method generics::fit_xy
 fit_xy.kerasnip_spec <- function(object, ...) {
+  class(object) <- class(object)[class(object) != "kerasnip_spec"]
   result <- NextMethod()
   class(result) <- c("kerasnip_model_fit", class(result))
   result
