@@ -17,7 +17,7 @@ errors like incompatible layer shapes or invalid argument values early."><meta p
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.1.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,10 @@ errors like incompatible layer shapes or invalid argument values early.</p>
 
 <dt id="arg-grid">grid<a class="anchor" aria-label="anchor" href="#arg-grid"></a></dt>
 <dd><p>A <code>tibble</code> or <code>data.frame</code> containing the grid of hyperparameters
-to evaluate. Each row represents a unique model architecture to be compiled.</p></dd>
+to evaluate. Each row represents a unique model architecture to be
+compiled. Must have at least one row. To build the model once using only
+the arguments already set on <code>spec</code> (e.g. for architecture inspection),
+pass <code>tibble::tibble(.rows = 1L)</code>.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>

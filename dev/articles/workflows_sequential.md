@@ -318,16 +318,430 @@ penguin_tune_results <- tune_race_anova(
   metrics = metric_set(accuracy, roc_auc, f_meas),
   control = control_race(save_pred = TRUE, save_workflow = TRUE)
 )
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 28ms/step
@@ -340,47 +754,81 @@ penguin_tune_results <- tune_race_anova(
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 12ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
@@ -389,56 +837,60 @@ penguin_tune_results <- tune_race_anova(
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 36ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 13ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 11ms/step
@@ -458,640 +910,222 @@ penguin_tune_results <- tune_race_anova(
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 31ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 14ms/step
+#> 2/2 - 0s - 33ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 46ms/step
+#> 2/2 - 0s - 16ms/step
+#> 2/2 - 0s - 35ms/step
+#> 2/2 - 0s - 14ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 14ms/step
+#> 2/2 - 0s - 36ms/step
+#> 2/2 - 0s - 14ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 35ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 32ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 33ms/step
 #> 2/2 - 0s - 13ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 12ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 14ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 12ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 12ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 13ms/step
 ```
 
 ## Inspect Tuning Results
@@ -1109,7 +1143,7 @@ show_best(penguin_tune_results, metric = "accuracy", n = 5)
 #> 2             32           0.1             16         0.25  accuracy multiclass
 #> 3             32           0.1             16         0.400 accuracy multiclass
 #> 4             32           0.1             40         0.1   accuracy multiclass
-#> 5             32           0.1             40         0.400 accuracy multiclass
+#> 5             32           0.1             40         0.25  accuracy multiclass
 #> # ℹ 4 more variables: mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
 # Autoplot the results
@@ -1149,58 +1183,58 @@ print(final_penguin_fit)
 #> 
 #> ── Model ───────────────────────────────────────────────────────────────────────
 #> $fit
-#> Model: "sequential_387"
+#> Model: "sequential_404"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-#> │ dense_1161 (Dense)                │ (None, 32)               │           256 │
+#> │ dense_1212 (Dense)                │ (None, 32)               │           256 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_774 (Dropout)             │ (None, 32)               │             0 │
+#> │ dropout_808 (Dropout)             │ (None, 32)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1162 (Dense)                │ (None, 16)               │           528 │
+#> │ dense_1213 (Dense)                │ (None, 16)               │           528 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_775 (Dropout)             │ (None, 16)               │             0 │
+#> │ dropout_809 (Dropout)             │ (None, 16)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1163 (Dense)                │ (None, 3)                │            51 │
+#> │ dense_1214 (Dense)                │ (None, 3)                │            51 │
 #> └───────────────────────────────────┴──────────────────────────┴───────────────┘
 #>  Total params: 2,507 (9.80 KB)
 #>  Trainable params: 835 (3.26 KB)
 #>  Non-trainable params: 0 (0.00 B)
 #>  Optimizer params: 1,672 (6.54 KB)
 #> 
-#> $history
-#> 
-#> Final epoch (plot to see history):
-#>     accuracy: 1
-#>         loss: 0.004725
-#> val_accuracy: 1
-#>     val_loss: 0.00001104 
-#> 
-#> $lvl
-#> [1] "Adelie"    "Chinstrap" "Gentoo"   
-#> 
-#> $process_x
-#> function (x) 
-#> {
-#>     if (is.data.frame(x) && ncol(x) == 1 && is.list(x[[1]])) {
-#>         x_proc <- do.call(abind::abind, c(x[[1]], list(along = 0)))
-#>     }
-#>     else {
-#>         x_proc <- as.matrix(x)
-#>     }
-#>     input_shape <- if (length(dim(x_proc)) > 2) 
-#>         dim(x_proc)[-1]
-#>     else ncol(x_proc)
-#>     list(x_proc = x_proc, input_shape = input_shape)
-#> }
-#> <bytecode: 0x55c225a71240>
-#> <environment: namespace:kerasnip>
-#> 
-#> $process_y
-#> function (y, is_classification = NULL, class_levels = NULL) 
+#> $keras_bytes
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 76 2d ae 4a 40 00 00 00 40 00
+#>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
+#>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 34 2e 30 22 2c 20 22
+#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 34 2d 31 35
+#>    [97] 40 32 31 3a 35 34 3a 30 36 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 3e b7 5e a6 17 11 00 00 17 11 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20
+#>   [169] 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 53 65 71 75 65 6e 74 69 61
+#>   [193] 6c 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22
+#>   [217] 73 65 71 75 65 6e 74 69 61 6c 5f 34 30 34 22 2c 20 22 74 72 61 69 6e 61
+#>   [241] 62 6c 65 22 3a 20 74 72 75 65 2c 20 22 64 74 79 70 65 22 3a 20 7b 22 6d
+#>   [265] 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20 22 63 6c 61 73 73 5f
+#>   [289] 6e 61 6d 65 22 3a 20 22 44 54 79 70 65 50 6f 6c 69 63 79 22 2c 20 22 63
+#>   [313] 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 6c 6f 61 74 33
+#>   [337] 32 22 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65 22 3a 20
+#>   [361] 6e 75 6c 6c 2c 20 22 73 68 61 72 65 64 5f 6f 62 6a 65 63 74 5f 69 64 22
+#>   [385] 3a 20 31 34 30 33 33 37 30 34 30 39 30 38 33 36 38 7d 2c 20 22 6c 61 79
+#>   [409] 65 72 73 22 3a 20 5b 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73
+#>   [433] 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20
+#>   [457] 22 49 6e 70 75 74 4c 61 79 65 72 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20
+#>   [481] 7b 22 62 61 74 63 68 5f 73 68 61 70 65 22 3a 20 5b 6e 75 6c 6c 2c 20 37
+#>   [505] 5d 2c 20 22 64 74 79 70 65 22 3a 20 22 66 6c 6f 61 74 33 32 22 2c 20 22
+#>   [529] 73 70 61 72 73 65 22 3a 20 66 61 6c 73 65 2c 20 22 72 61 67 67 65 64 22
+#>   [553] 3a 20 66 61 6c 73 65 2c 20 22 6e 61 6d 65 22 3a 20 22 69 6e 70 75 74 5f
+#>   [577] 6c 61 79 65 72 5f 34 30 34 22 2c 20 22 6f 70 74 69 6f 6e 61 6c 22 3a 20
+#>   [601] 66 61 6c 73 65 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65
+#>   [625] 22 3a 20 6e 75 6c 6c 7d 2c 20 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65
+#>   [649] 72 61 73 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65
+#>   [673] 22 3a 20 22 44 65 6e 73 65 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22
 #> 
 #> ...
-#> and 27 more lines.
+#> and 1701 more lines.
 ```
 
 ### Inspect Final Model
@@ -1214,19 +1248,19 @@ final_penguin_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
   summary()
-#> Model: "sequential_387"
+#> Model: "sequential_404"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-#> │ dense_1161 (Dense)                │ (None, 32)               │           256 │
+#> │ dense_1212 (Dense)                │ (None, 32)               │           256 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_774 (Dropout)             │ (None, 32)               │             0 │
+#> │ dropout_808 (Dropout)             │ (None, 32)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1162 (Dense)                │ (None, 16)               │           528 │
+#> │ dense_1213 (Dense)                │ (None, 16)               │           528 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_775 (Dropout)             │ (None, 16)               │             0 │
+#> │ dropout_809 (Dropout)             │ (None, 16)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1163 (Dense)                │ (None, 3)                │            51 │
+#> │ dense_1214 (Dense)                │ (None, 3)                │            51 │
 #> └───────────────────────────────────┴──────────────────────────┴───────────────┘
 #>  Total params: 2,507 (9.80 KB)
 #>  Trainable params: 835 (3.26 KB)
@@ -1264,13 +1298,13 @@ model’s performance.
 ``` r
 # Make predictions on the test set
 penguin_test_pred <- predict(final_penguin_fit, new_data = penguin_test)
-#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 23ms/step
 penguin_test_prob <- predict(
   final_penguin_fit,
   new_data = penguin_test,
   type = "prob"
 )
-#> 3/3 - 0s - 7ms/step
+#> 3/3 - 0s - 9ms/step
 
 # Combine predictions with actuals
 penguin_results <- penguin_test |>
@@ -1281,12 +1315,12 @@ print(head(penguin_results))
 #> # A tibble: 6 × 5
 #>   species .pred_class .pred_Adelie .pred_Chinstrap .pred_Gentoo
 #>   <fct>   <fct>              <dbl>           <dbl>        <dbl>
-#> 1 Adelie  Adelie             1.000        2.57e- 9     1.46e- 8
-#> 2 Adelie  Adelie             1.000        1.02e- 6     7.47e- 6
-#> 3 Adelie  Adelie             1.000        2.61e-10     3.63e-10
-#> 4 Adelie  Adelie             1.000        1.32e- 8     2.05e- 7
-#> 5 Adelie  Adelie             1.000        1.87e- 8     2.13e- 7
-#> 6 Adelie  Adelie             1.000        6.35e- 8     9.57e- 7
+#> 1 Adelie  Adelie             1.000        5.06e- 9     2.05e-11
+#> 2 Adelie  Adelie             1.000        4.44e- 6     2.08e- 7
+#> 3 Adelie  Adelie             1.000        8.23e-10     1.53e-12
+#> 4 Adelie  Adelie             1.000        9.65e- 8     2.00e- 9
+#> 5 Adelie  Adelie             1.000        3.21e- 7     3.85e- 9
+#> 6 Adelie  Adelie             1.000        3.30e- 7     3.09e- 9
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -1307,8 +1341,8 @@ print(metrics_results)
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
 #> 1 accuracy multiclass     0.985
-#> 2 f_meas   macro          0.983
-#> 3 roc_auc  hand_till      1
+#> 2 f_meas   macro          0.982
+#> 3 roc_auc  hand_till      0.999
 
 # Confusion Matrix
 conf_mat(penguin_results, truth = species, estimate = .pred_class) |>
@@ -1316,3 +1350,45 @@ conf_mat(penguin_results, truth = species, estimate = .pred_class) |>
 ```
 
 ![](workflows_sequential_files/figure-html/predict-evaluate-1.png)
+
+## Saving and Reloading Your Model
+
+`kerasnip` serializes the Keras model weights to bytes at fit time and
+stores them alongside the workflow object. This means plain
+[`saveRDS()`](https://rdrr.io/r/base/readRDS.html) /
+[`readRDS()`](https://rdrr.io/r/base/readRDS.html) **works out of the
+box** — the underlying Keras model is restored automatically the first
+time [`predict()`](https://rdrr.io/r/stats/predict.html) is called on
+the reloaded object.
+
+``` r
+# Save
+saveRDS(fit_wf, "my_model.rds")
+
+# Reload — no extra steps needed
+fit_wf <- readRDS("my_model.rds")
+predict(fit_wf, new_data = new_data)  # model restored automatically
+```
+
+If you need a fully self-contained bundle suitable for deployment with
+`vetiver` or other MLOps tools, use
+[`bundle::bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+instead:
+
+``` r
+library(bundle)
+
+# Save as a portable bundle
+bundled <- bundle(fit_wf)
+saveRDS(bundled, "my_model_bundle.rds")
+
+# Reload in any R session
+library(kerasnip)
+library(bundle)
+fit_wf <- unbundle(readRDS("my_model_bundle.rds"))
+predict(fit_wf, new_data = new_data)
+```
+
+See
+[`vignette("saving_and_reloading")`](https://davidrsch.github.io/kerasnip/dev/articles/saving_and_reloading.md)
+for a detailed comparison of both approaches.

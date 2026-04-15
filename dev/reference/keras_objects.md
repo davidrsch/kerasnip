@@ -17,9 +17,9 @@ keras_metrics
 
 ## Format
 
-An object of class `character` of length 12.
+An object of class `character` of length 13.
 
-An object of class `character` of length 21.
+An object of class `character` of length 22.
 
 An object of class `character` of length 32.
 

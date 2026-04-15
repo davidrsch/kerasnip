@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.1.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -252,9 +252,10 @@ This is perfect for debugging your architecture.</p>
 <span></span>
 <span></span>
 <span><span class="co"># Use compile_keras_grid to get the model summary</span></span>
+<span><span class="co"># A one-row grid with no extra hyperparameters builds the spec as-is.</span></span>
 <span><span class="va">compilation_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compile_keras_grid.html">compile_keras_grid</a></span><span class="op">(</span></span>
 <span>  spec <span class="op">=</span> <span class="va">cnn_spec</span>,</span>
-<span>  grid <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  grid <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>.rows <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>,</span>
 <span>  x <span class="op">=</span> <span class="va">x_dummy_df</span>,</span>
 <span>  y <span class="op">=</span> <span class="va">y_dummy_df</span></span>
 <span><span class="op">)</span></span>

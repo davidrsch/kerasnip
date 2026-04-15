@@ -268,6 +268,12 @@ trained Keras models.
   : Extract Keras Model from a Fitted Kerasnip Object
 - [`keras_evaluate()`](https://davidrsch.github.io/kerasnip/dev/reference/keras_evaluate.md)
   : Evaluate a Kerasnip Model
+- [`axe_data(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/dev/reference/axe-kerasnip_model_fit.md)
+  [`axe_env(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/dev/reference/axe-kerasnip_model_fit.md)
+  [`axe_call(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/dev/reference/axe-kerasnip_model_fit.md)
+  [`axe_ctrl(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/dev/reference/axe-kerasnip_model_fit.md)
+  [`axe_fitted(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/dev/reference/axe-kerasnip_model_fit.md)
+  : Butcher axe methods for kerasnip_model_fit
 
 ## Custom recipe steps
 
@@ -288,6 +294,8 @@ Custom stpes for recipe which uses kerasnip models specifications
   kerasnip](https://davidrsch.github.io/kerasnip/dev/articles/functional_api.md):
 - [Getting Started with
   kerasnip](https://davidrsch.github.io/kerasnip/dev/articles/getting_started.md):
+- [Saving and Reloading Fitted Kerasnip
+  Workflows](https://davidrsch.github.io/kerasnip/dev/articles/saving_and_reloading.md):
 - [The Sequential Model with
   kerasnip](https://davidrsch.github.io/kerasnip/dev/articles/sequential_model.md):
 - [Tuning Fit and Compile

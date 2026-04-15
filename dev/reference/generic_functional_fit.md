@@ -72,10 +72,9 @@ Generic Fitting Function for Functional Keras Models
 The function orchestrates the three main steps of the model fitting
 process:
 
-1.  **Build and Compile:** It calls
-    `build_and_compile_functional_model()` to construct the Keras model
-    architecture based on the provided `layer_blocks` and
-    hyperparameters.
+1.  **Build and Compile:** It calls `build_compile_func_model()` to
+    construct the Keras model architecture based on the provided
+    `layer_blocks` and hyperparameters.
 
 2.  **Process Data:** It preprocesses the input (`x`) and output (`y`)
     data into the format expected by Keras.

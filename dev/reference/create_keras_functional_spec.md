@@ -108,6 +108,26 @@ The new model specification function and its
 [`update()`](https://rdrr.io/r/stats/update.html) method are created in
 the environment specified by the `env` argument.
 
+## Saving and Reloading Models
+
+To save a fitted workflow and reload it in a new R session, use
+[`bundle::bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
+before saving — this is required to preserve the Keras model weights:
+
+    library(bundle)
+    bundled <- bundle(fitted_workflow)
+    saveRDS(bundled, "model.rds")
+
+    # New session:
+    library(kerasnip); library(bundle)
+    fitted_workflow <- unbundle(readRDS("model.rds"))
+    predict(fitted_workflow, new_data = test_data)  # works
+
+Plain [`saveRDS()`](https://rdrr.io/r/base/readRDS.html) without
+`bundle()` does not preserve Keras weights, but
+[`predict()`](https://rdrr.io/r/stats/predict.html) will still
+auto-register the parsnip model type from metadata stored on the spec.
+
 ## See also
 
 [`remove_keras_spec()`](https://davidrsch.github.io/kerasnip/dev/reference/remove_keras_spec.md),
@@ -145,12 +165,18 @@ if (requireNamespace("keras3", quietly = TRUE)) {
       main_input = input_block,
 
       # The argument `main_input` connects this block to the input node.
-      dense_path = function(main_input, units = 32) dense_block(main_input, units),
+      dense_path = function(main_input, units = 32) {
+        dense_block(main_input, units)
+      },
 
-      # This block's arguments connect it to the original input AND the dense layer.
-      add_residual = function(main_input, dense_path) add_block(main_input, dense_path),
+      # This block's arguments connect it to the original input AND the dense
+      # layer.
+      add_residual = function(main_input, dense_path) {
+        add_block(main_input, dense_path)
+      },
 
-      # This block must be named 'output'. It connects to the residual add layer.
+      # This block must be named 'output'. It connects to the residual add
+      # layer.
       output = function(add_residual) output_block_reg(add_residual)
     ),
     mode = "regression"
@@ -160,7 +186,8 @@ if (requireNamespace("keras3", quietly = TRUE)) {
   # The `dense_path_units` argument was created automatically.
   model_spec <- my_resnet_spec(dense_path_units = 64, epochs = 10)
 
-  # You could also tune the number of dense layers since it has a single input:
+  # You could also tune the number of dense layers since it has a single
+  # input:
   # model_spec <- my_resnet_spec(num_dense_path = 2, dense_path_units = 32)
 
   print(model_spec)

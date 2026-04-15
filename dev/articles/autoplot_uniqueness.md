@@ -224,11 +224,11 @@ tune_res <- tune::tune_grid(
 #> 3/3 - 0s - 7ms/step
 #> 3/3 - 0s - 17ms/step
 #> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 18ms/step
+#> 3/3 - 0s - 17ms/step
 #> 3/3 - 0s - 7ms/step
 #> 3/3 - 0s - 18ms/step
 #> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 18ms/step
+#> 3/3 - 0s - 17ms/step
 #> 3/3 - 0s - 7ms/step
 #> 3/3 - 0s - 18ms/step
 #> 3/3 - 0s - 7ms/step

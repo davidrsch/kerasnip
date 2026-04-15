@@ -28,7 +28,9 @@ compile_keras_grid(spec, grid, x, y)
 
   A `tibble` or `data.frame` containing the grid of hyperparameters to
   evaluate. Each row represents a unique model architecture to be
-  compiled.
+  compiled. Must have at least one row. To build the model once using
+  only the arguments already set on `spec` (e.g. for architecture
+  inspection), pass `tibble::tibble(.rows = 1L)`.
 
 - x:
 

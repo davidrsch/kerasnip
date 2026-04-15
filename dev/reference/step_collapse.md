@@ -67,8 +67,8 @@ step_collapse(
 
 An updated version of `recipe` with the new step added to the sequence
 of existing steps (if any). For the `tidy` method, a tibble with columns
-`terms` which is the columns that are affected and `value` which is the
-type of collapse.
+`terms` (the selected column names), `value` (the name of the
+destination list-column), and `id` (the step identifier).
 
 ## Examples
 

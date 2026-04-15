@@ -253,15 +253,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 47ms/step
+#> 1/1 - 0s - 45ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>      <dbl[,1,1]>    <dbl[,1,1]>
-#> 1        0.496 …        0.491 …
-#> 2        0.339 …        0.417 …
-#> 3        0.284 …        0.297 …
-#> 4        0.292 …        0.411 …
-#> 5        0.461 …        0.566 …
+#> 1        0.534 …        0.446 …
+#> 2        0.358 …        0.394 …
+#> 3        0.362 …        0.432 …
+#> 4        0.470 …        0.542 …
+#> 5        0.448 …        0.407 …
 ```
 
 ## A common debugging workflow: `compile_keras_grid()`
@@ -307,9 +307,10 @@ x_dummy_df <- tibble::tibble(
 y_dummy_df <- tibble::tibble(output_1 = y_dummy_1, output_2 = y_dummy_2)
 
 # Use compile_keras_grid to get the model
+# A one-row grid with no extra hyperparameters builds the spec as-is.
 compilation_results <- compile_keras_grid(
   spec = spec,
-  grid = tibble::tibble(),
+  grid = tibble::tibble(.rows = 1L),
   x = x_dummy_df,
   y = y_dummy_df
 )

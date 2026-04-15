@@ -11,7 +11,7 @@ for custom models that need the predictors in a different format."><meta propert
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.1.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,8 +108,8 @@ default is "predictor_matrix".</p></dd>
 
 <dt id="arg-skip">skip<a class="anchor" aria-label="anchor" href="#arg-skip"></a></dt>
 <dd><p>A logical. Should the step be skipped when the recipe is
-baked by <code>[bake.recipe()]</code>? While all operations are baked when <code>prep</code> is run,
-skipping when <code>bake</code> is run may be other times when it is desirable to
+baked by <code>[bake.recipe()]</code>? While all operations are baked when <code>prep</code> is
+run, skipping when <code>bake</code> is run may be other times when it is desirable to
 skip a processing step.</p></dd>
 
 
@@ -121,8 +121,8 @@ skip a processing step.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An updated version of <code>recipe</code> with the new step added to the
 sequence of existing steps (if any). For the <code>tidy</code> method, a tibble with
-columns <code>terms</code> which is the columns that are affected and <code>value</code> which is
-the type of collapse.</p>
+columns <code>terms</code> (the selected column names), <code>value</code> (the name of the
+destination list-column), and <code>id</code> (the step identifier).</p>
     </div>
 
     <div class="section level2">
