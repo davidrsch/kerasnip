@@ -25,8 +25,8 @@
 #'
 #' @return An updated version of `recipe` with the new step added to the
 #'   sequence of existing steps (if any). For the `tidy` method, a tibble with
-#'   columns `terms` which is the columns that are affected and `value` which is
-#'   the type of collapse.
+#'   columns `terms` (the selected column names), `value` (the name of the
+#'   destination list-column), and `id` (the step identifier).
 #'
 #' @examples
 #' library(recipes)
@@ -43,7 +43,9 @@
 #'   prep()
 #'
 #' bake(rec, new_data = NULL)
-#' @importFrom recipes prep bake
+#' @importFrom recipes prep bake is_trained sel2char
+#' @importFrom generics tidy
+#' @importFrom tibble tibble
 #' @export
 step_collapse <- function(
   recipe,
@@ -144,4 +146,35 @@ print.step_collapse <- function(x, ...) {
     )
   }
   invisible(x)
+}
+
+#' @importFrom generics required_pkgs
+#' @export
+required_pkgs.step_collapse <- function(x, ...) {
+  c("kerasnip")
+}
+
+#' @export
+tidy.step_collapse <- function(x, ...) {
+  if (recipes::is_trained(x)) {
+    if (length(x$columns) > 0) {
+      tibble::tibble(
+        terms = x$columns,
+        value = x$new_col,
+        id = x$id
+      )
+    } else {
+      tibble::tibble(
+        terms = character(),
+        value = character(),
+        id = character()
+      )
+    }
+  } else {
+    tibble::tibble(
+      terms = recipes::sel2char(x$terms),
+      value = NA_character_,
+      id = x$id
+    )
+  }
 }
