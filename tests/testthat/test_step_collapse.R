@@ -116,3 +116,21 @@ test_that("tidy.step_collapse works before and after prep", {
   expect_setequal(prepped_tidy$terms, c("x1", "x2"))
   expect_true(all(prepped_tidy$value == "pred"))
 })
+
+test_that("tidy.step_collapse returns empty tibble when trained with no columns", {
+  # prep() errors if selectors match nothing, so the only way columns can be
+  # empty post-prep is via direct construction (defensive branch).
+  empty_step <- kerasnip:::step_collapse_new(
+    terms = rlang::quos(),
+    role = "predictor",
+    trained = TRUE,
+    columns = character(0),
+    new_col = "predictor_matrix",
+    skip = FALSE,
+    id = "collapse_empty"
+  )
+  result <- tidy(empty_step)
+  expect_s3_class(result, "tbl_df")
+  expect_equal(nrow(result), 0L)
+  expect_named(result, c("terms", "value", "id"))
+})
