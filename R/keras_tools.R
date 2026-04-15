@@ -189,6 +189,7 @@ extract_keras_history <- function(object) {
 #'   and `n_params` (integer).
 #' @importFrom generics tidy
 #' @importFrom tibble tibble
+#' @keywords internal
 #' @export
 tidy.kerasnip_model_fit <- function(x, ...) {
   model <- extract_keras_model(x)
@@ -226,6 +227,7 @@ tidy.kerasnip_model_fit <- function(x, ...) {
 #'   empty tibble if training history has been stripped (e.g. by butcher).
 #' @importFrom generics glance
 #' @importFrom tibble as_tibble tibble
+#' @keywords internal
 #' @export
 glance.kerasnip_model_fit <- function(x, ...) {
   history <- x$fit$history

@@ -19,3 +19,4 @@ and \code{n_params} (integer).
 Returns a tibble with one row per layer of the underlying Keras model,
 summarising the layer name, Python class, and parameter count.
 }
+\keyword{internal}

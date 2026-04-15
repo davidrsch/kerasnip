@@ -19,3 +19,4 @@ empty tibble if training history has been stripped (e.g. by butcher).
 Returns a one-row tibble of summary statistics from the final training epoch:
 every metric the model was compiled with (e.g. \code{loss}, \code{accuracy}).
 }
+\keyword{internal}
