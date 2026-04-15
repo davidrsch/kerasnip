@@ -19,8 +19,7 @@
 NULL
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_data
-#' @export
+#' @exportS3Method butcher::axe_data
 axe_data.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   old <- x
   x$fit$history <- NULL
@@ -33,8 +32,7 @@ axe_data.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
 }
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_env
-#' @export
+#' @exportS3Method butcher::axe_env
 axe_env.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # Intentional no-op: Keras R6 objects rely on Python environments.
   # Stripping R environments from them is unsafe and would break predict().
@@ -42,24 +40,21 @@ axe_env.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
 }
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_call
-#' @export
+#' @exportS3Method butcher::axe_call
 axe_call.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # No-op: kerasnip fit objects do not store a call component.
   butcher:::add_butcher_attributes(x, x, verbose = verbose)
 }
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_ctrl
-#' @export
+#' @exportS3Method butcher::axe_ctrl
 axe_ctrl.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # No-op: kerasnip fit objects do not store training controls.
   butcher:::add_butcher_attributes(x, x, verbose = verbose)
 }
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_fitted
-#' @export
+#' @exportS3Method butcher::axe_fitted
 axe_fitted.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # No-op: kerasnip does not store fitted values separately from the model.
   butcher:::add_butcher_attributes(x, x, verbose = verbose)
