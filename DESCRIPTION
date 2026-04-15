@@ -13,6 +13,7 @@ Authors@R:
 Description: Provides a seamless bridge between 'keras' and the 'tidymodels'
     frameworks. It allows for the dynamic creation of 'parsnip' model
     specifications for 'keras' models.
+Depends: R (>= 4.1.0)
 Encoding: UTF-8
 License: MIT + file LICENSE
 URL: https://davidrsch.github.io/kerasnip/, https://github.com/davidrsch/kerasnip
