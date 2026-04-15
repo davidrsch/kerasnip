@@ -91,3 +91,28 @@ test_that("step_collapse handles selectors that don't match", {
 
   expect_error(prep(rec))
 })
+
+test_that("required_pkgs.step_collapse returns kerasnip", {
+  rec <- recipe(y ~ ., data = dat) |>
+    step_collapse(x1, x2)
+  expect_equal(recipes::required_pkgs(rec), "kerasnip")
+})
+
+test_that("tidy.step_collapse works before and after prep", {
+  rec <- recipe(y ~ ., data = dat) |>
+    step_collapse(x1, x2, new_col = "pred")
+
+  # Before prep: terms from selector, NA value
+  unprepped_tidy <- tidy(rec, number = 1)
+  expect_s3_class(unprepped_tidy, "tbl_df")
+  expect_named(unprepped_tidy, c("terms", "value", "id"))
+  expect_true(all(is.na(unprepped_tidy$value)))
+
+  # After prep: actual column names and destination
+  prepped_rec <- prep(rec)
+  prepped_tidy <- tidy(prepped_rec, number = 1)
+  expect_s3_class(prepped_tidy, "tbl_df")
+  expect_named(prepped_tidy, c("terms", "value", "id"))
+  expect_equal(sort(prepped_tidy$terms), c("x1", "x2"))
+  expect_true(all(prepped_tidy$value == "pred"))
+})
