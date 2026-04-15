@@ -95,7 +95,7 @@ test_that("step_collapse handles selectors that don't match", {
 test_that("required_pkgs.step_collapse returns kerasnip", {
   rec <- recipe(y ~ ., data = dat) |>
     step_collapse(x1, x2)
-  expect_equal(recipes::required_pkgs(rec), "kerasnip")
+  expect_equal(recipes::required_pkgs(rec$steps[[1]]), "kerasnip")
 })
 
 test_that("tidy.step_collapse works before and after prep", {
@@ -113,6 +113,6 @@ test_that("tidy.step_collapse works before and after prep", {
   prepped_tidy <- tidy(prepped_rec, number = 1)
   expect_s3_class(prepped_tidy, "tbl_df")
   expect_named(prepped_tidy, c("terms", "value", "id"))
-  expect_equal(sort(prepped_tidy$terms), c("x1", "x2"))
+  expect_setequal(prepped_tidy$terms, c("x1", "x2"))
   expect_true(all(prepped_tidy$value == "pred"))
 })
