@@ -176,3 +176,54 @@ extract_keras_model <- function(object) {
 extract_keras_history <- function(object) {
   object$fit$history
 }
+
+#' Tidy a Fitted Kerasnip Model
+#'
+#' @description
+#' Returns a tibble with one row per layer of the underlying Keras model,
+#' summarising the layer name, Python class, and parameter count.
+#'
+#' @param x A `kerasnip_model_fit` object.
+#' @param ... Not used.
+#' @return A tibble with columns `layer` (character), `class` (character),
+#'   and `n_params` (integer).
+#' @importFrom generics tidy
+#' @importFrom tibble tibble
+#' @export
+tidy.kerasnip_model_fit <- function(x, ...) {
+  model <- extract_keras_model(x)
+  layers <- model$layers
+
+  layer_name <- vapply(layers, function(l) l$name, character(1))
+  layer_class <- vapply(layers, function(l) {
+    parts <- strsplit(class(l)[[1L]], ".", fixed = TRUE)[[1L]]
+    tail(parts, 1L)
+  }, character(1))
+  n_params <- vapply(layers, function(l) {
+    tryCatch(as.integer(l$count_params()), error = function(e) NA_integer_)
+  }, integer(1))
+
+  tibble(layer = layer_name, class = layer_class, n_params = n_params)
+}
+
+#' Glance at a Fitted Kerasnip Model
+#'
+#' @description
+#' Returns a one-row tibble of summary statistics from the final training epoch:
+#' every metric the model was compiled with (e.g. `loss`, `accuracy`).
+#'
+#' @param x A `kerasnip_model_fit` object.
+#' @param ... Not used.
+#' @return A one-row tibble with one column per compiled metric. Returns an
+#'   empty tibble if training history has been stripped (e.g. by butcher).
+#' @importFrom generics glance
+#' @importFrom tibble as_tibble tibble
+#' @export
+glance.kerasnip_model_fit <- function(x, ...) {
+  history <- x$fit$history
+  if (is.null(history) || is.null(history$metrics)) {
+    return(tibble::tibble())
+  }
+  last_vals <- lapply(history$metrics, function(m) m[[length(m)]])
+  as_tibble(last_vals)
+}
