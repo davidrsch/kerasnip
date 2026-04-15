@@ -91,3 +91,46 @@ test_that("step_collapse handles selectors that don't match", {
 
   expect_error(prep(rec))
 })
+
+test_that("required_pkgs.step_collapse returns kerasnip", {
+  rec <- recipe(y ~ ., data = dat) |>
+    step_collapse(x1, x2)
+  expect_equal(recipes::required_pkgs(rec$steps[[1]]), "kerasnip")
+})
+
+test_that("tidy.step_collapse works before and after prep", {
+  rec <- recipe(y ~ ., data = dat) |>
+    step_collapse(x1, x2, new_col = "pred")
+
+  # Before prep: terms from selector, NA value
+  unprepped_tidy <- tidy(rec, number = 1)
+  expect_s3_class(unprepped_tidy, "tbl_df")
+  expect_named(unprepped_tidy, c("terms", "value", "id"))
+  expect_true(all(is.na(unprepped_tidy$value)))
+
+  # After prep: actual column names and destination
+  prepped_rec <- prep(rec)
+  prepped_tidy <- tidy(prepped_rec, number = 1)
+  expect_s3_class(prepped_tidy, "tbl_df")
+  expect_named(prepped_tidy, c("terms", "value", "id"))
+  expect_setequal(prepped_tidy$terms, c("x1", "x2"))
+  expect_true(all(prepped_tidy$value == "pred"))
+})
+
+test_that("tidy.step_collapse returns empty tibble when trained with no columns", {
+  # prep() errors if selectors match nothing, so the only way columns can be
+  # empty post-prep is via direct construction (defensive branch).
+  empty_step <- kerasnip:::step_collapse_new(
+    terms = rlang::quos(),
+    role = "predictor",
+    trained = TRUE,
+    columns = character(0),
+    new_col = "predictor_matrix",
+    skip = FALSE,
+    id = "collapse_empty"
+  )
+  result <- tidy(empty_step)
+  expect_s3_class(result, "tbl_df")
+  expect_equal(nrow(result), 0L)
+  expect_named(result, c("terms", "value", "id"))
+})

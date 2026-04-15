@@ -2,7 +2,6 @@ Package: kerasnip
 Type: Package
 Title: A Bridge Between 'keras' and 'tidymodels'
 Version: 0.1.1.900
-
 Authors@R: 
     person(
         "David",

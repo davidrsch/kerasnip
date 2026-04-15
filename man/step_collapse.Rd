@@ -45,8 +45,8 @@ skip a processing step.}
 \value{
 An updated version of \code{recipe} with the new step added to the
 sequence of existing steps (if any). For the \code{tidy} method, a tibble with
-columns \code{terms} which is the columns that are affected and \code{value} which is
-the type of collapse.
+columns \code{terms} (the selected column names), \code{value} (the name of the
+destination list-column), and \code{id} (the step identifier).
 }
 \description{
 \code{step_collapse()} creates a a \emph{specification} of a recipe step that will
