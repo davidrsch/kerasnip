@@ -16,6 +16,7 @@
 #' @return An axed `kerasnip_model_fit` object with the `butcher_kerasnip_model_fit`
 #'   class prepended.
 #' @name axe-kerasnip_model_fit
+#' @keywords internal
 NULL
 
 #' @rdname axe-kerasnip_model_fit

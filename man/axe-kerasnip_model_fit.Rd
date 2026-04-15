@@ -40,3 +40,4 @@ to work after butchering.
 The main saving comes from \code{axe_data()}, which removes the training history
 object (\verb{$fit$history}). For long training runs this can be several MB.
 }
+\keyword{internal}

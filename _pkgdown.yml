@@ -59,7 +59,6 @@ reference:
       - extract_keras_history
       - extract_keras_model
       - keras_evaluate
-      - axe-kerasnip_model_fit
 
   - title: "Custom recipe steps"
     desc: >
