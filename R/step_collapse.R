@@ -148,6 +148,7 @@ print.step_collapse <- function(x, ...) {
   invisible(x)
 }
 
+#' @importFrom generics required_pkgs
 #' @export
 required_pkgs.step_collapse <- function(x, ...) {
   c("kerasnip")
