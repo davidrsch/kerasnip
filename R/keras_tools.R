@@ -195,13 +195,21 @@ tidy.kerasnip_model_fit <- function(x, ...) {
   layers <- model$layers
 
   layer_name <- vapply(layers, function(l) l$name, character(1))
-  layer_class <- vapply(layers, function(l) {
-    parts <- strsplit(class(l)[[1L]], ".", fixed = TRUE)[[1L]]
-    tail(parts, 1L)
-  }, character(1))
-  n_params <- vapply(layers, function(l) {
-    tryCatch(as.integer(l$count_params()), error = function(e) NA_integer_)
-  }, integer(1))
+  layer_class <- vapply(
+    layers,
+    function(l) {
+      parts <- strsplit(class(l)[[1L]], ".", fixed = TRUE)[[1L]]
+      tail(parts, 1L)
+    },
+    character(1)
+  )
+  n_params <- vapply(
+    layers,
+    function(l) {
+      tryCatch(as.integer(l$count_params()), error = function(e) NA_integer_)
+    },
+    integer(1)
+  )
 
   tibble(layer = layer_name, class = layer_class, n_params = n_params)
 }
