@@ -24,8 +24,12 @@ NULL
 axe_data.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   old <- x
   x$fit$history <- NULL
-  add_butcher_attributes(x, old, verbose = verbose,
-                         disabled = c("extract_keras_history"))
+  add_butcher_attributes(
+    x,
+    old,
+    verbose = verbose,
+    disabled = c("extract_keras_history")
+  )
 }
 
 #' @rdname axe-kerasnip_model_fit
