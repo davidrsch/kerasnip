@@ -19,12 +19,12 @@
 NULL
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_data add_butcher_attributes
+#' @importFrom butcher axe_data
 #' @export
 axe_data.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   old <- x
   x$fit$history <- NULL
-  add_butcher_attributes(
+  butcher:::add_butcher_attributes(
     x,
     old,
     verbose = verbose,
@@ -33,34 +33,34 @@ axe_data.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
 }
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_env add_butcher_attributes
+#' @importFrom butcher axe_env
 #' @export
 axe_env.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # Intentional no-op: Keras R6 objects rely on Python environments.
   # Stripping R environments from them is unsafe and would break predict().
-  add_butcher_attributes(x, x, verbose = verbose)
+  butcher:::add_butcher_attributes(x, x, verbose = verbose)
 }
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_call add_butcher_attributes
+#' @importFrom butcher axe_call
 #' @export
 axe_call.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # No-op: kerasnip fit objects do not store a call component.
-  add_butcher_attributes(x, x, verbose = verbose)
+  butcher:::add_butcher_attributes(x, x, verbose = verbose)
 }
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_ctrl add_butcher_attributes
+#' @importFrom butcher axe_ctrl
 #' @export
 axe_ctrl.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # No-op: kerasnip fit objects do not store training controls.
-  add_butcher_attributes(x, x, verbose = verbose)
+  butcher:::add_butcher_attributes(x, x, verbose = verbose)
 }
 
 #' @rdname axe-kerasnip_model_fit
-#' @importFrom butcher axe_fitted add_butcher_attributes
+#' @importFrom butcher axe_fitted
 #' @export
 axe_fitted.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # No-op: kerasnip does not store fitted values separately from the model.
-  add_butcher_attributes(x, x, verbose = verbose)
+  butcher:::add_butcher_attributes(x, x, verbose = verbose)
 }
