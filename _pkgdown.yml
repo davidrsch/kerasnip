@@ -25,6 +25,7 @@ guides:
       - saving_and_reloading
       - applications
       - autoplot_uniqueness
+      - conformal_intervals
 
 # examples:
 
@@ -101,6 +102,9 @@ navbar:
         - text: "Applications"
         - text: "Transfer Learning"
           href: articles/applications.html
+        - text: "Prediction Intervals"
+        - text: "Conformal Inference"
+          href: articles/conformal_intervals.html
     github:
       icon: fa-github
       href: https://github.com/davidrsch/kerasnip
