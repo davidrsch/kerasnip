@@ -12,7 +12,8 @@ knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>",
     eval = reticulate::py_module_available("keras") &&
-        rlang::is_installed("probably")
+        rlang::is_installed("probably") &&
+        rlang::is_installed("tune")
 )
 options(keras.fit_verbose = 0)
 set.seed(123)
@@ -137,19 +138,32 @@ This method uses **cross-validation** to generate out-of-fold predictions, then
 pools those residuals to calibrate the intervals. The workflow is:
 
 1. Define cross-validation folds.
-2. Pass the unfitted workflow and the folds to `int_conformal_cv()`. It fits
-   the model once per fold and collects held-out residuals.
-3. Call `predict()` on the resulting object to obtain intervals for new data.
+2. Run `tune::fit_resamples()` on the workflow with `save_pred = TRUE` and
+   `extract = function(x) x` so that both predictions and the fitted model
+   objects are retained for each fold.
+3. Pass the resulting `resample_results` object to `int_conformal_cv()`. It
+   reads the held-out predictions and uses them to calibrate the intervals.
+4. Call `predict()` on the resulting object to obtain intervals for new data.
 
-The final model that will be used for production predictions is fitted once
-more on the full training data inside `int_conformal_cv()`.
+The final model is fitted once more on the full training data inside
+`int_conformal_cv()`.
 
 ```{r cv-conformal}
 set.seed(1)
 folds <- vfold_cv(data, v = 5)
 
-# int_conformal_cv fits the model once per fold (5 times here)
-conformal_cv <- int_conformal_cv(wflow, resamples = folds)
+# Fit the workflow on each fold, retaining predictions and model objects
+fitted_folds <- tune::fit_resamples(
+    wflow,
+    folds,
+    control = tune::control_resamples(
+        save_pred = TRUE,
+        extract   = function(x) x
+    )
+)
+
+# Build the conformal object from the resampling results
+conformal_cv <- int_conformal_cv(fitted_folds)
 conformal_cv
 
 predict(conformal_cv, new_data = data[1:6, ], level = 0.90)
