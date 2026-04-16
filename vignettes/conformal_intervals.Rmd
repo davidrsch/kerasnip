@@ -86,7 +86,7 @@ spec <- conf_mlp(dense_units = 32, fit_epochs = 30) |>
 
 data <- modeldata::ames |> select(
     Sale_Price, Gr_Liv_Area, Year_Built,
-    Overall_Qual, Total_Bsmt_SF
+    Garage_Area, Total_Bsmt_SF
 )
 rec <- recipe(Sale_Price ~ ., data = data) |>
     step_normalize(all_numeric_predictors())
