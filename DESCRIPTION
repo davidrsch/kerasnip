@@ -48,5 +48,7 @@ Suggests:
     lme4,
     rmarkdown,
     future,
-    ggplot2
+    ggplot2,
+    mgcv,
+    probably
 VignetteBuilder: knitr
