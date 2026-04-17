@@ -161,7 +161,7 @@ test_that("conformal: int_conformal_full works with sequential kerasnip workflow
     train_data = data,
     control = probably::control_conformal_full(
       method = "grid",
-      trial_points = 5
+      trial_points = 20
     )
   )
   result <- predict(conformal, new_data = new_data, level = 0.90)
@@ -263,7 +263,7 @@ test_that("conformal: int_conformal_full works with functional kerasnip workflow
     train_data = data,
     control = probably::control_conformal_full(
       method = "grid",
-      trial_points = 5
+      trial_points = 20
     )
   )
   result <- predict(conformal, new_data = new_data, level = 0.90)
