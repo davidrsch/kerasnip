@@ -61,12 +61,12 @@ First, we load the necessary packages.
 ``` r
 library(kerasnip)
 library(tidymodels)
-#> ── Attaching packages ────────────────────────────────────── tidymodels 1.4.1 ──
+#> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
 #> ✔ broom        1.0.12     ✔ recipes      1.3.2 
 #> ✔ dials        1.4.3      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
-#> ✔ ggplot2      4.0.2      ✔ tidyr        1.3.2 
-#> ✔ infer        1.1.0      ✔ tune         2.0.1 
+#> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
+#> ✔ infer        1.1.0      ✔ tune         2.1.0 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
 #> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
@@ -253,15 +253,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 45ms/step
+#> 1/1 - 0s - 47ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>      <dbl[,1,1]>    <dbl[,1,1]>
-#> 1        0.534 …        0.446 …
-#> 2        0.358 …        0.394 …
-#> 3        0.362 …        0.432 …
-#> 4        0.470 …        0.542 …
-#> 5        0.448 …        0.407 …
+#> 1        0.769 …        0.558 …
+#> 2        0.486 …        0.450 …
+#> 3        0.390 …        0.350 …
+#> 4        0.392 …        0.428 …
+#> 5        0.600 …        0.535 …
 ```
 
 ## A common debugging workflow: `compile_keras_grid()`

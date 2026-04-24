@@ -6,6 +6,8 @@
   Applications](https://davidrsch.github.io/kerasnip/dev/articles/applications.md):
 - [Tuning Multiple Similar Parameters: Ensuring \`autoplot\`
   Uniqueness](https://davidrsch.github.io/kerasnip/dev/articles/autoplot_uniqueness.md):
+- [Prediction Intervals with Conformal
+  Inference](https://davidrsch.github.io/kerasnip/dev/articles/conformal_intervals.md):
 - [Building Functional Models with
   kerasnip](https://davidrsch.github.io/kerasnip/dev/articles/functional_api.md):
 - [Getting Started with

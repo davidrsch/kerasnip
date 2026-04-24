@@ -20,12 +20,12 @@ We’ll start by loading the necessary packages:
 ``` r
 library(kerasnip)
 library(tidymodels)
-#> ── Attaching packages ────────────────────────────────────── tidymodels 1.4.1 ──
+#> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
 #> ✔ broom        1.0.12     ✔ recipes      1.3.2 
 #> ✔ dials        1.4.3      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
-#> ✔ ggplot2      4.0.2      ✔ tidyr        1.3.2 
-#> ✔ infer        1.1.0      ✔ tune         2.0.1 
+#> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
+#> ✔ infer        1.1.0      ✔ tune         2.1.0 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
 #> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
