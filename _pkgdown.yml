@@ -99,6 +99,9 @@ navbar:
           href: articles/tuning_fit_compile_args.html
         - text: "Ensuring autoplot Uniqueness"
           href: articles/autoplot_uniqueness.html
+        - text: "Model Deployment & Persistence"
+        - text: "Saving and Reloading"
+          href: articles/saving_and_reloading.html
         - text: "Applications"
         - text: "Transfer Learning"
           href: articles/applications.html
