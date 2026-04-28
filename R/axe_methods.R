@@ -59,3 +59,43 @@ axe_fitted.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   # No-op: kerasnip does not store fitted values separately from the model.
   add_butcher_attributes(x, x, verbose = verbose)
 }
+
+# Copied from tidymodels/butcher (internal helpers not exported by that package).
+# Using ::: on unexported functions is disallowed by CRAN policy, so these
+# three small helpers are reproduced here verbatim under butcher's MIT licence.
+#' @importFrom butcher assess_object
+
+add_butcher_disabled <- function(x, disabled = NULL) {
+  current <- attr(x, "butcher_disabled")
+  if (!is.null(disabled)) {
+    disabled <- union(current, disabled)
+    attr(x, "butcher_disabled") <- disabled
+  }
+  x
+}
+
+add_butcher_class <- function(x) {
+  if (!any(grepl("butcher", class(x)))) {
+    class(x) <- append(paste0("butchered_", class(x)[1]), class(x))
+  }
+  x
+}
+
+add_butcher_attributes <- function(
+  x,
+  old,
+  disabled = NULL,
+  add_class = TRUE,
+  verbose = FALSE
+) {
+  if (!identical(x, old)) {
+    x <- add_butcher_disabled(x, disabled)
+    if (add_class) {
+      x <- add_butcher_class(x)
+    }
+  }
+  if (verbose && !missing(old)) {
+    butcher::assess_object(old, x)
+  }
+  x
+}
