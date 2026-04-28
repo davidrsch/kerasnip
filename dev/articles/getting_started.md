@@ -95,7 +95,7 @@ dataset, reshape the predictors, and convert the outcome to a factor for
 ``` r
 mnist <- dataset_mnist()
 #> Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
-#>        0/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step   98304/11490434 ━━━━━━━━━━━━━━━━━━━━ 5s 1us/step  442368/11490434 ━━━━━━━━━━━━━━━━━━━━ 2s 0us/step 1261568/11490434 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step 3031040/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 7847936/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step
+#>        0/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step 3735552/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step
 x_train <- mnist$train$x
 y_train <- mnist$train$y
 x_test <- mnist$test$x
@@ -282,12 +282,12 @@ during the model compilation step.
 
 ``` r
 mlp_fit |> keras_evaluate(x_test, y_test)
-#> 313/313 - 0s - 1ms/step - accuracy: 0.9812 - loss: 0.0838
+#> 313/313 - 0s - 1ms/step - accuracy: 0.9820 - loss: 0.0970
 #> $accuracy
-#> [1] 0.9812
+#> [1] 0.982
 #> 
 #> $loss
-#> [1] 0.08375548
+#> [1] 0.0969865
 ```
 
 ### Making Predictions
@@ -302,7 +302,7 @@ classification model returns the predicted class labels.
 # Predict the class for the first 5 images in the test set
 class_preds <- mlp_fit |>
   predict(new_data = head(select(test_df, x)))
-#> 1/1 - 0s - 39ms/step
+#> 1/1 - 0s - 38ms/step
 class_preds
 #> # A tibble: 6 × 1
 #>   .pred_class
@@ -328,12 +328,12 @@ prob_preds
 #> # A tibble: 6 × 10
 #>     .pred_0   .pred_1  .pred_2  .pred_3   .pred_4  .pred_5  .pred_6  .pred_7
 #>       <dbl>     <dbl>    <dbl>    <dbl>     <dbl>    <dbl>    <dbl>    <dbl>
-#> 1 5.71 e-17 1.77 e-13 1.49e-10 2.19e-11 5.61 e-19 5.92e-16 1.04e-25 1   e+ 0
-#> 2 7.08 e-21 1.01 e-14 1   e+ 0 1.96e-13 1.03 e-27 8.87e-21 4.14e-22 3.75e-19
-#> 3 1.82 e-11 1.000e+ 0 1.04e- 8 1.06e-10 5.73 e- 9 3.93e-11 2.55e-10 5.28e- 7
-#> 4 1.000e+ 0 4.84 e-15 3.00e- 8 1.18e-11 7.43 e-12 2.83e-10 1.18e- 7 1.47e-11
-#> 5 4.75 e-12 1.68 e-11 2.51e-10 1.07e-11 1.000e+ 0 4.42e-10 4.45e-11 8.80e- 9
-#> 6 3.05 e-13 1.000e+ 0 2.11e-10 1.31e-12 4.95 e- 9 4.78e-14 1.19e-12 2.19e- 7
+#> 1 2.54 e-19 8.64 e-17 1.39e-14 5.81e-12 1.90 e-21 5.83e-16 3.13e-25 1   e+ 0
+#> 2 5.16 e-19 4.55 e-11 1   e+ 0 8.09e-12 1.03 e-25 8.65e-21 5.49e-17 8.88e-17
+#> 3 4.77 e-12 1.000e+ 0 3.83e- 8 1.05e-10 3.00 e- 8 1.20e-11 2.16e- 9 2.52e- 6
+#> 4 1.000e+ 0 7.85 e-13 1.56e- 8 1.35e-12 6.79 e-12 1.28e-10 1.91e- 7 3.15e- 9
+#> 5 1.41 e-11 1.87 e-11 4.32e-10 8.52e-13 1.000e+ 0 4.95e-12 4.36e-12 5.39e- 8
+#> 6 1.07 e-13 1.000e+ 0 3.44e- 9 6.62e-12 1.41 e- 8 9.99e-14 8.34e-11 1.84e- 6
 #> # ℹ 2 more variables: .pred_8 <dbl>, .pred_9 <dbl>
 ```
 
@@ -353,12 +353,12 @@ comparison
 #> # A tibble: 6 × 12
 #>   .pred_class   .pred_0   .pred_1  .pred_2  .pred_3   .pred_4  .pred_5  .pred_6
 #>   <fct>           <dbl>     <dbl>    <dbl>    <dbl>     <dbl>    <dbl>    <dbl>
-#> 1 7           5.71 e-17 1.77 e-13 1.49e-10 2.19e-11 5.61 e-19 5.92e-16 1.04e-25
-#> 2 2           7.08 e-21 1.01 e-14 1   e+ 0 1.96e-13 1.03 e-27 8.87e-21 4.14e-22
-#> 3 1           1.82 e-11 1.000e+ 0 1.04e- 8 1.06e-10 5.73 e- 9 3.93e-11 2.55e-10
-#> 4 0           1.000e+ 0 4.84 e-15 3.00e- 8 1.18e-11 7.43 e-12 2.83e-10 1.18e- 7
-#> 5 4           4.75 e-12 1.68 e-11 2.51e-10 1.07e-11 1.000e+ 0 4.42e-10 4.45e-11
-#> 6 1           3.05 e-13 1.000e+ 0 2.11e-10 1.31e-12 4.95 e- 9 4.78e-14 1.19e-12
+#> 1 7           2.54 e-19 8.64 e-17 1.39e-14 5.81e-12 1.90 e-21 5.83e-16 3.13e-25
+#> 2 2           5.16 e-19 4.55 e-11 1   e+ 0 8.09e-12 1.03 e-25 8.65e-21 5.49e-17
+#> 3 1           4.77 e-12 1.000e+ 0 3.83e- 8 1.05e-10 3.00 e- 8 1.20e-11 2.16e- 9
+#> 4 0           1.000e+ 0 7.85 e-13 1.56e- 8 1.35e-12 6.79 e-12 1.28e-10 1.91e- 7
+#> 5 4           1.41 e-11 1.87 e-11 4.32e-10 8.52e-13 1.000e+ 0 4.95e-12 4.36e-12
+#> 6 1           1.07 e-13 1.000e+ 0 3.44e- 9 6.62e-12 1.41 e- 8 9.99e-14 8.34e-11
 #> # ℹ 4 more variables: .pred_7 <dbl>, .pred_8 <dbl>, .pred_9 <dbl>, y <fct>
 ```
 
@@ -436,86 +436,86 @@ tune_res <- tune_grid(
   control = control_grid(save_pred = FALSE, save_workflow = TRUE)
 )
 #> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
 #> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 31ms/step
 #> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
 #> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 26ms/step
 #> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
 ```
 
 Finally, we can inspect the results to find which architecture performed
@@ -527,11 +527,11 @@ show_best(tune_res, metric = "accuracy")
 #> # A tibble: 5 × 9
 #>   num_hidden_1 hidden_1_units hidden_1_rate .metric  .estimator  mean     n
 #>          <int>          <int>         <dbl> <chr>    <chr>      <dbl> <int>
-#> 1            1            256         0.3   accuracy multiclass 0.800     3
-#> 2            2            256         0.400 accuracy multiclass 0.800     3
-#> 3            2            160         0.3   accuracy multiclass 0.790     3
-#> 4            2            160         0.400 accuracy multiclass 0.790     3
-#> 5            2            256         0.3   accuracy multiclass 0.790     3
+#> 1            2            160         0.2   accuracy multiclass 0.800     3
+#> 2            3            256         0.2   accuracy multiclass 0.800     3
+#> 3            2            256         0.2   accuracy multiclass 0.790     3
+#> 4            2            256         0.3   accuracy multiclass 0.790     3
+#> 5            3            256         0.400 accuracy multiclass 0.790     3
 #> # ℹ 2 more variables: std_err <dbl>, .config <chr>
 ```
 
@@ -567,16 +567,20 @@ final_fit |>
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-#> │ dense_246 (Dense)                 │ (None, 256)              │       200,960 │
+#> │ dense_246 (Dense)                 │ (None, 160)              │       125,600 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_164 (Dropout)             │ (None, 256)              │             0 │
+#> │ dropout_164 (Dropout)             │ (None, 160)              │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_247 (Dense)                 │ (None, 10)               │         2,570 │
+#> │ dense_247 (Dense)                 │ (None, 160)              │        25,760 │
+#> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
+#> │ dropout_165 (Dropout)             │ (None, 160)              │             0 │
+#> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
+#> │ dense_248 (Dense)                 │ (None, 10)               │         1,610 │
 #> └───────────────────────────────────┴──────────────────────────┴───────────────┘
-#>  Total params: 407,062 (1.55 MB)
-#>  Trainable params: 203,530 (795.04 KB)
+#>  Total params: 305,942 (1.17 MB)
+#>  Trainable params: 152,970 (597.54 KB)
 #>  Non-trainable params: 0 (0.00 B)
-#>  Optimizer params: 203,532 (795.05 KB)
+#>  Optimizer params: 152,972 (597.55 KB)
 
 # Plot the training history
 final_fit |>
