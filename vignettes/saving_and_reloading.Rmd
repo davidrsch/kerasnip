@@ -30,23 +30,52 @@ Before discussing the details, here is the full persistence workflow:
 
 ```{r load-packages, cache=TRUE}
 library(kerasnip)
-library(workflows)
-library(parsnip)
-library(recipes)
+library(tidymodels)
+library(keras3)
 
-rec_spec <- recipe(mpg ~ ., data = mtcars) |>
+# 1. Define Layer Blocks (Required by kerasnip)
+# The first block must initialize the sequential model
+input_block <- function(model, input_shape) {
+  keras_model_sequential(input_shape = input_shape)
+}
+
+# Hidden layer block
+dense_block <- function(model, units = 32) {
+  model |> layer_dense(units = units, activation = "relu")
+}
+
+# Output layer block (units = 1 for regression)
+output_block <- function(model, num_classes) {
+  model |> layer_dense(units = 1)
+}
+
+# 2. Generate the parsnip specification
+create_keras_sequential_spec(
+  model_name = "my_mlp",
+  layer_blocks = list(
+    input = input_block,
+    hidden = dense_block,
+    output = output_block
+  ),
+  mode = "regression"
+)
+
+# 3. Use the newly created 'my_mlp' function
+mod_spec <- my_mlp(fit_epochs = 10) |> 
+  set_engine("keras")
+
+# 4. Standard tidymodels workflow
+rec_spec <- recipe(mpg ~ ., data = mtcars) |> 
   step_normalize(all_predictors())
 
-mod_spec <- mlp_sequential(epochs = 10, verbose = 0) |>
-  set_engine("kerasnip") |>
-  set_mode("regression")
-
-fit_wf <- workflow() |>
-  add_recipe(rec_spec) |>
-  add_model(mod_spec) |>
+fit_wf <- workflow() |> 
+  add_recipe(rec_spec) |> 
+  add_model(mod_spec) |> 
   fit(data = mtcars)
 
+# Predict
 new_data <- mtcars[1:3, ]
+predict(fit_wf, new_data)
 ```
 
 The first call to predict() detects that the Python pointer is invalid and restores the model from the stored bytes automatically.

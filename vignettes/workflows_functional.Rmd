@@ -224,7 +224,7 @@ print(functional_mlp_grid)
 
 Now, we'll use `tune_race_anova()` to perform cross-validation and find the best hyperparameters.
 
-```{r tune-model, cache=TRUE}
+```{r tune-model, cache=TRUE, results='hide', message=FALSE}
 # Note: Parallel processing with `plan(multisession)` is currently not working
 # with Keras models due to backend conflicts
 

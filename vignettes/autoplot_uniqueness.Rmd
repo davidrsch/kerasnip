@@ -11,15 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = reticulate::py_module_available("keras") &&
-    requireNamespace("keras3", quietly = TRUE) &&
-    requireNamespace("ggplot2", quietly = TRUE) &&
-    requireNamespace("tune", quietly = TRUE) &&
-    requireNamespace("dials", quietly = TRUE) &&
-    requireNamespace("parsnip", quietly = TRUE) &&
-    requireNamespace("workflows", quietly = TRUE) &&
-    requireNamespace("recipes", quietly = TRUE) &&
-    requireNamespace("rsample", quietly = TRUE)
+  eval = reticulate::py_module_available("keras")
 )
 ```
 

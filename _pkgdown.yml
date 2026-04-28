@@ -110,4 +110,5 @@ navbar:
           href: articles/conformal_intervals.html
     github:
       icon: fa-github
+      aria-label: "GitHub repository"
       href: https://github.com/davidrsch/kerasnip

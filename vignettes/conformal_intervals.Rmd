@@ -9,9 +9,9 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-    collapse = TRUE,
-    comment = "#>",
-    eval = reticulate::py_module_available("keras")
+  collapse = TRUE,
+  comment = "#>",
+  eval = reticulate::py_module_available("keras")
 )
 options(keras.fit_verbose = 0)
 set.seed(123)
@@ -137,7 +137,7 @@ fitted_folds <- tune::fit_resamples(
   folds,
   control = tune::control_resamples(
     save_pred = TRUE,
-    extract   = function(x) x
+    extract = function(x) x
   )
 )
 
@@ -175,7 +175,7 @@ conformal_full <- int_conformal_full(
   fit_small,
   train_data = data_small,
   control = control_conformal_full(
-    method       = "grid",
+    method = "grid",
     trial_points = 20
   )
 )
