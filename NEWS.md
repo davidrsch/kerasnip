@@ -1,5 +1,21 @@
 # kerasnip (development version)
 
+# kerasnip 0.1.2
+
+## Bug Fixes
+
+- Fixed CRAN NOTE: "Re-building vignettes had CPU time 3.1 times elapsed time" by limiting TensorFlow threads in vignette setups to prevent multi-threading on multi-core systems.
+
+## New Features
+
+- Added `tidy()` and `glance()` methods for fitted kerasnip models, providing layer summaries and final training metrics.
+- Added `probably` to Suggests for conformal inference support.
+- Added the `conformal_intervals` vignette demonstrating prediction intervals using conformal inference with kerasnip workflows.
+
+## Bug Fixes
+
+- Improved `step_collapse()` documentation and `tidy()` method output.
+
 # kerasnip 0.1.1
 
 ## Bug Fixes

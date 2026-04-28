@@ -21,6 +21,10 @@ knitr::opts_chunk$set(
     requireNamespace("recipes", quietly = TRUE) &&
     requireNamespace("rsample", quietly = TRUE)
 )
+# Limit CPU usage for CRAN checks
+Sys.setenv(CUDA_VISIBLE_DEVICES = "")
+Sys.setenv(OMP_NUM_THREADS = "1")
+Sys.setenv(TF_CPP_MIN_LOG_LEVEL = "2")
 ```
 
 ## Introduction
