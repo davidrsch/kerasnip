@@ -4,7 +4,7 @@
 
 ## Bug Fixes
 
-- Fixed CRAN NOTE: "Re-building vignettes had CPU time 3.1 times elapsed time" by limiting TensorFlow threads in vignette setups to prevent multi-threading on multi-core systems.
+- Fixed CRAN NOTE: "Re-building vignettes had CPU time 3.1 times elapsed time".
 
 ## New Features
 
