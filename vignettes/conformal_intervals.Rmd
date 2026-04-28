@@ -17,10 +17,6 @@ knitr::opts_chunk$set(
         rlang::is_installed("mgcv")
 )
 options(keras.fit_verbose = 0)
-# Limit CPU usage for CRAN checks
-Sys.setenv(CUDA_VISIBLE_DEVICES = "")
-Sys.setenv(OMP_NUM_THREADS = "1")
-Sys.setenv(TF_CPP_MIN_LOG_LEVEL = "2")
 set.seed(123)
 ```
 
