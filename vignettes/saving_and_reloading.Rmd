@@ -90,7 +90,7 @@ The first call to predict() detects that the Python pointer is invalid and resto
 
 This means you can use the persistence strategy that best suits your workflow without any extra boilerplate.
 
-## Strategy 1 — Plain `saveRDS()` / `readRDS()`
+## Strategy 1: Plain `saveRDS()` / `readRDS()`
 
 For most use cases: sharing a model file with a colleague, caching a fit between R sessions, or checkpointing during development; plain RDS is the simplest approach.
 
@@ -114,7 +114,7 @@ predictions
 
 There is nothing special to do after `readRDS()`. The first call to `predict()` detects the invalid pointer, restores the model from the stored bytes, and then proceeds normally.
 
-## Strategy 2 — `bundle` / `unbundle`
+## Strategy 2: `bundle` / `unbundle`
 
 The [`bundle`](https://rstudio.github.io/bundle/) package provides a standardized serialization interface used by `vetiver`, `plumber`, and other MLOps tools. It is the right choice when:
 

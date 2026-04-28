@@ -21,13 +21,13 @@ set.seed(123)
 
 Linear models derive prediction intervals analytically from the covariance structure of their parameter estimates. A neural network has no equivalent: it computes a single deterministic output for each input, with no internal distributional model to derive intervals from.
 
-This is not a limitation specific to `kerasnip`. The entire tidymodels ecosystem reflects the same reality — the `parsnip` package does not register `conf_int` or `pred_int` prediction types for any neural network engine, including `brulee`, the official tidymodels neural network package.
+This is not a limitation specific to `kerasnip`. The entire tidymodels ecosystem reflects the same reality, the `parsnip` package does not register `conf_int` or `pred_int` prediction types for any neural network engine, including `brulee`, the official tidymodels neural network package.
 
 The supported and recommended path for obtaining prediction intervals from neural networks in tidymodels is **conformal inference**, provided by the `probably` package. Conformal inference is:
 
-- **Distribution-free** — it makes no assumptions about the shape of the outcome distribution.
-- **Model-agnostic** — it treats the model as a black box; only `fit()` and `predict()` calls are required.
-- **Guaranteed to have correct coverage** — under the assumption that training and test data are exchangeable (i.e. identically and independently distributed), the intervals contain the true outcome with at least the requested probability.
+- **Distribution-free**, it makes no assumptions about the shape of the outcome distribution.
+- **Model-agnostic**, it treats the model as a black box; only `fit()` and `predict()` calls are required.
+- **Guaranteed to have correct coverage**, under the assumption that training and test data are exchangeable (i.e. identically and independently distributed), the intervals contain the true outcome with at least the requested probability.
 
 The `probably` package provides three conformal methods, described in the sections below.
 
@@ -82,7 +82,7 @@ wflow <- workflow(rec, spec)
 
 ---
 
-## Method 1 — Split conformal inference (`int_conformal_split`)
+## Method 1: Split conformal inference (`int_conformal_split`)
 
 This is the simplest and fastest method. The workflow is:
 
@@ -116,7 +116,7 @@ models in most practical situations.
 
 ---
 
-## Method 2 — Cross-validation conformal inference (`int_conformal_cv`)
+## Method 2: Cross-validation conformal inference (`int_conformal_cv`)
 
 This method uses **cross-validation** to generate out-of-fold predictions, then pools those residuals to calibrate the intervals. The workflow is:
 
@@ -152,7 +152,7 @@ predict(conformal_cv, new_data = data[1:6, ], level = 0.90)
 
 ---
 
-## Method 3 — Full conformal inference (`int_conformal_full`)
+## Method 3: Full conformal inference (`int_conformal_full`)
 
 Full conformal inference is the most principled of the three methods in terms of statistical guarantees, but it is the most expensive computationally.
 
@@ -192,9 +192,9 @@ predict(conformal_full, new_data = new_obs_small, level = 0.90)
 
 | Method | Model refits | Coverage guarantee | Recommended for kerasnip |
 |---|---|---|---|
-| `int_conformal_split` | 1 (on training data only) | Marginal | Yes — lowest cost |
-| `int_conformal_cv` | 1 per fold + 1 final | Marginal | Yes — if already cross-validating |
-| `int_conformal_full` | *(n_test × n_grid)* | Marginal | With caution — expensive |
+| `int_conformal_split` | 1 (on training data only) | Marginal | Yes, lowest cost |
+| `int_conformal_cv` | 1 per fold + 1 final | Marginal | Yes, if already cross-validating |
+| `int_conformal_full` | *(n_test × n_grid)* | Marginal | With caution, expensive |
 
 All three methods provide **marginal coverage**: across many test observations, at least the requested fraction will have their true outcome within the interval. None of them provide **conditional coverage** (intervals that are exactly correct for every specific input value), but in practice they are well-calibrated for most regression problems.
 
