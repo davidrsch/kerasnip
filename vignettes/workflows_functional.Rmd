@@ -330,36 +330,34 @@ print(metrics_results)
 
 ## Saving and Reloading Your Model
 
-`kerasnip` serializes the Keras model weights to bytes at fit time and stores
-them alongside the workflow object. This means plain `saveRDS()` / `readRDS()`
-**works out of the box** — the underlying Keras model is restored automatically
-the first time `predict()` is called on the reloaded object.
+`kerasnip` serializes the Keras model weights to bytes at fit time and stores them alongside the workflow object. This means plain `saveRDS()` / `readRDS()` **works out of the box** — the underlying Keras model is restored automatically the first time `predict()` is called on the reloaded object.
 
 ```{r save-reload}
-# Save
-saveRDS(fit_wf, "my_model.rds")
+# Save the FINAL fitted workflow
+saveRDS(final_ames_fit, "ames_model.rds")
 
 # Reload — no extra steps needed
-fit_wf <- readRDS("my_model.rds")
-predict(fit_wf, new_data = new_data)  # model restored automatically
+final_ames_fit_loaded <- readRDS("ames_model.rds")
+
+# Make predictions again to prove it works
+predict(final_ames_fit_loaded, new_data = ames_test) |> head()
 ```
 
-If you need a fully self-contained bundle suitable for deployment with
-`vetiver` or other MLOps tools, use `bundle::bundle()` instead:
+If you need a fully self-contained bundle suitable for deployment with `vetiver` or other MLOps tools, use `bundle::bundle()` instead:
 
 ```{r save-reload-bundle}
 library(bundle)
 
 # Save as a portable bundle
-bundled <- bundle(fit_wf)
-saveRDS(bundled, "my_model_bundle.rds")
+bundled <- bundle(final_ames_fit)
+saveRDS(bundled, "ames_model_bundle.rds")
 
 # Reload in any R session
 library(kerasnip)
 library(bundle)
-fit_wf <- unbundle(readRDS("my_model_bundle.rds"))
-predict(fit_wf, new_data = new_data)
+final_ames_fit_loaded <- unbundle(readRDS("ames_model_bundle.rds"))
+
+predict(final_ames_fit_loaded, new_data = ames_test) |> head()
 ```
 
-See `vignette("saving_and_reloading")` for a detailed comparison of both
-approaches.
+See `vignette("saving_and_reloading")` for a detailed comparison of both approaches.
