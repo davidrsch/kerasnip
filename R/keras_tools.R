@@ -189,6 +189,7 @@ extract_keras_history <- function(object) {
 #'   and `n_params` (integer).
 #' @importFrom generics tidy
 #' @importFrom tibble tibble
+#' @importFrom utils tail
 #' @keywords internal
 #' @export
 tidy.kerasnip_model_fit <- function(x, ...) {
