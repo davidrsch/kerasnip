@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   applications: applications.html
   autoplot_uniqueness: autoplot_uniqueness.html
+  conformal_intervals: conformal_intervals.html
   functional_api: functional_api.html
   getting_started: getting_started.html
   saving_and_reloading: saving_and_reloading.html
@@ -11,7 +12,7 @@ articles:
   tuning_fit_compile_args: tuning_fit_compile_args.html
   workflows_functional: workflows_functional.html
   workflows_sequential: workflows_sequential.html
-last_built: 2026-04-14T20:41Z
+last_built: 2026-04-28T20:18Z
 urls:
   reference: https://davidrsch.github.io/kerasnip/reference
   article: https://davidrsch.github.io/kerasnip/articles

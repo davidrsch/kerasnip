@@ -47,6 +47,12 @@ trained Keras models.
   : Extract Keras Model from a Fitted Kerasnip Object
 - [`keras_evaluate()`](https://davidrsch.github.io/kerasnip/reference/keras_evaluate.md)
   : Evaluate a Kerasnip Model
+- [`axe_data(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/reference/axe-kerasnip_model_fit.md)
+  [`axe_env(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/reference/axe-kerasnip_model_fit.md)
+  [`axe_call(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/reference/axe-kerasnip_model_fit.md)
+  [`axe_ctrl(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/reference/axe-kerasnip_model_fit.md)
+  [`axe_fitted(`*`<kerasnip_model_fit>`*`)`](https://davidrsch.github.io/kerasnip/reference/axe-kerasnip_model_fit.md)
+  : Butcher axe methods for kerasnip_model_fit
 
 ## Custom recipe steps
 

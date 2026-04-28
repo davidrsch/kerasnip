@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../articles/getting_started.html">Getting started</a></li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
 <li><h6 class="dropdown-header" data-toc-skip>Model Definition</h6></li>
@@ -48,8 +48,12 @@
     <li><h6 class="dropdown-header" data-toc-skip>Tuning</h6></li>
     <li><a class="dropdown-item" href="../articles/tuning_fit_compile_args.html">Tuning Fit and Compile Arguments</a></li>
     <li><a class="dropdown-item" href="../articles/autoplot_uniqueness.html">Ensuring autoplot Uniqueness</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Model Deployment &amp; Persistence</h6></li>
+    <li><a class="dropdown-item" href="../articles/saving_and_reloading.html">Saving and Reloading</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>Applications</h6></li>
     <li><a class="dropdown-item" href="../articles/applications.html">Transfer Learning</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Prediction Intervals</h6></li>
+    <li><a class="dropdown-item" href="../articles/conformal_intervals.html">Conformal Inference</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -59,7 +63,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/davidrsch/kerasnip"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/davidrsch/kerasnip" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -87,13 +91,105 @@
 <p>Keras models are backed by Python objects managed by TensorFlow/JAX.
 These objects live in the current R session and are represented as
 external pointers (<code>externalptr</code>) that become invalid as soon
-as the session ends — or even within the same session after
+as the session ends, or even within the same session after
 <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> / <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code>.</p>
-<p><code>kerasnip</code> handles this transparently:</p>
+<p><code>kerasnip</code> handles this transparently so that fitted
+workflows can be saved, reloaded, and used for prediction without any
+manual restoration steps.</p>
+</div>
+<div class="section level2">
+<h2 id="quick-workflow-example">Quick workflow example<a class="anchor" aria-label="anchor" href="#quick-workflow-example"></a>
+</h2>
+<p>Before discussing the details, here is the full persistence
+workflow:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────────── tidymodels 1.5.0 ──</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.12     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.3.2 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dials       </span> 1.4.3      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">rsample     </span> 1.3.2 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr       </span> 1.2.1      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tailor      </span> 0.1.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 4.0.3      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.2 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.1.0      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 2.1.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">modeldata   </span> 1.5.1      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflows   </span> 1.3.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.5.0      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr       </span> 1.2.2      <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">yardstick   </span> 1.4.0</span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────────── tidymodels_conflicts() ──</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">purrr</span>::<span style="color: #00BB00;">discard()</span> masks <span style="color: #0000BB;">scales</span>::discard()</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span>  masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>     masks <span style="color: #0000BB;">stats</span>::lag()</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">recipes</span>::<span style="color: #00BB00;">step()</span>  masks <span style="color: #0000BB;">stats</span>::step()</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'keras3'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:yardstick':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     get_weights</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:infer':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     generate</span></span>
+<span></span>
+<span><span class="co"># 1. Define Layer Blocks (Required by kerasnip)</span></span>
+<span><span class="co"># The first block must initialize the sequential model</span></span>
+<span><span class="va">input_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">input_shape</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://keras3.posit.co/reference/keras_model_sequential.html" class="external-link">keras_model_sequential</a></span><span class="op">(</span>input_shape <span class="op">=</span> <span class="va">input_shape</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Hidden layer block</span></span>
+<span><span class="va">dense_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">units</span> <span class="op">=</span> <span class="fl">32</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">model</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="va">units</span>, activation <span class="op">=</span> <span class="st">"relu"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Output layer block (units = 1 for regression)</span></span>
+<span><span class="va">output_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">num_classes</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">model</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># 2. Generate the parsnip specification</span></span>
+<span><span class="fu"><a href="../reference/create_keras_sequential_spec.html">create_keras_sequential_spec</a></span><span class="op">(</span></span>
+<span>  model_name <span class="op">=</span> <span class="st">"my_mlp"</span>,</span>
+<span>  layer_blocks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    input <span class="op">=</span> <span class="va">input_block</span>,</span>
+<span>    hidden <span class="op">=</span> <span class="va">dense_block</span>,</span>
+<span>    output <span class="op">=</span> <span class="va">output_block</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"regression"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 3. Use the newly created 'my_mlp' function</span></span>
+<span><span class="va">mod_spec</span> <span class="op">&lt;-</span> <span class="fu">my_mlp</span><span class="op">(</span>fit_epochs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 4. Standard tidymodels workflow</span></span>
+<span><span class="va">rec_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fit_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_recipe.html" class="external-link">add_recipe</a></span><span class="op">(</span><span class="va">rec_spec</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html" class="external-link">add_model</a></span><span class="op">(</span><span class="va">mod_spec</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Predict</span></span>
+<span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_wf</span>, <span class="va">new_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 1</span></span></span>
+<span><span class="co">#&gt;   .pred</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  1.40</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  1.24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  4.98</span></span></code></pre></div>
+<p>The first call to predict() detects that the Python pointer is
+invalid and restores the model from the stored bytes automatically.</p>
+</div>
+<div class="section level2">
+<h2 id="what-kerasnip-does-behind-the-scenes">What kerasnip does behind the scenes<a class="anchor" aria-label="anchor" href="#what-kerasnip-does-behind-the-scenes"></a>
+</h2>
+<p><code>kerasnip</code> handles persistence automatically:</p>
 <ul>
 <li>At <strong>fit time</strong>, the Keras model is serialized to a raw
-byte vector (<code>.keras</code> format) and stored alongside the
-parsnip <code>model_fit</code> object.</li>
+byte vector (<code>.keras</code>format) and stored alongside the parsnip
+<code>model_fit</code> object.</li>
 <li>At <strong>predict time</strong>, if the Python pointer is detected
 as invalid, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> automatically restores the model from
 those bytes before dispatching.</li>
@@ -107,17 +203,14 @@ workflow without any extra boilerplate.</p>
 <h2 id="strategy-1-plain-saverds-readrds">Strategy 1 — Plain <code>saveRDS()</code> /
 <code>readRDS()</code><a class="anchor" aria-label="anchor" href="#strategy-1-plain-saverds-readrds"></a>
 </h2>
-<p>For most use cases — sharing a model file with a colleague, caching a
-fit between R sessions, or checkpointing during development — plain RDS
+<p>For most use cases: sharing a model file with a colleague, caching a
+fit between R sessions, or checkpointing during development; plain RDS
 is the simplest approach.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/workflows" class="external-link">workflows</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/recipes" class="external-link">recipes</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Assume `fit_wf` is a fitted workflow produced by kerasnip</span></span>
-<span><span class="co"># (see vignette("workflows_sequential") or vignette("workflows_functional"))</span></span>
 <span></span>
 <span><span class="co"># --- Save ---</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">fit_wf</span>, <span class="st">"my_model.rds"</span><span class="op">)</span></span>
@@ -127,7 +220,15 @@ is the simplest approach.</p>
 <span><span class="va">fit_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"my_model.rds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># predict() restores the Keras model from bytes automatically</span></span>
-<span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_wf</span>, new_data <span class="op">=</span> <span class="va">new_data</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_wf</span>, new_data <span class="op">=</span> <span class="va">new_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 35ms/step</span></span>
+<span><span class="va">predictions</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 1</span></span></span>
+<span><span class="co">#&gt;   .pred</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  1.40</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  1.24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  4.98</span></span></code></pre></div>
 <p>There is nothing special to do after <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code>. The
 first call to <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> detects the invalid pointer,
 restores the model from the stored bytes, and then proceeds
@@ -148,7 +249,7 @@ rely on any R session state.</li>
 <li>You are sharing a model across machines with different R library
 paths.</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/bundle" class="external-link">bundle</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/workflows" class="external-link">workflows</a></span><span class="op">)</span></span>
@@ -162,8 +263,15 @@ paths.</li>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/bundle" class="external-link">bundle</a></span><span class="op">)</span></span>
 <span><span class="va">bundled</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"my_model_bundle.rds"</span><span class="op">)</span></span>
 <span><span class="va">fit_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/bundle/reference/bundle.html" class="external-link">unbundle</a></span><span class="op">(</span><span class="va">bundled</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_wf</span>, new_data <span class="op">=</span> <span class="va">new_data</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_wf</span>, new_data <span class="op">=</span> <span class="va">new_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 34ms/step</span></span>
+<span><span class="va">predictions</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 1</span></span></span>
+<span><span class="co">#&gt;   .pred</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  1.40</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  1.24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  4.98</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="comparison">Comparison<a class="anchor" aria-label="anchor" href="#comparison"></a>
@@ -216,25 +324,25 @@ paths.</li>
 calls <code>keras_model_to_bytes()</code>, which writes the model to a
 temporary <code>.keras</code> file using
 <code><a href="https://keras3.posit.co/reference/save_model.html" class="external-link">keras3::save_model()</a></code> and reads the bytes back into R:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simplified version of what happens inside generic_sequential_fit()</span></span>
 <span><span class="va">keras_bytes</span> <span class="op">&lt;-</span> <span class="fu">keras_model_to_bytes</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co"># keras_bytes is a raw vector stored in object$fit$keras_bytes</span></span></code></pre></div>
 <p>When <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> is called on a reloaded object,
 <code><a href="../reference/predict.kerasnip_model_fit.html">predict.kerasnip_model_fit()</a></code> runs:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simplified version of predict.kerasnip_model_fit()</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">keras_bytes</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">is_valid</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span>
-<span>        <span class="op">{</span></span>
-<span>            <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_is_null_xptr.html" class="external-link">py_validate_xptr</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span></span>
-<span>            <span class="cn">TRUE</span></span>
-<span>        <span class="op">}</span>,</span>
-<span>        error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="cn">FALSE</span></span>
-<span>    <span class="op">)</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">is_valid</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">keras_model_from_bytes</span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">keras_bytes</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
+<span>  <span class="va">is_valid</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span>
+<span>    <span class="op">{</span></span>
+<span>      <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_is_null_xptr.html" class="external-link">py_validate_xptr</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span></span>
+<span>      <span class="cn">TRUE</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">is_valid</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">keras_model_from_bytes</span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">keras_bytes</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>If <code>keras_model_to_bytes()</code> fails (e.g. if the model was
 compiled with a non-serialisable custom object), a warning is issued at

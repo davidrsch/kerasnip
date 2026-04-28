@@ -7,6 +7,7 @@
 <url><loc>https://davidrsch.github.io/kerasnip/SUPPORT.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/applications.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/autoplot_uniqueness.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/articles/conformal_intervals.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/functional_api.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/getting_started.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/index.html</loc></url>
@@ -18,6 +19,7 @@
 <url><loc>https://davidrsch.github.io/kerasnip/authors.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/index.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/news/index.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/axe-kerasnip_model_fit.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/compile_keras_grid.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/create_keras_functional_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/create_keras_sequential_spec.html</loc></url>
@@ -29,6 +31,7 @@
 <url><loc>https://davidrsch.github.io/kerasnip/reference/generic_functional_fit.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/generic_sequential_fit.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/get_model_env.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/glance.kerasnip_model_fit.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/index.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/inform_errors.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/inp_spec.html</loc></url>
@@ -49,5 +52,6 @@
 <url><loc>https://davidrsch.github.io/kerasnip/reference/set_args.kerasnip_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/set_engine.kerasnip_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/step_collapse.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/tidy.kerasnip_model_fit.html</loc></url>
 </urlset>
 

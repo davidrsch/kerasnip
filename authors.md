@@ -11,12 +11,12 @@ Source:
 [`DESCRIPTION`](https://github.com/davidrsch/kerasnip/blob/main/DESCRIPTION)
 
 Díaz D (2026). *kerasnip: A Bridge Between 'keras' and 'tidymodels'*. R
-package version 0.1.1, <https://davidrsch.github.io/kerasnip/>.
+package version 0.1.2, <https://davidrsch.github.io/kerasnip/>.
 
     @Manual{,
       title = {kerasnip: A Bridge Between 'keras' and 'tidymodels'},
       author = {David Díaz},
       year = {2026},
-      note = {R package version 0.1.1},
+      note = {R package version 0.1.2},
       url = {https://davidrsch.github.io/kerasnip/},
     }

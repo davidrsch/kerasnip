@@ -39,12 +39,12 @@ We’ll start by loading `kerasnip`, `tidymodels` and `keras3`:
 ``` r
 library(kerasnip)
 library(tidymodels)
-#> ── Attaching packages ────────────────────────────────────── tidymodels 1.4.1 ──
+#> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
 #> ✔ broom        1.0.12     ✔ recipes      1.3.2 
 #> ✔ dials        1.4.3      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
-#> ✔ ggplot2      4.0.2      ✔ tidyr        1.3.2 
-#> ✔ infer        1.1.0      ✔ tune         2.0.1 
+#> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
+#> ✔ infer        1.1.0      ✔ tune         2.1.0 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
 #> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
@@ -95,7 +95,7 @@ dataset, reshape the predictors, and convert the outcome to a factor for
 ``` r
 mnist <- dataset_mnist()
 #> Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
-#>        0/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step 1056768/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step
+#>        0/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step  425984/11490434 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step 2801664/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 9666560/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step
 x_train <- mnist$train$x
 y_train <- mnist$train$y
 x_test <- mnist$test$x
@@ -282,12 +282,12 @@ during the model compilation step.
 
 ``` r
 mlp_fit |> keras_evaluate(x_test, y_test)
-#> 313/313 - 0s - 1ms/step - accuracy: 0.9818 - loss: 0.0878
+#> 313/313 - 0s - 1ms/step - accuracy: 0.9823 - loss: 0.0853
 #> $accuracy
-#> [1] 0.9818
+#> [1] 0.9823
 #> 
 #> $loss
-#> [1] 0.08782931
+#> [1] 0.08530822
 ```
 
 ### Making Predictions
@@ -302,7 +302,7 @@ classification model returns the predicted class labels.
 # Predict the class for the first 5 images in the test set
 class_preds <- mlp_fit |>
   predict(new_data = head(select(test_df, x)))
-#> 1/1 - 0s - 39ms/step
+#> 1/1 - 0s - 38ms/step
 class_preds
 #> # A tibble: 6 × 1
 #>   .pred_class
@@ -323,17 +323,17 @@ each of the 10 classes (0-9).
 # Predict probabilities for the first 5 images
 prob_preds <- mlp_fit |>
   predict(new_data = head(select(test_df, x)), type = "prob")
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 20ms/step
 prob_preds
 #> # A tibble: 6 × 10
-#>    .pred_0   .pred_1  .pred_2  .pred_3   .pred_4  .pred_5  .pred_6  .pred_7
-#>      <dbl>     <dbl>    <dbl>    <dbl>     <dbl>    <dbl>    <dbl>    <dbl>
-#> 1 1.56e-18 1.95 e-15 3.32e-13 1.13e-12 2.13 e-18 2.27e-18 8.53e-26 1   e+ 0
-#> 2 1.00e-25 1.62 e-12 1   e+ 0 5.87e-14 2.30 e-29 1.19e-22 1.01e-22 2.64e-20
-#> 3 3.44e-12 1.000e+ 0 2.82e- 8 6.11e-11 6.14 e- 9 2.99e-10 1.21e- 9 9.09e- 7
-#> 4 1   e+ 0 7.38 e-15 1.10e- 9 4.90e-13 2.11 e-11 1.55e-10 1.92e- 8 1.26e-11
-#> 5 4.06e-10 3.85 e- 9 2.35e-10 5.72e-14 1.000e+ 0 5.44e-12 2.16e-10 2.40e- 6
-#> 6 1.74e-13 1.000e+ 0 1.91e-10 3.57e-12 2.05 e- 8 3.30e-12 1.43e-11 6.24e- 7
+#>     .pred_0   .pred_1  .pred_2  .pred_3   .pred_4  .pred_5  .pred_6  .pred_7
+#>       <dbl>     <dbl>    <dbl>    <dbl>     <dbl>    <dbl>    <dbl>    <dbl>
+#> 1 3.14 e-18 5.99 e-17 4.09e-13 2.98e-13 3.75 e-24 1.74e-18 1.84e-27 1   e+ 0
+#> 2 2.48 e-18 1.79 e- 9 1   e+ 0 7.32e-11 7.42 e-24 3.86e-19 4.23e-22 1.06e-17
+#> 3 3.38 e-11 1.000e+ 0 4.72e- 9 5.41e-11 3.32 e- 7 3.44e- 9 6.15e- 9 1.22e- 6
+#> 4 1.000e+ 0 5.98 e-14 1.35e- 7 6.34e-11 2.14 e-10 1.51e- 9 1.11e- 7 1.07e- 9
+#> 5 9.41 e-11 2.91 e- 9 1.62e-10 1.67e-13 1.000e+ 0 7.98e-11 4.08e-11 6.23e- 8
+#> 6 4.56 e-12 1.000e+ 0 9.58e-12 2.82e-12 3.97 e- 7 1.78e-10 4.32e-10 1.37e- 6
 #> # ℹ 2 more variables: .pred_8 <dbl>, .pred_9 <dbl>
 ```
 
@@ -351,14 +351,14 @@ comparison <- bind_cols(
   )
 comparison
 #> # A tibble: 6 × 12
-#>   .pred_class  .pred_0   .pred_1  .pred_2  .pred_3   .pred_4  .pred_5  .pred_6
-#>   <fct>          <dbl>     <dbl>    <dbl>    <dbl>     <dbl>    <dbl>    <dbl>
-#> 1 7           1.56e-18 1.95 e-15 3.32e-13 1.13e-12 2.13 e-18 2.27e-18 8.53e-26
-#> 2 2           1.00e-25 1.62 e-12 1   e+ 0 5.87e-14 2.30 e-29 1.19e-22 1.01e-22
-#> 3 1           3.44e-12 1.000e+ 0 2.82e- 8 6.11e-11 6.14 e- 9 2.99e-10 1.21e- 9
-#> 4 0           1   e+ 0 7.38 e-15 1.10e- 9 4.90e-13 2.11 e-11 1.55e-10 1.92e- 8
-#> 5 4           4.06e-10 3.85 e- 9 2.35e-10 5.72e-14 1.000e+ 0 5.44e-12 2.16e-10
-#> 6 1           1.74e-13 1.000e+ 0 1.91e-10 3.57e-12 2.05 e- 8 3.30e-12 1.43e-11
+#>   .pred_class   .pred_0   .pred_1  .pred_2  .pred_3   .pred_4  .pred_5  .pred_6
+#>   <fct>           <dbl>     <dbl>    <dbl>    <dbl>     <dbl>    <dbl>    <dbl>
+#> 1 7           3.14 e-18 5.99 e-17 4.09e-13 2.98e-13 3.75 e-24 1.74e-18 1.84e-27
+#> 2 2           2.48 e-18 1.79 e- 9 1   e+ 0 7.32e-11 7.42 e-24 3.86e-19 4.23e-22
+#> 3 1           3.38 e-11 1.000e+ 0 4.72e- 9 5.41e-11 3.32 e- 7 3.44e- 9 6.15e- 9
+#> 4 0           1.000e+ 0 5.98 e-14 1.35e- 7 6.34e-11 2.14 e-10 1.51e- 9 1.11e- 7
+#> 5 4           9.41 e-11 2.91 e- 9 1.62e-10 1.67e-13 1.000e+ 0 7.98e-11 4.08e-11
+#> 6 1           4.56 e-12 1.000e+ 0 9.58e-12 2.82e-12 3.97 e- 7 1.78e-10 4.32e-10
 #> # ℹ 4 more variables: .pred_7 <dbl>, .pred_8 <dbl>, .pred_9 <dbl>, y <fct>
 ```
 
@@ -435,87 +435,87 @@ tune_res <- tune_grid(
   metrics = metric_set(accuracy),
   control = control_grid(save_pred = FALSE, save_workflow = TRUE)
 )
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 35ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 35ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 32ms/step
 #> 2/2 - 0s - 26ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 32ms/step
 #> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 34ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 33ms/step
 ```
 
 Finally, we can inspect the results to find which architecture performed
@@ -527,11 +527,11 @@ show_best(tune_res, metric = "accuracy")
 #> # A tibble: 5 × 9
 #>   num_hidden_1 hidden_1_units hidden_1_rate .metric  .estimator  mean     n
 #>          <int>          <int>         <dbl> <chr>    <chr>      <dbl> <int>
-#> 1            2            256           0.3 accuracy multiclass 0.790     3
-#> 2            3            256           0.2 accuracy multiclass 0.790     3
-#> 3            3            256           0.3 accuracy multiclass 0.780     3
-#> 4            2            160           0.3 accuracy multiclass 0.780     3
-#> 5            3            160           0.2 accuracy multiclass 0.780     3
+#> 1            2            256         0.2   accuracy multiclass 0.799     3
+#> 2            2            160         0.3   accuracy multiclass 0.799     3
+#> 3            1            256         0.400 accuracy multiclass 0.790     3
+#> 4            1            256         0.2   accuracy multiclass 0.790     3
+#> 5            3            256         0.2   accuracy multiclass 0.790     3
 #> # ℹ 2 more variables: std_err <dbl>, .config <chr>
 ```
 
