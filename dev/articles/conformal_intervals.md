@@ -127,7 +127,7 @@ fit_obj <- fit(wflow, data = train_dat)
 
 # Build the conformal object from the calibration set
 conformal_split <- int_conformal_split(fit_obj, cal_data = cal_dat)
-#> 23/23 - 0s - 3ms/step
+#> 23/23 - 0s - 2ms/step
 conformal_split
 #> Split Conformal inference
 #> preprocessor: recipe 
@@ -139,16 +139,16 @@ conformal_split
 # Predict intervals for new observations
 new_obs <- cal_dat[1:6, ]
 predict(conformal_split, new_data = new_obs, level = 0.90)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 20ms/step
 #> # A tibble: 6 × 3
 #>    .pred .pred_lower .pred_upper
 #>    <dbl>       <dbl>       <dbl>
-#> 1 31924.    -178312.     242161.
-#> 2 98326.    -111910.     308563.
-#> 3 53430.    -156806.     263667.
-#> 4 59519.    -150717.     269756.
-#> 5 15078.    -195158.     225315.
-#> 6 18381.    -191855.     228618.
+#> 1 29229.    -188434.     246892.
+#> 2 83497.    -134166.     301159.
+#> 3 45256.    -172407.     262919.
+#> 4 50380.    -167283.     268043.
+#> 5 20752.    -196911.     238415.
+#> 6 21972.    -195691.     239635.
 ```
 
 **When to use this**: when training cost is non-trivial and you can
@@ -211,19 +211,19 @@ conformal_cv
 
 predict(conformal_cv, new_data = data[1:6, ], level = 0.90)
 #> 1/1 - 0s - 21ms/step
-#> 1/1 - 0s - 22ms/step
-#> 1/1 - 0s - 21ms/step
-#> 1/1 - 0s - 21ms/step
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 20ms/step
+#> 1/1 - 0s - 20ms/step
+#> 1/1 - 0s - 20ms/step
+#> 1/1 - 0s - 20ms/step
 #> # A tibble: 6 × 3
 #>   .pred_lower  .pred .pred_upper
 #>         <dbl>  <dbl>       <dbl>
-#> 1    -185939. 27296.     240532.
-#> 2    -193502. 19733.     232969.
-#> 3    -196696. 16540.     229775.
-#> 4    -138382. 74853.     288089.
-#> 5    -177919. 35317.     248552.
-#> 6    -178517. 34718.     247954.
+#> 1    -183559. 27986.     239530.
+#> 2    -190542. 21002.     232547.
+#> 3    -193858. 17686.     229231.
+#> 4    -135189. 76356.     287900.
+#> 5    -175056. 36488.     248033.
+#> 6    -175604. 35940.     247485.
 ```
 
 **When to use this**: when you do not want to reserve a separate
@@ -280,7 +280,7 @@ conformal_full <- int_conformal_full(
         trial_points = 20
     )
 )
-#> 4/4 - 0s - 12ms/step
+#> 4/4 - 0s - 11ms/step
 conformal_full
 #> Conformal inference
 #> preprocessor: recipe 

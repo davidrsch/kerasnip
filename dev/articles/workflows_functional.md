@@ -432,6 +432,102 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 8ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -522,91 +618,11 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 10ms/step
-#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
@@ -636,25 +652,9 @@ ames_tune_results <- tune_race_anova(
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
 #> 15/15 - 0s - 7ms/step
 #> 15/15 - 0s - 7ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
-#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
 ```
 
 ## Inspect Tuning Results
@@ -665,11 +665,12 @@ combinations performed best.
 ``` r
 # Show the best performing models based on RMSE
 show_best(ames_tune_results, metric = "rmse", n = 5)
-#> # A tibble: 2 × 10
+#> # A tibble: 3 × 10
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
 #> 1                       128                           64                   64
 #> 2                       128                           64                   40
+#> 3                       128                           64                   16
 #> # ℹ 7 more variables: processed_condition_units <int>, .metric <chr>,
 #> #   .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -754,12 +755,12 @@ print(final_ames_fit)
 #>  Optimizer params: 9,092 (35.52 KB)
 #> 
 #> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 bd 53 f9 dd 40 00 00 00 40 00
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 23 64 2c 97 40 00 00 00 40 00
 #>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
 #>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 34 2e 30 22 2c 20 22
-#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 34 2d 32 34
-#>    [97] 40 31 37 3a 34 34 3a 34 36 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 e6 2d 33 eb 4b 20 00 00 4b 20 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 34 2d 32 38
+#>    [97] 40 31 31 3a 33 38 3a 30 37 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 3f 85 c2 91 4b 20 00 00 4b 20 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
 #>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 2e 73 72
 #>   [169] 63 2e 6d 6f 64 65 6c 73 2e 66 75 6e 63 74 69 6f 6e 61 6c 22 2c 20 22 63
 #>   [193] 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 46 75 6e 63 74 69 6f 6e 61 6c 22
@@ -849,7 +850,7 @@ model’s performance.
 ``` r
 # Make predictions on the test set
 ames_test_pred <- predict(final_ames_fit, new_data = ames_test)
-#> 19/19 - 0s - 5ms/step
+#> 19/19 - 0s - 6ms/step
 
 # Combine predictions with actuals
 ames_results <- tibble::tibble(
@@ -861,12 +862,12 @@ print(head(ames_results))
 #> # A tibble: 6 × 2
 #>   Sale_Price   .pred
 #>        <int>   <dbl>
-#> 1     105000  96812.
-#> 2     172000 160407.
-#> 3     189900 193385.
-#> 4     115000 126929.
-#> 5     395192 269329.
-#> 6     214000 212828.
+#> 1     105000 100811.
+#> 2     172000 159561.
+#> 3     189900 193552.
+#> 4     115000 129744.
+#> 5     395192 268189.
+#> 6     214000 212006.
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -883,8 +884,8 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard   50582.   
-#> 2 mae     standard   30724.   
+#> 1 rmse    standard   50422.   
+#> 2 mae     standard   30685.   
 #> 3 rsq     standard       0.788
 ```
 
