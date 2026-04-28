@@ -49,6 +49,33 @@ test_that("axe_data strips history and predict still works", {
   expect_equal(nrow(preds), 5L)
 })
 
+test_that("butcher helper utilities behave correctly", {
+  skip_if_not_installed("butcher")
+
+  old <- list(a = rnorm(1000), history = rep("x", 1000))
+  butchered <- old
+  butchered$history <- NULL
+
+  size <- kerasnip:::get_object_size(old)
+  expect_type(size, "double")
+  expect_gt(size, 0)
+
+  mem <- kerasnip:::memory_released(old, butchered)
+  expect_type(mem, "double")
+  expect_gt(mem, 0)
+
+  expect_no_error(kerasnip:::assess_object(old, butchered))
+
+  axed <- kerasnip:::add_butcher_attributes(
+    butchered,
+    old,
+    disabled = "extract_keras_history",
+    verbose = TRUE
+  )
+  expect_s3_class(axed, "butchered_list")
+  expect_equal(attr(axed, "butcher_disabled"), "extract_keras_history")
+})
+
 test_that("all axe_* methods are callable without error", {
   skip_if_not_installed("butcher")
   skip_if_not(
