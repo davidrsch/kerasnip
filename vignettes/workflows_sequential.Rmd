@@ -293,7 +293,7 @@ them alongside the workflow object. This means plain `saveRDS()` / `readRDS()`
 **works out of the box** — the underlying Keras model is restored automatically
 the first time `predict()` is called on the reloaded object.
 
-```r
+```{r save-reload-rds}
 # Save
 saveRDS(fit_wf, "my_model.rds")
 
@@ -305,7 +305,7 @@ predict(fit_wf, new_data = new_data)  # model restored automatically
 If you need a fully self-contained bundle suitable for deployment with
 `vetiver` or other MLOps tools, use `bundle::bundle()` instead:
 
-```r
+```{r save-reload-bundle}
 library(bundle)
 
 # Save as a portable bundle
