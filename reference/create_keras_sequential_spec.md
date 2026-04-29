@@ -177,7 +177,6 @@ remove_keras_spec("my_mlp_seq_spec")
 #>   num_output = structure(list(), class = "rlang_zap")
 #>   hidden_units = 64
 #>   learn_rate = 0.01
-#>   fit_seed = structure(list(), class = "rlang_zap")
 #>   fit_batch_size = structure(list(), class = "rlang_zap")
 #>   fit_epochs = structure(list(), class = "rlang_zap")
 #>   fit_callbacks = structure(list(), class = "rlang_zap")

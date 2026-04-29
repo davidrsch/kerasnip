@@ -203,7 +203,6 @@ if (requireNamespace("keras3", quietly = TRUE)) {
 #>   num_output = structure(list(), class = "rlang_zap")
 #>   dense_path_units = 64
 #>   learn_rate = structure(list(), class = "rlang_zap")
-#>   fit_seed = structure(list(), class = "rlang_zap")
 #>   fit_batch_size = structure(list(), class = "rlang_zap")
 #>   fit_epochs = structure(list(), class = "rlang_zap")
 #>   fit_callbacks = structure(list(), class = "rlang_zap")

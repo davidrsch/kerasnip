@@ -87,13 +87,13 @@ fit_wf <- workflow() |>
 # Predict
 new_data <- mtcars[1:3, ]
 predict(fit_wf, new_data)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.82
-#> 2  1.66
-#> 3  3.41
+#> 1  2.60
+#> 2  2.38
+#> 3  6.23
 ```
 
 The first call to predict() detects that the Python pointer is invalid
@@ -140,9 +140,9 @@ predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.82
-#> 2  1.66
-#> 3  3.41
+#> 1  2.60
+#> 2  2.38
+#> 3  6.23
 ```
 
 There is nothing special to do after
@@ -183,9 +183,9 @@ predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.82
-#> 2  1.66
-#> 3  3.41
+#> 1  2.60
+#> 2  2.38
+#> 3  6.23
 ```
 
 ## Comparison

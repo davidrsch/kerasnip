@@ -257,7 +257,6 @@ fitting.</p>
 <span><span class="co">#&gt;   hidden_2_rate = tune()</span></span>
 <span><span class="co">#&gt;   output_activation = structure(list(), class = "rlang_zap")</span></span>
 <span><span class="co">#&gt;   learn_rate = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">#&gt;   fit_seed = structure(list(), class = "rlang_zap")</span></span>
 <span><span class="co">#&gt;   fit_batch_size = 32</span></span>
 <span><span class="co">#&gt;   fit_epochs = 20</span></span>
 <span><span class="co">#&gt;   fit_callbacks = list(callback_early_stopping(monitor = "val_loss", patience = 5))</span></span>
@@ -322,7 +321,6 @@ specification.</p>
 <span><span class="co">#&gt;   hidden_2_rate = tune()</span></span>
 <span><span class="co">#&gt;   output_activation = structure(list(), class = "rlang_zap")</span></span>
 <span><span class="co">#&gt;   learn_rate = structure(list(), class = "rlang_zap")</span></span>
-<span><span class="co">#&gt;   fit_seed = structure(list(), class = "rlang_zap")</span></span>
 <span><span class="co">#&gt;   fit_batch_size = 32</span></span>
 <span><span class="co">#&gt;   fit_epochs = 20</span></span>
 <span><span class="co">#&gt;   fit_callbacks = list(callback_early_stopping(monitor = "val_loss", patience = 5))</span></span>
@@ -410,11 +408,11 @@ combinations performed best.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 10</span></span></span>
 <span><span class="co">#&gt;   hidden_1_units hidden_1_rate hidden_2_units hidden_2_rate .metric  .estimator</span></span>
 <span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             32          0.1              16         0.1   accuracy multiclass</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>             32          0.1              16         0.25  accuracy multiclass</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             32          0.1              16         0.400 accuracy multiclass</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             32          0.25             16         0.25  accuracy multiclass</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>             32          0.25             40         0.25  accuracy multiclass</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             32           0.1             16         0.25  accuracy multiclass</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>             32           0.1             16         0.400 accuracy multiclass</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             32           0.1             40         0.400 accuracy multiclass</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             32           0.1             64         0.1   accuracy multiclass</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>             32           0.1             64         0.400 accuracy multiclass</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: mean &lt;dbl&gt;, n &lt;int&gt;, std_err &lt;dbl&gt;, .config &lt;chr&gt;</span></span></span>
 <span></span>
 <span><span class="co"># Autoplot the results</span></span>
@@ -426,7 +424,7 @@ combinations performed best.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
 <span><span class="co">#&gt;   hidden_1_units hidden_1_rate hidden_2_units hidden_2_rate .config         </span></span>
 <span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             32           0.1             16           0.1 pre0_mod01_post0</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             32           0.1             16          0.25 pre0_mod02_post0</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="finalize-workflow-and-fit-model">Finalize Workflow and Fit Model<a class="anchor" aria-label="anchor" href="#finalize-workflow-and-fit-model"></a>
@@ -453,19 +451,19 @@ fit the model on the entire training dataset.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; $fit</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "sequential_401"</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "sequential_403"</span></span></span>
 <span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓</span></span>
 <span><span class="co">#&gt; ┃<span style="font-weight: bold;"> Layer (type)                      </span>┃<span style="font-weight: bold;"> Output Shape             </span>┃<span style="font-weight: bold;">       Param # </span>┃</span></span>
 <span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩</span></span>
-<span><span class="co">#&gt; │ dense_1203 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │           <span style="color: #00AF00;">256</span> │</span></span>
+<span><span class="co">#&gt; │ dense_1209 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │           <span style="color: #00AF00;">256</span> │</span></span>
 <span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
-<span><span class="co">#&gt; │ dropout_802 (<span style="color: #0087FF;">Dropout</span>)             │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │             <span style="color: #00AF00;">0</span> │</span></span>
+<span><span class="co">#&gt; │ dropout_806 (<span style="color: #0087FF;">Dropout</span>)             │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │             <span style="color: #00AF00;">0</span> │</span></span>
 <span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1204 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">16</span>)               │           <span style="color: #00AF00;">528</span> │</span></span>
+<span><span class="co">#&gt; │ dense_1210 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">16</span>)               │           <span style="color: #00AF00;">528</span> │</span></span>
 <span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
-<span><span class="co">#&gt; │ dropout_803 (<span style="color: #0087FF;">Dropout</span>)             │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">16</span>)               │             <span style="color: #00AF00;">0</span> │</span></span>
+<span><span class="co">#&gt; │ dropout_807 (<span style="color: #0087FF;">Dropout</span>)             │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">16</span>)               │             <span style="color: #00AF00;">0</span> │</span></span>
 <span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1205 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">3</span>)                │            <span style="color: #00AF00;">51</span> │</span></span>
+<span><span class="co">#&gt; │ dense_1211 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">3</span>)                │            <span style="color: #00AF00;">51</span> │</span></span>
 <span><span class="co">#&gt; └───────────────────────────────────┴──────────────────────────┴───────────────┘</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">2,507</span> (9.80 KB)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">835</span> (3.26 KB)</span></span>
@@ -473,23 +471,23 @@ fit the model on the entire training dataset.</p>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Optimizer params: </span><span style="color: #00AF00;">1,672</span> (6.54 KB)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $keras_bytes</span></span>
-<span><span class="co">#&gt;     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 b7 69 15 06 40 00 00 00 40 00</span></span>
+<span><span class="co">#&gt;     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 45 e7 a5 fa 40 00 00 00 40 00</span></span>
 <span><span class="co">#&gt;    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72</span></span>
 <span><span class="co">#&gt;    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 34 2e 30 22 2c 20 22</span></span>
 <span><span class="co">#&gt;    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 34 2d 32 39</span></span>
-<span><span class="co">#&gt;    [97] 40 31 36 3a 31 34 3a 34 36 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21</span></span>
-<span><span class="co">#&gt;   [121] 00 84 12 20 93 17 11 00 00 17 11 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e</span></span>
+<span><span class="co">#&gt;    [97] 40 31 37 3a 34 30 3a 32 32 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21</span></span>
+<span><span class="co">#&gt;   [121] 00 31 6d cc 85 27 11 00 00 27 11 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e</span></span>
 <span><span class="co">#&gt;   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20</span></span>
 <span><span class="co">#&gt;   [169] 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 53 65 71 75 65 6e 74 69 61</span></span>
 <span><span class="co">#&gt;   [193] 6c 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22</span></span>
-<span><span class="co">#&gt;   [217] 73 65 71 75 65 6e 74 69 61 6c 5f 34 30 31 22 2c 20 22 74 72 61 69 6e 61</span></span>
+<span><span class="co">#&gt;   [217] 73 65 71 75 65 6e 74 69 61 6c 5f 34 30 33 22 2c 20 22 74 72 61 69 6e 61</span></span>
 <span><span class="co">#&gt;   [241] 62 6c 65 22 3a 20 74 72 75 65 2c 20 22 64 74 79 70 65 22 3a 20 7b 22 6d</span></span>
 <span><span class="co">#&gt;   [265] 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20 22 63 6c 61 73 73 5f</span></span>
 <span><span class="co">#&gt;   [289] 6e 61 6d 65 22 3a 20 22 44 54 79 70 65 50 6f 6c 69 63 79 22 2c 20 22 63</span></span>
 <span><span class="co">#&gt;   [313] 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 6c 6f 61 74 33</span></span>
 <span><span class="co">#&gt;   [337] 32 22 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65 22 3a 20</span></span>
 <span><span class="co">#&gt;   [361] 6e 75 6c 6c 2c 20 22 73 68 61 72 65 64 5f 6f 62 6a 65 63 74 5f 69 64 22</span></span>
-<span><span class="co">#&gt;   [385] 3a 20 31 34 30 30 32 33 35 32 39 38 37 35 38 35 36 7d 2c 20 22 6c 61 79</span></span>
+<span><span class="co">#&gt;   [385] 3a 20 31 34 30 35 35 30 36 33 37 31 31 30 36 37 32 7d 2c 20 22 6c 61 79</span></span>
 <span><span class="co">#&gt;   [409] 65 72 73 22 3a 20 5b 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73</span></span>
 <span><span class="co">#&gt;   [433] 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20</span></span>
 <span><span class="co">#&gt;   [457] 22 49 6e 70 75 74 4c 61 79 65 72 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20</span></span>
@@ -497,7 +495,7 @@ fit the model on the entire training dataset.</p>
 <span><span class="co">#&gt;   [505] 5d 2c 20 22 64 74 79 70 65 22 3a 20 22 66 6c 6f 61 74 33 32 22 2c 20 22</span></span>
 <span><span class="co">#&gt;   [529] 73 70 61 72 73 65 22 3a 20 66 61 6c 73 65 2c 20 22 72 61 67 67 65 64 22</span></span>
 <span><span class="co">#&gt;   [553] 3a 20 66 61 6c 73 65 2c 20 22 6e 61 6d 65 22 3a 20 22 69 6e 70 75 74 5f</span></span>
-<span><span class="co">#&gt;   [577] 6c 61 79 65 72 5f 34 30 31 22 2c 20 22 6f 70 74 69 6f 6e 61 6c 22 3a 20</span></span>
+<span><span class="co">#&gt;   [577] 6c 61 79 65 72 5f 34 30 33 22 2c 20 22 6f 70 74 69 6f 6e 61 6c 22 3a 20</span></span>
 <span><span class="co">#&gt;   [601] 66 61 6c 73 65 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65</span></span>
 <span><span class="co">#&gt;   [625] 22 3a 20 6e 75 6c 6c 7d 2c 20 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65</span></span>
 <span><span class="co">#&gt;   [649] 72 61 73 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65</span></span>
@@ -516,19 +514,19 @@ for further inspection.</p>
 <span>  <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html" class="external-link">extract_fit_parsnip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extract_keras_model.html">extract_keras_model</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "sequential_401"</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Model: "sequential_403"</span></span></span>
 <span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓</span></span>
 <span><span class="co">#&gt; ┃<span style="font-weight: bold;"> Layer (type)                      </span>┃<span style="font-weight: bold;"> Output Shape             </span>┃<span style="font-weight: bold;">       Param # </span>┃</span></span>
 <span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩</span></span>
-<span><span class="co">#&gt; │ dense_1203 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │           <span style="color: #00AF00;">256</span> │</span></span>
+<span><span class="co">#&gt; │ dense_1209 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │           <span style="color: #00AF00;">256</span> │</span></span>
 <span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
-<span><span class="co">#&gt; │ dropout_802 (<span style="color: #0087FF;">Dropout</span>)             │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │             <span style="color: #00AF00;">0</span> │</span></span>
+<span><span class="co">#&gt; │ dropout_806 (<span style="color: #0087FF;">Dropout</span>)             │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">32</span>)               │             <span style="color: #00AF00;">0</span> │</span></span>
 <span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1204 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">16</span>)               │           <span style="color: #00AF00;">528</span> │</span></span>
+<span><span class="co">#&gt; │ dense_1210 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">16</span>)               │           <span style="color: #00AF00;">528</span> │</span></span>
 <span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
-<span><span class="co">#&gt; │ dropout_803 (<span style="color: #0087FF;">Dropout</span>)             │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">16</span>)               │             <span style="color: #00AF00;">0</span> │</span></span>
+<span><span class="co">#&gt; │ dropout_807 (<span style="color: #0087FF;">Dropout</span>)             │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">16</span>)               │             <span style="color: #00AF00;">0</span> │</span></span>
 <span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
-<span><span class="co">#&gt; │ dense_1205 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">3</span>)                │            <span style="color: #00AF00;">51</span> │</span></span>
+<span><span class="co">#&gt; │ dense_1211 (<span style="color: #0087FF;">Dense</span>)                │ (<span style="color: #00D7FF;">None</span>, <span style="color: #00AF00;">3</span>)                │            <span style="color: #00AF00;">51</span> │</span></span>
 <span><span class="co">#&gt; └───────────────────────────────────┴──────────────────────────┴───────────────┘</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Total params: </span><span style="color: #00AF00;">2,507</span> (9.80 KB)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;"> Trainable params: </span><span style="color: #00AF00;">835</span> (3.26 KB)</span></span>
@@ -560,13 +558,13 @@ model’s performance.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Make predictions on the test set</span></span>
 <span><span class="va">penguin_test_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">final_penguin_fit</span>, new_data <span class="op">=</span> <span class="va">penguin_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 20ms/step</span></span>
 <span><span class="va">penguin_test_prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span></span>
 <span>  <span class="va">final_penguin_fit</span>,</span>
 <span>  new_data <span class="op">=</span> <span class="va">penguin_test</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"prob"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 8ms/step</span></span>
 <span></span>
 <span><span class="co"># Combine predictions with actuals</span></span>
 <span><span class="va">penguin_results</span> <span class="op">&lt;-</span> <span class="va">penguin_test</span> <span class="op">|&gt;</span></span>
@@ -575,14 +573,14 @@ model’s performance.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">penguin_results</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
-<span><span class="co">#&gt;   species .pred_class .pred_Adelie .pred_Chinstrap .pred_Gentoo</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Adelie  Adelie             1.000        3.45<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span>     1.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Adelie  Adelie             1.000        1.36<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span>     1.67<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Adelie  Adelie             1.000        2.15<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span>     7.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Adelie  Adelie             1.000        1.17<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span>     6.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Adelie  Adelie             1.000        3.10<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span>     2.37<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Adelie  Adelie             1.000        1.27<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span>     1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
+<span><span class="co">#&gt;   species .pred_class .pred_Adelie .pred_Chinstrap  .pred_Gentoo</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Adelie  Adelie             1.000        9.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>020<span style="text-decoration: underline;">2</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Adelie  Adelie             1.000        2.21<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">014</span>6    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Adelie  Adelie             1.000        1.21<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>001<span style="text-decoration: underline;">48</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Adelie  Adelie             1.000        4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 0.000<span style="text-decoration: underline;">000</span>177  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Adelie  Adelie             1.000        3.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 0.000<span style="text-decoration: underline;">000</span>043<span style="text-decoration: underline;">7</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Adelie  Adelie             1.000        1.44<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 0.000<span style="text-decoration: underline;">000</span>159</span></span>
 <span></span>
 <span><span class="co"># Evaluate performance using yardstick metrics</span></span>
 <span><span class="va">metrics_results</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span></span>
@@ -603,8 +601,8 @@ model’s performance.</p>
 <span><span class="co">#&gt;   .metric  .estimator .estimate</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> accuracy multiclass     0.985</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> f_meas   macro          0.983</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> roc_auc  hand_till      0.999</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> f_meas   macro          0.982</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> roc_auc  hand_till      1</span></span>
 <span></span>
 <span><span class="co"># Confusion Matrix</span></span>
 <span><span class="fu">conf_mat</span><span class="op">(</span><span class="va">penguin_results</span>, truth <span class="op">=</span> <span class="va">species</span>, estimate <span class="op">=</span> <span class="va">.pred_class</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -627,7 +625,7 @@ first time <code><a href="https://rdrr.io/r/stats/predict.html" class="external-
 <span><span class="va">final_penguin_fit_loaded</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"penguin_model.rds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">final_penguin_fit_loaded</span>, new_data <span class="op">=</span> <span class="va">penguin_test</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 1</span></span></span>
 <span><span class="co">#&gt;   .pred_class</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      </span></span>
