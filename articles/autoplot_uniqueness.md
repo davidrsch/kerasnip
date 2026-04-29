@@ -138,6 +138,7 @@ print(tune_spec)
 #>   dense1_units = tune(id = "dense_layer_one_units")
 #>   dense2_units = tune(id = "dense_layer_two_units")
 #>   learn_rate = structure(list(), class = "rlang_zap")
+#>   fit_seed = structure(list(), class = "rlang_zap")
 #>   fit_batch_size = structure(list(), class = "rlang_zap")
 #>   fit_epochs = structure(list(), class = "rlang_zap")
 #>   fit_callbacks = structure(list(), class = "rlang_zap")
@@ -228,7 +229,7 @@ tune_res <- tune::tune_grid(
 #> 3/3 - 0s - 7ms/step
 #> 3/3 - 0s - 17ms/step
 #> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 17ms/step
+#> 3/3 - 0s - 18ms/step
 #> 3/3 - 0s - 7ms/step
 #> 3/3 - 0s - 18ms/step
 #> 3/3 - 0s - 7ms/step

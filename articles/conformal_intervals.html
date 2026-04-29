@@ -93,7 +93,7 @@ covariance structure of their parameter estimates. A neural network has
 no equivalent: it computes a single deterministic output for each input,
 with no internal distributional model to derive intervals from.</p>
 <p>This is not a limitation specific to <code>kerasnip</code>. The
-entire tidymodels ecosystem reflects the same reality — the
+entire tidymodels ecosystem reflects the same reality, the
 <code>parsnip</code> package does not register <code>conf_int</code> or
 <code>pred_int</code> prediction types for any neural network engine,
 including <code>brulee</code>, the official tidymodels neural network
@@ -104,14 +104,14 @@ inference</strong>, provided by the <code>probably</code> package.
 Conformal inference is:</p>
 <ul>
 <li>
-<strong>Distribution-free</strong> — it makes no assumptions about
+<strong>Distribution-free</strong>: it makes no assumptions about
 the shape of the outcome distribution.</li>
 <li>
-<strong>Model-agnostic</strong> — it treats the model as a black
-box; only <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> and <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> calls are
+<strong>Model-agnostic</strong>: it treats the model as a black box;
+only <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> and <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> calls are
 required.</li>
 <li>
-<strong>Guaranteed to have correct coverage</strong> — under the
+<strong>Guaranteed to have correct coverage</strong>: under the
 assumption that training and test data are exchangeable
 (i.e. identically and independently distributed), the intervals contain
 the true outcome with at least the requested probability.</li>
@@ -190,7 +190,7 @@ any other kerasnip workflow.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="method-1-split-conformal-inference-int_conformal_split">Method 1 — Split conformal inference
+<h2 id="method-1-split-conformal-inference-int_conformal_split">Method 1: Split conformal inference
 (<code>int_conformal_split</code>)<a class="anchor" aria-label="anchor" href="#method-1-split-conformal-inference-int_conformal_split"></a>
 </h2>
 <p>This is the simplest and fastest method. The workflow is:</p>
@@ -216,7 +216,7 @@ reference distribution for deciding how wide to make the intervals.</p>
 <span></span>
 <span><span class="co"># Build the conformal object from the calibration set</span></span>
 <span><span class="va">conformal_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_split.html" class="external-link">int_conformal_split</a></span><span class="op">(</span><span class="va">fit_obj</span>, cal_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 23/23 - 0s - 2ms/step</span></span>
+<span><span class="co">#&gt; 23/23 - 0s - 3ms/step</span></span>
 <span><span class="va">conformal_split</span></span>
 <span><span class="co">#&gt; Split Conformal inference</span></span>
 <span><span class="co">#&gt; preprocessor: recipe </span></span>
@@ -232,19 +232,19 @@ reference distribution for deciding how wide to make the intervals.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;    .pred .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">31</span>934.    -<span style="color: #BB0000; text-decoration: underline;">178</span><span style="color: #BB0000;">514.</span>     <span style="text-decoration: underline;">242</span>382.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">98</span>810.    -<span style="color: #BB0000; text-decoration: underline;">111</span><span style="color: #BB0000;">638.</span>     <span style="text-decoration: underline;">309</span>258.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">53</span>607.    -<span style="color: #BB0000; text-decoration: underline;">156</span><span style="color: #BB0000;">841.</span>     <span style="text-decoration: underline;">264</span>055.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">59</span>812.    -<span style="color: #BB0000; text-decoration: underline;">150</span><span style="color: #BB0000;">636.</span>     <span style="text-decoration: underline;">270</span>260.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> <span style="text-decoration: underline;">12</span>953.    -<span style="color: #BB0000; text-decoration: underline;">197</span><span style="color: #BB0000;">495.</span>     <span style="text-decoration: underline;">223</span>401.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">16</span>706.    -<span style="color: #BB0000; text-decoration: underline;">193</span><span style="color: #BB0000;">742.</span>     <span style="text-decoration: underline;">227</span>154.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">26</span>506.    -<span style="color: #BB0000; text-decoration: underline;">197</span><span style="color: #BB0000;">728.</span>     <span style="text-decoration: underline;">250</span>741.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">72</span>926.    -<span style="color: #BB0000; text-decoration: underline;">151</span><span style="color: #BB0000;">309.</span>     <span style="text-decoration: underline;">297</span>160.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">39</span>425.    -<span style="color: #BB0000; text-decoration: underline;">184</span><span style="color: #BB0000;">810.</span>     <span style="text-decoration: underline;">263</span>660.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">44</span>010.    -<span style="color: #BB0000; text-decoration: underline;">180</span><span style="color: #BB0000;">225.</span>     <span style="text-decoration: underline;">268</span>245.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> <span style="text-decoration: underline;">22</span>290.    -<span style="color: #BB0000; text-decoration: underline;">201</span><span style="color: #BB0000;">945.</span>     <span style="text-decoration: underline;">246</span>525.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">22</span>586.    -<span style="color: #BB0000; text-decoration: underline;">201</span><span style="color: #BB0000;">648.</span>     <span style="text-decoration: underline;">246</span>821.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when training cost is non-trivial
 and you can afford to set aside a calibration set. This is the
 recommended method for kerasnip models in most practical situations.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="method-2-cross-validation-conformal-inference-int_conformal_cv">Method 2 — Cross-validation conformal inference
+<h2 id="method-2-cross-validation-conformal-inference-int_conformal_cv">Method 2: Cross-validation conformal inference
 (<code>int_conformal_cv</code>)<a class="anchor" aria-label="anchor" href="#method-2-cross-validation-conformal-inference-int_conformal_cv"></a>
 </h2>
 <p>This method uses <strong>cross-validation</strong> to generate
@@ -296,19 +296,19 @@ intervals for new data.</li>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_cv</span>, new_data <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   .pred_lower  .pred .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">192</span><span style="color: #BB0000;">765.</span> <span style="text-decoration: underline;">26</span>694.     <span style="text-decoration: underline;">246</span>153.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">198</span><span style="color: #BB0000;">158.</span> <span style="text-decoration: underline;">21</span>302.     <span style="text-decoration: underline;">240</span>761.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">200</span><span style="color: #BB0000;">861.</span> <span style="text-decoration: underline;">18</span>598.     <span style="text-decoration: underline;">238</span>057.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">149</span><span style="color: #BB0000;">704.</span> <span style="text-decoration: underline;">69</span>755.     <span style="text-decoration: underline;">289</span>215.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">185</span><span style="color: #BB0000;">834.</span> <span style="text-decoration: underline;">33</span>625.     <span style="text-decoration: underline;">253</span>084.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">186</span><span style="color: #BB0000;">249.</span> <span style="text-decoration: underline;">33</span>211.     <span style="text-decoration: underline;">252</span>670.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">195</span><span style="color: #BB0000;">132.</span> <span style="text-decoration: underline;">26</span>157.     <span style="text-decoration: underline;">247</span>445.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">198</span><span style="color: #BB0000;">454.</span> <span style="text-decoration: underline;">22</span>835.     <span style="text-decoration: underline;">244</span>124.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">200</span><span style="color: #BB0000;">856.</span> <span style="text-decoration: underline;">20</span>433.     <span style="text-decoration: underline;">241</span>722.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">156</span><span style="color: #BB0000;">592.</span> <span style="text-decoration: underline;">64</span>697.     <span style="text-decoration: underline;">285</span>986.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">188</span><span style="color: #BB0000;">801.</span> <span style="text-decoration: underline;">32</span>488.     <span style="text-decoration: underline;">253</span>777.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">189</span><span style="color: #BB0000;">035.</span> <span style="text-decoration: underline;">32</span>254      <span style="text-decoration: underline;">253</span>543.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when you do not want to reserve a
 separate calibration set and are already running cross-validation to
 evaluate your model. The cross-validation residuals tend to produce
@@ -318,7 +318,7 @@ per fold, which multiplies training time by the number of folds.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="method-3-full-conformal-inference-int_conformal_full">Method 3 — Full conformal inference
+<h2 id="method-3-full-conformal-inference-int_conformal_full">Method 3: Full conformal inference
 (<code>int_conformal_full</code>)<a class="anchor" aria-label="anchor" href="#method-3-full-conformal-inference-int_conformal_full"></a>
 </h2>
 <p>Full conformal inference is the most principled of the three methods
@@ -331,30 +331,87 @@ on the augmented dataset, and checks whether the residual for the
 candidate value is consistent with the training residuals. By sweeping
 over a grid of candidate values, it determines the interval of values
 that the algorithm would not reject.</p>
-<p>For a kerasnip model, every refit call goes through the full
-build–compile–train cycle: the Keras architecture is reconstructed from
-the layer blocks, compiled, and trained from random weight
-initialisation. This means the total number of training runs is:</p>
-<blockquote>
-<p><em>(number of new test observations)</em> × <em>(number of candidate
-grid points)</em></p>
-</blockquote>
-<p>For the example below with 6 new observations and a 20-point grid,
-that is 120 complete model training runs. Even with 30 epochs on a small
-dataset this takes meaningful time. In practice,
-<code>int_conformal_split</code> or <code>int_conformal_cv</code> are
-the recommended choices for kerasnip models. Full conformal inference is
-provided for completeness and for situations where the extra statistical
-rigour is required and training cost is acceptable.</p>
+<div class="section level3">
+<h3 id="why-int_conformal_full-is-unreliable-without-fit_seed">Why <code>int_conformal_full</code> is unreliable without
+<code>fit_seed</code><a class="anchor" aria-label="anchor" href="#why-int_conformal_full-is-unreliable-without-fit_seed"></a>
+</h3>
+<p>For a kerasnip model, every refit goes through a full
+build–compile–train cycle starting from <strong>random weight
+initialisation</strong>. This creates a fundamental incompatibility with
+<code>probably</code>’s bounds-search algorithm, which assumes that as
+the candidate outcome sweeps across the trial grid, the nonconformity
+score for the trial row changes <strong>monotonically</strong>. That
+assumption holds for deterministic models, linear regression, random
+forests, gradient boosting, where the same data always produces the same
+model. It does not hold for a neural network re-trained from a different
+random state on every refit.</p>
+<p>When the scores happen to be non-monotone, <code>probably</code>
+cannot find the interval boundaries and returns <code>NA</code>.
+<strong>Critically, this does not happen on every run.</strong> The
+outcome depends on the data, the architecture, and the random state of
+the session at the time of the call. Results may look valid on one run
+and produce <code>NA</code> on the next, with no way to know in advance
+which will occur. A result that appears correct cannot be trusted to be
+reproducible.</p>
+<p>kerasnip detects when it is being called inside
+<code>int_conformal_full</code>’s refit loop and emits a warning on
+every internal refit when <code>fit_seed</code> is absent. The warning
+is the <strong>reliable signal</strong>, it fires unconditionally
+regardless of whether the current run happens to succeed:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Use a small subset to keep runtime reasonable in this vignette</span></span>
-<span><span class="va">data_small</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span></span>
-<span><span class="va">new_obs_small</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">106</span>, <span class="op">]</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="co"># This code pattern will trigger a kerasnip warning on every internal refit.</span></span>
+<span><span class="co"># The intervals may or may not be NA depending on the session's random state.</span></span>
 <span><span class="va">fit_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wflow</span>, data <span class="op">=</span> <span class="va">data_small</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">conformal_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
+<span><span class="va">conformal_full_broken</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
 <span>  <span class="va">fit_small</span>,</span>
+<span>  train_data <span class="op">=</span> <span class="va">data_small</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/control_conformal_full.html" class="external-link">control_conformal_full</a></span><span class="op">(</span></span>
+<span>    method <span class="op">=</span> <span class="st">"grid"</span>,</span>
+<span>    trial_points <span class="op">=</span> <span class="fl">20</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Warning: int_conformal_full() refits the model from scratch for every trial</span></span>
+<span><span class="co"># value. Without `fit_seed`, each refit starts from a different random</span></span>
+<span><span class="co"># initialisation, so nonconformity scores across the trial grid may be</span></span>
+<span><span class="co"># non-monotone. When that happens, probably cannot find the interval boundaries</span></span>
+<span><span class="co"># and returns NA — but the problem does not occur on every run, so results that</span></span>
+<span><span class="co"># look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co"># Fix: add `fit_seed = &lt;integer&gt;` to your model spec ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_full_broken</span>, new_data <span class="op">=</span> <span class="va">new_obs_small</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span></code></pre></div>
+<p>If you see this warning, treat the output as unreliable regardless of
+whether the intervals contain numbers or <code>NA</code>.</p>
+</div>
+<div class="section level3">
+<h3 id="the-fix-fit_seed">The fix: <code>fit_seed</code><a class="anchor" aria-label="anchor" href="#the-fix-fit_seed"></a>
+</h3>
+<p>Setting <code>fit_seed</code> in the model spec calls
+<code><a href="https://keras3.posit.co/reference/set_random_seed.html" class="external-link">keras3::set_random_seed()</a></code> at the start of every internal
+refit, making each training run deterministic and restoring the
+monotonicity the bounds-search requires. The warning will not fire and
+the intervals will be reproducible across runs:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Use a small subset to keep runtime reasonable in this vignette.</span></span>
+<span><span class="co"># int_conformal_full refits the model (n_new_obs x n_grid_points) times —</span></span>
+<span><span class="co"># here 3 x 20 = 60 complete training runs on top of the initial fit.</span></span>
+<span><span class="va">data_small</span>    <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span></span>
+<span><span class="va">new_obs_small</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">103</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># fit_seed = 42L ensures every internal refit uses the same random state.</span></span>
+<span><span class="co"># The value is arbitrary; what matters is that it is fixed and consistent.</span></span>
+<span><span class="va">spec_seeded</span> <span class="op">&lt;-</span> <span class="fu">conf_mlp</span><span class="op">(</span></span>
+<span>  dense_units <span class="op">=</span> <span class="fl">32</span>,</span>
+<span>  fit_epochs  <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  fit_seed    <span class="op">=</span> <span class="fl">42L</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">wflow_seeded</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">spec_seeded</span><span class="op">)</span></span>
+<span><span class="va">fit_seeded</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wflow_seeded</span>, data <span class="op">=</span> <span class="va">data_small</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">conformal_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
+<span>  <span class="va">fit_seeded</span>,</span>
 <span>  train_data <span class="op">=</span> <span class="va">data_small</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/control_conformal_full.html" class="external-link">control_conformal_full</a></span><span class="op">(</span></span>
 <span>    method <span class="op">=</span> <span class="st">"grid"</span>,</span>
@@ -378,26 +435,24 @@ rigour is required and training cost is acceptable.</p>
 <span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
 <span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
 <span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
-<p><strong>When to use this</strong>: when you need the strongest
-possible coverage guarantees and are willing to pay the training cost.
-For neural networks, prefer <code>int_conformal_split</code> unless you
-have a specific reason to use full conformal inference.</p>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="when-to-use-int_conformal_full">When to use <code>int_conformal_full</code><a class="anchor" aria-label="anchor" href="#when-to-use-int_conformal_full"></a>
+</h3>
+<p>Prefer <code>int_conformal_split</code> or
+<code>int_conformal_cv</code> for kerasnip models, both calibrate a
+single fixed model and carry none of the above caveats. Use
+<code>int_conformal_full</code> only when the stronger coverage
+guarantee is required, the training cost is acceptable, and
+<code>fit_seed</code> is set.</p>
 <hr>
+</div>
 </div>
 <div class="section level2">
 <h2 id="comparison-of-the-three-methods">Comparison of the three methods<a class="anchor" aria-label="anchor" href="#comparison-of-the-three-methods"></a>
@@ -420,19 +475,19 @@ have a specific reason to use full conformal inference.</p>
 <td><code>int_conformal_split</code></td>
 <td>1 (on training data only)</td>
 <td>Marginal</td>
-<td>Yes — lowest cost</td>
+<td>✅ Yes, lowest cost</td>
 </tr>
 <tr class="even">
 <td><code>int_conformal_cv</code></td>
 <td>1 per fold + 1 final</td>
 <td>Marginal</td>
-<td>Yes — if already cross-validating</td>
+<td>✅ Yes, if already cross-validating</td>
 </tr>
 <tr class="odd">
 <td><code>int_conformal_full</code></td>
 <td><em>(n_test × n_grid)</em></td>
 <td>Marginal</td>
-<td>With caution — expensive</td>
+<td>⚠️ Only with <code>fit_seed</code>, unreliable otherwise</td>
 </tr>
 </tbody>
 </table>
@@ -447,7 +502,7 @@ well-calibrated for most regression problems.</p>
 <div class="section level2">
 <h2 id="cleanup">Cleanup<a class="anchor" aria-label="anchor" href="#cleanup"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/remove_keras_spec.html">remove_keras_spec</a></span><span class="op">(</span><span class="st">"conf_mlp"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Removed from parsnip registry objects: conf_mlp, conf_mlp_args, conf_mlp_encoding, conf_mlp_fit, conf_mlp_modes, conf_mlp_pkgs, conf_mlp_predict</span></span>
 <span><span class="co">#&gt; Removed 'conf_mlp' from parsnip:::get_model_env()$models</span></span></code></pre></div>

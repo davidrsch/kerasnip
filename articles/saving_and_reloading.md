@@ -91,9 +91,9 @@ predict(fit_wf, new_data)
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.40
-#> 2  1.24
-#> 3  4.98
+#> 1 0.651
+#> 2 0.637
+#> 3 3.41
 ```
 
 The first call to predict() detects that the Python pointer is invalid
@@ -114,7 +114,7 @@ and restores the model from the stored bytes automatically.
 This means you can use the persistence strategy that best suits your
 workflow without any extra boilerplate.
 
-## Strategy 1 — Plain `saveRDS()` / `readRDS()`
+## Strategy 1: Plain `saveRDS()` / `readRDS()`
 
 For most use cases: sharing a model file with a colleague, caching a fit
 between R sessions, or checkpointing during development; plain RDS is
@@ -140,9 +140,9 @@ predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.40
-#> 2  1.24
-#> 3  4.98
+#> 1 0.651
+#> 2 0.637
+#> 3 3.41
 ```
 
 There is nothing special to do after
@@ -151,7 +151,7 @@ There is nothing special to do after
 pointer, restores the model from the stored bytes, and then proceeds
 normally.
 
-## Strategy 2 — `bundle` / `unbundle`
+## Strategy 2: `bundle` / `unbundle`
 
 The [`bundle`](https://rstudio.github.io/bundle/) package provides a
 standardized serialization interface used by `vetiver`, `plumber`, and
@@ -183,9 +183,9 @@ predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.40
-#> 2  1.24
-#> 3  4.98
+#> 1 0.651
+#> 2 0.637
+#> 3 3.41
 ```
 
 ## Comparison

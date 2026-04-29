@@ -176,9 +176,9 @@ workflow:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 1</span></span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  1.40</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  1.24</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  4.98</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0.651</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.637</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 3.41</span></span></code></pre></div>
 <p>The first call to predict() detects that the Python pointer is
 invalid and restores the model from the stored bytes automatically.</p>
 </div>
@@ -200,7 +200,7 @@ missing from the session (e.g. after a fresh start).</li>
 workflow without any extra boilerplate.</p>
 </div>
 <div class="section level2">
-<h2 id="strategy-1-plain-saverds-readrds">Strategy 1 — Plain <code>saveRDS()</code> /
+<h2 id="strategy-1-plain-saverds-readrds">Strategy 1: Plain <code>saveRDS()</code> /
 <code>readRDS()</code><a class="anchor" aria-label="anchor" href="#strategy-1-plain-saverds-readrds"></a>
 </h2>
 <p>For most use cases: sharing a model file with a colleague, caching a
@@ -226,16 +226,16 @@ is the simplest approach.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 1</span></span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  1.40</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  1.24</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  4.98</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0.651</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.637</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 3.41</span></span></code></pre></div>
 <p>There is nothing special to do after <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code>. The
 first call to <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> detects the invalid pointer,
 restores the model from the stored bytes, and then proceeds
 normally.</p>
 </div>
 <div class="section level2">
-<h2 id="strategy-2-bundle-unbundle">Strategy 2 — <code>bundle</code> / <code>unbundle</code><a class="anchor" aria-label="anchor" href="#strategy-2-bundle-unbundle"></a>
+<h2 id="strategy-2-bundle-unbundle">Strategy 2: <code>bundle</code> / <code>unbundle</code><a class="anchor" aria-label="anchor" href="#strategy-2-bundle-unbundle"></a>
 </h2>
 <p>The <a href="https://rstudio.github.io/bundle/" class="external-link"><code>bundle</code></a> package
 provides a standardized serialization interface used by
@@ -269,9 +269,9 @@ paths.</li>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 1</span></span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  1.40</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  1.24</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  4.98</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0.651</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.637</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 3.41</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="comparison">Comparison<a class="anchor" aria-label="anchor" href="#comparison"></a>
