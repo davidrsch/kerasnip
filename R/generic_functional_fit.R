@@ -33,14 +33,14 @@
 #' produces a different function every time. The nonconformity scores across the
 #' grid may therefore be non-monotone, in which case `probably` cannot find the
 #' interval boundaries and returns `NA`. Whether this actually occurs depends on
-#' the data, architecture, and random state of the session — it is not
+#' the data, architecture, and random state of the session, it is not
 #' guaranteed on every run, which makes it particularly hard to detect.
 #'
 #' Setting `fit_seed` makes each refit deterministic and removes this source of
 #' unreliability. Without it, kerasnip emits a warning when `int_conformal_full`
 #' is detected in the call stack, because the risk is always present even when
 #' the current run happens to succeed. Use `int_conformal_split` or
-#' `int_conformal_cv` if you want to avoid this constraint entirely — they
+#' `int_conformal_cv` if you want to avoid this constraint entirely, they
 #' calibrate a single fixed model and are not affected.
 #'
 #' @param formula A formula specifying the predictor and outcome variables,
@@ -123,7 +123,7 @@ generic_functional_fit <- function(
   # predict.int_conformal_full we warn unconditionally. The risk is always
   # present: each refit starts from a different random initialisation, which
   # may produce non-monotone nonconformity scores and NA intervals. Whether
-  # NA actually occurs depends on the data and session state — it is not
+  # NA actually occurs depends on the data and session state, it is not
   # guaranteed on every run, which is precisely what makes it dangerous. The
   # warning fires reliably so the user is always informed, even on runs that
   # happen to succeed.
@@ -137,7 +137,7 @@ generic_functional_fit <- function(
       "value. Without `fit_seed`, each refit starts from a different random ",
       "initialisation, so nonconformity scores across the trial grid may be ",
       "non-monotone. When that happens, probably cannot find the interval ",
-      "boundaries and returns NA — but the problem does not occur on every run, ",
+      "boundaries and returns NA, but the problem does not occur on every run, ",
       "so results that look valid may not be reproducible or trustworthy.\n",
       "Fix: add `fit_seed = <integer>` to your model spec, e.g.:\n",
       "  my_model(fit_epochs = 30, fit_seed = 42L) |> set_engine(\"keras\")\n",

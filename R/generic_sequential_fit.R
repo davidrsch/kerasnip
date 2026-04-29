@@ -33,7 +33,7 @@
 #' produces a different function every time. The nonconformity scores across the
 #' grid may therefore be non-monotone, in which case `probably` cannot find the
 #' interval boundaries and returns `NA`. Whether this actually occurs depends on
-#' the data, architecture, and random state of the session — it is not
+#' the data, architecture, and random state of the session, it is not
 #' guaranteed on every run, which makes it particularly hard to detect.
 #'
 #' Setting `fit_seed` makes each refit deterministic and removes this source of
@@ -137,7 +137,7 @@ generic_sequential_fit <- function(
       "value. Without `fit_seed`, each refit starts from a different random ",
       "initialisation, so nonconformity scores across the trial grid may be ",
       "non-monotone. When that happens, probably cannot find the interval ",
-      "boundaries and returns NA — but the problem does not occur on every run, ",
+      "boundaries and returns NA, but the problem does not occur on every run, ",
       "so results that look valid may not be reproducible or trustworthy.\n",
       "Fix: add `fit_seed = <integer>` to your model spec, e.g.:\n",
       "  my_model(fit_epochs = 30, fit_seed = 42L) |> set_engine(\"keras\")\n",
