@@ -93,8 +93,13 @@ collect_spec_args <- function(
     character()
   }
 
-  # learn_rate is a special convenience argument for the default optimizer
-  special_params <- "learn_rate"
+  # learn_rate is a special convenience argument for the default optimizer.
+  # fit_seed is consumed early in generic_sequential/functional_fit to call
+  # keras3::set_random_seed() before every training run. It must be listed here
+  # so parsnip registers it as a known spec argument; without this registration
+  # passing fit_seed = <n> to a model spec would produce an "unused argument"
+  # error.
+  special_params <- c("learn_rate", "fit_seed")
 
   dynamic_global_args <- c(special_params, fit_params, compile_params)
 

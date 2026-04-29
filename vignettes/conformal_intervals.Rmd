@@ -25,9 +25,9 @@ This is not a limitation specific to `kerasnip`. The entire tidymodels ecosystem
 
 The supported and recommended path for obtaining prediction intervals from neural networks in tidymodels is **conformal inference**, provided by the `probably` package. Conformal inference is:
 
-- **Distribution-free**, it makes no assumptions about the shape of the outcome distribution.
-- **Model-agnostic**, it treats the model as a black box; only `fit()` and `predict()` calls are required.
-- **Guaranteed to have correct coverage**, under the assumption that training and test data are exchangeable (i.e. identically and independently distributed), the intervals contain the true outcome with at least the requested probability.
+- **Distribution-free**: it makes no assumptions about the shape of the outcome distribution.
+- **Model-agnostic**: it treats the model as a black box; only `fit()` and `predict()` calls are required.
+- **Guaranteed to have correct coverage**: under the assumption that training and test data are exchangeable (i.e. identically and independently distributed), the intervals contain the true outcome with at least the requested probability.
 
 The `probably` package provides three conformal methods, described in the sections below.
 
@@ -158,21 +158,65 @@ Full conformal inference is the most principled of the three methods in terms of
 
 The algorithm works observation by observation. For each new test point, it appends that observation to the training set with a **candidate outcome value**, refits the model from scratch on the augmented dataset, and checks whether the residual for the candidate value is consistent with the training residuals. By sweeping over a grid of candidate values, it determines the interval of values that the algorithm would not reject.
 
-For a kerasnip model, every refit call goes through the full build–compile–train cycle: the Keras architecture is reconstructed from the layer blocks, compiled, and trained from random weight initialisation. This means the total number of training runs is:
+### Why `int_conformal_full` is unreliable without `fit_seed`
 
-> *(number of new test observations)* × *(number of candidate grid points)*
+For a kerasnip model, every refit goes through a full build–compile–train cycle starting from **random weight initialisation**. This creates a fundamental incompatibility with `probably`'s bounds-search algorithm, which assumes that as the candidate outcome sweeps across the trial grid, the nonconformity score for the trial row changes **monotonically**. That assumption holds for deterministic models, linear regression, random forests, gradient boosting, where the same data always produces the same model. It does not hold for a neural network re-trained from a different random state on every refit.
 
-For the example below with 6 new observations and a 20-point grid, that is 120 complete model training runs. Even with 30 epochs on a small dataset this takes meaningful time. In practice, `int_conformal_split` or `int_conformal_cv` are the recommended choices for kerasnip models. Full conformal inference is provided for completeness and for situations where the extra statistical rigour is required and training cost is acceptable.
+When the scores happen to be non-monotone, `probably` cannot find the interval boundaries and returns `NA`. **Critically, this does not happen on every run.** The outcome depends on the data, the architecture, and the random state of the session at the time of the call. Results may look valid on one run and produce `NA` on the next, with no way to know in advance which will occur. A result that appears correct cannot be trusted to be reproducible.
 
-```{r full-conformal}
-# Use a small subset to keep runtime reasonable in this vignette
-data_small <- data[1:100, ]
-new_obs_small <- data[101:106, ]
+kerasnip detects when it is being called inside `int_conformal_full`'s refit loop and emits a warning on every internal refit when `fit_seed` is absent. The warning is the **reliable signal**, it fires unconditionally regardless of whether the current run happens to succeed:
 
+```{r full-conformal-broken, eval = FALSE}
+# This code pattern will trigger a kerasnip warning on every internal refit.
+# The intervals may or may not be NA depending on the session's random state.
 fit_small <- fit(wflow, data = data_small)
 
-conformal_full <- int_conformal_full(
+conformal_full_broken <- int_conformal_full(
   fit_small,
+  train_data = data_small,
+  control = control_conformal_full(
+    method = "grid",
+    trial_points = 20
+  )
+)
+
+# Warning: int_conformal_full() refits the model from scratch for every trial
+# value. Without `fit_seed`, each refit starts from a different random
+# initialisation, so nonconformity scores across the trial grid may be
+# non-monotone. When that happens, probably cannot find the interval boundaries
+# and returns NA — but the problem does not occur on every run, so results that
+# look valid may not be reproducible or trustworthy.
+# Fix: add `fit_seed = <integer>` to your model spec ...
+predict(conformal_full_broken, new_data = new_obs_small, level = 0.90)
+```
+
+If you see this warning, treat the output as unreliable regardless of whether the intervals contain numbers or `NA`.
+
+### The fix: `fit_seed`
+
+Setting `fit_seed` in the model spec calls `keras3::set_random_seed()` at the start of every internal refit, making each training run deterministic and restoring the monotonicity the bounds-search requires. The warning will not fire and the intervals will be reproducible across runs:
+
+```{r full-conformal-fixed}
+# Use a small subset to keep runtime reasonable in this vignette.
+# int_conformal_full refits the model (n_new_obs x n_grid_points) times —
+# here 3 x 20 = 60 complete training runs on top of the initial fit.
+data_small    <- data[1:100, ]
+new_obs_small <- data[101:103, ]
+
+# fit_seed = 42L ensures every internal refit uses the same random state.
+# The value is arbitrary; what matters is that it is fixed and consistent.
+spec_seeded <- conf_mlp(
+  dense_units = 32,
+  fit_epochs  = 30,
+  fit_seed    = 42L
+) |>
+  set_engine("keras")
+
+wflow_seeded <- workflow(rec, spec_seeded)
+fit_seeded   <- fit(wflow_seeded, data = data_small)
+
+conformal_full <- int_conformal_full(
+  fit_seeded,
   train_data = data_small,
   control = control_conformal_full(
     method = "grid",
@@ -184,7 +228,9 @@ conformal_full
 predict(conformal_full, new_data = new_obs_small, level = 0.90)
 ```
 
-**When to use this**: when you need the strongest possible coverage guarantees and are willing to pay the training cost. For neural networks, prefer `int_conformal_split` unless you have a specific reason to use full conformal inference.
+### When to use `int_conformal_full`
+
+Prefer `int_conformal_split` or `int_conformal_cv` for kerasnip models, both calibrate a single fixed model and carry none of the above caveats. Use `int_conformal_full` only when the stronger coverage guarantee is required, the training cost is acceptable, and `fit_seed` is set.
 
 ---
 
@@ -192,9 +238,9 @@ predict(conformal_full, new_data = new_obs_small, level = 0.90)
 
 | Method | Model refits | Coverage guarantee | Recommended for kerasnip |
 |---|---|---|---|
-| `int_conformal_split` | 1 (on training data only) | Marginal | Yes, lowest cost |
-| `int_conformal_cv` | 1 per fold + 1 final | Marginal | Yes, if already cross-validating |
-| `int_conformal_full` | *(n_test × n_grid)* | Marginal | With caution, expensive |
+| `int_conformal_split` | 1 (on training data only) | Marginal | ✅ Yes, lowest cost |
+| `int_conformal_cv` | 1 per fold + 1 final | Marginal | ✅ Yes, if already cross-validating |
+| `int_conformal_full` | *(n_test × n_grid)* | Marginal | ⚠️ Only with `fit_seed`, unreliable otherwise |
 
 All three methods provide **marginal coverage**: across many test observations, at least the requested fraction will have their true outcome within the interval. None of them provide **conditional coverage** (intervals that are exactly correct for every specific input value), but in practice they are well-calibrated for most regression problems.
 
