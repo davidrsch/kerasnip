@@ -91,9 +91,9 @@ predict(fit_wf, new_data)
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1 0.651
-#> 2 0.637
-#> 3 3.41
+#> 1  1.49
+#> 2  1.43
+#> 3  4.66
 ```
 
 The first call to predict() detects that the Python pointer is invalid
@@ -135,14 +135,14 @@ fit_wf <- readRDS("my_model.rds")
 
 # predict() restores the Keras model from bytes automatically
 predictions <- predict(fit_wf, new_data = new_data)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 36ms/step
 predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1 0.651
-#> 2 0.637
-#> 3 3.41
+#> 1  1.49
+#> 2  1.43
+#> 3  4.66
 ```
 
 There is nothing special to do after
@@ -183,9 +183,9 @@ predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1 0.651
-#> 2 0.637
-#> 3 3.41
+#> 1  1.49
+#> 2  1.43
+#> 3  4.66
 ```
 
 ## Comparison
