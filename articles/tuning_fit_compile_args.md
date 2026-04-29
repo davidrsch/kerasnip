@@ -213,83 +213,7 @@ tune_res <- tune_grid(
   metrics = metric_set(accuracy, roc_auc),
   control = control_grid(save_pred = FALSE, save_workflow = TRUE, verbose = FALSE)
 )
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 12ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
@@ -302,15 +226,7 @@ tune_res <- tune_grid(
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
@@ -321,6 +237,90 @@ tune_res <- tune_grid(
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
@@ -340,59 +340,59 @@ tune_res <- tune_grid(
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 16ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 14ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 24ms/step
@@ -418,10 +418,10 @@ show_best(tune_res, metric = "accuracy")
 #> # A tibble: 5 × 11
 #>   learn_rate fit_batch_size fit_epochs compile_optimizer compile_loss    .metric
 #>        <dbl>          <int>      <int> <chr>             <chr>           <chr>  
-#> 1       0.01             16         30 adam              kl_divergence   accura…
-#> 2       0.01             64         30 adam              categorical_cr… accura…
-#> 3       0.01             16         30 adam              categorical_cr… accura…
-#> 4       0.01             64         30 adam              kl_divergence   accura…
+#> 1       0.01             16         30 adam              categorical_cr… accura…
+#> 2       0.01             16         30 adam              kl_divergence   accura…
+#> 3       0.01             64         30 adam              kl_divergence   accura…
+#> 4       0.01             64         30 adam              categorical_cr… accura…
 #> 5       0.01             16         10 adam              kl_divergence   accura…
 #> # ℹ 5 more variables: .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>,
 #> #   .config <chr>
@@ -438,9 +438,9 @@ autoplot(tune_res) + theme_minimal()
 best_params <- select_best(tune_res, metric = "accuracy")
 print(best_params)
 #> # A tibble: 1 × 6
-#>   learn_rate fit_batch_size fit_epochs compile_optimizer compile_loss  .config  
-#>        <dbl>          <int>      <int> <chr>             <chr>         <chr>    
-#> 1       0.01             16         30 adam              kl_divergence pre0_mod…
+#>   learn_rate fit_batch_size fit_epochs compile_optimizer compile_loss    .config
+#>        <dbl>          <int>      <int> <chr>             <chr>           <chr>  
+#> 1       0.01             16         30 adam              categorical_cr… pre0_m…
 ```
 
 The results show that `tune` has successfully explored different
@@ -486,12 +486,12 @@ print(final_fit)
 #>  Optimizer params: 264 (1.04 KB)
 #> 
 #> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 66 a0 fe 5b 40 00 00 00 40 00
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 dc 52 ee 6d 40 00 00 00 40 00
 #>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
 #>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 34 2e 30 22 2c 20 22
 #>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 34 2d 32 39
-#>    [97] 40 30 38 3a 32 36 3a 34 33 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 e1 13 86 14 2b 0b 00 00 2b 0b 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>    [97] 40 31 35 3a 32 31 3a 31 30 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 91 c5 ec 0a 7b 0b 00 00 7b 0b 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
 #>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20
 #>   [169] 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 53 65 71 75 65 6e 74 69 61
 #>   [193] 6c 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22
@@ -502,7 +502,7 @@ print(final_fit)
 #>   [313] 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 6c 6f 61 74 33 32
 #>   [337] 22 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65 22 3a 20 6e
 #>   [361] 75 6c 6c 2c 20 22 73 68 61 72 65 64 5f 6f 62 6a 65 63 74 5f 69 64 22 3a
-#>   [385] 20 31 34 30 35 30 37 39 31 38 35 31 35 37 39 32 7d 2c 20 22 6c 61 79 65
+#>   [385] 20 31 34 30 33 37 36 34 35 35 31 38 38 38 38 30 7d 2c 20 22 6c 61 79 65
 #>   [409] 72 73 22 3a 20 5b 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 2e
 #>   [433] 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22
 #>   [457] 49 6e 70 75 74 4c 61 79 65 72 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b
@@ -523,7 +523,7 @@ print(final_fit)
 #>   [817] 33 32 22 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65 22 3a
 #> 
 #> ...
-#> and 967 more lines.
+#> and 970 more lines.
 ```
 
 We can now use this `final_fit` object to make predictions on the test
@@ -532,7 +532,7 @@ set.
 ``` r
 # Make predictions
 predictions <- predict(final_fit, new_data = iris_test)
-#> 1/1 - 0s - 33ms/step
+#> 1/1 - 0s - 34ms/step
 
 # Evaluate performance
 bind_cols(predictions, iris_test) |>
@@ -540,7 +540,7 @@ bind_cols(predictions, iris_test) |>
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy multiclass     0.967
+#> 1 accuracy multiclass     0.933
 ```
 
 ## Conclusion

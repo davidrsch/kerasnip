@@ -177,13 +177,15 @@ any other kerasnip workflow.</p>
 <span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">conf_mlp</span><span class="op">(</span>dense_units <span class="op">=</span> <span class="fl">32</span>, fit_epochs <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/ames.html" class="external-link">ames</a></span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>  <span class="va">Sale_Price</span>,</span>
-<span>  <span class="va">Gr_Liv_Area</span>,</span>
-<span>  <span class="va">Year_Built</span>,</span>
-<span>  <span class="va">Garage_Area</span>,</span>
-<span>  <span class="va">Total_Bsmt_SF</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/ames.html" class="external-link">ames</a></span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">Sale_Price</span>,</span>
+<span>    <span class="va">Gr_Liv_Area</span>,</span>
+<span>    <span class="va">Year_Built</span>,</span>
+<span>    <span class="va">Garage_Area</span>,</span>
+<span>    <span class="va">Total_Bsmt_SF</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">wflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">spec</span><span class="op">)</span></span></code></pre></div>
@@ -228,16 +230,16 @@ reference distribution for deciding how wide to make the intervals.</p>
 <span><span class="co"># Predict intervals for new observations</span></span>
 <span><span class="va">new_obs</span> <span class="op">&lt;-</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_split</span>, new_data <span class="op">=</span> <span class="va">new_obs</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;    .pred .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">31</span>434.    -<span style="color: #BB0000; text-decoration: underline;">179</span><span style="color: #BB0000;">710.</span>     <span style="text-decoration: underline;">242</span>579.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">97</span>563.    -<span style="color: #BB0000; text-decoration: underline;">113</span><span style="color: #BB0000;">581.</span>     <span style="text-decoration: underline;">308</span>708.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">52</span>903.    -<span style="color: #BB0000; text-decoration: underline;">158</span><span style="color: #BB0000;">242.</span>     <span style="text-decoration: underline;">264</span>048.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">58</span>939.    -<span style="color: #BB0000; text-decoration: underline;">152</span><span style="color: #BB0000;">205.</span>     <span style="text-decoration: underline;">270</span>084.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> <span style="text-decoration: underline;">12</span>758.    -<span style="color: #BB0000; text-decoration: underline;">198</span><span style="color: #BB0000;">386.</span>     <span style="text-decoration: underline;">223</span>903.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">16</span>475.    -<span style="color: #BB0000; text-decoration: underline;">194</span><span style="color: #BB0000;">670.</span>     <span style="text-decoration: underline;">227</span>620.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">28</span>394.    -<span style="color: #BB0000; text-decoration: underline;">188</span><span style="color: #BB0000;">969.</span>     <span style="text-decoration: underline;">245</span>757.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">83</span>529.    -<span style="color: #BB0000; text-decoration: underline;">133</span><span style="color: #BB0000;">834.</span>     <span style="text-decoration: underline;">300</span>892.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">45</span>360.    -<span style="color: #BB0000; text-decoration: underline;">172</span><span style="color: #BB0000;">003.</span>     <span style="text-decoration: underline;">262</span>724.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">50</span>492.    -<span style="color: #BB0000; text-decoration: underline;">166</span><span style="color: #BB0000;">871.</span>     <span style="text-decoration: underline;">267</span>856.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> <span style="text-decoration: underline;">14</span>442.    -<span style="color: #BB0000; text-decoration: underline;">202</span><span style="color: #BB0000;">921.</span>     <span style="text-decoration: underline;">231</span>805.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">16</span>996.    -<span style="color: #BB0000; text-decoration: underline;">200</span><span style="color: #BB0000;">368.</span>     <span style="text-decoration: underline;">234</span>359.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when training cost is non-trivial
 and you can afford to set aside a calibration set. This is the
 recommended method for kerasnip models in most practical situations.</p>
@@ -296,19 +298,19 @@ intervals for new data.</li>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_cv</span>, new_data <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   .pred_lower  .pred .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">186</span><span style="color: #BB0000;">742.</span> <span style="text-decoration: underline;">26</span>168.     <span style="text-decoration: underline;">239</span>079.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">194</span><span style="color: #BB0000;">767.</span> <span style="text-decoration: underline;">18</span>143.     <span style="text-decoration: underline;">231</span>054.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">198</span><span style="color: #BB0000;">423.</span> <span style="text-decoration: underline;">14</span>487.     <span style="text-decoration: underline;">227</span>398.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">139</span><span style="color: #BB0000;">409.</span> <span style="text-decoration: underline;">73</span>502.     <span style="text-decoration: underline;">286</span>413.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">178</span><span style="color: #BB0000;">310.</span> <span style="text-decoration: underline;">34</span>601.     <span style="text-decoration: underline;">247</span>511.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">178</span><span style="color: #BB0000;">966.</span> <span style="text-decoration: underline;">33</span>944.     <span style="text-decoration: underline;">246</span>855</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">191</span><span style="color: #BB0000;">966.</span> <span style="text-decoration: underline;">27</span>043.     <span style="text-decoration: underline;">246</span>052.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">197</span><span style="color: #BB0000;">011.</span> <span style="text-decoration: underline;">21</span>998.     <span style="text-decoration: underline;">241</span>007.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">199</span><span style="color: #BB0000;">726.</span> <span style="text-decoration: underline;">19</span>284.     <span style="text-decoration: underline;">238</span>293.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">149</span><span style="color: #BB0000;">532.</span> <span style="text-decoration: underline;">69</span>477.     <span style="text-decoration: underline;">288</span>486.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">185</span><span style="color: #BB0000;">576.</span> <span style="text-decoration: underline;">33</span>433.     <span style="text-decoration: underline;">252</span>442.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">185</span><span style="color: #BB0000;">979.</span> <span style="text-decoration: underline;">33</span>030.     <span style="text-decoration: underline;">252</span>039.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when you do not want to reserve a
 separate calibration set and are already running cross-validation to
 evaluate your model. The cross-validation residuals tend to produce
@@ -331,87 +333,30 @@ on the augmented dataset, and checks whether the residual for the
 candidate value is consistent with the training residuals. By sweeping
 over a grid of candidate values, it determines the interval of values
 that the algorithm would not reject.</p>
-<div class="section level3">
-<h3 id="why-int_conformal_full-is-unreliable-without-fit_seed">Why <code>int_conformal_full</code> is unreliable without
-<code>fit_seed</code><a class="anchor" aria-label="anchor" href="#why-int_conformal_full-is-unreliable-without-fit_seed"></a>
-</h3>
-<p>For a kerasnip model, every refit goes through a full
-build–compile–train cycle starting from <strong>random weight
-initialisation</strong>. This creates a fundamental incompatibility with
-<code>probably</code>’s bounds-search algorithm, which assumes that as
-the candidate outcome sweeps across the trial grid, the nonconformity
-score for the trial row changes <strong>monotonically</strong>. That
-assumption holds for deterministic models, linear regression, random
-forests, gradient boosting, where the same data always produces the same
-model. It does not hold for a neural network re-trained from a different
-random state on every refit.</p>
-<p>When the scores happen to be non-monotone, <code>probably</code>
-cannot find the interval boundaries and returns <code>NA</code>.
-<strong>Critically, this does not happen on every run.</strong> The
-outcome depends on the data, the architecture, and the random state of
-the session at the time of the call. Results may look valid on one run
-and produce <code>NA</code> on the next, with no way to know in advance
-which will occur. A result that appears correct cannot be trusted to be
-reproducible.</p>
-<p>kerasnip detects when it is being called inside
-<code>int_conformal_full</code>’s refit loop and emits a warning on
-every internal refit when <code>fit_seed</code> is absent. The warning
-is the <strong>reliable signal</strong>, it fires unconditionally
-regardless of whether the current run happens to succeed:</p>
+<p>For a kerasnip model, every refit call goes through the full
+build–compile–train cycle: the Keras architecture is reconstructed from
+the layer blocks, compiled, and trained from random weight
+initialisation. This means the total number of training runs is:</p>
+<blockquote>
+<p><em>(number of new test observations)</em> × <em>(number of candidate
+grid points)</em></p>
+</blockquote>
+<p>For the example below with 6 new observations and a 20-point grid,
+that is 120 complete model training runs. Even with 30 epochs on a small
+dataset this takes meaningful time. In practice,
+<code>int_conformal_split</code> or <code>int_conformal_cv</code> are
+the recommended choices for kerasnip models. Full conformal inference is
+provided for completeness and for situations where the extra statistical
+rigour is required and training cost is acceptable.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># This code pattern will trigger a kerasnip warning on every internal refit.</span></span>
-<span><span class="co"># The intervals may or may not be NA depending on the session's random state.</span></span>
+<code class="sourceCode R"><span><span class="co"># Use a small subset to keep runtime reasonable in this vignette</span></span>
+<span><span class="va">data_small</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span></span>
+<span><span class="va">new_obs_small</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">106</span>, <span class="op">]</span></span>
+<span></span>
 <span><span class="va">fit_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wflow</span>, data <span class="op">=</span> <span class="va">data_small</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">conformal_full_broken</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit_small</span>,</span>
-<span>  train_data <span class="op">=</span> <span class="va">data_small</span>,</span>
-<span>  control <span class="op">=</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/control_conformal_full.html" class="external-link">control_conformal_full</a></span><span class="op">(</span></span>
-<span>    method <span class="op">=</span> <span class="st">"grid"</span>,</span>
-<span>    trial_points <span class="op">=</span> <span class="fl">20</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Warning: int_conformal_full() refits the model from scratch for every trial</span></span>
-<span><span class="co"># value. Without `fit_seed`, each refit starts from a different random</span></span>
-<span><span class="co"># initialisation, so nonconformity scores across the trial grid may be</span></span>
-<span><span class="co"># non-monotone. When that happens, probably cannot find the interval boundaries</span></span>
-<span><span class="co"># and returns NA — but the problem does not occur on every run, so results that</span></span>
-<span><span class="co"># look valid may not be reproducible or trustworthy.</span></span>
-<span><span class="co"># Fix: add `fit_seed = &lt;integer&gt;` to your model spec ...</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_full_broken</span>, new_data <span class="op">=</span> <span class="va">new_obs_small</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span></code></pre></div>
-<p>If you see this warning, treat the output as unreliable regardless of
-whether the intervals contain numbers or <code>NA</code>.</p>
-</div>
-<div class="section level3">
-<h3 id="the-fix-fit_seed">The fix: <code>fit_seed</code><a class="anchor" aria-label="anchor" href="#the-fix-fit_seed"></a>
-</h3>
-<p>Setting <code>fit_seed</code> in the model spec calls
-<code><a href="https://keras3.posit.co/reference/set_random_seed.html" class="external-link">keras3::set_random_seed()</a></code> at the start of every internal
-refit, making each training run deterministic and restoring the
-monotonicity the bounds-search requires. The warning will not fire and
-the intervals will be reproducible across runs:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Use a small subset to keep runtime reasonable in this vignette.</span></span>
-<span><span class="co"># int_conformal_full refits the model (n_new_obs x n_grid_points) times —</span></span>
-<span><span class="co"># here 3 x 20 = 60 complete training runs on top of the initial fit.</span></span>
-<span><span class="va">data_small</span>    <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span></span>
-<span><span class="va">new_obs_small</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">103</span>, <span class="op">]</span></span>
-<span></span>
-<span><span class="co"># fit_seed = 42L ensures every internal refit uses the same random state.</span></span>
-<span><span class="co"># The value is arbitrary; what matters is that it is fixed and consistent.</span></span>
-<span><span class="va">spec_seeded</span> <span class="op">&lt;-</span> <span class="fu">conf_mlp</span><span class="op">(</span></span>
-<span>  dense_units <span class="op">=</span> <span class="fl">32</span>,</span>
-<span>  fit_epochs  <span class="op">=</span> <span class="fl">30</span>,</span>
-<span>  fit_seed    <span class="op">=</span> <span class="fl">42L</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">wflow_seeded</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">spec_seeded</span><span class="op">)</span></span>
-<span><span class="va">fit_seeded</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wflow_seeded</span>, data <span class="op">=</span> <span class="va">data_small</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">conformal_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit_seeded</span>,</span>
+<span>  <span class="va">fit_small</span>,</span>
 <span>  train_data <span class="op">=</span> <span class="va">data_small</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/control_conformal_full.html" class="external-link">control_conformal_full</a></span><span class="op">(</span></span>
 <span>    method <span class="op">=</span> <span class="st">"grid"</span>,</span>
@@ -429,30 +374,500 @@ the intervals will be reproducible across runs:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_full</span>, new_data <span class="op">=</span> <span class="va">new_obs_small</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; Warning: int_conformal_full() refits the model from scratch for every trial value. Without `fit_seed`, each refit starts from a different random initialisation, so nonconformity scores across the trial grid may be non-monotone. When that happens, probably cannot find the interval boundaries and returns NA, but the problem does not occur on every run, so results that look valid may not be reproducible or trustworthy.</span></span>
+<span><span class="co">#&gt; Fix: add `fit_seed = &lt;integer&gt;` to your model spec, e.g.:</span></span>
+<span><span class="co">#&gt;   my_model(fit_epochs = 30, fit_seed = 42L) |&gt; set_engine("keras")</span></span>
+<span><span class="co">#&gt; Alternative: use int_conformal_split() or int_conformal_cv() instead, which calibrate a single fixed model and are not affected by this issue.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="when-to-use-int_conformal_full">When to use <code>int_conformal_full</code><a class="anchor" aria-label="anchor" href="#when-to-use-int_conformal_full"></a>
-</h3>
-<p>Prefer <code>int_conformal_split</code> or
-<code>int_conformal_cv</code> for kerasnip models, both calibrate a
-single fixed model and carry none of the above caveats. Use
-<code>int_conformal_full</code> only when the stronger coverage
-guarantee is required, the training cost is acceptable, and
-<code>fit_seed</code> is set.</p>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">485</span><span style="color: #BB0000;">427.</span>     <span style="text-decoration: underline;">485</span>593.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">486</span><span style="color: #BB0000;">298.</span>     <span style="text-decoration: underline;">486</span>466.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">486</span><span style="color: #BB0000;">083.</span>     <span style="text-decoration: underline;">486</span>250.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">517</span><span style="color: #BB0000;">195.</span>     <span style="text-decoration: underline;">517</span>412.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">413</span><span style="color: #BB0000;">514.</span>     <span style="text-decoration: underline;">413</span>873.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">494</span><span style="color: #BB0000;">031.</span>     <span style="text-decoration: underline;">494</span>212.</span></span></code></pre></div>
+<p><strong>When to use this</strong>: when you need the strongest
+possible coverage guarantees and are willing to pay the training cost.
+For neural networks, prefer <code>int_conformal_split</code> unless you
+have a specific reason to use full conformal inference.</p>
 <hr>
-</div>
 </div>
 <div class="section level2">
 <h2 id="comparison-of-the-three-methods">Comparison of the three methods<a class="anchor" aria-label="anchor" href="#comparison-of-the-three-methods"></a>
@@ -475,19 +890,19 @@ guarantee is required, the training cost is acceptable, and
 <td><code>int_conformal_split</code></td>
 <td>1 (on training data only)</td>
 <td>Marginal</td>
-<td>✅ Yes, lowest cost</td>
+<td>Yes, lowest cost</td>
 </tr>
 <tr class="even">
 <td><code>int_conformal_cv</code></td>
 <td>1 per fold + 1 final</td>
 <td>Marginal</td>
-<td>✅ Yes, if already cross-validating</td>
+<td>Yes, if already cross-validating</td>
 </tr>
 <tr class="odd">
 <td><code>int_conformal_full</code></td>
 <td><em>(n_test × n_grid)</em></td>
 <td>Marginal</td>
-<td>⚠️ Only with <code>fit_seed</code>, unreliable otherwise</td>
+<td>With caution, expensive</td>
 </tr>
 </tbody>
 </table>
@@ -502,7 +917,7 @@ well-calibrated for most regression problems.</p>
 <div class="section level2">
 <h2 id="cleanup">Cleanup<a class="anchor" aria-label="anchor" href="#cleanup"></a>
 </h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/remove_keras_spec.html">remove_keras_spec</a></span><span class="op">(</span><span class="st">"conf_mlp"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Removed from parsnip registry objects: conf_mlp, conf_mlp_args, conf_mlp_encoding, conf_mlp_fit, conf_mlp_modes, conf_mlp_pkgs, conf_mlp_predict</span></span>
 <span><span class="co">#&gt; Removed 'conf_mlp' from parsnip:::get_model_env()$models</span></span></code></pre></div>

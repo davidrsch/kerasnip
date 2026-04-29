@@ -87,13 +87,13 @@ fit_wf <- workflow() |>
 # Predict
 new_data <- mtcars[1:3, ]
 predict(fit_wf, new_data)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.49
-#> 2  1.43
-#> 3  4.66
+#> 1  1.82
+#> 2  1.66
+#> 3  3.41
 ```
 
 The first call to predict() detects that the Python pointer is invalid
@@ -135,14 +135,14 @@ fit_wf <- readRDS("my_model.rds")
 
 # predict() restores the Keras model from bytes automatically
 predictions <- predict(fit_wf, new_data = new_data)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 34ms/step
 predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.49
-#> 2  1.43
-#> 3  4.66
+#> 1  1.82
+#> 2  1.66
+#> 3  3.41
 ```
 
 There is nothing special to do after
@@ -178,14 +178,14 @@ library(bundle)
 bundled <- readRDS("my_model_bundle.rds")
 fit_wf <- unbundle(bundled)
 predictions <- predict(fit_wf, new_data = new_data)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 33ms/step
 predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.49
-#> 2  1.43
-#> 3  4.66
+#> 1  1.82
+#> 2  1.66
+#> 3  3.41
 ```
 
 ## Comparison

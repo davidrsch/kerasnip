@@ -221,22 +221,22 @@ tune_res <- tune::tune_grid(
   grid = grid,
   control = control
 )
-#> 3/3 - 0s - 18ms/step
+#> 3/3 - 0s - 20ms/step
+#> 3/3 - 0s - 8ms/step
+#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 8ms/step
+#> 3/3 - 0s - 20ms/step
+#> 3/3 - 0s - 8ms/step
+#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 8ms/step
+#> 3/3 - 0s - 19ms/step
 #> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 17ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 18ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 18ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 17ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 18ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 17ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 18ms/step
-#> 3/3 - 0s - 7ms/step
+#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 8ms/step
+#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 8ms/step
+#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 8ms/step
 
 print(tune_res)
 #> # Tuning results
