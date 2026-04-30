@@ -11,11 +11,13 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = reticulate::py_module_available("keras"),
-  purl = reticulate::py_module_available("keras")
+  eval = reticulate::py_module_available("keras")
 )
 options(keras.fit_verbose = 0)
 set.seed(123)
+# To avoid compute NOTE on cran Debian check
+Sys.setenv("OMP_THREAD_LIMIT" = 2)
+Sys.setenv("OMP_NUM_THREADS" = 2)
 ```
 
 ## Why neural networks do not produce native prediction intervals

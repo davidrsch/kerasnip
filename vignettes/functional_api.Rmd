@@ -46,9 +46,11 @@ First, we load the necessary packages.
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = reticulate::py_module_available("keras"),
-  purl = reticulate::py_module_available("keras")
+  eval = reticulate::py_module_available("keras")
 )
+# To avoid compute NOTE on cran Debian check
+Sys.setenv("OMP_THREAD_LIMIT" = 2)
+Sys.setenv("OMP_NUM_THREADS" = 2)
 ```
 
 ```{r setup}

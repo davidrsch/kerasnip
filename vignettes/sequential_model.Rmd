@@ -21,12 +21,14 @@ We'll start by loading the necessary packages:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = reticulate::py_module_available("keras"),
-  purl = reticulate::py_module_available("keras")
+  eval = reticulate::py_module_available("keras")
 )
 # Suppress verbose Keras output for the vignette
 options(keras.fit_verbose = 0)
 set.seed(123)
+# To avoid compute NOTE on cran Debian check
+Sys.setenv("OMP_THREAD_LIMIT" = 2)
+Sys.setenv("OMP_NUM_THREADS" = 2)
 ```
 
 ```{r load-packages}
