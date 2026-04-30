@@ -11,7 +11,8 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = reticulate::py_module_available("keras")
+  eval = reticulate::py_module_available("keras"),
+  purl = reticulate::py_module_available("keras")
 )
 options(keras.fit_verbose = 0)
 set.seed(123)
@@ -43,7 +44,7 @@ library(probably)
 
 All three methods work with any fitted `workflows::workflow()` object, so the setup is identical to any other kerasnip workflow.
 
-```{r define-spec}
+```{r define-spec, cache=TRUE}
 input_block <- function(model, input_shape) {
   keras3::keras_model_sequential(input_shape = input_shape)
 }
@@ -94,7 +95,7 @@ This is the simplest and fastest method. The workflow is:
 
 The model is never re-fitted. The calibration residuals act as a reference distribution for deciding how wide to make the intervals.
 
-```{r split-conformal}
+```{r split-conformal, cache=TRUE}
 set.seed(1)
 split <- initial_split(data, prop = 0.75)
 train_dat <- training(split)
@@ -129,7 +130,7 @@ This method uses **cross-validation** to generate out-of-fold predictions, then 
 
 The final model is fitted once more on the full training data inside `int_conformal_cv()`.
 
-```{r cv-conformal}
+```{r cv-conformal, cache=TRUE}
 set.seed(1)
 folds <- vfold_cv(data, v = 5)
 
@@ -166,7 +167,7 @@ For a kerasnip model, every refit call goes through the full build–compile–t
 
 For the example below with 6 new observations and a 20-point grid, that is 120 complete model training runs. Even with 30 epochs on a small dataset this takes meaningful time. In practice, `int_conformal_split` or `int_conformal_cv` are the recommended choices for kerasnip models. Full conformal inference is provided for completeness and for situations where the extra statistical rigour is required and training cost is acceptable.
 
-```{r full-conformal}
+```{r full-conformal, cache=TRUE}
 # Use a small subset to keep runtime reasonable in this vignette
 data_small <- data[1:100, ]
 new_obs_small <- data[101:106, ]

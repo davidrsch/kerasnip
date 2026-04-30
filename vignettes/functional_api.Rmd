@@ -46,7 +46,8 @@ First, we load the necessary packages.
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = reticulate::py_module_available("keras")
+  eval = reticulate::py_module_available("keras"),
+  purl = reticulate::py_module_available("keras")
 )
 ```
 

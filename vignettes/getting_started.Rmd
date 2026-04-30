@@ -11,7 +11,8 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = reticulate::py_module_available("keras")
+  eval = reticulate::py_module_available("keras"),
+  purl = reticulate::py_module_available("keras")
 )
 # Suppress verbose Keras output for the vignette
 options(keras.fit_verbose = 0)
