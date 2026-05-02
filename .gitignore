@@ -13,3 +13,4 @@ vignettes/*_cache
 vignettes/figure/
 vignettes/*.rds
 /scripts/
+vignettes/*.Rmd
