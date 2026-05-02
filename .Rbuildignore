@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
+^\scripts$
 ^\.vscode$
 ^README\.Rmd$
 ^LICENSE\.md$
@@ -15,3 +16,7 @@
 ^codeconv\.yml$
 ^pkgdown$
 ^vignettes/.*_cache$
+^vignettes/.*\.orig$
+^vignettes/figure$
+^vignettes/.*\.rds$
+^.*cache$
