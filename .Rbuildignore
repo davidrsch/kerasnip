@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
-^\scripts$
 ^\.vscode$
 ^README\.Rmd$
 ^LICENSE\.md$
@@ -19,4 +18,5 @@
 ^vignettes/.*\.orig$
 ^vignettes/figure$
 ^vignettes/.*\.rds$
-^.*cache$
+^cache$
+^scripts$
