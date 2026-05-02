@@ -10,3 +10,6 @@ docs
 vignettes/*_cache
 /doc/
 /Meta/
+vignettes/figure/
+vignettes/*.rds
+/scripts/
