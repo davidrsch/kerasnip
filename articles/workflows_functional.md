@@ -18,6 +18,7 @@ those with multiple inputs, and integrate them seamlessly into the
 First, we load the necessary packages.
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
@@ -43,15 +44,15 @@ library(keras3)
 #> The following object is masked from 'package:infer':
 #> 
 #>     generate
-library(dplyr) # For data manipulation
-library(ggplot2) # For plotting
-library(future) # For parallel processing
+library(dplyr)       # For data manipulation
+library(ggplot2)     # For plotting
+library(future)      # For parallel processing
 #> 
 #> Attaching package: 'future'
 #> The following object is masked from 'package:keras3':
 #> 
 #>     %<-%
-library(finetune) # For racing
+library(finetune)    # For racing
 ```
 
 ## Data Preparation
@@ -61,6 +62,7 @@ We’ll use the Ames Housing dataset, which is available in the
 testing sets.
 
 ``` r
+
 # Select relevant columns and remove rows with missing values
 ames_df <- ames |>
   select(
@@ -99,6 +101,7 @@ This final step is crucial for the multi-input Keras model, as the
 inputs, where each matrix corresponds to a distinct input layer.
 
 ``` r
+
 ames_recipe <- recipe(Sale_Price ~ ., data = ames_train) |>
   step_normalize(all_numeric_predictors()) |>
   step_collapse(all_numeric_predictors(), new_col = "numerical_input") |>
@@ -119,6 +122,7 @@ will be processed separately and then concatenated before the final
 output layer.
 
 ``` r
+
 # Define layer blocks for multi-input functional model
 
 # Input blocks for numerical and categorical features
@@ -174,10 +178,10 @@ create_keras_functional_spec(
     combined_features = inp_spec(
       concatenate_features,
       c(
-        numeric = "processed_numerical",
-        neighborhood = "processed_neighborhood",
-        bldg = "processed_bldg",
-        condition = "processed_condition"
+        processed_numerical = "numeric",
+        processed_neighborhood = "neighborhood",
+        processed_bldg = "bldg",
+        processed_condition = "condition"
       )
     ),
     output = inp_spec(output_regression, "combined_features")
@@ -195,6 +199,7 @@ the arguments are prefixed with their corresponding block names (e.g.,
 `processed_numerical_units`).
 
 ``` r
+
 # Define the tunable model specification
 functional_mlp_spec <- ames_functional_mlp(
   # Tunable parameters for numerical branch
@@ -272,6 +277,7 @@ print(functional_mlp_spec)
 A `workflow` combines the recipe and the model specification.
 
 ``` r
+
 ames_wf <- workflow() |>
   add_recipe(ames_recipe) |>
   add_model(functional_mlp_spec)
@@ -349,6 +355,7 @@ print(ames_wf)
 We will create a regular grid for our hyperparameters.
 
 ``` r
+
 # Define the tuning grid
 params <- extract_parameter_set_dials(ames_wf) |>
   update(
@@ -384,6 +391,7 @@ Now, we’ll use
 to perform cross-validation and find the best hyperparameters.
 
 ``` r
+
 # Note: Parallel processing with `plan(multisession)` is currently not working
 # with Keras models due to backend conflicts
 
@@ -395,6 +403,261 @@ ames_tune_results <- tune_race_anova(
   metrics = metric_set(rmse, mae, rsq),
   control = control_race(save_pred = TRUE, save_workflow = TRUE)
 )
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 7ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
+#> 15/15 - 0s - 6ms/step
 ```
 
 ## Inspect Tuning Results
@@ -403,14 +666,13 @@ We can inspect the tuning results to see which hyperparameter
 combinations performed best.
 
 ``` r
+
 # Show the best performing models based on RMSE
 show_best(ames_tune_results, metric = "rmse", n = 5)
-#> # A tibble: 3 × 10
+#> # A tibble: 1 × 10
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
-#> 1                       128                           64                   40
-#> 2                       128                           64                   64
-#> 3                       128                           64                   16
+#> 1                       128                           64                   64
 #> # ℹ 7 more variables: processed_condition_units <int>, .metric <chr>,
 #> #   .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -423,7 +685,7 @@ print(best_functional_mlp_params)
 #> # A tibble: 1 × 5
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
-#> 1                       128                           64                   40
+#> 1                       128                           64                   64
 #> # ℹ 2 more variables: processed_condition_units <int>, .config <chr>
 ```
 
@@ -433,6 +695,7 @@ Once we have the best hyperparameters, we finalize the workflow and fit
 the model on the entire training dataset.
 
 ``` r
+
 # Finalize the workflow with the best hyperparameters
 final_ames_wf <- finalize_workflow(ames_wf, best_functional_mlp_params)
 
@@ -458,7 +721,7 @@ print(final_ames_fit)
 #> 
 #> ── Model ───────────────────────────────────────────────────────────────────────
 #> $fit
-#> Model: "functional_260"
+#> Model: "functional_255"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -474,42 +737,42 @@ print(final_ames_fit)
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1040 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1020 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1041 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1021 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1042 (Dense)    │ (None, 1, 40)     │         200 │ bldg_input[0][0]   │
+#> │ dense_1022 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1043 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1023 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_260       │ (None, 1, 296)    │           0 │ dense_1040[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1041[0][0],  │
-#> │                       │                   │             │ dense_1042[0][0],  │
-#> │                       │                   │             │ dense_1043[0][0]   │
+#> │ concatenate_255       │ (None, 1, 320)    │           0 │ dense_1020[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1021[0][0],  │
+#> │                       │                   │             │ dense_1022[0][0],  │
+#> │                       │                   │             │ dense_1023[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         297 │ concatenate_260[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_255[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
-#>  Total params: 13,205 (51.59 KB)
-#>  Trainable params: 4,401 (17.19 KB)
+#>  Total params: 13,637 (53.27 KB)
+#>  Trainable params: 4,545 (17.75 KB)
 #>  Non-trainable params: 0 (0.00 B)
-#>  Optimizer params: 8,804 (34.39 KB)
+#>  Optimizer params: 9,092 (35.52 KB)
 #> 
-#> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 83 5a fd 84 40 00 00 00 40 00
-#>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
-#>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 34 2e 30 22 2c 20 22
-#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 34 2d 32 39
-#>    [97] 40 31 37 3a 32 33 3a 35 37 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 41 30 68 ce 4b 20 00 00 4b 20 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
-#>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 2e 73 72
-#>   [169] 63 2e 6d 6f 64 65 6c 73 2e 66 75 6e 63 74 69 6f 6e 61 6c 22 2c 20 22 63
-#>   [193] 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 46 75 6e 63 74 69 6f 6e 61 6c 22
-#>   [217] 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 75
-#>   [241] 6e 63 74 69 6f 6e 61 6c 5f 32 36 30 22 2c 20 22 74 72 61 69 6e 61 62 6c
-#>   [265] 65 22 3a 20 74 72 75 65 2c 20 22 6c 61 79 65 72 73 22 3a 20 5b 7b 22 6d
+#> $history
+#> 
+#> Final epoch (plot to see history):
+#>                    loss: 1,172,517,504
+#>     mean_absolute_error: 21,097
+#>                val_loss: 6,274,322,432
+#> val_mean_absolute_error: 60,297 
+#> 
+#> $lvl
+#> NULL
+#> 
+#> $process_x
+#> function (x) 
 #> 
 #> ...
-#> and 4258 more lines.
+#> and 88 more lines.
 ```
 
 ### Inspect Final Model
@@ -518,12 +781,13 @@ You can extract the underlying Keras model and its training history for
 further inspection.
 
 ``` r
+
 # Extract the Keras model summary
 final_ames_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
   summary()
-#> Model: "functional_260"
+#> Model: "functional_255"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -539,28 +803,29 @@ final_ames_fit |>
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1040 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1020 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1041 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1021 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1042 (Dense)    │ (None, 1, 40)     │         200 │ bldg_input[0][0]   │
+#> │ dense_1022 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1043 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1023 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_260       │ (None, 1, 296)    │           0 │ dense_1040[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1041[0][0],  │
-#> │                       │                   │             │ dense_1042[0][0],  │
-#> │                       │                   │             │ dense_1043[0][0]   │
+#> │ concatenate_255       │ (None, 1, 320)    │           0 │ dense_1020[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1021[0][0],  │
+#> │                       │                   │             │ dense_1022[0][0],  │
+#> │                       │                   │             │ dense_1023[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         297 │ concatenate_260[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_255[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
-#>  Total params: 13,205 (51.59 KB)
-#>  Trainable params: 4,401 (17.19 KB)
+#>  Total params: 13,637 (53.27 KB)
+#>  Trainable params: 4,545 (17.75 KB)
 #>  Non-trainable params: 0 (0.00 B)
-#>  Optimizer params: 8,804 (34.39 KB)
+#>  Optimizer params: 9,092 (35.52 KB)
 ```
 
 ``` r
+
 # Plot the Keras model
 final_ames_fit |>
   extract_fit_parsnip() |>
@@ -568,11 +833,12 @@ final_ames_fit |>
   plot(show_shapes = TRUE)
 ```
 
-![Model](images/model_plot_shapes_wf.png)
+![Model](images/model_plot_shapes_fs.png)
 
 Model
 
 ``` r
+
 # Plot the training history
 final_ames_fit |>
   extract_fit_parsnip() |>
@@ -588,6 +854,7 @@ Finally, we will make predictions on the test set and evaluate the
 model’s performance.
 
 ``` r
+
 # Make predictions on the test set
 ames_test_pred <- predict(final_ames_fit, new_data = ames_test)
 #> 19/19 - 0s - 5ms/step
@@ -602,12 +869,12 @@ print(head(ames_results))
 #> # A tibble: 6 × 2
 #>   Sale_Price   .pred
 #>        <int>   <dbl>
-#> 1     105000  95313.
-#> 2     172000 160533.
-#> 3     189900 192438.
-#> 4     115000 127682.
-#> 5     395192 268659.
-#> 6     214000 212850.
+#> 1     105000  98059.
+#> 2     172000 160374.
+#> 3     189900 193345.
+#> 4     115000 127387.
+#> 5     395192 263507.
+#> 6     214000 212708.
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -624,72 +891,7 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard   51151.   
-#> 2 mae     standard   31156.   
-#> 3 rsq     standard       0.778
+#> 1 rmse    standard   51247.   
+#> 2 mae     standard   30965.   
+#> 3 rsq     standard       0.785
 ```
-
-## Saving and Reloading Your Model
-
-`kerasnip` serializes the Keras model weights to bytes at fit time and
-stores them alongside the workflow object. This means plain
-[`saveRDS()`](https://rdrr.io/r/base/readRDS.html) /
-[`readRDS()`](https://rdrr.io/r/base/readRDS.html) **works out of the
-box** — the underlying Keras model is restored automatically the first
-time [`predict()`](https://rdrr.io/r/stats/predict.html) is called on
-the reloaded object.
-
-``` r
-# Save the FINAL fitted workflow
-saveRDS(final_ames_fit, "ames_model.rds")
-
-# Reload — no extra steps needed
-final_ames_fit_loaded <- readRDS("ames_model.rds")
-
-# Make predictions again to prove it works
-predict(final_ames_fit_loaded, new_data = ames_test) |> head()
-#> 19/19 - 0s - 5ms/step
-#> # A tibble: 6 × 1
-#>     .pred
-#>     <dbl>
-#> 1  95313.
-#> 2 160533.
-#> 3 192438.
-#> 4 127682.
-#> 5 268659.
-#> 6 212850.
-```
-
-If you need a fully self-contained bundle suitable for deployment with
-`vetiver` or other MLOps tools, use
-[`bundle::bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
-instead:
-
-``` r
-library(bundle)
-
-# Save as a portable bundle
-bundled <- bundle(final_ames_fit)
-saveRDS(bundled, "ames_model_bundle.rds")
-
-# Reload in any R session
-library(kerasnip)
-library(bundle)
-final_ames_fit_loaded <- unbundle(readRDS("ames_model_bundle.rds"))
-
-predict(final_ames_fit_loaded, new_data = ames_test) |> head()
-#> 19/19 - 0s - 5ms/step
-#> # A tibble: 6 × 1
-#>     .pred
-#>     <dbl>
-#> 1  95313.
-#> 2 160533.
-#> 3 192438.
-#> 4 127682.
-#> 5 268659.
-#> 6 212850.
-```
-
-See
-[`vignette("saving_and_reloading")`](https://davidrsch.github.io/kerasnip/articles/saving_and_reloading.md)
-for a detailed comparison of both approaches.

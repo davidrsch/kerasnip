@@ -10,6 +10,7 @@ compatible with `tidymodels` workflows.
 You can install the development version of `kerasnip` from GitHub with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("davidrsch/kerasnip")
 ```
@@ -23,6 +24,7 @@ of layers using
 [`create_keras_sequential_spec()`](https://davidrsch.github.io/kerasnip/reference/create_keras_sequential_spec.md).
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 library(keras3)
@@ -93,6 +95,7 @@ This example builds a model where the input is forked into two paths,
 which are then concatenated.
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 library(keras3)
@@ -110,7 +113,8 @@ create_keras_functional_spec(
     main_input = input_block,
     path_a = inp_spec(path_block, "main_input"),
     path_b = inp_spec(path_block, "main_input"),
-    concatenated = inp_spec(concat_block, c(input_a = "path_a", input_b = "path_b")),
+    concatenated = inp_spec(concat_block, c(path_a = "input_a", path_b = "input_b")),
+    # The output block must be named 'output'.
     output = inp_spec(output_block, "concatenated")
   ),
   mode = "regression"
@@ -141,6 +145,7 @@ rate of a final dropout layer, showcasing how to tune both architecture
 and block hyperparameters simultaneously.
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 library(keras3)
@@ -210,8 +215,8 @@ tune_res <- tune_grid(
 # 6. Show the best architecture
 show_best(tune_res, metric = "rmse")
 #> # A tibble: 5 × 7
-#>   num_dense dense_units dropout_rate .metric .estimator .mean .config
-#>       <int>       <int>        <dbl> <chr>   <chr>      <dbl> <chr>
+#>   num_dense dense_units dropout_rate .metric .estimator .mean .config              
+#>       <int>       <int>        <dbl> <chr>   <chr>      <dbl> <chr>                
 #> 1         1          64          0.1 rmse    standard    2.92 Preprocessor1_Model02
 #> 2         1          64          0.5 rmse    standard    3.02 Preprocessor1_Model08
 #> 3         3          64          0.1 rmse    standard    3.15 Preprocessor1_Model04

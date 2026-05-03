@@ -17,6 +17,7 @@ tuning.
 First, we load the necessary packages.
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
@@ -42,15 +43,15 @@ library(keras3)
 #> The following object is masked from 'package:infer':
 #> 
 #>     generate
-library(dplyr) # For data manipulation
-library(ggplot2) # For plotting
-library(future) # For parallel processing
+library(dplyr)          # For data manipulation
+library(ggplot2)        # For plotting
+library(future)         # For parallel processing
 #> 
 #> Attaching package: 'future'
 #> The following object is masked from 'package:keras3':
 #> 
 #>     %<-%
-library(finetune) # For racing
+library(finetune)       # For racing
 ```
 
 ## Data Preparation
@@ -60,6 +61,7 @@ clean it by removing rows with missing values and ensuring the `species`
 column is a factor.
 
 ``` r
+
 # Remove rows with missing values
 penguins_df <- penguins |>
   na.omit() |>
@@ -85,6 +87,7 @@ numeric predictors. \* Create dummy variables for all categorical
 predictors.
 
 ``` r
+
 penguin_recipe <- recipe(species ~ ., data = penguin_train) |>
   step_normalize(all_numeric_predictors()) |>
   step_dummy(all_nominal_predictors())
@@ -102,6 +105,7 @@ package handles this preprocessing, transforming predictors into a
 single matrix that serves as the input to the Keras model.
 
 ``` r
+
 # Define layer blocks
 input_block <- function(model, input_shape) {
   keras_model_sequential(input_shape = input_shape)
@@ -140,6 +144,7 @@ indicating that they should be optimized. We will also set fixed
 parameters for compilation and fitting.
 
 ``` r
+
 # Define the tunable model specification
 mlp_spec <- penguin_mlp(
   # Tunable parameters for hidden layers
@@ -209,6 +214,7 @@ print(mlp_spec)
 A `workflow` combines the recipe and the model specification.
 
 ``` r
+
 penguin_wf <- workflow() |>
   add_recipe(penguin_recipe) |>
   add_model(mlp_spec)
@@ -273,6 +279,7 @@ print(penguin_wf)
 We will create a regular grid for our hyperparameters.
 
 ``` r
+
 # Define the tuning grid
 params <- extract_parameter_set_dials(penguin_wf) |>
   update(
@@ -307,6 +314,7 @@ Now, we’ll use
 to perform cross-validation and find the best hyperparameters.
 
 ``` r
+
 # Note: Parallel processing with `plan(multisession)` is currently not working
 # with Keras models due to backend conflicts
 
@@ -318,6 +326,804 @@ penguin_tune_results <- tune_race_anova(
   metrics = metric_set(accuracy, roc_auc, f_meas),
   control = control_race(save_pred = TRUE, save_workflow = TRUE)
 )
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 39ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 14ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 11ms/step
 ```
 
 ## Inspect Tuning Results
@@ -326,16 +1132,17 @@ We can inspect the tuning results to see which hyperparameter
 combinations performed best.
 
 ``` r
+
 # Show the best performing models based on accuracy
 show_best(penguin_tune_results, metric = "accuracy", n = 5)
 #> # A tibble: 5 × 10
 #>   hidden_1_units hidden_1_rate hidden_2_units hidden_2_rate .metric  .estimator
 #>            <int>         <dbl>          <int>         <dbl> <chr>    <chr>     
-#> 1             32           0.1             16         0.25  accuracy multiclass
-#> 2             32           0.1             16         0.400 accuracy multiclass
-#> 3             32           0.1             40         0.400 accuracy multiclass
-#> 4             32           0.1             64         0.1   accuracy multiclass
-#> 5             32           0.1             64         0.400 accuracy multiclass
+#> 1             32           0.1             16         0.1   accuracy multiclass
+#> 2             32           0.1             16         0.25  accuracy multiclass
+#> 3             32           0.1             16         0.400 accuracy multiclass
+#> 4             32           0.1             40         0.25  accuracy multiclass
+#> 5             32           0.1             40         0.400 accuracy multiclass
 #> # ℹ 4 more variables: mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
 # Autoplot the results
@@ -347,7 +1154,7 @@ print(best_mlp_params)
 #> # A tibble: 1 × 5
 #>   hidden_1_units hidden_1_rate hidden_2_units hidden_2_rate .config         
 #>            <int>         <dbl>          <int>         <dbl> <chr>           
-#> 1             32           0.1             16          0.25 pre0_mod02_post0
+#> 1             32           0.1             16           0.1 pre0_mod01_post0
 ```
 
 ## Finalize Workflow and Fit Model
@@ -356,6 +1163,7 @@ Once we have the best hyperparameters, we finalize the workflow and fit
 the model on the entire training dataset.
 
 ``` r
+
 # Finalize the workflow with the best hyperparameters
 final_penguin_wf <- finalize_workflow(penguin_wf, best_mlp_params)
 
@@ -375,58 +1183,58 @@ print(final_penguin_fit)
 #> 
 #> ── Model ───────────────────────────────────────────────────────────────────────
 #> $fit
-#> Model: "sequential_403"
+#> Model: "sequential_399"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-#> │ dense_1209 (Dense)                │ (None, 32)               │           256 │
+#> │ dense_1197 (Dense)                │ (None, 32)               │           256 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_806 (Dropout)             │ (None, 32)               │             0 │
+#> │ dropout_798 (Dropout)             │ (None, 32)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1210 (Dense)                │ (None, 16)               │           528 │
+#> │ dense_1198 (Dense)                │ (None, 16)               │           528 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_807 (Dropout)             │ (None, 16)               │             0 │
+#> │ dropout_799 (Dropout)             │ (None, 16)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1211 (Dense)                │ (None, 3)                │            51 │
+#> │ dense_1199 (Dense)                │ (None, 3)                │            51 │
 #> └───────────────────────────────────┴──────────────────────────┴───────────────┘
 #>  Total params: 2,507 (9.80 KB)
 #>  Trainable params: 835 (3.26 KB)
 #>  Non-trainable params: 0 (0.00 B)
 #>  Optimizer params: 1,672 (6.54 KB)
 #> 
-#> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 45 e7 a5 fa 40 00 00 00 40 00
-#>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
-#>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 34 2e 30 22 2c 20 22
-#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 34 2d 32 39
-#>    [97] 40 31 37 3a 34 30 3a 32 32 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 31 6d cc 85 27 11 00 00 27 11 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
-#>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20
-#>   [169] 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 53 65 71 75 65 6e 74 69 61
-#>   [193] 6c 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22
-#>   [217] 73 65 71 75 65 6e 74 69 61 6c 5f 34 30 33 22 2c 20 22 74 72 61 69 6e 61
-#>   [241] 62 6c 65 22 3a 20 74 72 75 65 2c 20 22 64 74 79 70 65 22 3a 20 7b 22 6d
-#>   [265] 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20 22 63 6c 61 73 73 5f
-#>   [289] 6e 61 6d 65 22 3a 20 22 44 54 79 70 65 50 6f 6c 69 63 79 22 2c 20 22 63
-#>   [313] 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 6c 6f 61 74 33
-#>   [337] 32 22 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65 22 3a 20
-#>   [361] 6e 75 6c 6c 2c 20 22 73 68 61 72 65 64 5f 6f 62 6a 65 63 74 5f 69 64 22
-#>   [385] 3a 20 31 34 30 35 35 30 36 33 37 31 31 30 36 37 32 7d 2c 20 22 6c 61 79
-#>   [409] 65 72 73 22 3a 20 5b 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73
-#>   [433] 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20
-#>   [457] 22 49 6e 70 75 74 4c 61 79 65 72 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20
-#>   [481] 7b 22 62 61 74 63 68 5f 73 68 61 70 65 22 3a 20 5b 6e 75 6c 6c 2c 20 37
-#>   [505] 5d 2c 20 22 64 74 79 70 65 22 3a 20 22 66 6c 6f 61 74 33 32 22 2c 20 22
-#>   [529] 73 70 61 72 73 65 22 3a 20 66 61 6c 73 65 2c 20 22 72 61 67 67 65 64 22
-#>   [553] 3a 20 66 61 6c 73 65 2c 20 22 6e 61 6d 65 22 3a 20 22 69 6e 70 75 74 5f
-#>   [577] 6c 61 79 65 72 5f 34 30 33 22 2c 20 22 6f 70 74 69 6f 6e 61 6c 22 3a 20
-#>   [601] 66 61 6c 73 65 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65
-#>   [625] 22 3a 20 6e 75 6c 6c 7d 2c 20 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65
-#>   [649] 72 61 73 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65
-#>   [673] 22 3a 20 22 44 65 6e 73 65 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22
+#> $history
+#> 
+#> Final epoch (plot to see history):
+#>     accuracy: 1
+#>         loss: 0.005212
+#> val_accuracy: 1
+#>     val_loss: 0.0001147 
+#> 
+#> $lvl
+#> [1] "Adelie"    "Chinstrap" "Gentoo"   
+#> 
+#> $process_x
+#> function (x) 
+#> {
+#>     if (is.data.frame(x) && ncol(x) == 1 && is.list(x[[1]])) {
+#>         x_proc <- do.call(abind::abind, c(x[[1]], list(along = 0)))
+#>     }
+#>     else {
+#>         x_proc <- as.matrix(x)
+#>     }
+#>     input_shape <- if (length(dim(x_proc)) > 2) 
+#>         dim(x_proc)[-1]
+#>     else ncol(x_proc)
+#>     list(x_proc = x_proc, input_shape = input_shape)
+#> }
+#> <bytecode: 0x562bd38b6f78>
+#> <environment: namespace:kerasnip>
+#> 
+#> $process_y
+#> function (y, is_classification = NULL, class_levels = NULL) 
 #> 
 #> ...
-#> and 1701 more lines.
+#> and 27 more lines.
 ```
 
 ### Inspect Final Model
@@ -435,24 +1243,25 @@ You can extract the underlying Keras model and its training history for
 further inspection.
 
 ``` r
+
 # Extract the Keras model summary
 final_penguin_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
   summary()
-#> Model: "sequential_403"
+#> Model: "sequential_399"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-#> │ dense_1209 (Dense)                │ (None, 32)               │           256 │
+#> │ dense_1197 (Dense)                │ (None, 32)               │           256 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_806 (Dropout)             │ (None, 32)               │             0 │
+#> │ dropout_798 (Dropout)             │ (None, 32)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1210 (Dense)                │ (None, 16)               │           528 │
+#> │ dense_1198 (Dense)                │ (None, 16)               │           528 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_807 (Dropout)             │ (None, 16)               │             0 │
+#> │ dropout_799 (Dropout)             │ (None, 16)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1211 (Dense)                │ (None, 3)                │            51 │
+#> │ dense_1199 (Dense)                │ (None, 3)                │            51 │
 #> └───────────────────────────────────┴──────────────────────────┴───────────────┘
 #>  Total params: 2,507 (9.80 KB)
 #>  Trainable params: 835 (3.26 KB)
@@ -461,6 +1270,7 @@ final_penguin_fit |>
 ```
 
 ``` r
+
 # Plot the Keras model
 final_penguin_fit |>
   extract_fit_parsnip() |>
@@ -473,6 +1283,7 @@ final_penguin_fit |>
 Model
 
 ``` r
+
 # Plot the training history
 final_penguin_fit |>
   extract_fit_parsnip() |>
@@ -488,15 +1299,16 @@ Finally, we will make predictions on the test set and evaluate the
 model’s performance.
 
 ``` r
+
 # Make predictions on the test set
 penguin_test_pred <- predict(final_penguin_fit, new_data = penguin_test)
-#> 3/3 - 0s - 20ms/step
+#> 3/3 - 0s - 19ms/step
 penguin_test_prob <- predict(
   final_penguin_fit,
   new_data = penguin_test,
   type = "prob"
 )
-#> 3/3 - 0s - 8ms/step
+#> 3/3 - 0s - 7ms/step
 
 # Combine predictions with actuals
 penguin_results <- penguin_test |>
@@ -505,14 +1317,14 @@ penguin_results <- penguin_test |>
 
 print(head(penguin_results))
 #> # A tibble: 6 × 5
-#>   species .pred_class .pred_Adelie .pred_Chinstrap  .pred_Gentoo
-#>   <fct>   <fct>              <dbl>           <dbl>         <dbl>
-#> 1 Adelie  Adelie             1.000        9.31e-11 0.0000000202 
-#> 2 Adelie  Adelie             1.000        2.21e- 7 0.0000146    
-#> 3 Adelie  Adelie             1.000        1.21e-11 0.00000000148
-#> 4 Adelie  Adelie             1.000        4.27e-10 0.000000177  
-#> 5 Adelie  Adelie             1.000        3.01e-10 0.0000000437 
-#> 6 Adelie  Adelie             1.000        1.44e- 9 0.000000159
+#>   species .pred_class .pred_Adelie .pred_Chinstrap .pred_Gentoo
+#>   <fct>   <fct>              <dbl>           <dbl>        <dbl>
+#> 1 Adelie  Adelie             1.000   0.0000000135      2.22e- 9
+#> 2 Adelie  Adelie             1.000   0.0000218         6.11e- 6
+#> 3 Adelie  Adelie             1.000   0.00000000528     5.03e-10
+#> 4 Adelie  Adelie             1.000   0.000000676       2.73e- 7
+#> 5 Adelie  Adelie             1.000   0.000000581       4.92e- 7
+#> 6 Adelie  Adelie             1.000   0.0000000657      5.94e- 8
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -533,8 +1345,8 @@ print(metrics_results)
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
 #> 1 accuracy multiclass     0.985
-#> 2 f_meas   macro          0.982
-#> 3 roc_auc  hand_till      1
+#> 2 f_meas   macro          0.983
+#> 3 roc_auc  hand_till      0.999
 
 # Confusion Matrix
 conf_mat(penguin_results, truth = species, estimate = .pred_class) |>
@@ -542,68 +1354,3 @@ conf_mat(penguin_results, truth = species, estimate = .pred_class) |>
 ```
 
 ![](workflows_sequential_files/figure-html/predict-evaluate-1.png)
-
-## Saving and Reloading Your Model
-
-`kerasnip` serializes the Keras model weights to bytes at fit time and
-stores them alongside the workflow object. This means plain
-[`saveRDS()`](https://rdrr.io/r/base/readRDS.html) /
-[`readRDS()`](https://rdrr.io/r/base/readRDS.html) **works out of the
-box** — the underlying Keras model is restored automatically the first
-time [`predict()`](https://rdrr.io/r/stats/predict.html) is called on
-the reloaded object.
-
-``` r
-# Save
-saveRDS(final_penguin_fit, "penguin_model.rds")
-
-# Reload — no extra steps needed
-final_penguin_fit_loaded <- readRDS("penguin_model.rds")
-
-predict(final_penguin_fit_loaded, new_data = penguin_test) |> head()
-#> 3/3 - 0s - 20ms/step
-#> # A tibble: 6 × 1
-#>   .pred_class
-#>   <fct>      
-#> 1 Adelie     
-#> 2 Adelie     
-#> 3 Adelie     
-#> 4 Adelie     
-#> 5 Adelie     
-#> 6 Adelie
-```
-
-If you need a fully self-contained bundle suitable for deployment with
-`vetiver` or other MLOps tools, use
-[`bundle::bundle()`](https://rstudio.github.io/bundle/reference/bundle.html)
-instead:
-
-``` r
-library(bundle)
-
-# Save as a portable bundle
-bundled <- bundle(final_penguin_fit)
-saveRDS(bundled, "penguin_model_bundle.rds")
-
-# Reload in any R session
-library(kerasnip)
-library(bundle)
-
-final_penguin_fit_loaded <- unbundle(readRDS("penguin_model_bundle.rds"))
-
-predict(final_penguin_fit_loaded, new_data = penguin_test) |> head()
-#> 3/3 - 0s - 19ms/step
-#> # A tibble: 6 × 1
-#>   .pred_class
-#>   <fct>      
-#> 1 Adelie     
-#> 2 Adelie     
-#> 3 Adelie     
-#> 4 Adelie     
-#> 5 Adelie     
-#> 6 Adelie
-```
-
-See
-[`vignette("saving_and_reloading")`](https://davidrsch.github.io/kerasnip/articles/saving_and_reloading.md)
-for a detailed comparison of both approaches.

@@ -59,6 +59,7 @@ inputs, which is not possible with the sequential API.
 First, we load the necessary packages.
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
@@ -95,6 +96,7 @@ These are the building blocks of our model. Each function represents a
 node in the graph.
 
 ``` r
+
 # Input blocks for two distinct inputs
 input_block_1 <- function(input_shape) {
   layer_input(shape = input_shape, name = "input_1")
@@ -139,6 +141,7 @@ automatically creates a wrapper that renames the arguments of our blocks
 to match the node names defined in the `layer_blocks` list.
 
 ``` r
+
 model_name <- "two_output_reg_spec" # Changed model name
 # Clean up the spec when the vignette is done knitting
 on.exit(remove_keras_spec(model_name), add = TRUE)
@@ -152,10 +155,10 @@ create_keras_functional_spec(
     processed_2 = inp_spec(dense_path_2, "input_2"),
     concatenated = inp_spec(
       concat_block,
-      c(input_a = "processed_1", input_b = "processed_2")
+      c(processed_1 = "input_a", processed_2 = "input_b")
     ),
     output_1 = inp_spec(output_block_1, "concatenated"), # New output block 1
-    output_2 = inp_spec(output_block_2, "concatenated") # New output block 2
+    output_2 = inp_spec(output_block_2, "concatenated")  # New output block 2
   ),
   mode = "regression" # Still regression, but will have two columns in y
 )
@@ -168,6 +171,7 @@ The new function `two_input_reg_spec()` is now available. Its arguments
 from our block definitions.
 
 ``` r
+
 # We can override the default `units` for each path.
 spec <- two_output_reg_spec( # Changed spec name
   processed_1_units = 16,
@@ -237,7 +241,7 @@ train_df <- tibble::tibble(
     function(i) x_data_2[i, , drop = FALSE]
   ),
   output_1 = y_data_1, # Named output 1
-  output_2 = y_data_2 # Named output 2
+  output_2 = y_data_2  # Named output 2
 )
 
 rec <- recipe(output_1 + output_2 ~ input_1 + input_2, data = train_df)
@@ -253,15 +257,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 48ms/step
+#> 1/1 - 0s - 44ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>      <dbl[,1,1]>    <dbl[,1,1]>
-#> 1        0.631 …        0.517 …
-#> 2        0.487 …        0.543 …
-#> 3        0.325 …        0.411 …
-#> 4        0.487 …        0.603 …
-#> 5        0.659 …        0.602 …
+#> 1        0.740 …        0.451 …
+#> 2        0.369 …        0.423 …
+#> 3        0.390 …        0.412 …
+#> 4        0.443 …        0.496 …
+#> 5        0.477 …        0.432 …
 ```
 
 ## A common debugging workflow: `compile_keras_grid()`
@@ -280,6 +284,7 @@ training cycle. This is perfect for debugging your architecture.
 Let’s see this in action with the `two_input_reg_spec` model:
 
 ``` r
+
 # Create a spec instance
 spec <- two_output_reg_spec( # Changed spec name
   processed_1_units = 16,
@@ -307,10 +312,9 @@ x_dummy_df <- tibble::tibble(
 y_dummy_df <- tibble::tibble(output_1 = y_dummy_1, output_2 = y_dummy_2)
 
 # Use compile_keras_grid to get the model
-# A one-row grid with no extra hyperparameters builds the spec as-is.
 compilation_results <- compile_keras_grid(
   spec = spec,
-  grid = tibble::tibble(.rows = 1L),
+  grid = tibble::tibble(),
   x = x_dummy_df,
   y = y_dummy_df
 )
@@ -346,6 +350,7 @@ compilation_results |>
 ```
 
 ``` r
+
 compilation_results |>
   select(compiled_model) |>
   pull() |>

@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,15 +48,6 @@
     <li><h6 class="dropdown-header" data-toc-skip>Workflows</h6></li>
     <li><a class="dropdown-item" href="articles/workflows_sequential.html">Sequential Model</a></li>
     <li><a class="dropdown-item" href="articles/workflows_functional.html">Functional API</a></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Tuning</h6></li>
-    <li><a class="dropdown-item" href="articles/tuning_fit_compile_args.html">Tuning Fit and Compile Arguments</a></li>
-    <li><a class="dropdown-item" href="articles/autoplot_uniqueness.html">Ensuring autoplot Uniqueness</a></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Model Deployment &amp; Persistence</h6></li>
-    <li><a class="dropdown-item" href="articles/saving_and_reloading.html">Saving and Reloading</a></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Applications</h6></li>
-    <li><a class="dropdown-item" href="articles/applications.html">Transfer Learning</a></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Prediction Intervals</h6></li>
-    <li><a class="dropdown-item" href="articles/conformal_intervals.html">Conformal Inference</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
@@ -66,7 +57,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/davidrsch/kerasnip" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/davidrsch/kerasnip"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -81,7 +72,6 @@
 </div>
 <!-- badges: start -->
 
-<!-- badges: end -->
 <p>The goal of <code>kerasnip</code> is to provide a seamless bridge between the <code>keras</code> and <code>tidymodels</code> frameworks. It allows for the dynamic creation of <code>parsnip</code> model specifications for Keras models, making them fully compatible with <code>tidymodels</code> workflows.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -99,7 +89,7 @@
 </h3>
 <p>This example shows the core workflow for building a simple, linear stack of layers using <code><a href="reference/create_keras_sequential_spec.html">create_keras_sequential_spec()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kerasnip</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span>
 <span></span>
@@ -165,7 +155,7 @@
 </h3>
 <p>For complex, non-linear architectures, use <code><a href="reference/create_keras_functional_spec.html">create_keras_functional_spec()</a></code>. This example builds a model where the input is forked into two paths, which are then concatenated.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kerasnip</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span>
 <span></span>
@@ -182,7 +172,8 @@
 <span>    main_input <span class="op">=</span> <span class="va">input_block</span>,</span>
 <span>    path_a <span class="op">=</span> <span class="fu"><a href="reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">path_block</span>, <span class="st">"main_input"</span><span class="op">)</span>,</span>
 <span>    path_b <span class="op">=</span> <span class="fu"><a href="reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">path_block</span>, <span class="st">"main_input"</span><span class="op">)</span>,</span>
-<span>    concatenated <span class="op">=</span> <span class="fu"><a href="reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">concat_block</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>input_a <span class="op">=</span> <span class="st">"path_a"</span>, input_b <span class="op">=</span> <span class="st">"path_b"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    concatenated <span class="op">=</span> <span class="fu"><a href="reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">concat_block</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>path_a <span class="op">=</span> <span class="st">"input_a"</span>, path_b <span class="op">=</span> <span class="st">"input_b"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="co"># The output block must be named 'output'.</span></span>
 <span>    output <span class="op">=</span> <span class="fu"><a href="reference/inp_spec.html">inp_spec</a></span><span class="op">(</span><span class="va">output_block</span>, <span class="st">"concatenated"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  mode <span class="op">=</span> <span class="st">"regression"</span></span>
@@ -210,7 +201,7 @@
 </h3>
 <p>This example demonstrates how to tune the number of dense layers and the rate of a final dropout layer, showcasing how to tune both architecture and block hyperparameters simultaneously.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidrsch.github.io/kerasnip/">kerasnip</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kerasnip</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras3.posit.co/" class="external-link">keras3</a></span><span class="op">)</span></span>
 <span></span>
@@ -279,8 +270,8 @@
 <span><span class="co"># 6. Show the best architecture</span></span>
 <span><span class="fu">show_best</span><span class="op">(</span><span class="va">tune_res</span>, metric <span class="op">=</span> <span class="st">"rmse"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 7</span></span>
-<span><span class="co">#&gt;   num_dense dense_units dropout_rate .metric .estimator .mean .config</span></span>
-<span><span class="co">#&gt;       &lt;int&gt;       &lt;int&gt;        &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;   num_dense dense_units dropout_rate .metric .estimator .mean .config              </span></span>
+<span><span class="co">#&gt;       &lt;int&gt;       &lt;int&gt;        &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;                </span></span>
 <span><span class="co">#&gt; 1         1          64          0.1 rmse    standard    2.92 Preprocessor1_Model02</span></span>
 <span><span class="co">#&gt; 2         1          64          0.5 rmse    standard    3.02 Preprocessor1_Model08</span></span>
 <span><span class="co">#&gt; 3         3          64          0.1 rmse    standard    3.15 Preprocessor1_Model04</span></span>
@@ -293,8 +284,6 @@
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=kerasnip" class="external-link">View on CRAN</a></li>
-<li><a href="https://github.com/davidrsch/kerasnip/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/davidrsch/kerasnip/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -325,7 +314,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>David Díaz <br><small class="roles"> Author, copyright holder, maintainer </small> <a href="https://orcid.org/0000-0002-0927-9795" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>David Díaz <br><small class="roles"> Author, maintainer </small>   </li>
 </ul>
 </div>
 

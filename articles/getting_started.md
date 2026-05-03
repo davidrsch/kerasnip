@@ -26,6 +26,7 @@ You can install the development version of `kerasnip` from GitHub. You
 will also need `keras3`.
 
 ``` r
+
 install.packages("pak")
 pak::pak("davidrsch/kerasnip")
 pak::pak("rstudio/keras3")
@@ -37,6 +38,7 @@ keras3::install_keras()
 We’ll start by loading `kerasnip`, `tidymodels` and `keras3`:
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
@@ -93,9 +95,10 @@ dataset, reshape the predictors, and convert the outcome to a factor for
 `tidymodels`.
 
 ``` r
+
 mnist <- dataset_mnist()
 #> Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
-#>        0/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step   81920/11490434 ━━━━━━━━━━━━━━━━━━━━ 11s 1us/step  761856/11490434 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step  1359872/11490434 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step 1900544/11490434 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step 2555904/11490434 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step 3244032/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 3817472/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 4382720/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 5128192/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 5742592/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 6275072/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 6856704/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 7512064/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 8110080/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 8667136/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 9240576/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 9879552/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step10412032/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step11001856/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step
+#>        0/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step 8806400/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step
 x_train <- mnist$train$x
 y_train <- mnist$train$y
 x_test <- mnist$test$x
@@ -126,6 +129,7 @@ this same model is built using standard `keras3` code. This will help
 highlight the different approach `kerasnip` enables.
 
 ``` r
+
 # The standard Keras3 approach
 model <- keras_model_sequential(input_shape = 784) |>
   layer_dense(units = 256, activation = "relu") |>
@@ -161,6 +165,7 @@ With `kerasnip`, we can encapsulate this pattern into a single, reusable
 block. This makes the overall architecture cleaner and more modular.
 
 ``` r
+
 # An input block to initialize the model.
 # The 'model' argument is supplied implicitly by the kerasnip backend.
 mlp_input_block <- function(model, input_shape) {
@@ -186,6 +191,7 @@ Now, we use
 to generate our `parsnip` model function.
 
 ``` r
+
 create_keras_sequential_spec(
   model_name = "mnist_mlp",
   layer_blocks = list(
@@ -210,6 +216,7 @@ To replicate the `keras3` example, we’ll use both `hidden` blocks and
 provide their parameters.
 
 ``` r
+
 mlp_spec <- mnist_mlp(
   hidden_1_units = 256,
   hidden_1_rate = 0.4,
@@ -229,6 +236,7 @@ mlp_fit <- fit(mlp_spec, y ~ x, data = train_df)
 ```
 
 ``` r
+
 mlp_fit |>
   extract_keras_model() |>
   summary()
@@ -253,6 +261,7 @@ mlp_fit |>
 ```
 
 ``` r
+
 mlp_fit |>
   extract_keras_model() |>
   plot(show_shapes = TRUE)
@@ -263,6 +272,7 @@ mlp_fit |>
 model
 
 ``` r
+
 mlp_fit |>
   extract_keras_history() |>
   plot()
@@ -281,13 +291,14 @@ method. It returns the loss and any other metrics that were specified
 during the model compilation step.
 
 ``` r
+
 mlp_fit |> keras_evaluate(x_test, y_test)
-#> 313/313 - 0s - 1ms/step - accuracy: 0.9835 - loss: 0.0855
+#> 313/313 - 0s - 1ms/step - accuracy: 0.9829 - loss: 0.0901
 #> $accuracy
-#> [1] 0.9835
+#> [1] 0.9829
 #> 
 #> $loss
-#> [1] 0.08553027
+#> [1] 0.09010263
 ```
 
 ### Making Predictions
@@ -299,10 +310,11 @@ predictions on new data. By default,
 classification model returns the predicted class labels.
 
 ``` r
+
 # Predict the class for the first 5 images in the test set
 class_preds <- mlp_fit |>
   predict(new_data = head(select(test_df, x)))
-#> 1/1 - 0s - 44ms/step
+#> 1/1 - 0s - 37ms/step
 class_preds
 #> # A tibble: 6 × 1
 #>   .pred_class
@@ -320,20 +332,21 @@ To get the underlying probabilities for each class, we can set
 each of the 10 classes (0-9).
 
 ``` r
+
 # Predict probabilities for the first 5 images
 prob_preds <- mlp_fit |>
   predict(new_data = head(select(test_df, x)), type = "prob")
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
 prob_preds
 #> # A tibble: 6 × 10
-#>     .pred_0   .pred_1   .pred_2  .pred_3  .pred_4  .pred_5  .pred_6  .pred_7
-#>       <dbl>     <dbl>     <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#> 1 2.68 e-18 1.37 e-13 3.12 e-12 1.13e-10 7.61e-18 2.45e-15 2.36e-26 1   e+ 0
-#> 2 5.72 e-22 5.67 e-13 1    e+ 0 8.69e-12 9.71e-27 1.07e-21 2.59e-20 2.86e-18
-#> 3 1.43 e-11 1.000e+ 0 2.99 e- 9 3.50e-11 1.72e- 7 7.92e-10 9.11e-10 3.32e- 7
-#> 4 1.000e+ 0 1.90 e-13 5.16 e-10 1.06e-11 6.94e-12 1.28e- 9 7.79e- 7 9.82e-10
-#> 5 1.86 e-15 3.06 e-15 1.000e-12 7.26e-17 1   e+ 0 1.03e-14 1.13e-14 3.00e-10
-#> 6 1.55 e-12 1.000e+ 0 1.43 e-10 5.41e-12 4.08e- 8 1.26e-11 2.83e-12 6.23e- 7
+#>     .pred_0   .pred_1  .pred_2  .pred_3  .pred_4  .pred_5  .pred_6  .pred_7
+#>       <dbl>     <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+#> 1 5.67 e-20 7.17 e-14 1.36e-11 4.91e-13 8.49e-17 2.43e-18 5.18e-26 1   e+ 0
+#> 2 3.22 e-17 1.57 e-11 1   e+ 0 4.15e-12 1.46e-22 6.26e-18 4.88e-17 3.29e-15
+#> 3 5.03 e-12 1.000e+ 0 1.61e- 9 9.40e-12 7.11e- 9 2.21e-12 1.39e-10 1.82e- 7
+#> 4 1.000e+ 0 1.77 e- 9 3.60e- 5 6.69e- 8 2.52e- 7 6.48e- 8 7.11e- 5 4.51e- 8
+#> 5 2.31 e-13 2.89 e-11 1.77e-12 4.20e-15 1   e+ 0 5.28e-14 4.43e-14 4.76e- 8
+#> 6 1.05 e-12 1.000e+ 0 1.30e-11 8.72e-13 2.61e- 8 9.01e-14 2.25e-11 8.78e- 8
 #> # ℹ 2 more variables: .pred_8 <dbl>, .pred_9 <dbl>
 ```
 
@@ -341,6 +354,7 @@ We can then compare the predicted class to the actual class for these
 images to see how the model is performing.
 
 ``` r
+
 # Combine predictions with actuals for comparison
 comparison <- bind_cols(
   class_preds,
@@ -351,14 +365,14 @@ comparison <- bind_cols(
   )
 comparison
 #> # A tibble: 6 × 12
-#>   .pred_class   .pred_0   .pred_1   .pred_2  .pred_3  .pred_4  .pred_5  .pred_6
-#>   <fct>           <dbl>     <dbl>     <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#> 1 7           2.68 e-18 1.37 e-13 3.12 e-12 1.13e-10 7.61e-18 2.45e-15 2.36e-26
-#> 2 2           5.72 e-22 5.67 e-13 1    e+ 0 8.69e-12 9.71e-27 1.07e-21 2.59e-20
-#> 3 1           1.43 e-11 1.000e+ 0 2.99 e- 9 3.50e-11 1.72e- 7 7.92e-10 9.11e-10
-#> 4 0           1.000e+ 0 1.90 e-13 5.16 e-10 1.06e-11 6.94e-12 1.28e- 9 7.79e- 7
-#> 5 4           1.86 e-15 3.06 e-15 1.000e-12 7.26e-17 1   e+ 0 1.03e-14 1.13e-14
-#> 6 1           1.55 e-12 1.000e+ 0 1.43 e-10 5.41e-12 4.08e- 8 1.26e-11 2.83e-12
+#>   .pred_class   .pred_0   .pred_1  .pred_2  .pred_3  .pred_4  .pred_5  .pred_6
+#>   <fct>           <dbl>     <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+#> 1 7           5.67 e-20 7.17 e-14 1.36e-11 4.91e-13 8.49e-17 2.43e-18 5.18e-26
+#> 2 2           3.22 e-17 1.57 e-11 1   e+ 0 4.15e-12 1.46e-22 6.26e-18 4.88e-17
+#> 3 1           5.03 e-12 1.000e+ 0 1.61e- 9 9.40e-12 7.11e- 9 2.21e-12 1.39e-10
+#> 4 0           1.000e+ 0 1.77 e- 9 3.60e- 5 6.69e- 8 2.52e- 7 6.48e- 8 7.11e- 5
+#> 5 4           2.31 e-13 2.89 e-11 1.77e-12 4.20e-15 1   e+ 0 5.28e-14 4.43e-14
+#> 6 1           1.05 e-12 1.000e+ 0 1.30e-11 8.72e-13 2.61e- 8 9.01e-14 2.25e-11
 #> # ℹ 4 more variables: .pred_7 <dbl>, .pred_8 <dbl>, .pred_9 <dbl>, y <fct>
 ```
 
@@ -373,6 +387,7 @@ Using the `mnist_mlp` spec we just created, let’s define a tunable
 model.
 
 ``` r
+
 # Define a tunable specification
 # We set num_hidden_2 = 0 to disable the second hidden block
 # for this tuning example
@@ -398,6 +413,7 @@ Next, we define the search space for our tunable parameters using
 `dials`.
 
 ``` r
+
 # Define the tuning grid
 params <- extract_parameter_set_dials(tune_wf) |>
   update(
@@ -424,6 +440,7 @@ grid
 ```
 
 ``` r
+
 # Using only the first 100 rows for speed. The real call
 # should be: folds <- vfold_cv(train_df, v = 3)
 folds <- vfold_cv(train_df[1:100, ], v = 3)
@@ -435,116 +452,116 @@ tune_res <- tune_grid(
   metrics = metric_set(accuracy),
   control = control_grid(save_pred = FALSE, save_workflow = TRUE)
 )
-#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 1s - 383ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
 #> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 36ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 34ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 36ms/step
+#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 36ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 34ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 43ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 31ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 34ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 36ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 34ms/step
-#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 30ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 33ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 35ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
 ```
 
 Finally, we can inspect the results to find which architecture performed
 the best. First, a summary table:
 
 ``` r
+
 # Show the summary table of the best models
 show_best(tune_res, metric = "accuracy")
 #> # A tibble: 5 × 9
 #>   num_hidden_1 hidden_1_units hidden_1_rate .metric  .estimator  mean     n
 #>          <int>          <int>         <dbl> <chr>    <chr>      <dbl> <int>
-#> 1            2            160         0.2   accuracy multiclass 0.799     3
-#> 2            1            256         0.400 accuracy multiclass 0.790     3
-#> 3            3            256         0.2   accuracy multiclass 0.790     3
-#> 4            1            160         0.2   accuracy multiclass 0.790     3
-#> 5            1            160         0.400 accuracy multiclass 0.790     3
+#> 1            3            256         0.2   accuracy multiclass 0.800     3
+#> 2            3            256         0.3   accuracy multiclass 0.790     3
+#> 3            1            160         0.400 accuracy multiclass 0.780     3
+#> 4            2            256         0.3   accuracy multiclass 0.780     3
+#> 5            1            256         0.400 accuracy multiclass 0.780     3
 #> # ℹ 2 more variables: std_err <dbl>, .config <chr>
 ```
 
 Now that we’ve identified the best-performing hyperparameters, our final
-step is to create and train the final model. We use
-[`select_best()`](https://tune.tidymodels.org/reference/show_best.html)
-to get the top parameters,
-[`finalize_workflow()`](https://tune.tidymodels.org/reference/finalize_model.html)
-to update our workflow with them, and then
+step is to create and train the final model. We use `select_best()` to
+get the top parameters, `finalize_workflow()` to update our workflow
+with them, and then
 [`fit()`](https://generics.r-lib.org/reference/fit.html) one last time
 on our full training dataset.
 
 ``` r
+
 # Select the best hyperparameters
 best_hps <- select_best(tune_res, metric = "accuracy")
 
@@ -558,6 +575,7 @@ final_fit <- fit(final_wf, data = train_df)
 We can now inspect our final, tuned model.
 
 ``` r
+
 # Print the model summary
 final_fit |>
   extract_fit_parsnip() |>
@@ -567,20 +585,24 @@ final_fit |>
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-#> │ dense_246 (Dense)                 │ (None, 160)              │       125,600 │
+#> │ dense_246 (Dense)                 │ (None, 256)              │       200,960 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_164 (Dropout)             │ (None, 160)              │             0 │
+#> │ dropout_164 (Dropout)             │ (None, 256)              │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_247 (Dense)                 │ (None, 160)              │        25,760 │
+#> │ dense_247 (Dense)                 │ (None, 256)              │        65,792 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_165 (Dropout)             │ (None, 160)              │             0 │
+#> │ dropout_165 (Dropout)             │ (None, 256)              │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_248 (Dense)                 │ (None, 10)               │         1,610 │
+#> │ dense_248 (Dense)                 │ (None, 256)              │        65,792 │
+#> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
+#> │ dropout_166 (Dropout)             │ (None, 256)              │             0 │
+#> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
+#> │ dense_249 (Dense)                 │ (None, 10)               │         2,570 │
 #> └───────────────────────────────────┴──────────────────────────┴───────────────┘
-#>  Total params: 305,942 (1.17 MB)
-#>  Trainable params: 152,970 (597.54 KB)
+#>  Total params: 670,230 (2.56 MB)
+#>  Trainable params: 335,114 (1.28 MB)
 #>  Non-trainable params: 0 (0.00 B)
-#>  Optimizer params: 152,972 (597.55 KB)
+#>  Optimizer params: 335,116 (1.28 MB)
 
 # Plot the training history
 final_fit |>
