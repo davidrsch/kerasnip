@@ -35,6 +35,7 @@ For example, if you were to run `ggplot2::autoplot(tune_res)` without
 unique `id`s, you might encounter an error similar to this:
 
 ``` r
+
 #> Error in `dplyr::rename()`:
 #> ! Names must be unique.
 #> ✖ These names are duplicated:
@@ -59,6 +60,7 @@ for each parameter you wish to distinguish.
 Let’s define a simple sequential Keras model with two dense layers:
 
 ``` r
+
 library(kerasnip)
 library(keras3)
 library(parsnip)
@@ -178,6 +180,7 @@ Next, we’ll set up a `tidymodels` workflow, define the parameter ranges,
 and create a tuning grid.
 
 ``` r
+
 # Set up workflow and tuning grid
 rec <- recipes::recipe(Species ~ ., data = iris)
 tune_wf <- workflows::workflow(rec, tune_spec)
@@ -213,6 +216,7 @@ to perform the actual tuning. For demonstration purposes, we’ll use a
 small number of resamples and a simple dataset.
 
 ``` r
+
 # Run tuning
 tune_res <- tune::tune_grid(
   tune_wf,
@@ -220,21 +224,21 @@ tune_res <- tune::tune_grid(
   grid = grid,
   control = control
 )
-#> 3/3 - 0s - 17ms/step
+#> 3/3 - 0s - 19ms/step
 #> 3/3 - 0s - 7ms/step
+#> 3/3 - 0s - 18ms/step
+#> 3/3 - 0s - 7ms/step
+#> 3/3 - 0s - 18ms/step
+#> 3/3 - 0s - 7ms/step
+#> 3/3 - 0s - 18ms/step
+#> 3/3 - 0s - 7ms/step
+#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 8ms/step
 #> 3/3 - 0s - 17ms/step
 #> 3/3 - 0s - 7ms/step
 #> 3/3 - 0s - 18ms/step
 #> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 17ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 17ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 17ms/step
-#> 3/3 - 0s - 8ms/step
-#> 3/3 - 0s - 17ms/step
-#> 3/3 - 0s - 7ms/step
-#> 3/3 - 0s - 17ms/step
+#> 3/3 - 0s - 18ms/step
 #> 3/3 - 0s - 7ms/step
 
 print(tune_res)
@@ -256,6 +260,7 @@ to visualize the results. Because we provided unique `id`s,
 can correctly generate separate plots for each tuned parameter.
 
 ``` r
+
 # Assert that autoplot works without error
 ggplot2::autoplot(tune_res)
 ```

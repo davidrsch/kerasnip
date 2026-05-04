@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.1.900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.2.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/davidrsch/kerasnip"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/davidrsch/kerasnip" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -94,7 +94,7 @@ covariance structure of their parameter estimates. A neural network has
 no equivalent: it computes a single deterministic output for each input,
 with no internal distributional model to derive intervals from.</p>
 <p>This is not a limitation specific to <code>kerasnip</code>. The
-entire tidymodels ecosystem reflects the same reality — the
+entire tidymodels ecosystem reflects the same reality, the
 <code>parsnip</code> package does not register <code>conf_int</code> or
 <code>pred_int</code> prediction types for any neural network engine,
 including <code>brulee</code>, the official tidymodels neural network
@@ -105,14 +105,14 @@ inference</strong>, provided by the <code>probably</code> package.
 Conformal inference is:</p>
 <ul>
 <li>
-<strong>Distribution-free</strong> — it makes no assumptions about
+<strong>Distribution-free</strong>: it makes no assumptions about
 the shape of the outcome distribution.</li>
 <li>
-<strong>Model-agnostic</strong> — it treats the model as a black
-box; only <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> and <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> calls are
+<strong>Model-agnostic</strong>: it treats the model as a black box;
+only <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> and <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> calls are
 required.</li>
 <li>
-<strong>Guaranteed to have correct coverage</strong> — under the
+<strong>Guaranteed to have correct coverage</strong>: under the
 assumption that training and test data are exchangeable
 (i.e. identically and independently distributed), the intervals contain
 the true outcome with at least the requested probability.</li>
@@ -155,40 +155,45 @@ described in the sections below.</p>
 any other kerasnip workflow.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">input_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">input_shape</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">keras3</span><span class="fu">::</span><span class="fu"><a href="https://keras3.posit.co/reference/keras_model_sequential.html" class="external-link">keras_model_sequential</a></span><span class="op">(</span>input_shape <span class="op">=</span> <span class="va">input_shape</span><span class="op">)</span></span>
+<span>  <span class="fu">keras3</span><span class="fu">::</span><span class="fu"><a href="https://keras3.posit.co/reference/keras_model_sequential.html" class="external-link">keras_model_sequential</a></span><span class="op">(</span>input_shape <span class="op">=</span> <span class="va">input_shape</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">dense_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">units</span> <span class="op">=</span> <span class="fl">32</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">model</span> <span class="op">|&gt;</span></span>
-<span>        <span class="fu">keras3</span><span class="fu">::</span><span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="va">units</span>, activation <span class="op">=</span> <span class="st">"relu"</span><span class="op">)</span></span>
+<span>  <span class="va">model</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">keras3</span><span class="fu">::</span><span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="va">units</span>, activation <span class="op">=</span> <span class="st">"relu"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">output_block</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">model</span> <span class="op">|&gt;</span> <span class="fu">keras3</span><span class="fu">::</span><span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">model</span> <span class="op">|&gt;</span> <span class="fu">keras3</span><span class="fu">::</span><span class="fu"><a href="https://keras3.posit.co/reference/layer_dense.html" class="external-link">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/create_keras_sequential_spec.html">create_keras_sequential_spec</a></span><span class="op">(</span></span>
-<span>    model_name <span class="op">=</span> <span class="st">"conf_mlp"</span>,</span>
-<span>    layer_blocks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>        input  <span class="op">=</span> <span class="va">input_block</span>,</span>
-<span>        dense  <span class="op">=</span> <span class="va">dense_block</span>,</span>
-<span>        output <span class="op">=</span> <span class="va">output_block</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    mode <span class="op">=</span> <span class="st">"regression"</span></span>
+<span>  model_name <span class="op">=</span> <span class="st">"conf_mlp"</span>,</span>
+<span>  layer_blocks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    input  <span class="op">=</span> <span class="va">input_block</span>,</span>
+<span>    dense  <span class="op">=</span> <span class="va">dense_block</span>,</span>
+<span>    output <span class="op">=</span> <span class="va">output_block</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"regression"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">conf_mlp</span><span class="op">(</span>dense_units <span class="op">=</span> <span class="fl">32</span>, fit_epochs <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/ames.html" class="external-link">ames</a></span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>    <span class="va">Sale_Price</span>, <span class="va">Gr_Liv_Area</span>, <span class="va">Year_Built</span>,</span>
-<span>    <span class="va">Garage_Area</span>, <span class="va">Total_Bsmt_SF</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/ames.html" class="external-link">ames</a></span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">Sale_Price</span>,</span>
+<span>    <span class="va">Gr_Liv_Area</span>,</span>
+<span>    <span class="va">Year_Built</span>,</span>
+<span>    <span class="va">Garage_Area</span>,</span>
+<span>    <span class="va">Total_Bsmt_SF</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">wflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">spec</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="method-1-split-conformal-inference-int_conformal_split">Method 1 — Split conformal inference
+<h2 id="method-1-split-conformal-inference-int_conformal_split">Method 1: Split conformal inference
 (<code>int_conformal_split</code>)<a class="anchor" aria-label="anchor" href="#method-1-split-conformal-inference-int_conformal_split"></a>
 </h2>
 <p>This is the simplest and fastest method. The workflow is:</p>
@@ -214,7 +219,7 @@ reference distribution for deciding how wide to make the intervals.</p>
 <span></span>
 <span><span class="co"># Build the conformal object from the calibration set</span></span>
 <span><span class="va">conformal_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_split.html" class="external-link">int_conformal_split</a></span><span class="op">(</span><span class="va">fit_obj</span>, cal_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 23/23 - 0s - 2ms/step</span></span>
+<span><span class="co">#&gt; 23/23 - 0s - 3ms/step</span></span>
 <span><span class="va">conformal_split</span></span>
 <span><span class="co">#&gt; Split Conformal inference</span></span>
 <span><span class="co">#&gt; preprocessor: recipe </span></span>
@@ -226,23 +231,23 @@ reference distribution for deciding how wide to make the intervals.</p>
 <span><span class="co"># Predict intervals for new observations</span></span>
 <span><span class="va">new_obs</span> <span class="op">&lt;-</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_split</span>, new_data <span class="op">=</span> <span class="va">new_obs</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;    .pred .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">28</span>660.    -<span style="color: #BB0000; text-decoration: underline;">187</span><span style="color: #BB0000;">100.</span>     <span style="text-decoration: underline;">244</span>420.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">88</span>942.    -<span style="color: #BB0000; text-decoration: underline;">126</span><span style="color: #BB0000;">818.</span>     <span style="text-decoration: underline;">304</span>702.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">48</span>182.    -<span style="color: #BB0000; text-decoration: underline;">167</span><span style="color: #BB0000;">577.</span>     <span style="text-decoration: underline;">263</span>942.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">53</span>763.    -<span style="color: #BB0000; text-decoration: underline;">161</span><span style="color: #BB0000;">997.</span>     <span style="text-decoration: underline;">269</span>522.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> <span style="text-decoration: underline;">11</span>238.    -<span style="color: #BB0000; text-decoration: underline;">204</span><span style="color: #BB0000;">521.</span>     <span style="text-decoration: underline;">226</span>998.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">14</span>694.    -<span style="color: #BB0000; text-decoration: underline;">201</span><span style="color: #BB0000;">066.</span>     <span style="text-decoration: underline;">230</span>453.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">27</span>274.    -<span style="color: #BB0000; text-decoration: underline;">192</span><span style="color: #BB0000;">480.</span>     <span style="text-decoration: underline;">247</span>028.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">79</span>102.    -<span style="color: #BB0000; text-decoration: underline;">140</span><span style="color: #BB0000;">652.</span>     <span style="text-decoration: underline;">298</span>856.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">42</span>771.    -<span style="color: #BB0000; text-decoration: underline;">176</span><span style="color: #BB0000;">983.</span>     <span style="text-decoration: underline;">262</span>525.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">47</span>802.    -<span style="color: #BB0000; text-decoration: underline;">171</span><span style="color: #BB0000;">952.</span>     <span style="text-decoration: underline;">267</span>556.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> <span style="text-decoration: underline;">19</span>753.    -<span style="color: #BB0000; text-decoration: underline;">200</span><span style="color: #BB0000;">001.</span>     <span style="text-decoration: underline;">239</span>507.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">20</span>994.    -<span style="color: #BB0000; text-decoration: underline;">198</span><span style="color: #BB0000;">760.</span>     <span style="text-decoration: underline;">240</span>748.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when training cost is non-trivial
 and you can afford to set aside a calibration set. This is the
 recommended method for kerasnip models in most practical situations.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="method-2-cross-validation-conformal-inference-int_conformal_cv">Method 2 — Cross-validation conformal inference
+<h2 id="method-2-cross-validation-conformal-inference-int_conformal_cv">Method 2: Cross-validation conformal inference
 (<code>int_conformal_cv</code>)<a class="anchor" aria-label="anchor" href="#method-2-cross-validation-conformal-inference-int_conformal_cv"></a>
 </h2>
 <p>This method uses <strong>cross-validation</strong> to generate
@@ -268,12 +273,12 @@ intervals for new data.</li>
 <span></span>
 <span><span class="co"># Fit the workflow on each fold, retaining predictions and model objects</span></span>
 <span><span class="va">fitted_folds</span> <span class="op">&lt;-</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/fit_resamples.html" class="external-link">fit_resamples</a></span><span class="op">(</span></span>
-<span>    <span class="va">wflow</span>,</span>
-<span>    <span class="va">folds</span>,</span>
-<span>    control <span class="op">=</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/control_grid.html" class="external-link">control_resamples</a></span><span class="op">(</span></span>
-<span>        save_pred <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>        extract   <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span></span>
-<span>    <span class="op">)</span></span>
+<span>  <span class="va">wflow</span>,</span>
+<span>  <span class="va">folds</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/control_grid.html" class="external-link">control_resamples</a></span><span class="op">(</span></span>
+<span>    save_pred <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    extract <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; 19/19 - 0s - 3ms/step</span></span>
 <span><span class="co">#&gt; 19/19 - 0s - 3ms/step</span></span>
@@ -297,16 +302,16 @@ intervals for new data.</li>
 <span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   .pred_lower  .pred .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">193</span><span style="color: #BB0000;">215.</span> <span style="text-decoration: underline;">26</span>379.     <span style="text-decoration: underline;">245</span>974.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">198</span><span style="color: #BB0000;">473.</span> <span style="text-decoration: underline;">21</span>121.     <span style="text-decoration: underline;">240</span>716.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">201</span><span style="color: #BB0000;">013.</span> <span style="text-decoration: underline;">18</span>582.     <span style="text-decoration: underline;">238</span>176.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">152</span><span style="color: #BB0000;">078.</span> <span style="text-decoration: underline;">67</span>517.     <span style="text-decoration: underline;">287</span>111.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">187</span><span style="color: #BB0000;">000.</span> <span style="text-decoration: underline;">32</span>595.     <span style="text-decoration: underline;">252</span>189.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">187</span><span style="color: #BB0000;">405.</span> <span style="text-decoration: underline;">32</span>189.     <span style="text-decoration: underline;">251</span>784.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">193</span><span style="color: #BB0000;">680.</span> <span style="text-decoration: underline;">26</span>301.     <span style="text-decoration: underline;">246</span>282.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">197</span><span style="color: #BB0000;">752.</span> <span style="text-decoration: underline;">22</span>229.     <span style="text-decoration: underline;">242</span>210.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">200</span><span style="color: #BB0000;">122.</span> <span style="text-decoration: underline;">19</span>859.     <span style="text-decoration: underline;">239</span>840.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">155</span><span style="color: #BB0000;">001.</span> <span style="text-decoration: underline;">64</span>981.     <span style="text-decoration: underline;">284</span>962.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">187</span><span style="color: #BB0000;">820.</span> <span style="text-decoration: underline;">32</span>161.     <span style="text-decoration: underline;">252</span>142.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">188</span><span style="color: #BB0000;">122.</span> <span style="text-decoration: underline;">31</span>859.     <span style="text-decoration: underline;">251</span>840.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when you do not want to reserve a
 separate calibration set and are already running cross-validation to
 evaluate your model. The cross-validation residuals tend to produce
@@ -316,7 +321,7 @@ per fold, which multiplies training time by the number of folds.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="method-3-full-conformal-inference-int_conformal_full">Method 3 — Full conformal inference
+<h2 id="method-3-full-conformal-inference-int_conformal_full">Method 3: Full conformal inference
 (<code>int_conformal_full</code>)<a class="anchor" aria-label="anchor" href="#method-3-full-conformal-inference-int_conformal_full"></a>
 </h2>
 <p>Full conformal inference is the most principled of the three methods
@@ -352,14 +357,14 @@ rigour is required and training cost is acceptable.</p>
 <span><span class="va">fit_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wflow</span>, data <span class="op">=</span> <span class="va">data_small</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">conformal_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
-<span>    <span class="va">fit_small</span>,</span>
-<span>    train_data <span class="op">=</span> <span class="va">data_small</span>,</span>
-<span>    control <span class="op">=</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/control_conformal_full.html" class="external-link">control_conformal_full</a></span><span class="op">(</span></span>
-<span>        method       <span class="op">=</span> <span class="st">"grid"</span>,</span>
-<span>        trial_points <span class="op">=</span> <span class="fl">20</span></span>
-<span>    <span class="op">)</span></span>
+<span>  <span class="va">fit_small</span>,</span>
+<span>  train_data <span class="op">=</span> <span class="va">data_small</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/control_conformal_full.html" class="external-link">control_conformal_full</a></span><span class="op">(</span></span>
+<span>    method <span class="op">=</span> <span class="st">"grid"</span>,</span>
+<span>    trial_points <span class="op">=</span> <span class="fl">20</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 4/4 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 4/4 - 0s - 12ms/step</span></span>
 <span><span class="va">conformal_full</span></span>
 <span><span class="co">#&gt; Conformal inference</span></span>
 <span><span class="co">#&gt; preprocessor: recipe </span></span>
@@ -370,27 +375,15 @@ rigour is required and training cost is acceptable.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_full</span>, new_data <span class="op">=</span> <span class="va">new_obs_small</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `difference`.</span></span>
-<span><span class="co">#&gt; Warning: Could not determine bounds.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">476</span><span style="color: #BB0000;">892.</span>     <span style="text-decoration: underline;">477</span>047.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">476</span><span style="color: #BB0000;">319.</span>     <span style="text-decoration: underline;">476</span>473.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">474</span><span style="color: #BB0000;">251.</span>     <span style="text-decoration: underline;">474</span>402.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">501</span><span style="color: #BB0000;">042.</span>     <span style="text-decoration: underline;">501</span>232.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">432</span><span style="color: #BB0000;">773.</span>     <span style="text-decoration: underline;">433</span>129.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">495</span><span style="color: #BB0000;">431.</span>     <span style="text-decoration: underline;">495</span>613.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when you need the strongest
 possible coverage guarantees and are willing to pay the training cost.
 For neural networks, prefer <code>int_conformal_split</code> unless you
@@ -418,19 +411,19 @@ have a specific reason to use full conformal inference.</p>
 <td><code>int_conformal_split</code></td>
 <td>1 (on training data only)</td>
 <td>Marginal</td>
-<td>Yes — lowest cost</td>
+<td>Yes, lowest cost</td>
 </tr>
 <tr class="even">
 <td><code>int_conformal_cv</code></td>
 <td>1 per fold + 1 final</td>
 <td>Marginal</td>
-<td>Yes — if already cross-validating</td>
+<td>Yes, if already cross-validating</td>
 </tr>
 <tr class="odd">
 <td><code>int_conformal_full</code></td>
 <td><em>(n_test × n_grid)</em></td>
 <td>Marginal</td>
-<td>With caution — expensive</td>
+<td>With caution, expensive</td>
 </tr>
 </tbody>
 </table>

@@ -10,6 +10,7 @@ compatible with `tidymodels` workflows.
 You can install the development version of `kerasnip` from GitHub with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("davidrsch/kerasnip")
 ```
@@ -23,6 +24,7 @@ of layers using
 [`create_keras_sequential_spec()`](https://davidrsch.github.io/kerasnip/dev/reference/create_keras_sequential_spec.md).
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 library(keras3)
@@ -93,6 +95,7 @@ This example builds a model where the input is forked into two paths,
 which are then concatenated.
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 library(keras3)
@@ -141,6 +144,7 @@ rate of a final dropout layer, showcasing how to tune both architecture
 and block hyperparameters simultaneously.
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 library(keras3)

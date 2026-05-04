@@ -18,6 +18,7 @@ layer having exactly one input tensor and one output tensor.
 We’ll start by loading the necessary packages:
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
@@ -72,6 +73,7 @@ Let’s define a simple sequential model with three dense layers.
 First, we define our `layer_blocks`:
 
 ``` r
+
 # The first block must initialize the model. `input_shape`
 # is passed automatically.
 input_block <- function(model, input_shape) {
@@ -95,6 +97,7 @@ to generate our `parsnip` model specification function. We’ll name our
 model `my_simple_mlp`.
 
 ``` r
+
 create_keras_sequential_spec(
   model_name = "my_simple_mlp",
   layer_blocks = list(
@@ -123,6 +126,7 @@ training cycle. This is perfect for debugging your architecture.
 Let’s see this in action with a CNN architecture:
 
 ``` r
+
 # Define CNN layer blocks
 cnn_input_block <- function(model, input_shape) {
   keras_model_sequential(input_shape = input_shape)
@@ -214,6 +218,7 @@ compilation_results |>
 ```
 
 ``` r
+
 compilation_results |>
   select(compiled_model) |>
   pull() |>

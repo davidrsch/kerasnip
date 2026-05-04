@@ -2,6 +2,33 @@
 
 ## kerasnip (development version)
 
+## kerasnip 0.1.2
+
+CRAN release: 2026-05-02
+
+### Bug Fixes
+
+- Fixed CRAN NOTE: “Re-building vignettes had CPU time 3.1 times elapsed
+  time”.
+
+### New Features
+
+- Added [`tidy()`](https://generics.r-lib.org/reference/tidy.html) and
+  [`glance()`](https://generics.r-lib.org/reference/glance.html) methods
+  for fitted kerasnip models, providing layer summaries and final
+  training metrics.
+- Added `probably` to Suggests for conformal inference support.
+- Added the `conformal_intervals` vignette demonstrating prediction
+  intervals using conformal inference with kerasnip workflows.
+
+### Bug Fixes
+
+- Improved
+  [`step_collapse()`](https://davidrsch.github.io/kerasnip/dev/reference/step_collapse.md)
+  documentation and
+  [`tidy()`](https://generics.r-lib.org/reference/tidy.html) method
+  output.
+
 ## kerasnip 0.1.1
 
 ### Bug Fixes

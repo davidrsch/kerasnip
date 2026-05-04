@@ -8,7 +8,7 @@ no equivalent: it computes a single deterministic output for each input,
 with no internal distributional model to derive intervals from.
 
 This is not a limitation specific to `kerasnip`. The entire tidymodels
-ecosystem reflects the same reality — the `parsnip` package does not
+ecosystem reflects the same reality, the `parsnip` package does not
 register `conf_int` or `pred_int` prediction types for any neural
 network engine, including `brulee`, the official tidymodels neural
 network package.
@@ -17,13 +17,13 @@ The supported and recommended path for obtaining prediction intervals
 from neural networks in tidymodels is **conformal inference**, provided
 by the `probably` package. Conformal inference is:
 
-- **Distribution-free** — it makes no assumptions about the shape of the
+- **Distribution-free**: it makes no assumptions about the shape of the
   outcome distribution.
-- **Model-agnostic** — it treats the model as a black box; only
+- **Model-agnostic**: it treats the model as a black box; only
   [`fit()`](https://generics.r-lib.org/reference/fit.html) and
   [`predict()`](https://rdrr.io/r/stats/predict.html) calls are
   required.
-- **Guaranteed to have correct coverage** — under the assumption that
+- **Guaranteed to have correct coverage**: under the assumption that
   training and test data are exchangeable (i.e. identically and
   independently distributed), the intervals contain the true outcome
   with at least the requested probability.
@@ -34,6 +34,7 @@ the sections below.
 ## Setup
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
@@ -65,42 +66,48 @@ All three methods work with any fitted
 object, so the setup is identical to any other kerasnip workflow.
 
 ``` r
+
 input_block <- function(model, input_shape) {
-    keras3::keras_model_sequential(input_shape = input_shape)
+  keras3::keras_model_sequential(input_shape = input_shape)
 }
 dense_block <- function(model, units = 32) {
-    model |>
-        keras3::layer_dense(units = units, activation = "relu")
+  model |>
+    keras3::layer_dense(units = units, activation = "relu")
 }
 output_block <- function(model) {
-    model |> keras3::layer_dense(units = 1)
+  model |> keras3::layer_dense(units = 1)
 }
 
 create_keras_sequential_spec(
-    model_name = "conf_mlp",
-    layer_blocks = list(
-        input  = input_block,
-        dense  = dense_block,
-        output = output_block
-    ),
-    mode = "regression"
+  model_name = "conf_mlp",
+  layer_blocks = list(
+    input  = input_block,
+    dense  = dense_block,
+    output = output_block
+  ),
+  mode = "regression"
 )
 
 spec <- conf_mlp(dense_units = 32, fit_epochs = 30) |>
-    set_engine("keras")
+  set_engine("keras")
 
-data <- modeldata::ames |> select(
-    Sale_Price, Gr_Liv_Area, Year_Built,
-    Garage_Area, Total_Bsmt_SF
-)
+data <- modeldata::ames |>
+  mutate(Sale_Price = as.numeric(Sale_Price)) |>
+  select(
+    Sale_Price,
+    Gr_Liv_Area,
+    Year_Built,
+    Garage_Area,
+    Total_Bsmt_SF
+  )
 rec <- recipe(Sale_Price ~ ., data = data) |>
-    step_normalize(all_numeric_predictors())
+  step_normalize(all_numeric_predictors())
 wflow <- workflow(rec, spec)
 ```
 
 ------------------------------------------------------------------------
 
-## Method 1 — Split conformal inference (`int_conformal_split`)
+## Method 1: Split conformal inference (`int_conformal_split`)
 
 This is the simplest and fastest method. The workflow is:
 
@@ -117,6 +124,7 @@ The model is never re-fitted. The calibration residuals act as a
 reference distribution for deciding how wide to make the intervals.
 
 ``` r
+
 set.seed(1)
 split <- initial_split(data, prop = 0.75)
 train_dat <- training(split)
@@ -127,7 +135,7 @@ fit_obj <- fit(wflow, data = train_dat)
 
 # Build the conformal object from the calibration set
 conformal_split <- int_conformal_split(fit_obj, cal_data = cal_dat)
-#> 23/23 - 0s - 2ms/step
+#> 23/23 - 0s - 3ms/step
 conformal_split
 #> Split Conformal inference
 #> preprocessor: recipe 
@@ -139,16 +147,16 @@ conformal_split
 # Predict intervals for new observations
 new_obs <- cal_dat[1:6, ]
 predict(conformal_split, new_data = new_obs, level = 0.90)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 20ms/step
 #> # A tibble: 6 × 3
 #>    .pred .pred_lower .pred_upper
 #>    <dbl>       <dbl>       <dbl>
-#> 1 28660.    -187100.     244420.
-#> 2 88942.    -126818.     304702.
-#> 3 48182.    -167577.     263942.
-#> 4 53763.    -161997.     269522.
-#> 5 11238.    -204521.     226998.
-#> 6 14694.    -201066.     230453.
+#> 1 27274.    -192480.     247028.
+#> 2 79102.    -140652.     298856.
+#> 3 42771.    -176983.     262525.
+#> 4 47802.    -171952.     267556.
+#> 5 19753.    -200001.     239507.
+#> 6 20994.    -198760.     240748.
 ```
 
 **When to use this**: when training cost is non-trivial and you can
@@ -157,7 +165,7 @@ for kerasnip models in most practical situations.
 
 ------------------------------------------------------------------------
 
-## Method 2 — Cross-validation conformal inference (`int_conformal_cv`)
+## Method 2: Cross-validation conformal inference (`int_conformal_cv`)
 
 This method uses **cross-validation** to generate out-of-fold
 predictions, then pools those residuals to calibrate the intervals. The
@@ -180,17 +188,18 @@ The final model is fitted once more on the full training data inside
 [`int_conformal_cv()`](https://probably.tidymodels.org/reference/int_conformal_cv.html).
 
 ``` r
+
 set.seed(1)
 folds <- vfold_cv(data, v = 5)
 
 # Fit the workflow on each fold, retaining predictions and model objects
 fitted_folds <- tune::fit_resamples(
-    wflow,
-    folds,
-    control = tune::control_resamples(
-        save_pred = TRUE,
-        extract   = function(x) x
-    )
+  wflow,
+  folds,
+  control = tune::control_resamples(
+    save_pred = TRUE,
+    extract = function(x) x
+  )
 )
 #> 19/19 - 0s - 3ms/step
 #> 19/19 - 0s - 3ms/step
@@ -214,16 +223,16 @@ predict(conformal_cv, new_data = data[1:6, ], level = 0.90)
 #> 1/1 - 0s - 20ms/step
 #> 1/1 - 0s - 20ms/step
 #> 1/1 - 0s - 20ms/step
-#> 1/1 - 0s - 20ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 3
 #>   .pred_lower  .pred .pred_upper
 #>         <dbl>  <dbl>       <dbl>
-#> 1    -193215. 26379.     245974.
-#> 2    -198473. 21121.     240716.
-#> 3    -201013. 18582.     238176.
-#> 4    -152078. 67517.     287111.
-#> 5    -187000. 32595.     252189.
-#> 6    -187405. 32189.     251784.
+#> 1    -193680. 26301.     246282.
+#> 2    -197752. 22229.     242210.
+#> 3    -200122. 19859.     239840.
+#> 4    -155001. 64981.     284962.
+#> 5    -187820. 32161.     252142.
+#> 6    -188122. 31859.     251840.
 ```
 
 **When to use this**: when you do not want to reserve a separate
@@ -235,7 +244,7 @@ fold, which multiplies training time by the number of folds.
 
 ------------------------------------------------------------------------
 
-## Method 3 — Full conformal inference (`int_conformal_full`)
+## Method 3: Full conformal inference (`int_conformal_full`)
 
 Full conformal inference is the most principled of the three methods in
 terms of statistical guarantees, but it is the most expensive
@@ -266,6 +275,7 @@ where the extra statistical rigour is required and training cost is
 acceptable.
 
 ``` r
+
 # Use a small subset to keep runtime reasonable in this vignette
 data_small <- data[1:100, ]
 new_obs_small <- data[101:106, ]
@@ -273,14 +283,14 @@ new_obs_small <- data[101:106, ]
 fit_small <- fit(wflow, data = data_small)
 
 conformal_full <- int_conformal_full(
-    fit_small,
-    train_data = data_small,
-    control = control_conformal_full(
-        method       = "grid",
-        trial_points = 20
-    )
+  fit_small,
+  train_data = data_small,
+  control = control_conformal_full(
+    method = "grid",
+    trial_points = 20
+  )
 )
-#> 4/4 - 0s - 11ms/step
+#> 4/4 - 0s - 12ms/step
 conformal_full
 #> Conformal inference
 #> preprocessor: recipe 
@@ -291,27 +301,15 @@ conformal_full
 
 predict(conformal_full, new_data = new_obs_small, level = 0.90)
 #> 1/1 - 0s - 21ms/step
-#> Warning: Unknown or uninitialised column: `difference`.
-#> Warning: Could not determine bounds.
-#> Warning: Unknown or uninitialised column: `difference`.
-#> Warning: Could not determine bounds.
-#> Warning: Unknown or uninitialised column: `difference`.
-#> Warning: Could not determine bounds.
-#> Warning: Unknown or uninitialised column: `difference`.
-#> Warning: Could not determine bounds.
-#> Warning: Unknown or uninitialised column: `difference`.
-#> Warning: Could not determine bounds.
-#> Warning: Unknown or uninitialised column: `difference`.
-#> Warning: Could not determine bounds.
 #> # A tibble: 6 × 2
 #>   .pred_lower .pred_upper
 #>         <dbl>       <dbl>
-#> 1          NA          NA
-#> 2          NA          NA
-#> 3          NA          NA
-#> 4          NA          NA
-#> 5          NA          NA
-#> 6          NA          NA
+#> 1    -476892.     477047.
+#> 2    -476319.     476473.
+#> 3    -474251.     474402.
+#> 4    -501042.     501232.
+#> 5    -432773.     433129.
+#> 6    -495431.     495613.
 ```
 
 **When to use this**: when you need the strongest possible coverage
@@ -323,11 +321,11 @@ to use full conformal inference.
 
 ## Comparison of the three methods
 
-| Method                | Model refits              | Coverage guarantee | Recommended for kerasnip          |
-|-----------------------|---------------------------|--------------------|-----------------------------------|
-| `int_conformal_split` | 1 (on training data only) | Marginal           | Yes — lowest cost                 |
-| `int_conformal_cv`    | 1 per fold + 1 final      | Marginal           | Yes — if already cross-validating |
-| `int_conformal_full`  | *(n_test × n_grid)*       | Marginal           | With caution — expensive          |
+| Method | Model refits | Coverage guarantee | Recommended for kerasnip |
+|----|----|----|----|
+| `int_conformal_split` | 1 (on training data only) | Marginal | Yes, lowest cost |
+| `int_conformal_cv` | 1 per fold + 1 final | Marginal | Yes, if already cross-validating |
+| `int_conformal_full` | *(n_test × n_grid)* | Marginal | With caution, expensive |
 
 All three methods provide **marginal coverage**: across many test
 observations, at least the requested fraction will have their true
@@ -341,6 +339,7 @@ problems.
 ## Cleanup
 
 ``` r
+
 remove_keras_spec("conf_mlp")
 #> Removed from parsnip registry objects: conf_mlp, conf_mlp_args, conf_mlp_encoding, conf_mlp_fit, conf_mlp_modes, conf_mlp_pkgs, conf_mlp_predict
 #> Removed 'conf_mlp' from parsnip:::get_model_env()$models

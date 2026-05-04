@@ -59,6 +59,7 @@ inputs, which is not possible with the sequential API.
 First, we load the necessary packages.
 
 ``` r
+
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
@@ -95,6 +96,7 @@ These are the building blocks of our model. Each function represents a
 node in the graph.
 
 ``` r
+
 # Input blocks for two distinct inputs
 input_block_1 <- function(input_shape) {
   layer_input(shape = input_shape, name = "input_1")
@@ -139,6 +141,7 @@ automatically creates a wrapper that renames the arguments of our blocks
 to match the node names defined in the `layer_blocks` list.
 
 ``` r
+
 model_name <- "two_output_reg_spec" # Changed model name
 # Clean up the spec when the vignette is done knitting
 on.exit(remove_keras_spec(model_name), add = TRUE)
@@ -168,6 +171,7 @@ The new function `two_input_reg_spec()` is now available. Its arguments
 from our block definitions.
 
 ``` r
+
 # We can override the default `units` for each path.
 spec <- two_output_reg_spec( # Changed spec name
   processed_1_units = 16,
@@ -253,15 +257,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 44ms/step
+#> 1/1 - 0s - 45ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>      <dbl[,1,1]>    <dbl[,1,1]>
-#> 1        0.607 …        0.451 …
-#> 2        0.364 …        0.427 …
-#> 3        0.447 …        0.466 …
-#> 4        0.357 …        0.494 …
-#> 5        0.330 …        0.418 …
+#> 1        0.632 …        0.640 …
+#> 2        0.327 …        0.554 …
+#> 3        0.337 …        0.412 …
+#> 4        0.388 …        0.510 …
+#> 5        0.482 …        0.652 …
 ```
 
 ## A common debugging workflow: `compile_keras_grid()`
@@ -280,6 +284,7 @@ training cycle. This is perfect for debugging your architecture.
 Let’s see this in action with the `two_input_reg_spec` model:
 
 ``` r
+
 # Create a spec instance
 spec <- two_output_reg_spec( # Changed spec name
   processed_1_units = 16,
@@ -346,6 +351,7 @@ compilation_results |>
 ```
 
 ``` r
+
 compilation_results |>
   select(compiled_model) |>
   pull() |>
