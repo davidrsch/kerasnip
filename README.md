@@ -1,4 +1,4 @@
-# kerasnip
+# kerasnip <a href="https://davidrsch.github.io/kerasnip/"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 
