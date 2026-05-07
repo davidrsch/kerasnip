@@ -69,7 +69,7 @@ reference:
       - step_collapse
 
 development:
-  mode: auto
+  mode: release
 
 navbar:
   bg: primary
