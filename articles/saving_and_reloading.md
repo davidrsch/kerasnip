@@ -92,9 +92,9 @@ predict(fit_wf, new_data)
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1 0.737
-#> 2 0.577
-#> 3 1.67
+#> 1  1.37
+#> 2  1.36
+#> 3  4.27
 ```
 
 The first call to predict() detects that the Python pointer is invalid
@@ -142,9 +142,9 @@ predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1 0.737
-#> 2 0.577
-#> 3 1.67
+#> 1  1.37
+#> 2  1.36
+#> 3  4.27
 ```
 
 There is nothing special to do after
@@ -186,9 +186,9 @@ predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1 0.737
-#> 2 0.577
-#> 3 1.67
+#> 1  1.37
+#> 2  1.36
+#> 3  4.27
 ```
 
 ## Comparison
