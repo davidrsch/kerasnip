@@ -177,6 +177,28 @@ predict.kerasnip_model_fit <- function(object, new_data, ...) {
     }
   }
 
+  # Restore Laplace combined models from serialized bytes if present
+  if (!is.null(object$fit$laplace)) {
+    for (nm in names(object$fit$laplace)) {
+      entry <- object$fit$laplace[[nm]]
+      if (
+        !is.null(entry$combined_model_bytes) && !is.null(entry$combined_model)
+      ) {
+        is_valid <- tryCatch(
+          {
+            reticulate::py_validate_xptr(entry$combined_model)
+            TRUE
+          },
+          error = function(e) FALSE
+        )
+        if (!is_valid) {
+          object$fit$laplace[[nm]]$combined_model <-
+            keras_model_from_bytes(entry$combined_model_bytes)
+        }
+      }
+    }
+  }
+
   # Strip our class and dispatch explicitly. NextMethod() re-uses the original
   # call arguments, not locally modified ones, so the restored model above
   # would not be forwarded via NextMethod().
