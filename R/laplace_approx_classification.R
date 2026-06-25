@@ -162,15 +162,19 @@ optim_laplace_classification <- function(
 #'   `is_binary`, `combined_model`, and `combined_model_bytes`.
 #' @noRd
 laplace_one_classification <- function(
-    model, x_proc, y_mat_one, layer_info) {
-  output_layer      <- model$get_layer(layer_info$output_layer_name)
+  model,
+  x_proc,
+  y_mat_one,
+  layer_info
+) {
+  output_layer <- model$get_layer(layer_info$output_layer_name)
   penultimate_layer <- model$get_layer(layer_info$penultimate_layer_name)
-  model_input       <- get_model_input(model)
+  model_input <- get_model_input(model)
 
   # Build feature-only model (avoids post-activation output -- Keras 3
   # Dense(activation="softmax") returns probabilities, not logits)
   feature_model <- keras3::keras_model(
-    inputs  = model_input,
+    inputs = model_input,
     outputs = penultimate_layer$output
   )
 
@@ -178,22 +182,23 @@ laplace_one_classification <- function(
 
   # MAP weights from the output Dense layer; compute logits in R
   weights_list <- output_layer$get_weights()
-  w_mat <- weights_list[[1L]]          # (d x C)
-  b_vec <- weights_list[[2L]]          # (C,)
-  w_sq  <- sum(as.vector(w_mat)^2) + sum(as.vector(b_vec)^2)
+  w_mat <- weights_list[[1L]] # (d x C)
+  b_vec <- weights_list[[2L]] # (C,)
+  w_sq <- sum(as.vector(w_mat)^2) + sum(as.vector(b_vec)^2)
 
-  logits <- features %*% w_mat +
+  logits <- features %*%
+    w_mat +
     matrix(b_vec, nrow = nrow(features), ncol = length(b_vec), byrow = TRUE)
 
   num_classes <- ncol(logits)
-  is_binary   <- num_classes == 1L
+  is_binary <- num_classes == 1L
 
   # Class probabilities (sigmoid or softmax)
   if (is_binary) {
     probs <- 1 / (1 + exp(-logits))
   } else {
     logits_shifted <- logits - apply(logits, 1, max)
-    exp_logits     <- exp(logits_shifted)
+    exp_logits <- exp(logits_shifted)
     probs <- exp_logits / rowSums(exp_logits)
   }
 
@@ -204,15 +209,14 @@ laplace_one_classification <- function(
 
   if (is_binary) {
     nll_total <- -sum(
-      y_mat_one * log(probs_clipped) +
-        (1 - y_mat_one) * log(1 - probs_clipped)
+      y_mat_one * log(probs_clipped) + (1 - y_mat_one) * log(1 - probs_clipped)
     )
   } else {
     nll_total <- -sum(y_mat_one * log(probs_clipped))
   }
 
-  n_train  <- nrow(features)
-  h_diag   <- h_diag_classification(features, probs)
+  n_train <- nrow(features)
+  h_diag <- h_diag_classification(features, probs)
   d_params <- length(h_diag)
 
   hp <- optim_laplace_classification(h_diag, nll_total, w_sq, n_train, d_params)
@@ -220,14 +224,14 @@ laplace_one_classification <- function(
   feature_model_bytes <- keras_model_to_bytes(feature_model)
 
   list(
-    h_diag               = h_diag,
-    tau                  = hp$tau,
-    n_training           = n_train,
-    num_classes          = num_classes,
-    is_binary            = is_binary,
-    w_mat                = w_mat,
-    b_vec                = b_vec,
-    combined_model       = feature_model,
+    h_diag = h_diag,
+    tau = hp$tau,
+    n_training = n_train,
+    num_classes = num_classes,
+    is_binary = is_binary,
+    w_mat = w_mat,
+    b_vec = b_vec,
+    combined_model = feature_model,
     combined_model_bytes = feature_model_bytes
   )
 }

@@ -236,7 +236,9 @@ sample_pred_int_cls <- function(
       for (i in seq_len(m)) {
         indicator_array[i, , s] <- 0
         indicator_array[
-          i, sample.int(c, size = 1L, prob = p_sample[i, ]), s
+          i,
+          sample.int(c, size = 1L, prob = p_sample[i, ]),
+          s
         ] <- 1
       }
     }
