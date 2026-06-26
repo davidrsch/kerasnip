@@ -409,3 +409,60 @@ test_that("LLA: minimal model (no hidden layers) errors clearly", {
     "Laplace confidence intervals are not available"
   )
 })
+
+# =============================================================================
+# Multi-output functional regression
+# =============================================================================
+
+test_that("LLA: multi-output functional regression conf_int works", {
+  skip_if_no_keras()
+
+  model_name <- "lla_multi_reg"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  input_block <- function(input_shape) keras3::layer_input(shape = input_shape)
+  dense_block <- function(tensor, units = 6) {
+    tensor |> keras3::layer_dense(units = units, activation = "relu")
+  }
+  out1_block <- function(tensor) {
+    keras3::layer_dense(tensor, units = 1, name = "y1")
+  }
+  out2_block <- function(tensor) {
+    keras3::layer_dense(tensor, units = 1, name = "y2")
+  }
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      main_input = input_block,
+      shared = inp_spec(dense_block, "main_input"),
+      y1 = inp_spec(out1_block, "shared"),
+      y2 = inp_spec(out2_block, "shared")
+    ),
+    mode = "regression"
+  )
+
+  set.seed(123)
+  n <- 100
+  train_df <- tibble::tibble(
+    x1 = rnorm(n),
+    x2 = rnorm(n),
+    y1 = rnorm(n),
+    y2 = rnorm(n)
+  )
+
+  spec <- lla_multi_reg(fit_epochs = 5) |> set_engine("keras")
+  rec <- recipe(y1 + y2 ~ x1 + x2, train_df)
+  wf <- workflow(rec, spec)
+
+  set.seed(42)
+  fit_obj <- fit(wf, train_df)
+  result <- predict(fit_obj, train_df[1:5, ], type = "conf_int")
+
+  expect_s3_class(result, "tbl_df")
+  expect_true(".pred_lower_y1" %in% names(result))
+  expect_true(".pred_upper_y1" %in% names(result))
+  expect_true(".pred_lower_y2" %in% names(result))
+  expect_true(".pred_upper_y2" %in% names(result))
+  expect_equal(nrow(result), 5)
+})

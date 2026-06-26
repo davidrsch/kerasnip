@@ -110,7 +110,7 @@ generic_functional_fit <- function(
   # --- 3. Compute Laplace posterior ---
   laplace <- tryCatch(
     {
-      if (is.null(y_processed$class_levels)) {
+      if (is_regression_mode(y_processed$class_levels)) {
         laplace_all_regression(model, x_proc, y_mat)
       } else {
         laplace_all_classification(model, x_proc, y_mat)

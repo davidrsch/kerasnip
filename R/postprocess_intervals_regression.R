@@ -37,14 +37,8 @@ build_intervals_regression <- function(
   variance_fn
 ) {
   combined_pred <- predict(combined_model, x)
-
-  if (is.list(combined_pred) && !is.null(names(combined_pred))) {
-    mean_pred <- as.vector(combined_pred$pred)
-    features <- as.matrix(combined_pred$features)
-  } else {
-    mean_pred <- as.vector(combined_pred)
-    features <- as.matrix(combined_pred)
-  }
+  mean_pred <- as.vector(combined_pred$pred)
+  features <- as.matrix(combined_pred$features)
 
   var_vec <- variance_fn(features, h_diag, tau, sigma_sq_noise, n_training)
   std_err <- sqrt(pmax(var_vec, 0))

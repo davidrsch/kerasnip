@@ -369,6 +369,120 @@ test_that("LLA: binary functional conf_int works", {
 })
 
 # =============================================================================
+# Functional API
+# =============================================================================
+
+test_that("LLA: binary functional conf_int returns per-class columns", {
+  skip_if_no_keras()
+
+  model_name <- "lla_bin_ci_func"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = make_lla_cls_func_blocks(),
+    mode = "classification"
+  )
+
+  iris_bin <- iris
+  iris_bin$is_setosa <- factor(
+    iris_bin$Species == "setosa",
+    levels = c(FALSE, TRUE)
+  )
+
+  spec <- lla_bin_ci_func(fit_epochs = 10) |> set_engine("keras")
+  rec <- recipe(
+    is_setosa ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+    iris_bin
+  )
+  wf <- workflow(rec, spec)
+
+  set.seed(42)
+  fit_obj <- fit(wf, iris_bin)
+  result <- predict(fit_obj, iris_bin[1:5, ], type = "conf_int")
+
+  expect_valid_class_intervals(result, 5, c("FALSE", "TRUE"))
+})
+
+test_that("LLA: binary functional pred_int returns valid intervals", {
+  skip_if_no_keras()
+
+  model_name <- "lla_bin_pi_func"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = make_lla_cls_func_blocks(),
+    mode = "classification"
+  )
+
+  iris_bin <- iris
+  iris_bin$is_setosa <- factor(
+    iris_bin$Species == "setosa",
+    levels = c(FALSE, TRUE)
+  )
+
+  spec <- lla_bin_pi_func(fit_epochs = 10) |> set_engine("keras")
+  rec <- recipe(
+    is_setosa ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+    iris_bin
+  )
+  wf <- workflow(rec, spec)
+
+  set.seed(42)
+  fit_obj <- fit(wf, iris_bin)
+  result <- predict(fit_obj, iris_bin[1:5, ], type = "pred_int")
+
+  expect_valid_class_intervals(result, 5, c("FALSE", "TRUE"))
+})
+
+test_that("LLA: multi-class functional conf_int returns per-class columns", {
+  skip_if_no_keras()
+
+  model_name <- "lla_mc_ci_func"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = make_lla_cls_func_blocks(),
+    mode = "classification"
+  )
+
+  spec <- lla_mc_ci_func(fit_epochs = 10) |> set_engine("keras")
+  rec <- recipe(Species ~ ., iris)
+  wf <- workflow(rec, spec)
+
+  set.seed(42)
+  fit_obj <- fit(wf, iris)
+  result <- predict(fit_obj, iris[1:5, ], type = "conf_int")
+
+  expect_valid_class_intervals(result, 5, levels(iris$Species))
+})
+
+test_that("LLA: multi-class functional pred_int with level argument", {
+  skip_if_no_keras()
+
+  model_name <- "lla_mc_pi_func"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = make_lla_cls_func_blocks(),
+    mode = "classification"
+  )
+
+  spec <- lla_mc_pi_func(fit_epochs = 10) |> set_engine("keras")
+  rec <- recipe(Species ~ ., iris)
+  wf <- workflow(rec, spec)
+
+  set.seed(42)
+  fit_obj <- fit(wf, iris)
+  result <- predict(fit_obj, iris[1:5, ], type = "pred_int", level = 0.90)
+
+  expect_valid_class_intervals(result, 5, levels(iris$Species))
+})
+
+# =============================================================================
 # saveRDS / readRDS round-trip
 # =============================================================================
 

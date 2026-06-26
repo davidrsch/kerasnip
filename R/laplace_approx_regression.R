@@ -154,29 +154,41 @@ find_multi_output_layer_infos <- function(layers, model_output) {
       return(NULL)
     }
 
-    # Find penultimate: walk backward, skipping non-computational layers
-    out_idx <- which(vapply(
+    # Find penultimate by tracing the computation graph: get the tensor
+    # feeding into the output Dense, then find which layer produced it.
+    # This handles branched architectures correctly (unlike index-walking).
+    out_layer <- layers[[which(vapply(
       layers,
       function(l) l$name == output_layer_name,
       logical(1L)
-    ))
-    penultimate_idx <- out_idx - 1L
-    while (penultimate_idx >= 1L) {
-      layer_class <- class(layers[[penultimate_idx]])[1L]
-      is_skip <- grepl("input_layer|InputLayer|Sequential", layer_class)
-      if (!is_skip) {
-        break
+    ))]]
+    input_tensor <- out_layer$input
+    if (is.list(input_tensor)) {
+      input_tensor <- input_tensor[[1L]]
+    }
+    input_tensor_name <- input_tensor$name
+
+    penultimate_layer_name <- NULL
+    for (l in layers) {
+      l_output <- tryCatch(l$output, error = function(e) NULL)
+      if (!is.null(l_output)) {
+        if (is.list(l_output)) {
+          l_output <- l_output[[1L]]
+        }
+        if (!is.null(l_output$name) && l_output$name == input_tensor_name) {
+          penultimate_layer_name <- l$name
+          break
+        }
       }
-      penultimate_idx <- penultimate_idx - 1L
     }
 
-    if (penultimate_idx < 1L) {
+    if (is.null(penultimate_layer_name)) {
       return(NULL)
     }
 
     list(
       output_layer_name = output_layer_name,
-      penultimate_layer_name = layers[[penultimate_idx]]$name
+      penultimate_layer_name = penultimate_layer_name
     )
   })
 
@@ -221,6 +233,16 @@ get_model_input <- function(model) {
   }
 
   stop("Unable to determine model input tensor.")
+}
+
+
+# Single-output: class_levels is NULL (regression) or character vector.
+# Multi-output:  class_levels is a named list of NULLs (regression)
+#                or a named list of character vectors (classification).
+#' @noRd
+is_regression_mode <- function(class_levels) {
+  is.null(class_levels) ||
+    (is.list(class_levels) && all(vapply(class_levels, is.null, logical(1L))))
 }
 
 
@@ -369,13 +391,8 @@ laplace_one_regression <- function(
   )
 
   combined_pred <- predict(combined_model, x_proc)
-
-  if (is.list(combined_pred) && !is.null(names(combined_pred))) {
-    y_pred <- as.vector(combined_pred$pred)
-    features <- as.matrix(combined_pred$features)
-  } else {
-    stop("Combined model returned unexpected output format.")
-  }
+  y_pred <- as.vector(combined_pred$pred)
+  features <- as.matrix(combined_pred$features)
 
   # MAP weights (kernel + bias) from the output Dense layer
   weights_list <- output_layer$get_weights()

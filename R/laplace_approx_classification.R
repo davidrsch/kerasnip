@@ -116,32 +116,20 @@ optim_laplace_classification <- function(
   n,
   d
 ) {
-  # Sensible initial value: match prior variance to parameter scale
-  tau_init <- d / w_sq
+  # Single-parameter: use Brent's method via optimize()
+  tau_init <- max(d / w_sq, 1e-12)
+  lo <- log(tau_init) - 10
+  hi <- log(tau_init) + 10
 
-  result <- stats::optim(
-    par = log(max(tau_init, 1e-12)),
-    fn = neg_log_ml_classification,
-    h_diag = h_diag,
-    nll_total = nll_total,
-    w_sq = w_sq,
-    n = n,
-    d = d,
-    method = "Nelder-Mead"
+  result <- stats::optimize(
+    f = function(lt) {
+      neg_log_ml_classification(lt, h_diag, nll_total, w_sq, n, d)
+    },
+    lower = lo,
+    upper = hi
   )
 
-  if (result$convergence != 0L) {
-    warning(
-      "Laplace hyperparameter optimisation for classification did not ",
-      "converge (code ",
-      result$convergence,
-      "). ",
-      "Intervals may be miscalibrated.",
-      call. = FALSE
-    )
-  }
-
-  list(tau = exp(result$par[1L]))
+  list(tau = exp(result$minimum))
 }
 
 
