@@ -172,7 +172,11 @@ laplace_pred_int_reg <- function(
 #' @return A tibble.
 #' @noRd
 postprocess_intervals_reg <- function(results, object) {
-  if (is.list(results) && !is.null(names(results))) {
+  if (
+    is.list(results) &&
+      !is.null(names(results)) &&
+      !inherits(results, "data.frame")
+  ) {
     is_multi <- length(results) > 1L
     combined_preds <- lapply(names(results), function(nm) {
       mat <- results[[nm]]

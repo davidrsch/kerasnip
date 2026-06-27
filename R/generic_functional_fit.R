@@ -108,23 +108,11 @@ generic_functional_fit <- function(
   history <- rlang::exec(keras3::fit, model, !!!fit_args)
 
   # --- 3. Compute Laplace posterior ---
-  laplace <- tryCatch(
-    {
-      if (is_regression_mode(y_processed$class_levels)) {
-        laplace_all_regression(model, x_proc, y_mat)
-      } else {
-        laplace_all_classification(model, x_proc, y_mat)
-      }
-    },
-    error = function(e) {
-      warning(
-        "Laplace posterior computation failed: ",
-        conditionMessage(e),
-        call. = FALSE
-      )
-      NULL
-    }
-  )
+  if (is_regression_mode(y_processed$class_levels)) {
+    laplace <- laplace_all_regression(model, x_proc, y_mat)
+  } else {
+    laplace <- laplace_all_classification(model, x_proc, y_mat)
+  }
 
   # --- 4. Return value ---
   list(

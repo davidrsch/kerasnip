@@ -92,8 +92,6 @@ stable_softmax <- function(logits) {
 #' @param n_training Integer, number of training points.
 #' @param num_classes Integer, number of logit output units (1 for sigmoid
 #'   binary, C for softmax multi-class).
-#' @param is_binary Logical; if `TRUE`, uses sigmoid with manual complement
-#'   class rather than softmax.
 #' @param lvl Character vector of class level names.
 #' @param level Confidence level (e.g. 0.95).
 #' @param n_samples Integer, number of MC draws (default 1000).
@@ -107,7 +105,6 @@ sample_conf_int_cls <- function(
   tau,
   n_training,
   num_classes,
-  is_binary,
   w_mat,
   b_vec,
   lvl,
@@ -125,8 +122,7 @@ sample_conf_int_cls <- function(
   c <- num_classes
   var_logits <- compute_logit_variances(features, h_diag, tau, n_training, c)
 
-  n_class_cols <- if (is_binary) 2L else c
-  probs_array <- array(NA_real_, dim = c(m, n_class_cols, n_samples))
+  probs_array <- array(NA_real_, dim = c(m, c, n_samples))
 
   for (s in seq_len(n_samples)) {
     logit_sample <- matrix(
@@ -139,20 +135,14 @@ sample_conf_int_cls <- function(
       ncol = c
     )
 
-    if (is_binary) {
-      p1 <- 1 / (1 + exp(-logit_sample[, 1L]))
-      probs_array[, 1L, s] <- 1 - p1
-      probs_array[, 2L, s] <- p1
-    } else {
-      probs_array[,, s] <- stable_softmax(logit_sample)
-    }
+    probs_array[,, s] <- stable_softmax(logit_sample)
   }
 
   lo_prob <- (1 - level) / 2
   hi_prob <- 1 - lo_prob
   result_cols <- list()
 
-  for (cl in seq_len(n_class_cols)) {
+  for (cl in seq_len(c)) {
     lo <- apply(
       probs_array[, cl, , drop = FALSE],
       1,
@@ -196,7 +186,6 @@ sample_pred_int_cls <- function(
   tau,
   n_training,
   num_classes,
-  is_binary,
   w_mat,
   b_vec,
   lvl,
@@ -212,8 +201,7 @@ sample_pred_int_cls <- function(
   c <- num_classes
   var_logits <- compute_logit_variances(features, h_diag, tau, n_training, c)
 
-  n_class_cols <- if (is_binary) 2L else c
-  indicator_array <- array(NA_real_, dim = c(m, n_class_cols, n_samples))
+  indicator_array <- array(NA_real_, dim = c(m, c, n_samples))
 
   for (s in seq_len(n_samples)) {
     logit_sample <- matrix(
@@ -226,21 +214,14 @@ sample_pred_int_cls <- function(
       ncol = c
     )
 
-    if (is_binary) {
-      p1 <- 1 / (1 + exp(-logit_sample[, 1L]))
-      y_sample <- stats::runif(m) < p1
-      indicator_array[, 1L, s] <- as.numeric(!y_sample)
-      indicator_array[, 2L, s] <- as.numeric(y_sample)
-    } else {
-      p_sample <- stable_softmax(logit_sample)
-      for (i in seq_len(m)) {
-        indicator_array[i, , s] <- 0
-        indicator_array[
-          i,
-          sample.int(c, size = 1L, prob = p_sample[i, ]),
-          s
-        ] <- 1
-      }
+    p_sample <- stable_softmax(logit_sample)
+    for (i in seq_len(m)) {
+      indicator_array[i, , s] <- 0
+      indicator_array[
+        i,
+        sample.int(c, size = 1L, prob = p_sample[i, ]),
+        s
+      ] <- 1
     }
   }
 
@@ -248,7 +229,7 @@ sample_pred_int_cls <- function(
   hi_prob <- 1 - lo_prob
   result_cols <- list()
 
-  for (cl in seq_len(n_class_cols)) {
+  for (cl in seq_len(c)) {
     lo <- apply(
       indicator_array[, cl, , drop = FALSE],
       1,
@@ -315,7 +296,6 @@ laplace_conf_int_cls <- function(
       tau = entry$tau,
       n_training = entry$n_training,
       num_classes = entry$num_classes,
-      is_binary = entry$is_binary,
       w_mat = entry$w_mat,
       b_vec = entry$b_vec,
       lvl = lvl,
@@ -368,7 +348,6 @@ laplace_pred_int_cls <- function(
       tau = entry$tau,
       n_training = entry$n_training,
       num_classes = entry$num_classes,
-      is_binary = entry$is_binary,
       w_mat = entry$w_mat,
       b_vec = entry$b_vec,
       lvl = lvl,
@@ -393,7 +372,11 @@ laplace_pred_int_cls <- function(
 #' @return A tibble.
 #' @noRd
 postprocess_intervals_cls <- function(results, object) {
-  if (is.list(results) && !is.null(names(results))) {
+  if (
+    is.list(results) &&
+      !is.null(names(results)) &&
+      !inherits(results, "data.frame")
+  ) {
     is_multi <- length(results) > 1L
     combined_preds <- lapply(names(results), function(nm) {
       df <- results[[nm]]

@@ -117,122 +117,60 @@ find_output_layer_infos <- function(model) {
 #'   no matching Dense layers are found.
 #' @noRd
 find_multi_output_layer_infos <- function(layers, model_output) {
+  # Build a lookup of output tensor names to their producing layers
+  tensor_to_layer <- list()
+  for (l in layers) {
+    l_out <- tryCatch(l$output, error = function(e) NULL)
+    if (!is.null(l_out) && !is.null(l_out$name)) {
+      tensor_to_layer[[l_out$name]] <- l
+    }
+  }
+
   result <- lapply(names(model_output), function(nm) {
-    # Find the Dense layer whose name matches (or contains) the output name
-    output_layer_name <- NULL
-    for (l in layers) {
-      if (inherits(l, "keras.src.layers.core.dense.Dense") && l$name == nm) {
-        output_layer_name <- l$name
-        break
-      }
-    }
+    # Find the Dense layer that produced this output tensor
+    output_tensor_name <- model_output[[nm]]$name
+    out_layer <- tensor_to_layer[[output_tensor_name]]
 
-    # Fallback: loose name matching
-    if (is.null(output_layer_name)) {
-      dense_layers <- layers[vapply(
-        layers,
-        function(l) {
-          inherits(l, "keras.src.layers.core.dense.Dense")
-        },
-        logical(1L)
-      )]
-      for (dl in dense_layers) {
-        if (grepl(nm, dl$name, fixed = TRUE)) {
-          output_layer_name <- dl$name
-          break
-        }
-      }
-    }
-
-    if (is.null(output_layer_name)) {
-      warning(
-        "Could not find output Dense layer for output '",
-        nm,
-        "'.",
-        call. = FALSE
-      )
+    if (
+      is.null(out_layer) ||
+        !inherits(out_layer, "keras.src.layers.core.dense.Dense")
+    ) {
       return(NULL)
     }
 
-    # Find penultimate by tracing the computation graph: get the tensor
-    # feeding into the output Dense, then find which layer produced it.
-    # This handles branched architectures correctly (unlike index-walking).
-    out_layer <- layers[[which(vapply(
-      layers,
-      function(l) l$name == output_layer_name,
-      logical(1L)
-    ))]]
-    input_tensor <- out_layer$input
-    if (is.list(input_tensor)) {
-      input_tensor <- input_tensor[[1L]]
-    }
-    input_tensor_name <- input_tensor$name
-
-    penultimate_layer_name <- NULL
-    for (l in layers) {
-      l_output <- tryCatch(l$output, error = function(e) NULL)
-      if (!is.null(l_output)) {
-        if (is.list(l_output)) {
-          l_output <- l_output[[1L]]
-        }
-        if (!is.null(l_output$name) && l_output$name == input_tensor_name) {
-          penultimate_layer_name <- l$name
-          break
-        }
-      }
-    }
-
-    if (is.null(penultimate_layer_name)) {
-      return(NULL)
-    }
+    # Trace penultimate: tensor feeding into the output Dense
+    input_tensor_name <- out_layer$input$name
+    penultimate_layer <- tensor_to_layer[[input_tensor_name]]
 
     list(
-      output_layer_name = output_layer_name,
-      penultimate_layer_name = penultimate_layer_name
+      output_layer_name = out_layer$name,
+      penultimate_layer_name = if (is.null(penultimate_layer)) {
+        NULL
+      } else {
+        penultimate_layer$name
+      }
     )
   })
 
   names(result) <- names(model_output)
   result <- result[!vapply(result, is.null, logical(1L))]
-  if (length(result) == 0L) {
-    return(NULL)
-  }
-  result
+  if (length(result) == 0L) NULL else result
 }
 
 
-#' Get Model Input Tensor Safely Across Keras 3 Types
+#' Get Model Input Tensor Across Keras 3 APIs
 #'
 #' @description
-#' Tries `model$input` first, falls back to `model$inputs[[1]]`, then
-#' searches layers for an InputLayer.  Handles differences between
-#' Sequential and Functional API models.
+#' Functional models expose `model$input` directly; Sequential wrappers
+#' do not, so `model$layers[[1]]$input` is used as fallback.
 #'
 #' @param model A compiled Keras model.
 #' @return The model's input tensor.
 #' @noRd
 get_model_input <- function(model) {
-  inp <- tryCatch(model$input, error = function(e) NULL)
-  if (!is.null(inp)) {
-    return(inp)
-  }
-
-  inp <- tryCatch(model$inputs, error = function(e) NULL)
-  if (!is.null(inp)) {
-    if (is.list(inp) && length(inp) == 1L) {
-      return(inp[[1L]])
-    }
-    return(inp)
-  }
-
-  layers <- model$layers
-  for (l in layers) {
-    if (inherits(l, "keras.src.layers.core.input_layer.InputLayer")) {
-      return(l$output)
-    }
-  }
-
-  stop("Unable to determine model input tensor.")
+  # Functional models expose $input directly; sequential wrappers don't
+  # but their first layer does
+  tryCatch(model$input, error = function(e) model$layers[[1L]]$input)
 }
 
 
@@ -336,17 +274,6 @@ optim_laplace_regression <- function(h_diag, rss, w_sq, n, d) {
     d = d,
     method = "Nelder-Mead"
   )
-
-  if (result$convergence != 0L) {
-    warning(
-      "Laplace hyperparameter optimisation did not converge ",
-      "(code ",
-      result$convergence,
-      "). ",
-      "Intervals may be miscalibrated.",
-      call. = FALSE
-    )
-  }
 
   list(
     tau = exp(result$par[1L]),

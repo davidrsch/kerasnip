@@ -530,3 +530,130 @@ test_that("LLA: classification intervals survive saveRDS/readRDS", {
   testthat::expect_equal(nrow(ci_before), nrow(ci_after))
   testthat::expect_equal(names(ci_before), names(ci_after))
 })
+
+# =============================================================================
+# Edge cases
+# =============================================================================
+
+test_that("LLA: minimal classification model errors clearly", {
+  skip_if_no_keras()
+
+  model_name <- "lla_min_cls"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  minimal_blocks <- list(
+    input = function(model, input_shape) {
+      keras3::keras_model_sequential(input_shape = input_shape)
+    },
+    output = function(model, num_classes) {
+      model |>
+        keras3::layer_dense(units = num_classes, activation = "softmax")
+    }
+  )
+
+  create_keras_sequential_spec(
+    model_name = model_name,
+    layer_blocks = minimal_blocks,
+    mode = "classification"
+  )
+
+  spec <- lla_min_cls(fit_epochs = 3) |> set_engine("keras")
+  rec <- recipe(Species ~ ., iris)
+  wf <- workflow(rec, spec)
+
+  set.seed(42)
+  fit_obj <- fit(wf, iris)
+
+  expect_error(
+    predict(fit_obj, iris[1:5, ], type = "conf_int"),
+    "Laplace confidence intervals are not available"
+  )
+  expect_error(
+    predict(fit_obj, iris[1:5, ], type = "pred_int"),
+    "Laplace prediction intervals are not available"
+  )
+})
+
+# =============================================================================
+# Unit: postprocess_intervals_cls
+# =============================================================================
+
+test_that("LLA: postprocess_intervals_cls handles multi-output named list", {
+  df1 <- data.frame(
+    .pred_lower_setosa = c(0.1, 0.2),
+    .pred_upper_setosa = c(0.3, 0.4)
+  )
+  df2 <- data.frame(
+    .pred_lower_versicolor = c(0.5, 0.6),
+    .pred_upper_versicolor = c(0.7, 0.8)
+  )
+  result <- postprocess_intervals_cls(
+    list(setosa = df1, versicolor = df2),
+    NULL
+  )
+
+  testthat::expect_s3_class(result, "tbl_df")
+  testthat::expect_equal(nrow(result), 2)
+  testthat::expect_true(".pred_lower_setosa_setosa" %in% names(result))
+  testthat::expect_true(".pred_upper_versicolor_versicolor" %in% names(result))
+})
+
+test_that("LLA: postprocess_intervals_cls handles single data frame", {
+  df <- data.frame(
+    .pred_lower_setosa = c(0.1, 0.2),
+    .pred_upper_setosa = c(0.3, 0.4)
+  )
+  result <- postprocess_intervals_cls(df, NULL)
+
+  testthat::expect_s3_class(result, "tbl_df")
+  testthat::expect_equal(nrow(result), 2)
+})
+
+test_that("LLA: postprocess_intervals_cls handles matrix", {
+  mat <- cbind(
+    .pred_lower_setosa = c(0.1, 0.2),
+    .pred_upper_setosa = c(0.3, 0.4)
+  )
+  result <- postprocess_intervals_cls(mat, NULL)
+
+  testthat::expect_s3_class(result, "tbl_df")
+  testthat::expect_equal(nrow(result), 2)
+})
+
+# =============================================================================
+# Unit: laplace_all_classification multi-output
+# =============================================================================
+
+test_that("LLA: laplace_all_classification handles multi-output", {
+  skip_if_no_keras()
+
+  set.seed(42)
+  n <- 50
+  x_mat <- matrix(rnorm(n * 4), ncol = 4)
+
+  inp <- keras3::layer_input(shape = 4)
+  shared <- inp |> keras3::layer_dense(units = 4, activation = "relu")
+  out1 <- shared |>
+    keras3::layer_dense(units = 2, activation = "softmax", name = "o1")
+  out2 <- shared |>
+    keras3::layer_dense(units = 2, activation = "softmax", name = "o2")
+  model <- keras3::keras_model(
+    inputs = inp,
+    outputs = list(o1 = out1, o2 = out2)
+  )
+  keras3::compile(
+    model,
+    loss = "categorical_crossentropy",
+    optimizer = keras3::optimizer_adam()
+  )
+
+  y1 <- keras3::to_categorical(sample.int(2, n, replace = TRUE) - 1, 2)
+  y2 <- keras3::to_categorical(sample.int(2, n, replace = TRUE) - 1, 2)
+
+  keras3::fit(model, x_mat, list(o1 = y1, o2 = y2), epochs = 2, verbose = 0)
+
+  result <- laplace_all_classification(model, x_mat, list(o1 = y1, o2 = y2))
+  testthat::expect_type(result, "list")
+  testthat::expect_equal(names(result), c("o1", "o2"))
+  testthat::expect_true("tau" %in% names(result$o1))
+})

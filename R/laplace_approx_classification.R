@@ -147,7 +147,7 @@ optim_laplace_classification <- function(
 #' @param layer_info A list with `output_layer_name` and
 #'   `penultimate_layer_name`.
 #' @return A list with `h_diag`, `tau`, `n_training`, `num_classes`,
-#'   `is_binary`, `combined_model`, and `combined_model_bytes`.
+#'   `combined_model`, and `combined_model_bytes`.
 #' @noRd
 laplace_one_classification <- function(
   model,
@@ -179,29 +179,14 @@ laplace_one_classification <- function(
     matrix(b_vec, nrow = nrow(features), ncol = length(b_vec), byrow = TRUE)
 
   num_classes <- ncol(logits)
-  is_binary <- num_classes == 1L
 
-  # Class probabilities (sigmoid or softmax)
-  if (is_binary) {
-    probs <- 1 / (1 + exp(-logits))
-  } else {
-    logits_shifted <- logits - apply(logits, 1, max)
-    exp_logits <- exp(logits_shifted)
-    probs <- exp_logits / rowSums(exp_logits)
-  }
+  logits_shifted <- logits - apply(logits, 1, max)
+  exp_logits <- exp(logits_shifted)
+  probs <- exp_logits / rowSums(exp_logits)
 
-  # Total NLL (cross-entropy, summed over all training points)
   y_mat_one <- as.matrix(y_mat_one)
   eps <- 1e-15
-  probs_clipped <- pmax(pmin(probs, 1 - eps), eps)
-
-  if (is_binary) {
-    nll_total <- -sum(
-      y_mat_one * log(probs_clipped) + (1 - y_mat_one) * log(1 - probs_clipped)
-    )
-  } else {
-    nll_total <- -sum(y_mat_one * log(probs_clipped))
-  }
+  nll_total <- -sum(y_mat_one * log(pmax(pmin(probs, 1 - eps), eps)))
 
   n_train <- nrow(features)
   h_diag <- h_diag_classification(features, probs)
@@ -216,7 +201,6 @@ laplace_one_classification <- function(
     tau = hp$tau,
     n_training = n_train,
     num_classes = num_classes,
-    is_binary = is_binary,
     w_mat = w_mat,
     b_vec = b_vec,
     combined_model = feature_model,
@@ -237,9 +221,8 @@ laplace_one_classification <- function(
 #' in a single forward pass.
 #'
 #' @details
-#' The stored `num_classes` and `is_binary` fields determine whether
-#' sigmoid (binary, 1 unit) or softmax (multi-class, C units) is used at
-#' predict time for interval back-transformation.
+#' The stored `num_classes` field determines the number of softmax output
+#' units used at predict time for interval back-transformation.
 #'
 #' @param model A compiled, fitted Keras model.
 #' @param x_proc Processed predictor data (matrix or array).
@@ -247,7 +230,7 @@ laplace_one_classification <- function(
 #'   single-output classification, or a named list of such matrices for
 #'   multi-output classification.
 #' @return A named list with one entry per output, each containing
-#'   `h_diag`, `tau`, `n_training`, `num_classes`, `is_binary`,
+#'   `h_diag`, `tau`, `n_training`, `num_classes`,
 #'   `combined_model`, and `combined_model_bytes`.  Returns `NULL` when
 #'   no Dense output layer is found.
 #' @noRd

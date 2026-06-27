@@ -408,6 +408,10 @@ test_that("LLA: minimal model (no hidden layers) errors clearly", {
     predict(fit_obj, mtcars[1:5, ], type = "conf_int"),
     "Laplace confidence intervals are not available"
   )
+  expect_error(
+    predict(fit_obj, mtcars[1:5, ], type = "pred_int"),
+    "Laplace prediction intervals are not available"
+  )
 })
 
 # =============================================================================
@@ -465,4 +469,93 @@ test_that("LLA: multi-output functional regression conf_int works", {
   expect_true(".pred_lower_y2" %in% names(result))
   expect_true(".pred_upper_y2" %in% names(result))
   expect_equal(nrow(result), 5)
+})
+
+# =============================================================================
+# Unit: find_output_layer_infos with no Dense layers
+# =============================================================================
+
+test_that("LLA: find_output_layer_infos warns and returns NULL for no Dense", {
+  skip_if_no_keras()
+
+  inp <- keras3::layer_input(shape = 3)
+  no_dense_model <- keras3::keras_model(inputs = inp, outputs = inp)
+
+  expect_warning(
+    result <- find_output_layer_infos(no_dense_model),
+    "No Dense layer found"
+  )
+  expect_null(result)
+})
+
+# =============================================================================
+# Unit: postprocess_intervals_reg
+# =============================================================================
+
+test_that("LLA: postprocess_intervals_reg handles matrix input", {
+  mat <- cbind(
+    .pred = c(10, 20),
+    .pred_lower = c(8, 18),
+    .pred_upper = c(12, 22)
+  )
+  result <- postprocess_intervals_reg(mat, NULL)
+
+  testthat::expect_s3_class(result, "tbl_df")
+  testthat::expect_equal(nrow(result), 2)
+  testthat::expect_true(all(
+    c(".pred", ".pred_lower", ".pred_upper") %in%
+      names(result)
+  ))
+})
+
+test_that("LLA: postprocess_intervals_reg handles unnamed list", {
+  mat <- cbind(
+    .pred = c(10, 20),
+    .pred_lower = c(8, 18),
+    .pred_upper = c(12, 22)
+  )
+  result <- postprocess_intervals_reg(list(mat), NULL)
+
+  testthat::expect_s3_class(result, "tbl_df")
+  testthat::expect_equal(nrow(result), 2)
+})
+
+# =============================================================================
+# Unit: find_multi_output_layer_infos with mismatched names
+# =============================================================================
+
+test_that("LLA: find_multi_output_layer_infos works with auto-named Dense layers", {
+  skip_if_no_keras()
+
+  # Build a model where Dense layers have auto-generated names
+  inp <- keras3::layer_input(shape = 3)
+  shared <- inp |> keras3::layer_dense(units = 4, activation = "relu")
+  out1 <- shared |> keras3::layer_dense(units = 1)
+  out2 <- shared |> keras3::layer_dense(units = 1)
+  model <- keras3::keras_model(
+    inputs = inp,
+    outputs = list(y1 = out1, y2 = out2)
+  )
+
+  # Tensor-name matching finds both outputs and their shared penultimate
+  result <- find_multi_output_layer_infos(model$layers, model$output)
+  testthat::expect_equal(names(result), c("y1", "y2"))
+  testthat::expect_equal(
+    result$y1$penultimate_layer_name,
+    result$y2$penultimate_layer_name
+  )
+})
+
+test_that("LLA: find_multi_output_layer_infos rejects non-Dense outputs", {
+  skip_if_no_keras()
+
+  # Model where "output" comes directly from Input (no Dense)
+  inp <- keras3::layer_input(shape = 3, name = "inp")
+  model <- keras3::keras_model(
+    inputs = inp,
+    outputs = list(raw = inp)
+  )
+
+  result <- find_multi_output_layer_infos(model$layers, model$output)
+  testthat::expect_null(result)
 })
