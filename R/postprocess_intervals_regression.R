@@ -25,11 +25,18 @@
 #' @return A matrix with columns `.pred`, `.pred_lower`, `.pred_upper`.
 #' @noRd
 build_intervals_regression <- function(
-    combined_model, x, h_diag, tau, sigma_sq_noise, n_training,
-    level, predictive = FALSE) {
+  combined_model,
+  x,
+  h_diag,
+  tau,
+  sigma_sq_noise,
+  n_training,
+  level,
+  predictive = FALSE
+) {
   combined_pred <- predict(combined_model, x)
   mean_pred <- as.vector(combined_pred$pred)
-  features  <- as.matrix(combined_pred$features)
+  features <- as.matrix(combined_pred$features)
 
   # GPU-side variance via Keras ops
   d_features <- ncol(features)
@@ -46,13 +53,15 @@ build_intervals_regression <- function(
   )
   var_vec <- as.array(var_k) + 1 / prec_b
 
-  if (predictive) var_vec <- var_vec + sigma_sq_noise
+  if (predictive) {
+    var_vec <- var_vec + sigma_sq_noise
+  }
 
   std_err <- sqrt(pmax(var_vec, 0))
   z <- stats::qnorm(1 - (1 - level) / 2)
 
   cbind(
-    .pred       = mean_pred,
+    .pred = mean_pred,
     .pred_lower = mean_pred - z * std_err,
     .pred_upper = mean_pred + z * std_err
   )

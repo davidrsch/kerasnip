@@ -170,13 +170,13 @@ laplace_one_classification <- function(
   combined_model <- keras3::keras_model(
     inputs = model_input,
     outputs = list(
-      logits   = logits_tensor,
+      logits = logits_tensor,
       features = penultimate_layer$output
     )
   )
 
   combined_pred <- predict(combined_model, x_proc)
-  logits   <- as.matrix(combined_pred$logits)
+  logits <- as.matrix(combined_pred$logits)
   features <- as.matrix(combined_pred$features)
 
   # Norm of MAP weights (use get_weights for R-native arrays)
@@ -202,11 +202,11 @@ laplace_one_classification <- function(
   combined_model_bytes <- keras_model_to_bytes(combined_model)
 
   list(
-    h_diag               = h_diag,
-    tau                  = hp$tau,
-    n_training           = n_train,
-    num_classes          = num_classes,
-    combined_model       = combined_model,
+    h_diag = h_diag,
+    tau = hp$tau,
+    n_training = n_train,
+    num_classes = num_classes,
+    combined_model = combined_model,
     combined_model_bytes = combined_model_bytes
   )
 }

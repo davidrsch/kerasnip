@@ -94,7 +94,7 @@ sample_conf_int_cls <- function(
 ) {
   # Combined model outputs logits and features in one Keras forward pass
   combined_pred <- predict(combined_model, x)
-  logits   <- as.matrix(combined_pred$logits)
+  logits <- as.matrix(combined_pred$logits)
   features <- as.matrix(combined_pred$features)
 
   m <- nrow(features)
@@ -103,11 +103,11 @@ sample_conf_int_cls <- function(
 
   # GPU-side MC sampling using Keras eager ops
   logits_k <- keras3::op_convert_to_tensor(logits, dtype = "float32")
-  var_k    <- keras3::op_convert_to_tensor(var_logits, dtype = "float32")
+  var_k <- keras3::op_convert_to_tensor(var_logits, dtype = "float32")
 
   samples <- keras3::random_normal(
-    shape  = as.integer(c(m, c, n_samples)),
-    mean   = keras3::op_expand_dims(logits_k, 3L),
+    shape = as.integer(c(m, c, n_samples)),
+    mean = keras3::op_expand_dims(logits_k, 3L),
     stddev = keras3::op_sqrt(
       keras3::op_maximum(keras3::op_expand_dims(var_k, 3L), 0)
     )
@@ -158,7 +158,7 @@ sample_pred_int_cls <- function(
   n_samples = 1000L
 ) {
   combined_pred <- predict(combined_model, x)
-  logits   <- as.matrix(combined_pred$logits)
+  logits <- as.matrix(combined_pred$logits)
   features <- as.matrix(combined_pred$features)
 
   m <- nrow(features)
@@ -167,11 +167,11 @@ sample_pred_int_cls <- function(
 
   # GPU-side MC sampling with categorical draws
   logits_k <- keras3::op_convert_to_tensor(logits, dtype = "float32")
-  var_k    <- keras3::op_convert_to_tensor(var_logits, dtype = "float32")
+  var_k <- keras3::op_convert_to_tensor(var_logits, dtype = "float32")
 
   samples <- keras3::random_normal(
-    shape  = as.integer(c(m, c, n_samples)),
-    mean   = keras3::op_expand_dims(logits_k, 3L),
+    shape = as.integer(c(m, c, n_samples)),
+    mean = keras3::op_expand_dims(logits_k, 3L),
     stddev = keras3::op_sqrt(
       keras3::op_maximum(keras3::op_expand_dims(var_k, 3L), 0)
     )
@@ -182,10 +182,12 @@ sample_pred_int_cls <- function(
   logits_2d <- keras3::op_reshape(samples, as.integer(c(m * n_samples, c)))
   classes <- keras3::random_categorical(logits_2d, num_samples = 1L)
   indicators_2d <- keras3::op_one_hot(
-    keras3::op_squeeze(classes, 2L), as.integer(c)
+    keras3::op_squeeze(classes, 2L),
+    as.integer(c)
   )
   indicators <- keras3::op_reshape(
-    indicators_2d, as.integer(c(m, c, n_samples))
+    indicators_2d,
+    as.integer(c(m, c, n_samples))
   )
 
   lo_prob <- (1 - level) / 2
