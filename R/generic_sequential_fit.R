@@ -107,7 +107,14 @@ generic_sequential_fit <- function(
   # Fit the model using the constructed arguments
   history <- rlang::exec(keras3::fit, model, !!!fit_args)
 
-  # --- 3. Return value ---
+  # --- 3. Compute Laplace posterior ---
+  if (is_regression_mode(y_processed$class_levels)) {
+    laplace <- laplace_all_regression(model, x_proc, y_mat)
+  } else {
+    laplace <- laplace_all_classification(model, x_proc, y_mat)
+  }
+
+  # --- 4. Return value ---
   list(
     fit = model, # The raw Keras model object
     keras_bytes = keras_model_to_bytes(model), # Bytes for RDS-safe restore
@@ -115,6 +122,7 @@ generic_sequential_fit <- function(
     # Factor levels for classification, NULL for regression
     lvl = y_processed$class_levels,
     process_x = process_x_sequential,
-    process_y = process_y_sequential
+    process_y = process_y_sequential,
+    laplace = laplace # Laplace posterior (NULL for classification)
   )
 }

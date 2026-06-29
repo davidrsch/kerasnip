@@ -46,6 +46,13 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
 
   # Regression prediction
   if (mode == "regression") {
+    # Shared x-processing expression (used by numeric, conf_int, pred_int)
+    x_expr <- if (functional) {
+      rlang::expr(process_x_functional(new_data)$x_proc)
+    } else {
+      rlang::expr(process_x_sequential(new_data)$x_proc)
+    }
+
     parsnip::set_pred(
       model = model_name,
       eng = "keras",
@@ -57,16 +64,56 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = if (functional) {
-            rlang::expr(process_x_functional(new_data)$x_proc)
-          } else {
-            rlang::expr(process_x_sequential(new_data)$x_proc)
-          }
+          x = x_expr
+        )
+      )
+    )
+
+    # ---- Laplace confidence intervals ----
+    parsnip::set_pred(
+      model = model_name,
+      eng = "keras",
+      mode = "regression",
+      type = "conf_int",
+      value = list(
+        pre = NULL,
+        post = postprocess_intervals_reg,
+        func = c(pkg = "kerasnip", fun = "laplace_conf_int_reg"),
+        args = list(
+          object = rlang::expr(object$fit$fit),
+          x = x_expr,
+          laplace_data = rlang::expr(object$fit$laplace),
+          level = rlang::expr(level)
+        )
+      )
+    )
+
+    # ---- Laplace prediction intervals ----
+    parsnip::set_pred(
+      model = model_name,
+      eng = "keras",
+      mode = "regression",
+      type = "pred_int",
+      value = list(
+        pre = NULL,
+        post = postprocess_intervals_reg,
+        func = c(pkg = "kerasnip", fun = "laplace_pred_int_reg"),
+        args = list(
+          object = rlang::expr(object$fit$fit),
+          x = x_expr,
+          laplace_data = rlang::expr(object$fit$laplace),
+          level = rlang::expr(level)
         )
       )
     )
   } else {
     # Classification predictions
+    x_expr <- if (functional) {
+      rlang::expr(process_x_functional(new_data)$x_proc)
+    } else {
+      rlang::expr(process_x_sequential(new_data)$x_proc)
+    }
+
     parsnip::set_pred(
       model = model_name,
       eng = "keras",
@@ -78,11 +125,7 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = if (functional) {
-            rlang::expr(process_x_functional(new_data)$x_proc)
-          } else {
-            rlang::expr(process_x_sequential(new_data)$x_proc)
-          }
+          x = x_expr
         )
       )
     )
@@ -97,11 +140,53 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
         func = c(fun = "predict"),
         args = list(
           object = rlang::expr(object$fit$fit),
-          x = if (functional) {
-            rlang::expr(process_x_functional(new_data)$x_proc)
-          } else {
-            rlang::expr(process_x_sequential(new_data)$x_proc)
-          }
+          x = x_expr
+        )
+      )
+    )
+
+    # ---- Laplace confidence intervals (classification) ----
+    parsnip::set_pred(
+      model = model_name,
+      eng = "keras",
+      mode = "classification",
+      type = "conf_int",
+      value = list(
+        pre = NULL,
+        post = postprocess_intervals_cls,
+        func = c(
+          pkg = "kerasnip",
+          fun = "laplace_conf_int_cls"
+        ),
+        args = list(
+          object = rlang::expr(object$fit$fit),
+          x = x_expr,
+          laplace_data = rlang::expr(object$fit$laplace),
+          lvl = rlang::expr(object$fit$lvl),
+          level = rlang::expr(level)
+        )
+      )
+    )
+
+    # ---- Laplace prediction intervals (classification) ----
+    parsnip::set_pred(
+      model = model_name,
+      eng = "keras",
+      mode = "classification",
+      type = "pred_int",
+      value = list(
+        pre = NULL,
+        post = postprocess_intervals_cls,
+        func = c(
+          pkg = "kerasnip",
+          fun = "laplace_pred_int_cls"
+        ),
+        args = list(
+          object = rlang::expr(object$fit$fit),
+          x = x_expr,
+          laplace_data = rlang::expr(object$fit$laplace),
+          lvl = rlang::expr(object$fit$lvl),
+          level = rlang::expr(level)
         )
       )
     )

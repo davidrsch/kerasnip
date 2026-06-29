@@ -6,6 +6,7 @@ utils::globalVariables(
     "fresh",
     "keras_compile_arg_names",
     "keras_fit_arg_names",
+    "level",
     "new_data",
     "object",
     "parameters"
