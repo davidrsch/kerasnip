@@ -63,13 +63,13 @@ First, we load the necessary packages.
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
-#> ✔ broom        1.0.12     ✔ recipes      1.3.2 
-#> ✔ dials        1.4.3      ✔ rsample      1.3.2 
+#> ✔ broom        1.0.13     ✔ recipes      1.3.3 
+#> ✔ dials        1.4.4      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
 #> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
 #> ✔ infer        1.1.0      ✔ tune         2.1.0 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
-#> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
+#> ✔ parsnip      1.6.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
 #> ✖ purrr::discard() masks scales::discard()
@@ -250,6 +250,8 @@ wf <- workflow() |>
   add_model(spec)
 
 fit_obj <- fit(wf, data = train_df)
+#> 4/4 - 0s - 26ms/step
+#> 4/4 - 0s - 25ms/step
 
 # Predict on new data
 new_data_df <- tibble::tibble(
@@ -257,15 +259,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 44ms/step
+#> 1/1 - 0s - 54ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>      <dbl[,1,1]>    <dbl[,1,1]>
-#> 1        0.534 …        0.579 …
-#> 2        0.240 …        0.458 …
-#> 3        0.443 …        0.531 …
-#> 4        0.417 …        0.607 …
-#> 5        0.372 …        0.528 …
+#> 1        0.564 …        0.513 …
+#> 2        0.485 …        0.361 …
+#> 3        0.387 …        0.253 …
+#> 4        0.428 …        0.447 …
+#> 5        0.544 …        0.491 …
 ```
 
 ## A common debugging workflow: `compile_keras_grid()`
@@ -326,7 +328,7 @@ compilation_results |>
   pull() |>
   pluck(1) |>
   summary()
-#> Model: "functional_1"
+#> Model: "functional_3"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩

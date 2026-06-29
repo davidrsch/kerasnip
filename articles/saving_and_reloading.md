@@ -22,13 +22,13 @@ Before discussing the details, here is the full persistence workflow:
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
-#> ✔ broom        1.0.12     ✔ recipes      1.3.2 
-#> ✔ dials        1.4.3      ✔ rsample      1.3.2 
+#> ✔ broom        1.0.13     ✔ recipes      1.3.3 
+#> ✔ dials        1.4.4      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
 #> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
 #> ✔ infer        1.1.0      ✔ tune         2.1.0 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
-#> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
+#> ✔ parsnip      1.6.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
 #> ✖ purrr::discard() masks scales::discard()
@@ -84,17 +84,18 @@ fit_wf <- workflow() |>
   add_recipe(rec_spec) |> 
   add_model(mod_spec) |> 
   fit(data = mtcars)
+#> 1/1 - 0s - 38ms/step
 
 # Predict
 new_data <- mtcars[1:3, ]
 predict(fit_wf, new_data)
-#> 1/1 - 0s - 33ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.37
-#> 2  1.36
-#> 3  4.27
+#> 1 0.698
+#> 2 0.560
+#> 3 4.70
 ```
 
 The first call to predict() detects that the Python pointer is invalid
@@ -137,14 +138,14 @@ fit_wf <- readRDS("my_model.rds")
 
 # predict() restores the Keras model from bytes automatically
 predictions <- predict(fit_wf, new_data = new_data)
-#> 1/1 - 0s - 32ms/step
+#> 1/1 - 0s - 34ms/step
 predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.37
-#> 2  1.36
-#> 3  4.27
+#> 1 0.698
+#> 2 0.560
+#> 3 4.70
 ```
 
 There is nothing special to do after
@@ -181,14 +182,14 @@ library(bundle)
 bundled <- readRDS("my_model_bundle.rds")
 fit_wf <- unbundle(bundled)
 predictions <- predict(fit_wf, new_data = new_data)
-#> 1/1 - 0s - 32ms/step
+#> 1/1 - 0s - 34ms/step
 predictions
 #> # A tibble: 3 × 1
 #>   .pred
 #>   <dbl>
-#> 1  1.37
-#> 2  1.36
-#> 3  4.27
+#> 1 0.698
+#> 2 0.560
+#> 3 4.70
 ```
 
 ## Comparison

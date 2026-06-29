@@ -37,6 +37,10 @@
 <url><loc>https://davidrsch.github.io/kerasnip/reference/inp_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/keras_evaluate.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/keras_objects.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/laplace_conf_int_cls.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/laplace_conf_int_reg.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/laplace_pred_int_cls.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/laplace_pred_int_reg.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/loss_function_keras.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/model_exists.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/optimizer_function.html</loc></url>

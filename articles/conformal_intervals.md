@@ -38,13 +38,13 @@ the sections below.
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
-#> ✔ broom        1.0.12     ✔ recipes      1.3.2 
-#> ✔ dials        1.4.3      ✔ rsample      1.3.2 
+#> ✔ broom        1.0.13     ✔ recipes      1.3.3 
+#> ✔ dials        1.4.4      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
 #> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
 #> ✔ infer        1.1.0      ✔ tune         2.1.0 
 #> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
-#> ✔ parsnip      1.5.0      ✔ workflowsets 1.1.1 
+#> ✔ parsnip      1.6.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
 #> ✖ purrr::discard() masks scales::discard()
@@ -132,10 +132,11 @@ cal_dat <- testing(split)
 
 # Fit on the training set
 fit_obj <- fit(wflow, data = train_dat)
+#> 69/69 - 0s - 1ms/step
 
 # Build the conformal object from the calibration set
 conformal_split <- int_conformal_split(fit_obj, cal_data = cal_dat)
-#> 23/23 - 0s - 2ms/step
+#> 23/23 - 0s - 3ms/step
 conformal_split
 #> Split Conformal inference
 #> preprocessor: recipe 
@@ -147,16 +148,16 @@ conformal_split
 # Predict intervals for new observations
 new_obs <- cal_dat[1:6, ]
 predict(conformal_split, new_data = new_obs, level = 0.90)
-#> 1/1 - 0s - 20ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 3
 #>    .pred .pred_lower .pred_upper
 #>    <dbl>       <dbl>       <dbl>
-#> 1 31095.    -182166.     244357.
-#> 2 93578.    -119684.     306839.
-#> 3 50709.    -162553.     263970.
-#> 4 56551.    -156711.     269812.
-#> 5 17939.    -195323.     231200.
-#> 6 20389.    -192873.     233650.
+#> 1 28673.    -189131.     246477.
+#> 2 82697.    -135107.     300501.
+#> 3 44956.    -172848.     262760.
+#> 4 49965.    -167839.     267769.
+#> 5 18313.    -199491.     236117.
+#> 6 19984.    -197820.     237788.
 ```
 
 **When to use this**: when training cost is non-trivial and you can
@@ -201,10 +202,15 @@ fitted_folds <- tune::fit_resamples(
     extract = function(x) x
   )
 )
+#> 74/74 - 0s - 1ms/step
 #> 19/19 - 0s - 3ms/step
+#> 74/74 - 0s - 1ms/step
 #> 19/19 - 0s - 3ms/step
+#> 74/74 - 0s - 1ms/step
 #> 19/19 - 0s - 3ms/step
+#> 74/74 - 0s - 1ms/step
 #> 19/19 - 0s - 3ms/step
+#> 74/74 - 0s - 1ms/step
 #> 19/19 - 0s - 3ms/step
 
 # Build the conformal object from the resampling results
@@ -220,19 +226,19 @@ conformal_cv
 
 predict(conformal_cv, new_data = data[1:6, ], level = 0.90)
 #> 1/1 - 0s - 21ms/step
-#> 1/1 - 0s - 20ms/step
-#> 1/1 - 0s - 20ms/step
-#> 1/1 - 0s - 20ms/step
-#> 1/1 - 0s - 20ms/step
+#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 3
 #>   .pred_lower  .pred .pred_upper
 #>         <dbl>  <dbl>       <dbl>
-#> 1    -192623. 25907.     244437.
-#> 2    -198837. 19693.     238224.
-#> 3    -201549. 16981.     235511.
-#> 4    -149943. 68587.     287118.
-#> 5    -185408. 33122.     251652.
-#> 6    -185879. 32651.     251182.
+#> 1    -197772. 25319.     248409.
+#> 2    -201383. 21708.     244799.
+#> 3    -203577. 19514.     242605.
+#> 4    -159568. 63523.     286614.
+#> 5    -191576. 31515.     254605.
+#> 6    -191828. 31263.     254353.
 ```
 
 **When to use this**: when you do not want to reserve a separate
@@ -281,6 +287,7 @@ data_small <- data[1:100, ]
 new_obs_small <- data[101:106, ]
 
 fit_small <- fit(wflow, data = data_small)
+#> 4/4 - 0s - 14ms/step
 
 conformal_full <- int_conformal_full(
   fit_small,
@@ -290,7 +297,7 @@ conformal_full <- int_conformal_full(
     trial_points = 20
   )
 )
-#> 4/4 - 0s - 11ms/step
+#> 4/4 - 0s - 12ms/step
 conformal_full
 #> Conformal inference
 #> preprocessor: recipe 
@@ -304,12 +311,12 @@ predict(conformal_full, new_data = new_obs_small, level = 0.90)
 #> # A tibble: 6 × 2
 #>   .pred_lower .pred_upper
 #>         <dbl>       <dbl>
-#> 1    -394640.     394733.
-#> 2    -391835.     391922.
-#> 3    -392023.     392103.
-#> 4    -394613.     394687.
-#> 5    -487616.     488002.
-#> 6    -356509.     356706.
+#> 1    -391055.     391282.
+#> 2    -385802.     386036.
+#> 3    -384446.     384682.
+#> 4    -523476.     523778.
+#> 5    -405607.     405767.
+#> 6    -388630.     388735.
 ```
 
 **When to use this**: when you need the strongest possible coverage
