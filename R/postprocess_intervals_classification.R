@@ -56,23 +56,6 @@ compute_logit_variances <- function(features, h_diag, tau, n_training, c) {
 }
 
 
-#' Row-Wise Numerically Stable Softmax
-#'
-#' @description
-#' Applies the softmax function row-wise with numerical stability via
-#' logit shifting (subtracting the row maximum before exponentiation).
-#'
-#' @param logits An (M x C) numeric matrix of logits.
-#' @return An (M x C) numeric matrix of class probabilities summing to 1
-#'   per row.
-#' @noRd
-stable_softmax <- function(logits) {
-  logits_shifted <- logits - apply(logits, 1, max)
-  exp_logits <- exp(logits_shifted)
-  exp_logits / rowSums(exp_logits)
-}
-
-
 #' MC Sampling for Classification Confidence Intervals
 #'
 #' @description
@@ -105,58 +88,42 @@ sample_conf_int_cls <- function(
   tau,
   n_training,
   num_classes,
-  w_mat,
-  b_vec,
   lvl,
   level,
   n_samples = 1000L
 ) {
-  # Combined model outputs features (penultimate layer); compute logits in R
-  # to avoid post-activation softmax from Dense(activation="softmax")
-  features <- as.matrix(predict(combined_model, x))
-  logits <- features %*%
-    w_mat +
-    matrix(b_vec, nrow = nrow(features), ncol = length(b_vec), byrow = TRUE)
+  # Combined model outputs logits and features in one Keras forward pass
+  combined_pred <- predict(combined_model, x)
+  logits   <- as.matrix(combined_pred$logits)
+  features <- as.matrix(combined_pred$features)
 
   m <- nrow(features)
   c <- num_classes
   var_logits <- compute_logit_variances(features, h_diag, tau, n_training, c)
 
-  probs_array <- array(NA_real_, dim = c(m, c, n_samples))
+  # GPU-side MC sampling using Keras eager ops
+  logits_k <- keras3::op_convert_to_tensor(logits, dtype = "float32")
+  var_k    <- keras3::op_convert_to_tensor(var_logits, dtype = "float32")
 
-  for (s in seq_len(n_samples)) {
-    logit_sample <- matrix(
-      stats::rnorm(
-        m * c,
-        mean = as.vector(logits),
-        sd = sqrt(pmax(as.vector(var_logits), 0))
-      ),
-      nrow = m,
-      ncol = c
+  samples <- keras3::random_normal(
+    shape  = as.integer(c(m, c, n_samples)),
+    mean   = keras3::op_expand_dims(logits_k, 3L),
+    stddev = keras3::op_sqrt(
+      keras3::op_maximum(keras3::op_expand_dims(var_k, 3L), 0)
     )
+  )
 
-    probs_array[,, s] <- stable_softmax(logit_sample)
-  }
+  probs <- keras3::op_softmax(samples, axis = 2L)
 
   lo_prob <- (1 - level) / 2
   hi_prob <- 1 - lo_prob
-  result_cols <- list()
+  lo <- as.array(keras3::op_quantile(probs, lo_prob, axis = 3L))
+  hi <- as.array(keras3::op_quantile(probs, hi_prob, axis = 3L))
 
+  result_cols <- list()
   for (cl in seq_len(c)) {
-    lo <- apply(
-      probs_array[, cl, , drop = FALSE],
-      1,
-      stats::quantile,
-      probs = lo_prob
-    )
-    hi <- apply(
-      probs_array[, cl, , drop = FALSE],
-      1,
-      stats::quantile,
-      probs = hi_prob
-    )
-    result_cols[[paste0(".pred_lower_", lvl[cl])]] <- lo
-    result_cols[[paste0(".pred_upper_", lvl[cl])]] <- hi
+    result_cols[[paste0(".pred_lower_", lvl[cl])]] <- lo[, cl]
+    result_cols[[paste0(".pred_upper_", lvl[cl])]] <- hi[, cl]
   }
 
   as.data.frame(result_cols)
@@ -186,64 +153,50 @@ sample_pred_int_cls <- function(
   tau,
   n_training,
   num_classes,
-  w_mat,
-  b_vec,
   lvl,
   level,
   n_samples = 1000L
 ) {
-  features <- as.matrix(predict(combined_model, x))
-  logits <- features %*%
-    w_mat +
-    matrix(b_vec, nrow = nrow(features), ncol = length(b_vec), byrow = TRUE)
+  combined_pred <- predict(combined_model, x)
+  logits   <- as.matrix(combined_pred$logits)
+  features <- as.matrix(combined_pred$features)
 
   m <- nrow(features)
   c <- num_classes
   var_logits <- compute_logit_variances(features, h_diag, tau, n_training, c)
 
-  indicator_array <- array(NA_real_, dim = c(m, c, n_samples))
+  # GPU-side MC sampling with categorical draws
+  logits_k <- keras3::op_convert_to_tensor(logits, dtype = "float32")
+  var_k    <- keras3::op_convert_to_tensor(var_logits, dtype = "float32")
 
-  for (s in seq_len(n_samples)) {
-    logit_sample <- matrix(
-      stats::rnorm(
-        m * c,
-        mean = as.vector(logits),
-        sd = sqrt(pmax(as.vector(var_logits), 0))
-      ),
-      nrow = m,
-      ncol = c
+  samples <- keras3::random_normal(
+    shape  = as.integer(c(m, c, n_samples)),
+    mean   = keras3::op_expand_dims(logits_k, 3L),
+    stddev = keras3::op_sqrt(
+      keras3::op_maximum(keras3::op_expand_dims(var_k, 3L), 0)
     )
+  )
 
-    p_sample <- stable_softmax(logit_sample)
-    for (i in seq_len(m)) {
-      indicator_array[i, , s] <- 0
-      indicator_array[
-        i,
-        sample.int(c, size = 1L, prob = p_sample[i, ]),
-        s
-      ] <- 1
-    }
-  }
+  # Draw one categorical label per sample using random_categorical
+  # Reshape (M, C, n_samples) → (M * n_samples, C) for batch categorical draw
+  logits_2d <- keras3::op_reshape(samples, as.integer(c(m * n_samples, c)))
+  classes <- keras3::random_categorical(logits_2d, num_samples = 1L)
+  indicators_2d <- keras3::op_one_hot(
+    keras3::op_squeeze(classes, 2L), as.integer(c)
+  )
+  indicators <- keras3::op_reshape(
+    indicators_2d, as.integer(c(m, c, n_samples))
+  )
 
   lo_prob <- (1 - level) / 2
   hi_prob <- 1 - lo_prob
-  result_cols <- list()
+  lo <- as.array(keras3::op_quantile(indicators, lo_prob, axis = 3L))
+  hi <- as.array(keras3::op_quantile(indicators, hi_prob, axis = 3L))
 
+  result_cols <- list()
   for (cl in seq_len(c)) {
-    lo <- apply(
-      indicator_array[, cl, , drop = FALSE],
-      1,
-      stats::quantile,
-      probs = lo_prob
-    )
-    hi <- apply(
-      indicator_array[, cl, , drop = FALSE],
-      1,
-      stats::quantile,
-      probs = hi_prob
-    )
-    result_cols[[paste0(".pred_lower_", lvl[cl])]] <- lo
-    result_cols[[paste0(".pred_upper_", lvl[cl])]] <- hi
+    result_cols[[paste0(".pred_lower_", lvl[cl])]] <- lo[, cl]
+    result_cols[[paste0(".pred_upper_", lvl[cl])]] <- hi[, cl]
   }
 
   as.data.frame(result_cols)
@@ -296,8 +249,6 @@ laplace_conf_int_cls <- function(
       tau = entry$tau,
       n_training = entry$n_training,
       num_classes = entry$num_classes,
-      w_mat = entry$w_mat,
-      b_vec = entry$b_vec,
       lvl = lvl,
       level = level,
       n_samples = 1000L
@@ -348,8 +299,6 @@ laplace_pred_int_cls <- function(
       tau = entry$tau,
       n_training = entry$n_training,
       num_classes = entry$num_classes,
-      w_mat = entry$w_mat,
-      b_vec = entry$b_vec,
       lvl = lvl,
       level = level,
       n_samples = 1000L

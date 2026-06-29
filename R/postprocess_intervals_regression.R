@@ -11,8 +11,8 @@
 #'
 #' @description
 #' Given a combined model (returning both predictions and features in one
-#' forward pass), computes per-sample epistemic or predictive variance and
-#' returns symmetric Normal-based intervals.
+#' forward pass), computes per-sample epistemic or predictive variance using
+#' Keras ops and returns symmetric Normal-based intervals.
 #'
 #' @param combined_model A Keras model with outputs `pred` and `features`.
 #' @param x Processed predictor data (matrix or array).
@@ -21,32 +21,38 @@
 #' @param sigma_sq_noise Scalar observation noise variance.
 #' @param n_training Integer, number of training points.
 #' @param level Confidence level (e.g. 0.95).
-#' @param variance_fn Function to compute per-sample variance
-#'   (`epistemic_var_regression` or
-#'   `predictive_var_regression`).
+#' @param predictive Logical; if TRUE adds sigma_sq_noise (pred_int).
 #' @return A matrix with columns `.pred`, `.pred_lower`, `.pred_upper`.
 #' @noRd
 build_intervals_regression <- function(
-  combined_model,
-  x,
-  h_diag,
-  tau,
-  sigma_sq_noise,
-  n_training,
-  level,
-  variance_fn
-) {
+    combined_model, x, h_diag, tau, sigma_sq_noise, n_training,
+    level, predictive = FALSE) {
   combined_pred <- predict(combined_model, x)
   mean_pred <- as.vector(combined_pred$pred)
-  features <- as.matrix(combined_pred$features)
+  features  <- as.matrix(combined_pred$features)
 
-  var_vec <- variance_fn(features, h_diag, tau, sigma_sq_noise, n_training)
+  # GPU-side variance via Keras ops
+  d_features <- ncol(features)
+  h_w <- h_diag[1L:d_features]
+  h_b <- h_diag[d_features + 1L]
+
+  features_k <- keras3::op_convert_to_tensor(features, dtype = "float32")
+  prec_w <- n_training * h_w / sigma_sq_noise + tau
+  prec_b <- n_training * h_b / sigma_sq_noise + tau
+
+  var_k <- keras3::op_matmul(
+    keras3::op_square(features_k),
+    keras3::op_convert_to_tensor(1 / prec_w, dtype = "float32")
+  )
+  var_vec <- as.array(var_k) + 1 / prec_b
+
+  if (predictive) var_vec <- var_vec + sigma_sq_noise
+
   std_err <- sqrt(pmax(var_vec, 0))
-
   z <- stats::qnorm(1 - (1 - level) / 2)
 
   cbind(
-    .pred = mean_pred,
+    .pred       = mean_pred,
     .pred_lower = mean_pred - z * std_err,
     .pred_upper = mean_pred + z * std_err
   )
@@ -99,7 +105,7 @@ laplace_conf_int_reg <- function(
       sigma_sq_noise = entry$sigma_sq_noise,
       n_training = entry$n_training,
       level = level,
-      variance_fn = epistemic_var_regression
+      predictive = FALSE
     )
   })
 }
@@ -146,7 +152,7 @@ laplace_pred_int_reg <- function(
       sigma_sq_noise = entry$sigma_sq_noise,
       n_training = entry$n_training,
       level = level,
-      variance_fn = predictive_var_regression
+      predictive = TRUE
     )
   })
 }

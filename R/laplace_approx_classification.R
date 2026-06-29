@@ -101,9 +101,10 @@ neg_log_ml_classification <- function(
 #'
 #' @description
 #' Optimises the prior precision `tau` by minimising the negative log
-#' marginal likelihood via Nelder-Mead in log-space (single-parameter,
-#' unconstrained problem).  No `sigma_sq_noise` is estimated — the
-#' Bernoulli / multinomial likelihood has no separate scale parameter.
+#' marginal likelihood via Brent's method (`stats::optimize()`) in
+#' log-space (single-parameter, unconstrained problem).  No
+#' `sigma_sq_noise` is estimated — the Bernoulli / multinomial
+#' likelihood has no separate scale parameter.
 #'
 #' @param h_diag,nll_total,w_sq,n,d Passed through to
 #'   `neg_log_ml_classification()`.
@@ -159,24 +160,28 @@ laplace_one_classification <- function(
   penultimate_layer <- model$get_layer(layer_info$penultimate_layer_name)
   model_input <- get_model_input(model)
 
-  # Build feature-only model (avoids post-activation output -- Keras 3
-  # Dense(activation="softmax") returns probabilities, not logits)
-  feature_model <- keras3::keras_model(
-    inputs = model_input,
-    outputs = penultimate_layer$output
+  # Build a logit model using Keras ops: logits = phi @ kernel + bias
+  # Avoids post-activation softmax from Dense(activation="softmax")
+  logits_tensor <- keras3::op_add(
+    keras3::op_matmul(penultimate_layer$output, output_layer$kernel),
+    output_layer$bias
   )
 
-  features <- as.matrix(predict(feature_model, x_proc))
+  combined_model <- keras3::keras_model(
+    inputs = model_input,
+    outputs = list(
+      logits   = logits_tensor,
+      features = penultimate_layer$output
+    )
+  )
 
-  # MAP weights from the output Dense layer; compute logits in R
-  weights_list <- output_layer$get_weights()
-  w_mat <- weights_list[[1L]] # (d x C)
-  b_vec <- weights_list[[2L]] # (C,)
-  w_sq <- sum(as.vector(w_mat)^2) + sum(as.vector(b_vec)^2)
+  combined_pred <- predict(combined_model, x_proc)
+  logits   <- as.matrix(combined_pred$logits)
+  features <- as.matrix(combined_pred$features)
 
-  logits <- features %*%
-    w_mat +
-    matrix(b_vec, nrow = nrow(features), ncol = length(b_vec), byrow = TRUE)
+  # Norm of MAP weights (use get_weights for R-native arrays)
+  w <- output_layer$get_weights()
+  w_sq <- sum(as.vector(w[[1L]])^2) + sum(as.vector(w[[2L]])^2)
 
   num_classes <- ncol(logits)
 
@@ -194,17 +199,15 @@ laplace_one_classification <- function(
 
   hp <- optim_laplace_classification(h_diag, nll_total, w_sq, n_train, d_params)
 
-  feature_model_bytes <- keras_model_to_bytes(feature_model)
+  combined_model_bytes <- keras_model_to_bytes(combined_model)
 
   list(
-    h_diag = h_diag,
-    tau = hp$tau,
-    n_training = n_train,
-    num_classes = num_classes,
-    w_mat = w_mat,
-    b_vec = b_vec,
-    combined_model = feature_model,
-    combined_model_bytes = feature_model_bytes
+    h_diag               = h_diag,
+    tau                  = hp$tau,
+    n_training           = n_train,
+    num_classes          = num_classes,
+    combined_model       = combined_model,
+    combined_model_bytes = combined_model_bytes
   )
 }
 
