@@ -243,7 +243,10 @@ laplace_conf_int_cls <- function(
     ))
   }
 
-  lapply(laplace_data, function(entry) {
+  is_multi <- is.list(lvl) && !is.null(names(lvl))
+
+  lapply(names(laplace_data), function(nm) {
+    entry <- laplace_data[[nm]]
     sample_conf_int_cls(
       combined_model = entry$combined_model,
       x = x,
@@ -251,11 +254,12 @@ laplace_conf_int_cls <- function(
       tau = entry$tau,
       n_training = entry$n_training,
       num_classes = entry$num_classes,
-      lvl = lvl,
+      lvl = if (is_multi) lvl[[nm]] else lvl,
       level = level,
       n_samples = 1000L
     )
-  })
+  }) |>
+    stats::setNames(names(laplace_data))
 }
 
 
@@ -293,7 +297,10 @@ laplace_pred_int_cls <- function(
     ))
   }
 
-  lapply(laplace_data, function(entry) {
+  is_multi <- is.list(lvl) && !is.null(names(lvl))
+
+  lapply(names(laplace_data), function(nm) {
+    entry <- laplace_data[[nm]]
     sample_pred_int_cls(
       combined_model = entry$combined_model,
       x = x,
@@ -301,11 +308,12 @@ laplace_pred_int_cls <- function(
       tau = entry$tau,
       n_training = entry$n_training,
       num_classes = entry$num_classes,
-      lvl = lvl,
+      lvl = if (is_multi) lvl[[nm]] else lvl,
       level = level,
       n_samples = 1000L
     )
-  })
+  }) |>
+    stats::setNames(names(laplace_data))
 }
 
 
