@@ -559,3 +559,39 @@ test_that("LLA: find_multi_output_layer_infos rejects non-Dense outputs", {
   result <- find_multi_output_layer_infos(model$layers, model$output)
   testthat::expect_null(result)
 })
+
+test_that("sample_correlated_noise reproduces a known covariance structure", {
+  set.seed(123)
+  # A strong, known positive correlation between two variables, plus a third
+  # uncorrelated with the first two.
+  sigma <- matrix(
+    c(
+      1.0,
+      0.9,
+      0.0,
+      0.9,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ),
+    nrow = 3
+  )
+  draws <- sample_correlated_noise(20000L, sigma)
+
+  expect_equal(dim(draws), c(20000L, 3L))
+  empirical_cov <- stats::cov(draws)
+  expect_equal(unname(empirical_cov), sigma, tolerance = 0.05)
+})
+
+test_that("sample_correlated_noise handles a diagonal (uncorrelated) sigma", {
+  set.seed(123)
+  sigma <- diag(c(1, 4, 9))
+  draws <- sample_correlated_noise(20000L, sigma)
+
+  empirical_cor <- stats::cor(draws)
+  off_diag <- empirical_cor[upper.tri(empirical_cor)]
+  expect_true(all(abs(off_diag) < 0.05))
+  expect_equal(diag(stats::var(draws)), c(1, 4, 9), tolerance = 0.1)
+})
