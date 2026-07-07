@@ -114,8 +114,11 @@ test_that("parse_multistep_column_names works with a custom prefix", {
 
 test_that("parse_multistep_column_names errors on uneven steps per variable", {
   col_names <- c(
-    "lead_1_temp", "lead_2_temp", "lead_3_temp",
-    "lead_1_humidity", "lead_2_humidity"
+    "lead_1_temp",
+    "lead_2_temp",
+    "lead_3_temp",
+    "lead_1_humidity",
+    "lead_2_humidity"
   )
   expect_error(
     kerasnip:::parse_multistep_column_names(col_names),
