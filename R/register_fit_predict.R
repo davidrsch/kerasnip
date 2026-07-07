@@ -25,13 +25,26 @@
 #' @noRd
 register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
   # Fit method
+  #
+  # `interface = "data.frame"` (rather than "formula") is required so that
+  # `fit_xy()` (what `workflows` always calls) routes through
+  # parsnip's `xy_xy()` and hands our fit function the outcome data frame
+  # exactly as produced by the recipe bake. The "formula" interface instead
+  # makes parsnip reconstruct a formula from x/y internally
+  # (`.convert_xy_to_form_fit()` + `make_formula()`), which builds the
+  # response side as `cbind(col1, col2, ...)` for multi-column outcomes.
+  # `cbind()` on two or more factor columns silently discards their factor
+  # levels (returns the underlying integer codes as a plain matrix), which
+  # breaks `parsnip::check_outcome()` for any multi-output classification
+  # spec. Multi-output *regression* happened to work before this change only
+  # because `cbind()` of numeric vectors stays numeric.
   parsnip::set_fit(
     model = model_name,
     eng = "keras",
     mode = mode,
     value = list(
-      interface = "formula",
-      protect = c("formula", "data"),
+      interface = "data.frame",
+      protect = c("x", "y"),
       func = c(
         pkg = "kerasnip",
         fun = if (functional) {
@@ -200,8 +213,15 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
 #' standardized `.pred` column, as required by `tidymodels`.
 #'
 #' @details
-#' This function simply takes the matrix output from `keras3::predict()` and
-#' converts it to a single-column tibble.
+#' For a scalar single-output model, this converts the matrix output from
+#' `keras3::predict()` into a single-column tibble. For a single
+#' vector-valued output (e.g. multi-step regression, `object$fit$multistep_info`
+#' non-`NULL`), it instead builds a nested `.pred` list-column: one inner
+#' tibble per row with a `.step` column plus one `.pred`/`.pred_<var>` column
+#' per forecasted variable, mirroring the `censored` package's
+#' `.pred`/`.eval_time`/`.pred_survival` convention for "several values along
+#' one ordered dimension per row", combined with parsnip's `.pred_{outcome}`
+#' convention for multiple named variables.
 #' @param results A matrix of numeric predictions from `predict()`.
 #' @param object The `parsnip` model fit object.
 #' @return A tibble with a `.pred` column.
@@ -220,9 +240,57 @@ keras_postprocess_numeric <- function(results, object) {
     }
     combined_preds
   } else {
-    # Single output case: results is a matrix/array
-    tibble::tibble(.pred = as.vector(results))
+    mat <- as.matrix(results)
+    if (ncol(mat) > 1) {
+      multistep_pred_column(mat, object$fit$multistep_info)
+    } else {
+      # Single output case: results is a matrix/array
+      tibble::tibble(.pred = as.vector(mat))
+    }
   }
+}
+
+#' Build a Nested `.pred` Column for Vector-Valued (Multi-Step) Predictions
+#'
+#' @description
+#' Given a `(samples, n_columns)` prediction matrix from a single
+#' vector-valued output (one Keras output node, multiple units), builds a
+#' `.pred` list-column with one inner tibble per row: a `.step` column plus
+#' one prediction column per forecasted variable (`.pred` if there is only
+#' one, `.pred_<var>` if there are several).
+#'
+#' @param mat A numeric matrix, `nrow()` samples by `ncol()` forecasted
+#'   values.
+#' @param multistep_info A list with `steps` (integer vector, one per
+#'   `mat` column) and `vars` (character vector, one per `mat` column), as
+#'   produced by `parse_multistep_column_names()`. If `NULL` (no metadata
+#'   available), every column is treated as a sequential step of one
+#'   unnamed variable.
+#' @return A tibble with one `.pred` list-column.
+#' @noRd
+multistep_pred_column <- function(mat, multistep_info) {
+  if (is.null(multistep_info)) {
+    multistep_info <- list(
+      steps = seq_len(ncol(mat)),
+      vars = rep("outcome", ncol(mat))
+    )
+  }
+  steps <- multistep_info$steps
+  vars <- multistep_info$vars
+  uniq_steps <- sort(unique(steps))
+  uniq_vars <- unique(vars)
+
+  pred_list <- purrr::map(seq_len(nrow(mat)), function(i) {
+    row_df <- tibble::tibble(.step = uniq_steps)
+    for (v in uniq_vars) {
+      col_name <- if (length(uniq_vars) > 1) paste0(".pred_", v) else ".pred"
+      idx <- multistep_var_col_order(vars, steps, v)
+      row_df[[col_name]] <- mat[i, idx]
+    }
+    row_df
+  })
+
+  tibble::tibble(.pred = pred_list)
 }
 
 #' Post-process Keras Probability Predictions

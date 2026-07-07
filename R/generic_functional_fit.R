@@ -20,10 +20,10 @@
 #'     `epochs`, `batch_size`, `callbacks`).
 #' }
 #'
-#' @param formula A formula specifying the predictor and outcome variables,
-#'   passed down from the `parsnip::fit()` call.
-#' @param data A data frame containing the training data, passed down from the
-#'   `parsnip::fit()` call.
+#' @param x A data frame of predictors, passed down from `parsnip`'s
+#'   `data.frame` fit interface (already separated from the outcome).
+#' @param y A vector or data frame of outcomes, passed down from `parsnip`'s
+#'   `data.frame` fit interface.
 #' @param layer_blocks A named list of layer block functions. This is passed
 #'   internally from the `parsnip` model specification.
 #' @param ... Additional arguments passed down from the model specification.
@@ -69,23 +69,11 @@
 #' @keywords internal
 #' @export
 generic_functional_fit <- function(
-  formula,
-  data,
+  x,
+  y,
   layer_blocks,
   ...
 ) {
-  # Separate predictors and outcomes from the processed data frame provided by
-  # parsnip
-  y_names <- all.vars(formula[[2]])
-  x_names <- all.vars(formula[[3]])
-
-  # Handle the `.` case for predictors
-  if ("." %in% x_names) {
-    x <- data[, !(names(data) %in% y_names), drop = FALSE]
-  } else {
-    x <- data[, x_names, drop = FALSE]
-  }
-  y <- data[, y_names, drop = FALSE]
   # --- 1. Build and Compile Model ---
   model <- build_compile_func_model(x, y, layer_blocks, ...)
 
@@ -94,7 +82,7 @@ generic_functional_fit <- function(
   verbose <- all_args$verbose %||% 0
   x_processed <- process_x_functional(x)
   x_proc <- x_processed$x_proc
-  y_processed <- process_y_functional(y)
+  y_processed <- process_y_functional(y, layer_blocks = layer_blocks)
   y_mat <- y_processed$y_proc
 
   fit_args <- collect_fit_args(
@@ -121,6 +109,9 @@ generic_functional_fit <- function(
     history = history, # The training history
     # Factor levels for classification, NULL for regression
     lvl = y_processed$class_levels,
+    # Step/variable structure for a single vector-valued (multi-step
+    # regression) output; NULL otherwise. Used by keras_postprocess_numeric().
+    multistep_info = y_processed$multistep_info,
     process_x = process_x_functional,
     process_y = process_y_functional,
     laplace = laplace # Laplace posterior (NULL for classification)

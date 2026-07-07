@@ -24,14 +24,19 @@ register_core_model <- function(model_name, mode) {
   parsnip::set_dependency(model_name, "keras", "keras3")
   parsnip::set_dependency(model_name, "keras", "kerasnip")
 
+  # `predictor_indicators = "none"` (and no intercept handling) is required
+  # so parsnip never runs `model.matrix()` on the predictors: that would
+  # dummy-code factors and, fatally, error on the list-column predictors
+  # kerasnip uses for image/sequence-style inputs. See `interface =
+  # "data.frame"` note in register_fit_predict().
   parsnip::set_encoding(
     model = model_name,
     eng = "keras",
     mode = mode,
     options = list(
-      predictor_indicators = "traditional",
-      compute_intercept = TRUE,
-      remove_intercept = TRUE,
+      predictor_indicators = "none",
+      compute_intercept = FALSE,
+      remove_intercept = FALSE,
       allow_sparse_x = FALSE
     )
   )
