@@ -332,8 +332,8 @@ block definitions.</p>
 <span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html" class="external-link">add_model</a></span><span class="op">(</span><span class="va">spec</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fit_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wf</span>, data <span class="op">=</span> <span class="va">train_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 4/4 - 0s - 27ms/step</span></span>
 <span><span class="co">#&gt; 4/4 - 0s - 26ms/step</span></span>
-<span><span class="co">#&gt; 4/4 - 0s - 25ms/step</span></span>
 <span></span>
 <span><span class="co"># Predict on new data</span></span>
 <span><span class="va">new_data_df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
@@ -341,15 +341,15 @@ block definitions.</p>
 <span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 54ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 57ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_output_1 .pred_output_2</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.564 …        0.513 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.485 …        0.361 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.387 …        0.253 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.428 …        0.447 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.544 …        0.491 …</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.543 …        0.682 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.289 …        0.468 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.359 …        0.441 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.307 …        0.509 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.351 …        0.627 …</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
