@@ -7,37 +7,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette shows how to build a Keras recurrent model with `kerasnip` that forecasts
-several future steps of a time series at once, using the "single-shot" multi-step pattern
-from Keras/TensorFlow's own [time series forecasting
-tutorial](https://www.tensorflow.org/tutorials/structured_data/time_series), adapted to
-the `tidymodels` ecosystem.
+This vignette shows how to build a Keras recurrent model with `kerasnip` that forecasts several future steps of a time series at once, using the "single-shot" multi-step pattern from Keras/TensorFlow's own [time series forecasting tutorial](https://www.tensorflow.org/tutorials/structured_data/time_series), adapted to the `tidymodels` ecosystem.
 
 ## The Building Blocks
 
-Two ingredients turn flat, ordered tabular data into the shapes an RNN-based forecaster
-needs:
+Two ingredients turn flat, ordered tabular data into the shapes an RNN-based forecaster needs:
 
-*   [`step_sequence()`](../reference/step_sequence.html) slides a window of
-    `timesteps` past rows into a single list-column of `(timesteps, features)` matrices:
-    the `(samples, timesteps, features)` shape `keras3::layer_lstm()` /
-    `keras3::layer_gru()` expect as input.
-*   [`step_lead()`](../reference/step_lead.html) builds the forecast target: one column
-    per future step (`lead_1_<var>`, `lead_2_<var>`, ...). Unlike `recipes::step_lag()`,
-    which only supports *past* shifts, `step_lead()` shifts *forward*, which is what a
-    multi-step-ahead target needs.
+*   [`step_sequence()`](../reference/step_sequence.html) slides a window of `timesteps` past rows into a single list-column of `(timesteps, features)` matrices: the `(samples, timesteps, features)` shape `keras3::layer_lstm()` / `keras3::layer_gru()` expect as input.
+*   [`step_lead()`](../reference/step_lead.html) builds the forecast target: one column per future step (`lead_1_<var>`, `lead_2_<var>`, ...). Unlike `recipes::step_lag()`, which only supports *past* shifts, `step_lead()` shifts *forward*, which is what a multi-step-ahead target needs.
 
-When both steps draw on the same raw column, **`step_lead()` must come first**:
-`step_sequence()` consumes (and drops) its source column once it has built the window,
-so `step_lead()` needs to see the raw column while it still exists.
+When both steps draw on the same raw column, **`step_lead()` must come first**: `step_sequence()` consumes (and drops) its source column once it has built the window, so `step_lead()` needs to see the raw column while it still exists.
 
-The resulting outcome columns (`lead_1_<var>`, `lead_2_<var>`, ...) are all numeric and
-map to a *single* `output` block sized `units = horizon`: one Keras output node
-predicting the whole vector of future values in one forward pass, sharing one loss. This
-is different from the multi-output models in `vignette("functional_api")`, where each
-outcome column becomes its own independently-configured head; here there is only one
-`output` block, so `kerasnip` packs the numeric outcome columns into a single
-`(samples, horizon)` matrix target instead of splitting them.
+The resulting outcome columns (`lead_1_<var>`, `lead_2_<var>`, ...) are all numeric and map to a *single* `output` block sized `units = horizon`: one Keras output node predicting the whole vector of future values in one forward pass, sharing one loss. This is different from the multi-output models in `vignette("functional_api")`, where each outcome column becomes its own independently-configured head; here there is only one `output` block, so `kerasnip` packs the numeric outcome columns into a single `(samples, horizon)` matrix target instead of splitting them.
 
 ## Step 1: Load Libraries and Simulate a Series
 
@@ -58,8 +39,7 @@ library(keras3)
 options(kerasnip.show_removal_messages = FALSE)
 ```
 
-A small synthetic series (a noisy sine wave riding on a slow trend) stands in for a
-real dataset, so the vignette has no external data dependency.
+A small synthetic series (a noisy sine wave riding on a slow trend) stands in for a real dataset, so the vignette has no external data dependency.
 
 ```{r simulate-data}
 set.seed(42)
@@ -77,9 +57,7 @@ ggplot(autoplot_data, aes(t, value)) +
   labs(title = "Simulated series", x = "t", y = "value")
 ```
 
-Because forecasting is temporally ordered, the train/test split must respect time:
-`rsample::initial_time_split()` takes the first proportion of rows for training and the
-remainder for testing, rather than a random shuffle.
+Because forecasting is temporally ordered, the train/test split must respect time: `rsample::initial_time_split()` takes the first proportion of rows for training and the remainder for testing, rather than a random shuffle.
 
 ```{r split-data}
 split <- rsample::initial_time_split(series, prop = 0.8)
@@ -89,15 +67,9 @@ test_data <- rsample::testing(split)
 
 ## Step 2: Build the Recipe
 
-`step_naomit()` defaults to `skip = TRUE`, so the rows it drops (those without a
-complete future window) are only dropped when *training*; at predict time, future
-values are legitimately unknown, and the row is kept.
+`step_naomit()` defaults to `skip = TRUE`, so the rows it drops (those without a complete future window) are only dropped when *training*; at predict time, future values are legitimately unknown, and the row is kept.
 
-Both the window (predictor) and the lead columns (outcome) are *derived* from `value`
-by the recipe steps themselves, rather than existing as separate raw columns, so the
-recipe is built with `recipe(train_data)` (no formula) and each step assigns the role
-of the column(s) it creates (`step_lead()` defaults to `role = "outcome"`,
-`step_sequence()` to `role = "predictor"`).
+Both the window (predictor) and the lead columns (outcome) are *derived* from `value` by the recipe steps themselves, rather than existing as separate raw columns, so the recipe is built with `recipe(train_data)` (no formula) and each step assigns the role of the column(s) it creates (`step_lead()` defaults to `role = "outcome"`, `step_sequence()` to `role = "predictor"`).
 
 ```{r build-recipe}
 rec <- recipe(train_data) |>
@@ -108,9 +80,7 @@ rec <- recipe(train_data) |>
 
 ## Step 3: Define Layer Blocks and the Model Specification
 
-The input block declares the `(timesteps, features)` shape, an LSTM layer summarizes
-the window, and a single `output` dense block emits all `horizon` forecasted values at
-once.
+The input block declares the `(timesteps, features)` shape, an LSTM layer summarizes the window, and a single `output` dense block emits all `horizon` forecasted values at once.
 
 ```{r define-blocks-multistep}
 input_block <- function(input_shape) {
@@ -141,8 +111,7 @@ create_keras_functional_spec(
 
 ## Step 4: Fit and Forecast
 
-`output_units` is set to `horizon` so the single output head predicts the full vector
-of future steps in one pass.
+`output_units` is set to `horizon` so the single output head predicts the full vector of future steps in one pass.
 
 ```{r fit-multistep}
 spec <- multistep_lstm_spec(
@@ -157,11 +126,7 @@ wf <- workflow(rec, spec)
 fit_obj <- fit(wf, data = train_data)
 ```
 
-`predict()` returns a nested `.pred` list-column: one row per input sample, each holding
-a small tibble of `.step` (1 to `horizon`) and `.pred` (the forecasted value at that
-step). This mirrors how the `censored` package nests multiple survival-probability
-values per row (`.pred` / `.eval_time` / `.pred_survival`), nesting over forecast step
-instead of evaluation time.
+`predict()` returns a nested `.pred` list-column: one row per input sample, each holding a small tibble of `.step` (1 to `horizon`) and `.pred` (the forecasted value at that step). This mirrors how the `censored` package nests multiple survival-probability values per row (`.pred` / `.eval_time` / `.pred_survival`), nesting over forecast step instead of evaluation time.
 
 ```{r predict-multistep}
 preds <- predict(fit_obj, new_data = test_data)
@@ -172,8 +137,7 @@ preds$.pred[[1]]
 
 ## Step 5: Visualize the Forecast
 
-Unnesting `.pred` turns the forecast horizon for one starting point into a plain
-tibble, easy to compare against the actual future values.
+Unnesting `.pred` turns the forecast horizon for one starting point into a plain tibble, easy to compare against the actual future values.
 
 ```{r plot-multistep}
 one_forecast <- preds |>
@@ -200,13 +164,7 @@ ggplot(comparison, aes(.step)) +
 
 ## Step 6: Uncertainty Intervals
 
-`type = "conf_int"` and `type = "pred_int"` also work for this vector-valued output.
-Each forecast step gets its *own* last-layer Laplace posterior (its own prior
-precision and observation noise), sharing the same penultimate feature representation.
-This is the same independent-per-output treatment `kerasnip` already uses for separately
-named multi-output heads, generalized from "multiple Dense layers" to "multiple units
-of one Dense layer". It lets uncertainty differ (and typically grow) across the
-horizon instead of a single pooled width applied to every step alike.
+`type = "conf_int"` and `type = "pred_int"` also work for this vector-valued output. Each forecast step gets its *own* last-layer Laplace posterior (its own prior precision and observation noise), sharing the same penultimate feature representation. This is the same independent-per-output treatment `kerasnip` already uses for separately named multi-output heads, generalized from "multiple Dense layers" to "multiple units of one Dense layer". It lets uncertainty differ (and typically grow) across the horizon instead of a single pooled width applied to every step alike.
 
 ```{r intervals-multistep}
 preds_ci <- predict(fit_obj, new_data = test_data, type = "conf_int")
@@ -230,25 +188,13 @@ ggplot(comparison_ci, aes(.step)) +
   )
 ```
 
-These are *marginal* per-step intervals: each step's uncertainty is computed on its
-own, without modeling how errors at different steps co-move (e.g. an under-forecast at
-step 3 tending to also mean an under-forecast at step 4).
+These are *marginal* per-step intervals: each step's uncertainty is computed on its own, without modeling how errors at different steps co-move (e.g. an under-forecast at step 3 tending to also mean an under-forecast at step 4).
 
 ## Step 7: Joint (Correlated) Prediction Intervals
 
-`predict(..., type = "pred_int", joint = TRUE)` captures that co-movement. Instead of a
-single symmetric band per step, each forecast step's own epistemic (weight) uncertainty
-is combined with a noise term that is sampled *jointly* across steps, using the
-empirical covariance of training residuals across the forecast horizon (the classic
-"seemingly unrelated regression" treatment of several linear outputs sharing one design
-matrix). The result is a set of correlated, internally-consistent sample trajectories
-rather than independent per-step guesses.
+`predict(..., type = "pred_int", joint = TRUE)` captures that co-movement. Instead of a single symmetric band per step, each forecast step's own epistemic (weight) uncertainty is combined with a noise term that is sampled *jointly* across steps, using the empirical covariance of training residuals across the forecast horizon (the classic "seemingly unrelated regression" treatment of several linear outputs sharing one design matrix). The result is a set of correlated, internally-consistent sample trajectories rather than independent per-step guesses.
 
-Rather than pre-summarizing these into another `.pred_lower`/`.pred_upper` band, the
-result is returned as raw draws tagged with a `.draw` column, the same convention
-`tidybayes` and the wider tidyverse Bayesian ecosystem use for "several
-posterior/predictive samples per observation", so you can compute whatever joint or
-marginal summary you need with standard `dplyr`/`tidyr` tools.
+Rather than pre-summarizing these into another `.pred_lower`/`.pred_upper` band, the result is returned as raw draws tagged with a `.draw` column, the same convention `tidybayes` and the wider tidyverse Bayesian ecosystem use for "several posterior/predictive samples per observation", so you can compute whatever joint or marginal summary you need with standard `dplyr`/`tidyr` tools.
 
 ```{r joint-intervals-multistep}
 preds_joint <- predict(
@@ -269,10 +215,7 @@ one_row_draws |>
   cor()
 ```
 
-A handful of individual sampled trajectories, plotted alongside the marginal band from
-Step 6, shows what the correlation buys you: real trajectories tend to stay
-consistently above or below the mean forecast across steps, rather than jittering
-independently step to step the way the marginal band alone would suggest.
+A handful of individual sampled trajectories, plotted alongside the marginal band from Step 6, shows what the correlation buys you: real trajectories tend to stay consistently above or below the mean forecast across steps, rather than jittering independently step to step the way the marginal band alone would suggest.
 
 ```{r joint-paths-plot}
 sample_paths <- one_row_draws |>
@@ -301,30 +244,16 @@ ggplot(sample_paths, aes(.step, .pred, group = .draw)) +
   )
 ```
 
-Epistemic (weight) uncertainty is still treated independently per step even here --
-only the aleatoric noise term carries cross-step correlation. A fully joint treatment
-of epistemic uncertainty too would need a joint (Kronecker-factored) posterior over the
-entire last-layer weight matrix, which is not implemented. `joint = TRUE` is only
-available for `type = "pred_int"`; `type = "conf_int"` reflects epistemic uncertainty
-only, which this implementation has no estimated cross-step correlation source for.
+Epistemic (weight) uncertainty is still treated independently per step even here; only the aleatoric noise term carries cross-step correlation. A fully joint treatment of epistemic uncertainty too would need a joint (Kronecker-factored) posterior over the entire last-layer weight matrix, which is not implemented. `joint = TRUE` is only available for `type = "pred_int"`; `type = "conf_int"` reflects epistemic uncertainty only, which this implementation has no estimated cross-step correlation source for.
 
 ## Limitations
 
 This is a v1 building block, not a full forecasting framework. In particular:
 
-*   **One ordered series at a time.** `step_sequence()` windows the incoming data as a
-    single series; grouped/panel forecasting (many independent series, e.g. per-store or
-    per-sensor) is not handled automatically and would need windowing done per group
-    before this recipe.
-*   **Fixed window and horizon.** `timesteps` and `horizon` (via `output_units`) are set
-    once per spec, not tuned automatically across varying window lengths.
-*   **Epistemic uncertainty is always per-step.** `joint = TRUE` (Step 7) correlates the
-    aleatoric noise across steps, but each step's own model-weight uncertainty is still
-    computed independently.
+*   **One ordered series at a time.** `step_sequence()` windows the incoming data as a single series; grouped/panel forecasting (many independent series, e.g. per-store or per-sensor) is not handled automatically and would need windowing done per group before this recipe.
+*   **Fixed window and horizon.** `timesteps` and `horizon` (via `output_units`) are set once per spec, not tuned automatically across varying window lengths.
+*   **Epistemic uncertainty is always per-step.** `joint = TRUE` (Step 7) correlates the aleatoric noise across steps, but each step's own model-weight uncertainty is still computed independently.
 
 ## Conclusion
 
-`step_sequence()` and `step_lead()` let a standard `tidymodels` recipe produce the
-`(samples, timesteps, features)` input and `(samples, horizon)` target shapes a
-recurrent `kerasnip` model needs, so a multi-step forecaster fits into the same
-`recipe() |> workflow() |> fit() |> predict()` flow as any other model in this package.
+`step_sequence()` and `step_lead()` let a standard `tidymodels` recipe produce the `(samples, timesteps, features)` input and `(samples, horizon)` target shapes a recurrent `kerasnip` model needs, so a multi-step forecaster fits into the same `recipe() |> workflow() |> fit() |> predict()` flow as any other model in this package.

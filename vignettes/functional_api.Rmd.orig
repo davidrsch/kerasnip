@@ -179,16 +179,11 @@ predict(fit_obj, new_data = new_data_df)
 
 ## Example 2: A Two-Input, Two-Output Classification Model
 
-The same graph-building approach works for classification, including models with more
-than one classification target. Here, each output is its own softmax head with its own
-number of classes, matched by name to a column in the outcome data (`output_1` and
-`output_2` below).
+The same graph-building approach works for classification, including models with more than one classification target. Here, each output is its own softmax head with its own number of classes, matched by name to a column in the outcome data (`output_1` and `output_2` below).
 
 ### Step 1: Define Layer Blocks
 
-Each input path is flattened before its dense layer, and each output block accepts a
-`num_classes` argument that `kerasnip` supplies automatically based on the number of
-factor levels in the corresponding outcome column.
+Each input path is flattened before its dense layer, and each output block accepts a `num_classes` argument that `kerasnip` supplies automatically based on the number of factor levels in the corresponding outcome column.
 
 ```{r define-blocks-functional-two-output-class}
 input_block_1 <- function(input_shape) {
@@ -222,8 +217,7 @@ output_block_2 <- function(tensor, num_classes) {
 
 ### Step 2: Create the Model Specification
 
-Setting `mode = "classification"` tells `kerasnip` to one-hot encode each outcome
-column independently and to compile a separate loss for each output head.
+Setting `mode = "classification"` tells `kerasnip` to one-hot encode each outcome column independently and to compile a separate loss for each output head.
 
 ```{r create-spec-functional-two-output-class}
 model_name <- "two_output_class_spec"
@@ -251,8 +245,7 @@ create_keras_functional_spec(
 
 ### Step 3: Fit and Predict
 
-`output_1` is a binary factor and `output_2` has three levels; `kerasnip` sizes each
-softmax head accordingly, with no extra configuration needed.
+`output_1` is a binary factor and `output_2` has three levels; `kerasnip` sizes each softmax head accordingly, with no extra configuration needed.
 
 ```{r fit-functional-two-output-class}
 spec <- two_output_class_spec(
@@ -299,8 +292,7 @@ predict(fit_obj, new_data = new_data_df, type = "class")
 predict(fit_obj, new_data = new_data_df, type = "prob")
 ```
 
-Predicted class columns are named `.pred_class_<output name>`, and predicted
-probability columns are named `.pred_<output name>_<level>`, one set per output head.
+Predicted class columns are named `.pred_class_<output name>`, and predicted probability columns are named `.pred_<output name>_<level>`, one set per output head.
 
 ## A common debugging workflow: `compile_keras_grid()`
 
