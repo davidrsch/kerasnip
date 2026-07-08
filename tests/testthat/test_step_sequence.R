@@ -98,6 +98,23 @@ test_that("step_sequence handles selectors that don't match", {
   expect_error(prep(rec))
 })
 
+test_that("bake.step_sequence returns new_data unchanged when trained with no columns", {
+  # prep() errors if selectors match nothing, so the only way `columns` can
+  # be empty post-prep is via direct construction (defensive branch).
+  empty_step <- kerasnip:::step_sequence_new(
+    terms = rlang::quos(),
+    role = "predictor",
+    trained = TRUE,
+    columns = character(0),
+    timesteps = 3,
+    new_col = "sequence_matrix",
+    padding = "drop",
+    skip = FALSE,
+    id = "sequence_empty"
+  )
+  expect_identical(bake(empty_step, new_data = dat), dat)
+})
+
 test_that("required_pkgs.step_sequence returns kerasnip", {
   rec <- recipe(y ~ ., data = dat) |>
     step_sequence(x1, timesteps = 3)

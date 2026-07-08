@@ -105,6 +105,24 @@ test_that("step_lead handles selectors that don't match", {
   expect_error(prep(rec))
 })
 
+test_that("bake.step_lead returns new_data unchanged when trained with no columns", {
+  # prep() errors if selectors match nothing, so the only way `columns` can
+  # be empty post-prep is via direct construction (defensive branch).
+  empty_step <- kerasnip:::step_lead_new(
+    terms = rlang::quos(),
+    role = "outcome",
+    trained = TRUE,
+    lead = 1,
+    prefix = "lead_",
+    default = NA,
+    columns = character(0),
+    keep_original_cols = TRUE,
+    skip = FALSE,
+    id = "lead_empty"
+  )
+  expect_identical(bake(empty_step, new_data = dat), dat)
+})
+
 test_that("required_pkgs.step_lead returns kerasnip", {
   rec <- recipe(y ~ ., data = dat) |>
     step_lead(y, lead = 1)

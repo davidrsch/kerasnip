@@ -119,6 +119,13 @@ test_that("LLA: sequential pred_int returns valid intervals", {
 
   expect_valid_intervals(result, 5)
   expect_true(".pred" %in% names(result))
+
+  # `joint = TRUE` needs a shared noise covariance across steps, which is
+  # only computed for vector-valued (multi-step) outputs.
+  expect_error(
+    predict(fit_obj, mtcars[1:5, ], type = "pred_int", joint = TRUE),
+    "only supported for vector-valued"
+  )
 })
 
 test_that("LLA: pred_int intervals are wider than conf_int", {
@@ -410,6 +417,10 @@ test_that("LLA: minimal model (no hidden layers) errors clearly", {
   )
   expect_error(
     predict(fit_obj, mtcars[1:5, ], type = "pred_int"),
+    "Laplace prediction intervals are not available"
+  )
+  expect_error(
+    predict(fit_obj, mtcars[1:5, ], type = "pred_int", joint = TRUE),
     "Laplace prediction intervals are not available"
   )
 })

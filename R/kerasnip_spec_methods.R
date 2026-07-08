@@ -258,23 +258,13 @@ predict.kerasnip_model_fit <- function(object, new_data, ...) {
 # prepare_data(): unnecessary here since kerasnip's own registered pred
 # pipeline (process_x_functional()/process_x_sequential(), invoked via
 # pred_class$args) operates on the full data frame directly and doesn't rely
-# on prepare_data()'s x_names column-subsetting.
+# on prepare_data()'s x_names column-subsetting. Likewise, `pred_class$pre`
+# and a namespaced `pred_class$func` are always NULL/absent for kerasnip's
+# own registered `type = "class"` entry (register_fit_predict.R), so unlike
+# parsnip:::make_pred_call() this doesn't need to handle either case.
 predict_class_multi_output <- function(object, new_data) {
   pred_class <- object$spec$method$pred$class
-  if (!is.null(pred_class$pre)) {
-    new_data <- pred_class$pre(new_data, object)
-  }
-  # Equivalent to parsnip:::make_pred_call(pred_class), inlined to avoid a
-  # `:::` call into an unexported parsnip function.
-  pred_call <- if ("pkg" %in% names(pred_class$func)) {
-    rlang::call2(
-      pred_class$func["fun"],
-      !!!pred_class$args,
-      .ns = pred_class$func["pkg"]
-    )
-  } else {
-    rlang::call2(pred_class$func["fun"], !!!pred_class$args)
-  }
+  pred_call <- rlang::call2(pred_class$func["fun"], !!!pred_class$args)
   res <- rlang::eval_tidy(pred_call)
   if (!is.null(pred_class$post)) {
     res <- pred_class$post(res, object)
