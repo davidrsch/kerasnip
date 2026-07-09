@@ -57,6 +57,14 @@ jobs:
         run: keras3::install_keras()
         shell: Rscript {0}
 
+      - name: Cache Keras example datasets
+        # Avoids re-downloading CIFAR-10 from the flaky cs.toronto.edu host
+        # applications.Rmd depends on (see pytorch/vision#9536).
+        uses: actions/cache@v4
+        with:
+          path: ~/.keras/datasets
+          key: ${{ runner.os }}-keras-datasets-v1
+
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
