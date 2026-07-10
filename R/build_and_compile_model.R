@@ -153,7 +153,7 @@ build_compile_func_model <- function(
   input_shape <- x_processed$input_shape
 
   # Process y input
-  y_processed <- process_y_functional(y)
+  y_processed <- process_y_functional(y, layer_blocks = layer_blocks)
 
   # Determine default compile arguments based on mode
   default_losses <- list()

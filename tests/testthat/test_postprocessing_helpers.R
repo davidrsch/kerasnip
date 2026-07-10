@@ -38,6 +38,22 @@ test_that("keras_postprocess_numeric handles single output (named list)", {
 })
 
 
+test_that("keras_postprocess_numeric handles vector-valued output with no multistep metadata", {
+  # A plain (samples, n_columns) matrix with `object$fit$multistep_info`
+  # absent falls back to sequential, unnamed steps.
+  results <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 3, ncol = 2)
+  processed <- keras_postprocess_numeric(results, mock_object_single_output)
+
+  expect_s3_class(processed, "tbl_df")
+  expect_equal(names(processed), ".pred")
+  expect_true(is.list(processed$.pred))
+
+  inner <- processed$.pred[[1]]
+  expect_equal(names(inner), c(".step", ".pred"))
+  expect_equal(inner$.step, c(1, 2))
+  expect_equal(inner$.pred, c(1, 4))
+})
+
 test_that("keras_postprocess_numeric handles multi-output (named list)", {
   results <- list(
     output1 = matrix(c(0.1, 0.2), ncol = 1),

@@ -238,6 +238,13 @@ process_x_functional <- function(x) {
 #'   it's determined from `is.factor(y)`.
 #' @param class_levels Character vector, optional. The factor levels for
 #'   classification outcomes. If `NULL` (default), determined from `levels(y)`.
+#' @param layer_blocks A named list of layer block functions, optional. Used
+#'   to disambiguate a multi-column `y` between the "N independent named
+#'   output heads" case (one block per column name, e.g. `output_1`,
+#'   `output_2`) and the "single vector-valued output" case (e.g. multi-step
+#'   regression, a single block named `"output"` with `units = ncol(y)`). If
+#'   `NULL` (default, and for any caller that predates this parameter), the
+#'   original per-column-split behavior is preserved.
 #' @return A list containing:
 #'   - `y_proc`: The processed outcome data (matrix or one-hot encoded array,
 #'     or list of these for multiple outputs).
@@ -247,13 +254,17 @@ process_x_functional <- function(x) {
 #'     `NULL`.
 #'   - `class_levels`: Character vector, the factor levels for classification,
 #'     or `NULL`.
+#'   - `multistep_info`: For the single vector-valued output case only, a
+#'     list with `steps` (integer vector) and `vars` (character vector)
+#'     describing the structure of the outcome's columns. `NULL` otherwise.
 #' @importFrom keras3 to_categorical
 #' @keywords internal
 #' @export
 process_y_functional <- function(
   y,
   is_classification = NULL,
-  class_levels = NULL
+  class_levels = NULL,
+  layer_blocks = NULL
 ) {
   # If y is a data frame/tibble with one column, extract it to ensure it's
   # processed by the single-output logic path.
@@ -262,6 +273,28 @@ process_y_functional <- function(
   }
 
   if (is.data.frame(y)) {
+    # Disambiguate "N independent named output heads" (the historical
+    # behavior) from "one vector-valued output" (e.g. multi-step regression,
+    # a single `output` block with `units = ncol(y)` and one shared loss).
+    # Only the latter needs a `layer_blocks`-aware check: it applies solely
+    # when every column is numeric (a classification column always means
+    # independent per-column heads) and the column names don't already match
+    # distinct block names (the existing output_1/output_2-style convention).
+    all_numeric <- all(vapply(y, is.numeric, logical(1)))
+    is_multi_head <- is.null(layer_blocks) ||
+      !all_numeric ||
+      all(names(y) %in% names(layer_blocks))
+
+    if (!is_multi_head) {
+      return(list(
+        y_proc = as.matrix(y),
+        class_levels = NULL,
+        is_classification = FALSE,
+        num_classes = NULL,
+        multistep_info = parse_multistep_column_names(names(y))
+      ))
+    }
+
     # Handle multiple output columns
     y_proc_list <- list() # This will store the processed y for each output
     class_levels_list <- list() # To store class levels for each output
@@ -321,6 +354,76 @@ process_y_functional <- function(
       num_classes = num_classes
     )
   }
+}
+
+#' Parse Step/Variable Structure from step_lead()-Style Column Names
+#'
+#' @description
+#' For a single vector-valued output built from multiple numeric `y` columns
+#' (see `process_y_functional()`), attempts to recover which columns are
+#' which forecast step and which original variable, based on the
+#' `<prefix><step>_<variable>` naming convention produced by [step_lead()].
+#' The prefix itself isn't matched literally (`step_lead()`'s `prefix`
+#' argument is user-configurable), only the `<digits>_<name>` structure it
+#' always produces. Falls back to treating all columns as sequential steps
+#' of a single unnamed variable when the names don't match that structure
+#' (e.g. columns from hand-built matrices).
+#'
+#' @param col_names Character vector of `y` column names.
+#' @return A list with `steps` (integer vector, one per column) and `vars`
+#'   (character vector, one per column). Errors if the parsed columns imply
+#'   different variables were led out to different numbers of steps, since
+#'   downstream code (`multistep_pred_column()`,
+#'   `multistep_interval_pred_column()`) assumes every variable shares the
+#'   same set of steps.
+#' @keywords internal
+#' @noRd
+parse_multistep_column_names <- function(col_names) {
+  m <- regmatches(col_names, regexec("^.*?([0-9]+)_(.+)$", col_names))
+  matched <- vapply(m, length, integer(1)) == 3L
+  if (all(matched)) {
+    info <- list(
+      steps = as.integer(vapply(m, `[[`, character(1), 2L)),
+      vars = vapply(m, `[[`, character(1), 3L)
+    )
+  } else {
+    info <- list(
+      steps = seq_along(col_names),
+      vars = rep("outcome", length(col_names))
+    )
+  }
+
+  steps_per_var <- split(info$steps, info$vars)
+  if (length(unique(lapply(steps_per_var, sort))) > 1) {
+    rlang::abort(c(
+      "Every forecasted variable must be led out to the same set of steps.",
+      i = "Found different step counts across variables in the outcome",
+      i = "columns. Use the same `lead` argument in every step_lead() call",
+      i = "feeding this output."
+    ))
+  }
+  info
+}
+
+#' Column Order for One Forecasted Variable, Sorted by Step
+#'
+#' @description
+#' Given the `steps`/`vars` metadata from `parse_multistep_column_names()`,
+#' returns the indices of variable `v`'s columns in ascending step order.
+#' Shared by `multistep_pred_column()` (`register_fit_predict.R`) and
+#' `multistep_interval_pred_column()` (`postprocess_intervals_regression.R`),
+#' which otherwise build the same nested `.pred`/`.step` structure from
+#' point predictions and interval matrices respectively.
+#'
+#' @param vars Character vector, one per column (as in `multistep_info$vars`).
+#' @param steps Integer vector, one per column (as in `multistep_info$steps`).
+#' @param v The variable name to resolve columns for.
+#' @return Integer vector of column indices for `v`, in step order.
+#' @keywords internal
+#' @noRd
+multistep_var_col_order <- function(vars, steps, v) {
+  idx <- which(vars == v)
+  idx[order(steps[idx])]
 }
 
 

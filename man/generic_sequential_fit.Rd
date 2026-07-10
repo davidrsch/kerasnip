@@ -4,14 +4,14 @@
 \alias{generic_sequential_fit}
 \title{Internal Fitting Engine for Sequential API Models}
 \usage{
-generic_sequential_fit(formula, data, layer_blocks, ...)
+generic_sequential_fit(x, y, layer_blocks, ...)
 }
 \arguments{
-\item{formula}{A formula specifying the predictor and outcome variables,
-passed down from the \code{parsnip::fit()} call.}
+\item{x}{A data frame of predictors, passed down from \code{parsnip}'s
+\code{data.frame} fit interface (already separated from the outcome).}
 
-\item{data}{A data frame containing the training data, passed down from the
-\code{parsnip::fit()} call.}
+\item{y}{A vector or data frame of outcomes, passed down from \code{parsnip}'s
+\code{data.frame} fit interface.}
 
 \item{layer_blocks}{A named list of layer block functions. This is passed
 internally from the \code{parsnip} model specification.}

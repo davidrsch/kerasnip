@@ -26,6 +26,7 @@ guides:
       - applications
       - autoplot_uniqueness
       - conformal_intervals
+      - multistep_forecasting
 
 # examples:
 
@@ -67,6 +68,8 @@ reference:
       Custom stpes for recipe which uses kerasnip models specifications
     contents:
       - step_collapse
+      - step_sequence
+      - step_lead
 
 development:
   mode: release
@@ -108,6 +111,9 @@ navbar:
         - text: "Prediction Intervals"
         - text: "Conformal Inference"
           href: articles/conformal_intervals.html
+        - text: "Forecasting"
+        - text: "Multi-Step Time Series Forecasting"
+          href: articles/multistep_forecasting.html
     github:
       icon: fa-github
       aria-label: "GitHub repository"

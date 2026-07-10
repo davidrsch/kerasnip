@@ -90,6 +90,14 @@ jobs:
         run: keras3::install_keras(envname = "r-reticulate")
         shell: Rscript {0}
 
+      - name: Cache Keras example datasets
+        # Avoids re-downloading CIFAR-10 from the flaky cs.toronto.edu host
+        # applications.Rmd depends on (see pytorch/vision#9536).
+        uses: actions/cache@v4
+        with:
+          path: ~/.keras/datasets
+          key: ${{ runner.os }}-keras-datasets-v1
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true

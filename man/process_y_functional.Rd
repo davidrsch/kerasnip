@@ -4,7 +4,12 @@
 \alias{process_y_functional}
 \title{Process Outcome Input for Keras (Functional API)}
 \usage{
-process_y_functional(y, is_classification = NULL, class_levels = NULL)
+process_y_functional(
+  y,
+  is_classification = NULL,
+  class_levels = NULL,
+  layer_blocks = NULL
+)
 }
 \arguments{
 \item{y}{A vector or data frame of outcomes.}
@@ -15,6 +20,14 @@ it's determined from \code{is.factor(y)}.}
 
 \item{class_levels}{Character vector, optional. The factor levels for
 classification outcomes. If \code{NULL} (default), determined from \code{levels(y)}.}
+
+\item{layer_blocks}{A named list of layer block functions, optional. Used
+to disambiguate a multi-column \code{y} between the "N independent named
+output heads" case (one block per column name, e.g. \code{output_1},
+\code{output_2}) and the "single vector-valued output" case (e.g. multi-step
+regression, a single block named \code{"output"} with \code{units = ncol(y)}). If
+\code{NULL} (default, and for any caller that predates this parameter), the
+original per-column-split behavior is preserved.}
 }
 \value{
 A list containing:
@@ -27,6 +40,9 @@ classification.
 \code{NULL}.
 \item \code{class_levels}: Character vector, the factor levels for classification,
 or \code{NULL}.
+\item \code{multistep_info}: For the single vector-valued output case only, a
+list with \code{steps} (integer vector) and \code{vars} (character vector)
+describing the structure of the outcome's columns. \code{NULL} otherwise.
 }
 }
 \description{

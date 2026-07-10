@@ -399,6 +399,19 @@ laplace_all_regression <- function(model, x_proc, y_mat) {
     names(result) <- names(layer_infos)
     result
   } else {
+    if (NCOL(y_mat) > 1L) {
+      # A single vector-valued output (e.g. multi-step regression, units =
+      # n_steps sharing one loss) rather than N independent named heads.
+      # Treated as n_steps independent last-layer Bayesian linear
+      # regressions sharing one penultimate feature basis; see
+      # laplace_multistep_regression().
+      return(laplace_multistep_regression(
+        model,
+        x_proc,
+        y_mat,
+        layer_infos[[1L]]
+      ))
+    }
     info <- layer_infos[[1L]]
     result <- laplace_one_regression(
       model,
@@ -408,4 +421,82 @@ laplace_all_regression <- function(model, x_proc, y_mat) {
     )
     stats::setNames(list(result), names(layer_infos)[1L])
   }
+}
+
+
+#' Compute Laplace Posteriors for a Vector-Valued (Multi-Step) Regression Output
+#'
+#' @description
+#' Treats each column (step) of a single vector-valued Dense output (e.g.
+#' multi-step regression, `units = horizon`) as its own independent
+#' last-layer Bayesian linear regression, sharing one feature basis and GGN
+#' diagonal but with its own weight slice, `tau`, and `sigma_sq_noise`. This
+#' is the same per-output decomposition `laplace_all_regression()` already
+#' uses for independently-named multi-output heads, generalized from
+#' "multiple Dense layers" to "multiple units of one Dense layer".
+#'
+#' @details
+#' Marginal intervals (`type = "conf_int"`/`"pred_int"`) treat each step's
+#' uncertainty independently. `type = "pred_int", joint = TRUE` (see
+#' `laplace_joint_pred_int()`) additionally captures cross-step noise
+#' correlation via `joint_noise_cov`, the empirical covariance of training
+#' residuals across steps. This is the "seemingly unrelated regression"
+#' treatment of several linear outputs sharing one design matrix. Epistemic
+#' uncertainty stays independent per step in both cases.
+#'
+#' @inheritParams laplace_one_regression
+#' @param y_mat A `(samples, n_steps)` numeric matrix.
+#' @return A named list (`step_1`, `step_2`, ...) as in
+#'   `laplace_one_regression()`, plus `col_idx` (that step's column in the
+#'   shared `combined_model`) and a `joint_noise_cov` attribute (the
+#'   `(n_steps, n_steps)` residual covariance across steps).
+#' @noRd
+laplace_multistep_regression <- function(model, x_proc, y_mat, layer_info) {
+  output_layer <- model$get_layer(layer_info$output_layer_name)
+  penultimate_layer <- model$get_layer(layer_info$penultimate_layer_name)
+  model_input <- get_model_input(model)
+
+  combined_model <- keras3::keras_model(
+    inputs = model_input,
+    outputs = list(
+      pred = output_layer$output,
+      features = penultimate_layer$output
+    )
+  )
+
+  combined_pred <- predict(combined_model, x_proc)
+  y_pred <- as.matrix(combined_pred$pred)
+  features <- as.matrix(combined_pred$features)
+
+  weights_list <- output_layer$get_weights()
+  w_mat <- weights_list[[1L]] # (n_features, n_steps)
+  b_vec <- weights_list[[2L]] # (n_steps,)
+
+  n <- nrow(features)
+  h_diag <- h_diag_regression(features) # shared: depends only on features
+  d <- length(h_diag)
+  combined_model_bytes <- keras_model_to_bytes(combined_model)
+
+  n_steps <- ncol(y_mat)
+  residual_mat <- y_mat - y_pred # (n, n_steps); shared across the loop below
+
+  result <- lapply(seq_len(n_steps), function(k) {
+    rss <- sum(residual_mat[, k]^2)
+    w_sq <- sum(w_mat[, k]^2) + b_vec[k]^2
+
+    hp <- optim_laplace_regression(h_diag, rss, w_sq, n, d)
+
+    list(
+      h_diag = h_diag,
+      tau = hp$tau,
+      sigma_sq_noise = hp$sigma_sq_noise,
+      n_training = n,
+      combined_model = combined_model,
+      combined_model_bytes = combined_model_bytes,
+      col_idx = k
+    )
+  })
+  result <- stats::setNames(result, paste0("step_", seq_len(n_steps)))
+  attr(result, "joint_noise_cov") <- stats::cov(residual_mat)
+  result
 }

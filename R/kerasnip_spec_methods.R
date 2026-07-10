@@ -203,5 +203,71 @@ predict.kerasnip_model_fit <- function(object, new_data, ...) {
   # call arguments, not locally modified ones, so the restored model above
   # would not be forwarded via NextMethod().
   class(object) <- class(object)[class(object) != "kerasnip_model_fit"]
-  predict(object, new_data = new_data, ...)
+
+  dots <- list(...)
+  type <- dots$type %||%
+    if (object$spec$mode == "classification") "class" else "numeric"
+  is_multi_output_class <- object$spec$mode == "classification" &&
+    is.list(object$fit$lvl) &&
+    !is.null(names(object$fit$lvl))
+
+  if (type == "class" && is_multi_output_class) {
+    # parsnip::predict_class.model_fit() assumes `type = "class"` results are
+    # either a bare factor/vector or a single-column data frame; for any
+    # result with more than one column it does `res$values <- factor(...,
+    # levels = object$lvl)`, which errors because our multi-output tibble has
+    # no `values` column and `object$lvl` (parsnip's own top-level field, not
+    # `object$fit$lvl`) isn't meaningful for multiple, independently-leveled
+    # outputs. Bypass that tail end and call our own registered pred
+    # pipeline directly; `type = "prob"` doesn't have this issue and needs no
+    # such bypass.
+    return(predict_class_multi_output(object, new_data))
+  }
+
+  # `joint = TRUE` is a kerasnip-specific argument, not part of parsnip's
+  # `predict()` API. parsnip's `type` argument is validated against a
+  # fixed, hardcoded list and its dispatch has no extension point, so this
+  # can't be registered as a new `type`. It's intercepted here instead, and
+  # stripped from `dots` before any fall-through to standard dispatch so it
+  # never reaches parsnip's own predict machinery.
+  joint <- isTRUE(dots$joint)
+  n_draws <- dots$n_draws %||% 1000L
+  dots[c("joint", "n_draws")] <- NULL
+
+  if (joint) {
+    if (!identical(type, "pred_int")) {
+      rlang::abort(c(
+        "`joint = TRUE` is only supported for `type = \"pred_int\"`.",
+        i = "Confidence intervals reflect epistemic (weight) uncertainty",
+        i = "only, and this implementation has no estimated source of",
+        i = "cross-step correlation for that case.",
+        i = paste0("Got `type = \"", type, "\"`.")
+      ))
+    }
+    return(laplace_joint_pred_int(object, new_data, n_draws = n_draws))
+  }
+
+  rlang::exec(predict, object, new_data = new_data, !!!dots)
+}
+
+# Replicates parsnip::predict_class.model_fit() up to (but not including) its
+# final single-output factor-coercion step, which is incompatible with
+# multi-output classification results. See predict.kerasnip_model_fit().
+#
+# `new_data` is used as-is rather than routed through parsnip's internal
+# prepare_data(): unnecessary here since kerasnip's own registered pred
+# pipeline (process_x_functional()/process_x_sequential(), invoked via
+# pred_class$args) operates on the full data frame directly and doesn't rely
+# on prepare_data()'s x_names column-subsetting. Likewise, `pred_class$pre`
+# and a namespaced `pred_class$func` are always NULL/absent for kerasnip's
+# own registered `type = "class"` entry (register_fit_predict.R), so unlike
+# parsnip:::make_pred_call() this doesn't need to handle either case.
+predict_class_multi_output <- function(object, new_data) {
+  pred_class <- object$spec$method$pred$class
+  pred_call <- rlang::call2(pred_class$func["fun"], !!!pred_class$args)
+  res <- rlang::eval_tidy(pred_call)
+  if (!is.null(pred_class$post)) {
+    res <- pred_class$post(res, object)
+  }
+  res
 }

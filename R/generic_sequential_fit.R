@@ -20,10 +20,10 @@
 #'     `epochs`, `batch_size`, `callbacks`).
 #' }
 #'
-#' @param formula A formula specifying the predictor and outcome variables,
-#'   passed down from the `parsnip::fit()` call.
-#' @param data A data frame containing the training data, passed down from the
-#'   `parsnip::fit()` call.
+#' @param x A data frame of predictors, passed down from `parsnip`'s
+#'   `data.frame` fit interface (already separated from the outcome).
+#' @param y A vector or data frame of outcomes, passed down from `parsnip`'s
+#'   `data.frame` fit interface.
 #' @param layer_blocks A named list of layer block functions. This is passed
 #'   internally from the `parsnip` model specification.
 #' @param ... Additional arguments passed down from the model specification.
@@ -69,23 +69,11 @@
 #' @keywords internal
 #' @export
 generic_sequential_fit <- function(
-  formula,
-  data,
+  x,
+  y,
   layer_blocks,
   ...
 ) {
-  # Separate predictors and outcomes from the processed data frame provided by
-  # parsnip
-  y_names <- all.vars(formula[[2]])
-  x_names <- all.vars(formula[[3]])
-
-  # Handle the `.` case for predictors
-  if ("." %in% x_names) {
-    x <- data[, !(names(data) %in% y_names), drop = FALSE]
-  } else {
-    x <- data[, x_names, drop = FALSE]
-  }
-  y <- data[, y_names, drop = FALSE]
   # --- 1. Build and Compile Model ---
   model <- build_compile_seq_model(x, y, layer_blocks, ...)
 
