@@ -250,7 +250,7 @@ wf <- workflow() |>
   add_model(spec)
 
 fit_obj <- fit(wf, data = train_df)
-#> 4/4 - 0s - 27ms/step
+#> 4/4 - 0s - 25ms/step
 #> 4/4 - 0s - 26ms/step
 
 # Predict on new data
@@ -259,16 +259,169 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 57ms/step
+#> 1/1 - 0s - 55ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>      <dbl[,1,1]>    <dbl[,1,1]>
-#> 1        0.543 …        0.682 …
-#> 2        0.289 …        0.468 …
-#> 3        0.359 …        0.441 …
-#> 4        0.307 …        0.509 …
-#> 5        0.351 …        0.627 …
+#> 1        0.697 …        0.576 …
+#> 2        0.420 …        0.514 …
+#> 3        0.397 …        0.441 …
+#> 4        0.438 …        0.578 …
+#> 5        0.470 …        0.635 …
 ```
+
+## Example 2: A Two-Input, Two-Output Classification Model
+
+The same graph-building approach works for classification, including
+models with more than one classification target. Here, each output is
+its own softmax head with its own number of classes, matched by name to
+a column in the outcome data (`output_1` and `output_2` below).
+
+### Step 1: Define Layer Blocks
+
+Each input path is flattened before its dense layer, and each output
+block accepts a `num_classes` argument that `kerasnip` supplies
+automatically based on the number of factor levels in the corresponding
+outcome column.
+
+``` r
+
+input_block_1 <- function(input_shape) {
+  layer_input(shape = input_shape, name = "input_1")
+}
+input_block_2 <- function(input_shape) {
+  layer_input(shape = input_shape, name = "input_2")
+}
+
+flatten_block <- function(tensor) layer_flatten(tensor)
+
+dense_path_1 <- function(tensor, units = 16) {
+  tensor |> layer_dense(units = units, activation = "relu")
+}
+dense_path_2 <- function(tensor, units = 16) {
+  tensor |> layer_dense(units = units, activation = "relu")
+}
+
+concat_block <- function(input_a, input_b) {
+  layer_concatenate(list(input_a, input_b))
+}
+
+# Each output block is a softmax head sized to its own outcome's classes.
+output_block_1 <- function(tensor, num_classes) {
+  tensor |> layer_dense(units = num_classes, activation = "softmax", name = "output_1")
+}
+output_block_2 <- function(tensor, num_classes) {
+  tensor |> layer_dense(units = num_classes, activation = "softmax", name = "output_2")
+}
+```
+
+### Step 2: Create the Model Specification
+
+Setting `mode = "classification"` tells `kerasnip` to one-hot encode
+each outcome column independently and to compile a separate loss for
+each output head.
+
+``` r
+
+model_name <- "two_output_class_spec"
+on.exit(remove_keras_spec(model_name), add = TRUE)
+
+create_keras_functional_spec(
+  model_name = model_name,
+  layer_blocks = list(
+    input_1 = input_block_1,
+    input_2 = input_block_2,
+    flatten_1 = inp_spec(flatten_block, "input_1"),
+    flatten_2 = inp_spec(flatten_block, "input_2"),
+    processed_1 = inp_spec(dense_path_1, "flatten_1"),
+    processed_2 = inp_spec(dense_path_2, "flatten_2"),
+    concatenated = inp_spec(
+      concat_block,
+      c(input_a = "processed_1", input_b = "processed_2")
+    ),
+    output_1 = inp_spec(output_block_1, "concatenated"),
+    output_2 = inp_spec(output_block_2, "concatenated")
+  ),
+  mode = "classification"
+)
+```
+
+### Step 3: Fit and Predict
+
+`output_1` is a binary factor and `output_2` has three levels;
+`kerasnip` sizes each softmax head accordingly, with no extra
+configuration needed.
+
+``` r
+
+spec <- two_output_class_spec(
+  processed_1_units = 16,
+  processed_2_units = 8,
+  fit_epochs = 10,
+  fit_verbose = 0 # Suppress fitting output in vignette
+) |>
+  set_engine("keras")
+
+# Prepare dummy data with two inputs and two classification outcomes
+set.seed(123)
+x_data_1 <- matrix(runif(100 * 5), ncol = 5)
+x_data_2 <- matrix(runif(100 * 3), ncol = 3)
+output_1 <- factor(sample(c("a", "b"), 100, replace = TRUE))
+output_2 <- factor(sample(c("x", "y", "z"), 100, replace = TRUE))
+
+train_df <- tibble::tibble(
+  input_1 = lapply(
+    seq_len(nrow(x_data_1)),
+    function(i) x_data_1[i, , drop = FALSE]
+  ),
+  input_2 = lapply(
+    seq_len(nrow(x_data_2)),
+    function(i) x_data_2[i, , drop = FALSE]
+  ),
+  output_1 = output_1,
+  output_2 = output_2
+)
+
+rec <- recipe(output_1 + output_2 ~ input_1 + input_2, data = train_df)
+wf <- workflow() |>
+  add_recipe(rec) |>
+  add_model(spec)
+
+fit_obj <- fit(wf, data = train_df)
+#> 4/4 - 0s - 19ms/step
+#> 4/4 - 0s - 19ms/step
+
+new_data_df <- tibble::tibble(
+  input_1 = lapply(seq_len(5), function(i) matrix(runif(5), ncol = 5)),
+  input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
+)
+
+predict(fit_obj, new_data = new_data_df, type = "class")
+#> 1/1 - 0s - 49ms/step
+#> # A tibble: 5 × 2
+#>   .pred_class_output_1 .pred_class_output_2
+#>   <fct>                <fct>               
+#> 1 a                    y                   
+#> 2 b                    y                   
+#> 3 b                    y                   
+#> 4 a                    z                   
+#> 5 a                    y
+predict(fit_obj, new_data = new_data_df, type = "prob")
+#> 1/1 - 0s - 22ms/step
+#> # A tibble: 5 × 5
+#>   .pred_output_1_a .pred_output_1_b .pred_output_2_x .pred_output_2_y
+#>              <dbl>            <dbl>            <dbl>            <dbl>
+#> 1            0.540            0.460            0.295            0.377
+#> 2            0.447            0.553            0.283            0.364
+#> 3            0.406            0.594            0.345            0.428
+#> 4            0.649            0.351            0.234            0.340
+#> 5            0.545            0.455            0.296            0.358
+#> # ℹ 1 more variable: .pred_output_2_z <dbl>
+```
+
+Predicted class columns are named `.pred_class_<output name>`, and
+predicted probability columns are named `.pred_<output name>_<level>`,
+one set per output head.
 
 ## A common debugging workflow: `compile_keras_grid()`
 
@@ -328,7 +481,7 @@ compilation_results |>
   pull() |>
   pluck(1) |>
   summary()
-#> Model: "functional_3"
+#> Model: "functional_6"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -336,16 +489,16 @@ compilation_results |>
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
 #> │ input_2 (InputLayer)  │ (None, 1, 3)      │           0 │ -                  │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_2 (Dense)       │ (None, 1, 16)     │          96 │ input_1[0][0]      │
+#> │ dense_4 (Dense)       │ (None, 1, 16)     │          96 │ input_1[0][0]      │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_3 (Dense)       │ (None, 1, 8)      │          32 │ input_2[0][0]      │
+#> │ dense_5 (Dense)       │ (None, 1, 8)      │          32 │ input_2[0][0]      │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_1         │ (None, 1, 24)     │           0 │ dense_2[0][0],     │
-#> │ (Concatenate)         │                   │             │ dense_3[0][0]      │
+#> │ concatenate_2         │ (None, 1, 24)     │           0 │ dense_4[0][0],     │
+#> │ (Concatenate)         │                   │             │ dense_5[0][0]      │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output_1 (Dense)      │ (None, 1, 1)      │          25 │ concatenate_1[0][… │
+#> │ output_1 (Dense)      │ (None, 1, 1)      │          25 │ concatenate_2[0][… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output_2 (Dense)      │ (None, 1, 1)      │          25 │ concatenate_1[0][… │
+#> │ output_2 (Dense)      │ (None, 1, 1)      │          25 │ concatenate_2[0][… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
 #>  Total params: 178 (712.00 B)
 #>  Trainable params: 178 (712.00 B)

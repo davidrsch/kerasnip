@@ -39,6 +39,8 @@ kerasnip functional model specification is used."><meta property="og:image" cont
     <li><a class="dropdown-item" href="../articles/applications.html">Transfer Learning</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>Prediction Intervals</h6></li>
     <li><a class="dropdown-item" href="../articles/conformal_intervals.html">Conformal Inference</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Forecasting</h6></li>
+    <li><a class="dropdown-item" href="../articles/multistep_forecasting.html">Multi-Step Time Series Forecasting</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -66,21 +68,21 @@ directly by the user. The function is invoked by <code><a href="https://generics
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generic_functional_fit</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">layer_blocks</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generic_functional_fit</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">layer_blocks</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
-<dd><p>A formula specifying the predictor and outcome variables,
-passed down from the <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">parsnip::fit()</a></code> call.</p></dd>
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>A data frame of predictors, passed down from <code>parsnip</code>'s
+<code>data.frame</code> fit interface (already separated from the outcome).</p></dd>
 
 
-<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A data frame containing the training data, passed down from the
-<code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">parsnip::fit()</a></code> call.</p></dd>
+<dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
+<dd><p>A vector or data frame of outcomes, passed down from <code>parsnip</code>'s
+<code>data.frame</code> fit interface.</p></dd>
 
 
 <dt id="arg-layer-blocks">layer_blocks<a class="anchor" aria-label="anchor" href="#arg-layer-blocks"></a></dt>
@@ -152,7 +154,7 @@ and processed data, passing along any fitting-specific arguments (e.g.,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

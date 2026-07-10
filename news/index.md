@@ -2,6 +2,41 @@
 
 ## kerasnip (development version)
 
+### New Features
+
+- Added
+  [`step_sequence()`](https://davidrsch.github.io/kerasnip/reference/step_sequence.md)
+  and
+  [`step_lead()`](https://davidrsch.github.io/kerasnip/reference/step_lead.md)
+  recipe steps for building the windowed inputs and multi-step-ahead
+  targets a recurrent forecasting model needs.
+- Added support for multi-step (vector-valued) regression outputs: a
+  single `output` block can now predict several future steps at once
+  (`units = horizon`), with
+  [`predict()`](https://rdrr.io/r/stats/predict.html) returning point
+  forecasts and `conf_int`/`pred_int` nested by forecast step.
+- Added `predict(..., type = "pred_int", joint = TRUE)` for correlated
+  multi-step prediction intervals, sampled from the jointly-estimated
+  residual covariance across steps and returned as tidybayes-style
+  `.draw` columns.
+- Added the `multistep_forecasting` vignette demonstrating LSTM-based
+  multi-step forecasting end to end, including uncertainty intervals.
+
+### Bug Fixes
+
+- Fixed multi-output classification (multiple factor targets, each its
+  own head) failing when fit through a
+  [`workflow()`](https://workflows.tidymodels.org/reference/workflow.html).
+  parsnip’s internal formula reconstruction rebuilds multi-column
+  outcomes via [`cbind()`](https://rdrr.io/r/base/cbind.html), which
+  silently discards factor levels; the fit interface is now
+  `"data.frame"` instead of `"formula"` to avoid this.
+- Fixed `predict(..., type = "class")` erroring for multi-output
+  classification models.
+- Fixed `conf_int`/`pred_int` for multi-output classification returning
+  garbled column names; factor levels are now sliced per output instead
+  of passing the whole named list to every output.
+
 ## kerasnip 0.1.2
 
 CRAN release: 2026-05-02

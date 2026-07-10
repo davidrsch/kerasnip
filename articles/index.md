@@ -12,6 +12,8 @@
   kerasnip](https://davidrsch.github.io/kerasnip/articles/functional_api.md):
 - [Getting Started with
   kerasnip](https://davidrsch.github.io/kerasnip/articles/getting_started.md):
+- [Multi-Step Time Series Forecasting with
+  kerasnip](https://davidrsch.github.io/kerasnip/articles/multistep_forecasting.md):
 - [Saving and Reloading Fitted Kerasnip
   Workflows](https://davidrsch.github.io/kerasnip/articles/saving_and_reloading.md):
 - [The Sequential Model with

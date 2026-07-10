@@ -60,3 +60,7 @@ Custom stpes for recipe which uses kerasnip models specifications
 
 - [`step_collapse()`](https://davidrsch.github.io/kerasnip/reference/step_collapse.md)
   : Collapse Predictors into a single list-column
+- [`step_sequence()`](https://davidrsch.github.io/kerasnip/reference/step_sequence.md)
+  : Build a Sliding Window of Predictors for Sequence Models
+- [`step_lead()`](https://davidrsch.github.io/kerasnip/reference/step_lead.md)
+  : Create a Lead Predictor

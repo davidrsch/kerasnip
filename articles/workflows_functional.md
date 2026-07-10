@@ -414,11 +414,12 @@ combinations performed best.
 
 # Show the best performing models based on RMSE
 show_best(ames_tune_results, metric = "rmse", n = 5)
-#> # A tibble: 2 × 10
+#> # A tibble: 3 × 10
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
-#> 1                       128                           64                   64
-#> 2                       128                           64                   40
+#> 1                       128                           64                   40
+#> 2                       128                           64                   64
+#> 3                       128                           64                   16
 #> # ℹ 7 more variables: processed_condition_units <int>, .metric <chr>,
 #> #   .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -431,7 +432,7 @@ print(best_functional_mlp_params)
 #> # A tibble: 1 × 5
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
-#> 1                       128                           64                   64
+#> 1                       128                           64                   40
 #> # ℹ 2 more variables: processed_condition_units <int>, .config <chr>
 ```
 
@@ -468,7 +469,7 @@ print(final_ames_fit)
 #> 
 #> ── Model ───────────────────────────────────────────────────────────────────────
 #> $fit
-#> Model: "functional_516"
+#> Model: "functional_524"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -484,42 +485,42 @@ print(final_ames_fit)
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1032 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1048 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1033 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1049 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1034 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
+#> │ dense_1050 (Dense)    │ (None, 1, 40)     │         200 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1035 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1051 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_258       │ (None, 1, 320)    │           0 │ dense_1032[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1033[0][0],  │
-#> │                       │                   │             │ dense_1034[0][0],  │
-#> │                       │                   │             │ dense_1035[0][0]   │
+#> │ concatenate_262       │ (None, 1, 296)    │           0 │ dense_1048[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1049[0][0],  │
+#> │                       │                   │             │ dense_1050[0][0],  │
+#> │                       │                   │             │ dense_1051[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_258[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         297 │ concatenate_262[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
-#>  Total params: 13,637 (53.27 KB)
-#>  Trainable params: 4,545 (17.75 KB)
+#>  Total params: 13,205 (51.59 KB)
+#>  Trainable params: 4,401 (17.19 KB)
 #>  Non-trainable params: 0 (0.00 B)
-#>  Optimizer params: 9,092 (35.52 KB)
+#>  Optimizer params: 8,804 (34.39 KB)
 #> 
 #> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 4f d3 39 30 40 00 00 00 40 00
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 48 02 31 ce 40 00 00 00 40 00
 #>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
 #>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 35 2e 30 22 2c 20 22
-#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 37 2d 30 38
-#>    [97] 40 30 30 3a 31 38 3a 33 39 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 31 cd 5d 1a 1c 21 00 00 1c 21 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 37 2d 31 30
+#>    [97] 40 31 30 3a 31 33 3a 31 37 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 96 8e 58 6f 1c 21 00 00 1c 21 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
 #>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 2e 73 72
 #>   [169] 63 2e 6d 6f 64 65 6c 73 2e 66 75 6e 63 74 69 6f 6e 61 6c 22 2c 20 22 63
 #>   [193] 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 46 75 6e 63 74 69 6f 6e 61 6c 22
 #>   [217] 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 75
-#>   [241] 6e 63 74 69 6f 6e 61 6c 5f 35 31 36 22 2c 20 22 74 72 61 69 6e 61 62 6c
+#>   [241] 6e 63 74 69 6f 6e 61 6c 5f 35 32 34 22 2c 20 22 74 72 61 69 6e 61 62 6c
 #>   [265] 65 22 3a 20 74 72 75 65 2c 20 22 6c 61 79 65 72 73 22 3a 20 5b 7b 22 6d
 #> 
 #> ...
-#> and 6661 more lines.
+#> and 6648 more lines.
 ```
 
 ### Inspect Final Model
@@ -534,7 +535,7 @@ final_ames_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
   summary()
-#> Model: "functional_516"
+#> Model: "functional_524"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)          ┃ Output Shape      ┃     Param # ┃ Connected to       ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
@@ -550,25 +551,25 @@ final_ames_fit |>
 #> │ condition_input       │ (None, 1, 9)      │           0 │ -                  │
 #> │ (InputLayer)          │                   │             │                    │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1032 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
+#> │ dense_1048 (Dense)    │ (None, 1, 128)    │       1,408 │ numerical_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1033 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
+#> │ dense_1049 (Dense)    │ (None, 1, 64)     │       1,856 │ neighborhood_inpu… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1034 (Dense)    │ (None, 1, 64)     │         320 │ bldg_input[0][0]   │
+#> │ dense_1050 (Dense)    │ (None, 1, 40)     │         200 │ bldg_input[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ dense_1035 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
+#> │ dense_1051 (Dense)    │ (None, 1, 64)     │         640 │ condition_input[0… │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ concatenate_258       │ (None, 1, 320)    │           0 │ dense_1032[0][0],  │
-#> │ (Concatenate)         │                   │             │ dense_1033[0][0],  │
-#> │                       │                   │             │ dense_1034[0][0],  │
-#> │                       │                   │             │ dense_1035[0][0]   │
+#> │ concatenate_262       │ (None, 1, 296)    │           0 │ dense_1048[0][0],  │
+#> │ (Concatenate)         │                   │             │ dense_1049[0][0],  │
+#> │                       │                   │             │ dense_1050[0][0],  │
+#> │                       │                   │             │ dense_1051[0][0]   │
 #> ├───────────────────────┼───────────────────┼─────────────┼────────────────────┤
-#> │ output (Dense)        │ (None, 1, 1)      │         321 │ concatenate_258[0… │
+#> │ output (Dense)        │ (None, 1, 1)      │         297 │ concatenate_262[0… │
 #> └───────────────────────┴───────────────────┴─────────────┴────────────────────┘
-#>  Total params: 13,637 (53.27 KB)
-#>  Trainable params: 4,545 (17.75 KB)
+#>  Total params: 13,205 (51.59 KB)
+#>  Trainable params: 4,401 (17.19 KB)
 #>  Non-trainable params: 0 (0.00 B)
-#>  Optimizer params: 9,092 (35.52 KB)
+#>  Optimizer params: 8,804 (34.39 KB)
 ```
 
 ``` r
@@ -616,12 +617,12 @@ print(head(ames_results))
 #> # A tibble: 6 × 2
 #>   Sale_Price   .pred
 #>        <int>   <dbl>
-#> 1     105000  96563.
-#> 2     172000 161014.
-#> 3     189900 193612.
-#> 4     115000 126630.
-#> 5     395192 268015.
-#> 6     214000 212491.
+#> 1     105000  96503.
+#> 2     172000 160802.
+#> 3     189900 192983.
+#> 4     115000 127024.
+#> 5     395192 268981.
+#> 6     214000 212492.
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -638,8 +639,8 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard   50668.   
-#> 2 mae     standard   30784.   
+#> 1 rmse    standard   50507.   
+#> 2 mae     standard   30805.   
 #> 3 rsq     standard       0.786
 ```
 
@@ -663,16 +664,16 @@ final_ames_fit_loaded <- readRDS("ames_model.rds")
 
 # Make predictions again to prove it works
 predict(final_ames_fit_loaded, new_data = ames_test) |> head()
-#> 19/19 - 0s - 9ms/step
+#> 19/19 - 0s - 8ms/step
 #> # A tibble: 6 × 1
 #>     .pred
 #>     <dbl>
-#> 1  96563.
-#> 2 161014.
-#> 3 193612.
-#> 4 126630.
-#> 5 268015.
-#> 6 212491.
+#> 1  96503.
+#> 2 160802.
+#> 3 192983.
+#> 4 127024.
+#> 5 268981.
+#> 6 212492.
 ```
 
 If you need a fully self-contained bundle suitable for deployment with
@@ -698,12 +699,12 @@ predict(final_ames_fit_loaded, new_data = ames_test) |> head()
 #> # A tibble: 6 × 1
 #>     .pred
 #>     <dbl>
-#> 1  96563.
-#> 2 161014.
-#> 3 193612.
-#> 4 126630.
-#> 5 268015.
-#> 6 212491.
+#> 1  96503.
+#> 2 160802.
+#> 3 192983.
+#> 4 127024.
+#> 5 268981.
+#> 6 212492.
 ```
 
 See

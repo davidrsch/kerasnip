@@ -341,9 +341,9 @@ show_best(penguin_tune_results, metric = "accuracy", n = 5)
 #>   hidden_1_units hidden_1_rate hidden_2_units hidden_2_rate .metric  .estimator
 #>            <int>         <dbl>          <int>         <dbl> <chr>    <chr>     
 #> 1             32           0.1             16         0.1   accuracy multiclass
-#> 2             32           0.1             16         0.400 accuracy multiclass
-#> 3             32           0.1             40         0.1   accuracy multiclass
-#> 4             32           0.1             40         0.25  accuracy multiclass
+#> 2             32           0.1             40         0.1   accuracy multiclass
+#> 3             32           0.1             40         0.25  accuracy multiclass
+#> 4             32           0.1             40         0.400 accuracy multiclass
 #> 5             32           0.1             64         0.1   accuracy multiclass
 #> # ℹ 4 more variables: mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -386,19 +386,19 @@ print(final_penguin_fit)
 #> 
 #> ── Model ───────────────────────────────────────────────────────────────────────
 #> $fit
-#> Model: "sequential_399"
+#> Model: "sequential_402"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-#> │ dense_1197 (Dense)                │ (None, 32)               │           256 │
+#> │ dense_1206 (Dense)                │ (None, 32)               │           256 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_798 (Dropout)             │ (None, 32)               │             0 │
+#> │ dropout_804 (Dropout)             │ (None, 32)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1198 (Dense)                │ (None, 16)               │           528 │
+#> │ dense_1207 (Dense)                │ (None, 16)               │           528 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_799 (Dropout)             │ (None, 16)               │             0 │
+#> │ dropout_805 (Dropout)             │ (None, 16)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1199 (Dense)                │ (None, 3)                │            51 │
+#> │ dense_1208 (Dense)                │ (None, 3)                │            51 │
 #> └───────────────────────────────────┴──────────────────────────┴───────────────┘
 #>  Total params: 2,507 (9.80 KB)
 #>  Trainable params: 835 (3.26 KB)
@@ -406,23 +406,23 @@ print(final_penguin_fit)
 #>  Optimizer params: 1,672 (6.54 KB)
 #> 
 #> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 38 b8 f9 fc 40 00 00 00 40 00
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 c4 d2 02 64 40 00 00 00 40 00
 #>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
 #>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 35 2e 30 22 2c 20 22
-#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 37 2d 30 38
-#>    [97] 40 30 30 3a 33 37 3a 31 39 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 91 c1 6c e3 96 11 00 00 96 11 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 37 2d 31 30
+#>    [97] 40 31 30 3a 33 30 3a 30 35 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 db 84 32 cf 96 11 00 00 96 11 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
 #>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20
 #>   [169] 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 53 65 71 75 65 6e 74 69 61
 #>   [193] 6c 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22
-#>   [217] 73 65 71 75 65 6e 74 69 61 6c 5f 33 39 39 22 2c 20 22 74 72 61 69 6e 61
+#>   [217] 73 65 71 75 65 6e 74 69 61 6c 5f 34 30 32 22 2c 20 22 74 72 61 69 6e 61
 #>   [241] 62 6c 65 22 3a 20 74 72 75 65 2c 20 22 64 74 79 70 65 22 3a 20 7b 22 6d
 #>   [265] 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20 22 63 6c 61 73 73 5f
 #>   [289] 6e 61 6d 65 22 3a 20 22 44 54 79 70 65 50 6f 6c 69 63 79 22 2c 20 22 63
 #>   [313] 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 6c 6f 61 74 33
 #>   [337] 32 22 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65 22 3a 20
 #>   [361] 6e 75 6c 6c 2c 20 22 73 68 61 72 65 64 5f 6f 62 6a 65 63 74 5f 69 64 22
-#>   [385] 3a 20 31 33 39 38 33 32 34 33 31 31 30 39 35 38 34 7d 2c 20 22 6c 61 79
+#>   [385] 3a 20 31 33 39 37 38 33 32 37 34 39 35 32 31 34 34 7d 2c 20 22 6c 61 79
 #>   [409] 65 72 73 22 3a 20 5b 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73
 #>   [433] 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20
 #>   [457] 22 49 6e 70 75 74 4c 61 79 65 72 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20
@@ -430,14 +430,14 @@ print(final_penguin_fit)
 #>   [505] 5d 2c 20 22 64 74 79 70 65 22 3a 20 22 66 6c 6f 61 74 33 32 22 2c 20 22
 #>   [529] 73 70 61 72 73 65 22 3a 20 66 61 6c 73 65 2c 20 22 72 61 67 67 65 64 22
 #>   [553] 3a 20 66 61 6c 73 65 2c 20 22 6e 61 6d 65 22 3a 20 22 69 6e 70 75 74 5f
-#>   [577] 6c 61 79 65 72 5f 33 39 39 22 2c 20 22 6f 70 74 69 6f 6e 61 6c 22 3a 20
+#>   [577] 6c 61 79 65 72 5f 34 30 32 22 2c 20 22 6f 70 74 69 6f 6e 61 6c 22 3a 20
 #>   [601] 66 61 6c 73 65 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65
 #>   [625] 22 3a 20 6e 75 6c 6c 7d 2c 20 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65
 #>   [649] 72 61 73 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65
 #>   [673] 22 3a 20 22 44 65 6e 73 65 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22
 #> 
 #> ...
-#> and 2885 more lines.
+#> and 2884 more lines.
 ```
 
 ### Inspect Final Model
@@ -452,19 +452,19 @@ final_penguin_fit |>
   extract_fit_parsnip() |>
   extract_keras_model() |>
   summary()
-#> Model: "sequential_399"
+#> Model: "sequential_402"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 #> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
 #> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-#> │ dense_1197 (Dense)                │ (None, 32)               │           256 │
+#> │ dense_1206 (Dense)                │ (None, 32)               │           256 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_798 (Dropout)             │ (None, 32)               │             0 │
+#> │ dropout_804 (Dropout)             │ (None, 32)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1198 (Dense)                │ (None, 16)               │           528 │
+#> │ dense_1207 (Dense)                │ (None, 16)               │           528 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dropout_799 (Dropout)             │ (None, 16)               │             0 │
+#> │ dropout_805 (Dropout)             │ (None, 16)               │             0 │
 #> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
-#> │ dense_1199 (Dense)                │ (None, 3)                │            51 │
+#> │ dense_1208 (Dense)                │ (None, 3)                │            51 │
 #> └───────────────────────────────────┴──────────────────────────┴───────────────┘
 #>  Total params: 2,507 (9.80 KB)
 #>  Trainable params: 835 (3.26 KB)
@@ -505,13 +505,13 @@ model’s performance.
 
 # Make predictions on the test set
 penguin_test_pred <- predict(final_penguin_fit, new_data = penguin_test)
-#> 3/3 - 0s - 20ms/step
+#> 3/3 - 0s - 19ms/step
 penguin_test_prob <- predict(
   final_penguin_fit,
   new_data = penguin_test,
   type = "prob"
 )
-#> 3/3 - 0s - 8ms/step
+#> 3/3 - 0s - 7ms/step
 
 # Combine predictions with actuals
 penguin_results <- penguin_test |>
@@ -520,14 +520,14 @@ penguin_results <- penguin_test |>
 
 print(head(penguin_results))
 #> # A tibble: 6 × 5
-#>   species .pred_class .pred_Adelie .pred_Chinstrap  .pred_Gentoo
-#>   <fct>   <fct>              <dbl>           <dbl>         <dbl>
-#> 1 Adelie  Adelie             1.000    0.0000000534 0.0000000201 
-#> 2 Adelie  Adelie             1.000    0.0000170    0.00000703   
-#> 3 Adelie  Adelie             1.000    0.0000000141 0.00000000809
-#> 4 Adelie  Adelie             1.000    0.000000401  0.000000240  
-#> 5 Adelie  Adelie             1.000    0.00000154   0.00000139   
-#> 6 Adelie  Adelie             1.000    0.00000103   0.000000777
+#>   species .pred_class .pred_Adelie .pred_Chinstrap .pred_Gentoo
+#>   <fct>   <fct>              <dbl>           <dbl>        <dbl>
+#> 1 Adelie  Adelie             1.000        7.25e-10     4.76e-11
+#> 2 Adelie  Adelie             1.000        9.49e- 7     1.97e- 7
+#> 3 Adelie  Adelie             1.000        4.46e-11     1.22e-12
+#> 4 Adelie  Adelie             1.000        1.08e- 8     2.41e- 9
+#> 5 Adelie  Adelie             1.000        5.68e- 8     8.25e- 9
+#> 6 Adelie  Adelie             1.000        6.61e- 8     9.27e- 9
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -547,8 +547,8 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy multiclass     0.971
-#> 2 f_meas   macro          0.965
+#> 1 accuracy multiclass     0.985
+#> 2 f_meas   macro          0.982
 #> 3 roc_auc  hand_till      0.999
 
 # Confusion Matrix
@@ -609,7 +609,7 @@ library(bundle)
 final_penguin_fit_loaded <- unbundle(readRDS("penguin_model_bundle.rds"))
 
 predict(final_penguin_fit_loaded, new_data = penguin_test) |> head()
-#> 3/3 - 0s - 20ms/step
+#> 3/3 - 0s - 19ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      

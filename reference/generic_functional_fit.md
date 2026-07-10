@@ -9,23 +9,20 @@ be called directly by the user. The function is invoked by
 ## Usage
 
 ``` r
-generic_functional_fit(formula, data, layer_blocks, ...)
+generic_functional_fit(x, y, layer_blocks, ...)
 ```
 
 ## Arguments
 
-- formula:
+- x:
 
-  A formula specifying the predictor and outcome variables, passed down
-  from the
-  [`parsnip::fit()`](https://generics.r-lib.org/reference/fit.html)
-  call.
+  A data frame of predictors, passed down from `parsnip`'s `data.frame`
+  fit interface (already separated from the outcome).
 
-- data:
+- y:
 
-  A data frame containing the training data, passed down from the
-  [`parsnip::fit()`](https://generics.r-lib.org/reference/fit.html)
-  call.
+  A vector or data frame of outcomes, passed down from `parsnip`'s
+  `data.frame` fit interface.
 
 - layer_blocks:
 

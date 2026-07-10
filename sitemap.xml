@@ -11,6 +11,7 @@
 <url><loc>https://davidrsch.github.io/kerasnip/articles/functional_api.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/getting_started.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/index.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/articles/multistep_forecasting.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/saving_and_reloading.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/sequential_model.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/articles/tuning_fit_compile_args.html</loc></url>
@@ -56,6 +57,8 @@
 <url><loc>https://davidrsch.github.io/kerasnip/reference/set_args.kerasnip_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/set_engine.kerasnip_spec.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/step_collapse.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/step_lead.html</loc></url>
+<url><loc>https://davidrsch.github.io/kerasnip/reference/step_sequence.html</loc></url>
 <url><loc>https://davidrsch.github.io/kerasnip/reference/tidy.kerasnip_model_fit.html</loc></url>
 </urlset>
 
