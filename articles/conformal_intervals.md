@@ -136,7 +136,7 @@ fit_obj <- fit(wflow, data = train_dat)
 
 # Build the conformal object from the calibration set
 conformal_split <- int_conformal_split(fit_obj, cal_data = cal_dat)
-#> 23/23 - 0s - 2ms/step
+#> 23/23 - 0s - 3ms/step
 conformal_split
 #> Split Conformal inference
 #> preprocessor: recipe 
@@ -152,12 +152,12 @@ predict(conformal_split, new_data = new_obs, level = 0.90)
 #> # A tibble: 6 × 3
 #>    .pred .pred_lower .pred_upper
 #>    <dbl>       <dbl>       <dbl>
-#> 1 30588.    -180018.     241194.
-#> 2 98741.    -111865.     309346.
-#> 3 53458.    -157148.     264063.
-#> 4 59668.    -150938.     270274.
-#> 5  9419.    -201187.     220025.
-#> 6 13859.    -196747.     224465.
+#> 1 24042.    -205465.     253548.
+#> 2 63722.    -165785.     293228.
+#> 3 34617.    -194890.     264123.
+#> 4 38536.    -190971.     268042.
+#> 5 21846.    -207660.     251352.
+#> 6 21542.    -207964.     251048.
 ```
 
 **When to use this**: when training cost is non-trivial and you can
@@ -226,19 +226,19 @@ conformal_cv
 
 predict(conformal_cv, new_data = data[1:6, ], level = 0.90)
 #> 1/1 - 0s - 21ms/step
-#> 1/1 - 0s - 20ms/step
-#> 1/1 - 0s - 20ms/step
-#> 1/1 - 0s - 20ms/step
 #> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 6 × 3
 #>   .pred_lower  .pred .pred_upper
 #>         <dbl>  <dbl>       <dbl>
-#> 1    -189600. 26135.     241870.
-#> 2    -196294. 19440.     235175.
-#> 3    -199557. 16178.     231912.
-#> 4    -144356. 71378.     287113.
-#> 5    -181353. 34382.     250116.
-#> 6    -181878. 33856.     249591.
+#> 1    -186664. 28270.     243205.
+#> 2    -192184. 22751.     237686.
+#> 3    -195046. 19888.     234823.
+#> 4    -142075. 72860.     287794.
+#> 5    -179336. 35599.     250533.
+#> 6    -179754. 35181.     250115.
 ```
 
 **When to use this**: when you do not want to reserve a separate
@@ -287,7 +287,7 @@ data_small <- data[1:100, ]
 new_obs_small <- data[101:106, ]
 
 fit_small <- fit(wflow, data = data_small)
-#> 4/4 - 0s - 14ms/step
+#> 4/4 - 0s - 15ms/step
 
 conformal_full <- int_conformal_full(
   fit_small,
@@ -297,7 +297,7 @@ conformal_full <- int_conformal_full(
     trial_points = 20
   )
 )
-#> 4/4 - 0s - 12ms/step
+#> 4/4 - 0s - 13ms/step
 conformal_full
 #> Conformal inference
 #> preprocessor: recipe 
@@ -311,12 +311,12 @@ predict(conformal_full, new_data = new_obs_small, level = 0.90)
 #> # A tibble: 6 × 2
 #>   .pred_lower .pred_upper
 #>         <dbl>       <dbl>
-#> 1    -439864.     439973.
-#> 2    -436113.     436218.
-#> 3    -430917.     431018.
-#> 4    -457401.     457526.
-#> 5    -449620.     449937.
-#> 6    -500615.     500774.
+#> 1    -477195.     477337.
+#> 2    -476892.     477034.
+#> 3    -473220.     473356.
+#> 4    -494736.     494901.
+#> 5    -433285.     433608.
+#> 6    -491656.     491817.
 ```
 
 **When to use this**: when you need the strongest possible coverage

@@ -251,7 +251,7 @@ wf <- workflow() |>
 
 fit_obj <- fit(wf, data = train_df)
 #> 4/4 - 0s - 25ms/step
-#> 4/4 - 0s - 26ms/step
+#> 4/4 - 0s - 25ms/step
 
 # Predict on new data
 new_data_df <- tibble::tibble(
@@ -259,15 +259,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 55ms/step
+#> 1/1 - 0s - 54ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>      <dbl[,1,1]>    <dbl[,1,1]>
-#> 1        0.697 …        0.576 …
-#> 2        0.420 …        0.514 …
-#> 3        0.397 …        0.441 …
-#> 4        0.438 …        0.578 …
-#> 5        0.470 …        0.635 …
+#> 1        0.595 …        0.441 …
+#> 2        0.509 …        0.373 …
+#> 3        0.411 …        0.413 …
+#> 4        0.496 …        0.549 …
+#> 5        0.493 …        0.465 …
 ```
 
 ## Example 2: A Two-Input, Two-Output Classification Model
@@ -401,21 +401,21 @@ predict(fit_obj, new_data = new_data_df, type = "class")
 #> # A tibble: 5 × 2
 #>   .pred_class_output_1 .pred_class_output_2
 #>   <fct>                <fct>               
-#> 1 a                    y                   
-#> 2 b                    y                   
-#> 3 b                    y                   
+#> 1 a                    z                   
+#> 2 a                    y                   
+#> 3 a                    y                   
 #> 4 a                    z                   
-#> 5 a                    y
+#> 5 a                    z
 predict(fit_obj, new_data = new_data_df, type = "prob")
 #> 1/1 - 0s - 22ms/step
 #> # A tibble: 5 × 5
 #>   .pred_output_1_a .pred_output_1_b .pred_output_2_x .pred_output_2_y
 #>              <dbl>            <dbl>            <dbl>            <dbl>
-#> 1            0.540            0.460            0.295            0.377
-#> 2            0.447            0.553            0.283            0.364
-#> 3            0.406            0.594            0.345            0.428
-#> 4            0.649            0.351            0.234            0.340
-#> 5            0.545            0.455            0.296            0.358
+#> 1            0.550            0.450            0.273            0.363
+#> 2            0.633            0.367            0.197            0.429
+#> 3            0.634            0.366            0.222            0.414
+#> 4            0.579            0.421            0.178            0.339
+#> 5            0.554            0.446            0.235            0.290
 #> # ℹ 1 more variable: .pred_output_2_z <dbl>
 ```
 

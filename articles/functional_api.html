@@ -335,7 +335,7 @@ block definitions.</p>
 <span></span>
 <span><span class="va">fit_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wf</span>, data <span class="op">=</span> <span class="va">train_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 4/4 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 4/4 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 4/4 - 0s - 25ms/step</span></span>
 <span></span>
 <span><span class="co"># Predict on new data</span></span>
 <span><span class="va">new_data_df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
@@ -343,15 +343,15 @@ block definitions.</p>
 <span>  input_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 55ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 54ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_output_1 .pred_output_2</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl[,1,1]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.697 …        0.576 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.420 …        0.514 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.397 …        0.441 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.438 …        0.578 …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.470 …        0.635 …</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0.595 …        0.441 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0.509 …        0.373 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0.411 …        0.413 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        0.496 …        0.549 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        0.493 …        0.465 …</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -481,21 +481,21 @@ accordingly, with no extra configuration needed.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_class_output_1 .pred_class_output_2</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>               </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> a                    y                   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> b                    y                   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> b                    y                   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> a                    z                   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> a                    y                   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> a                    y                   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> a                    z                   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> a                    y</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> a                    z</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">new_data_df</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 22ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 5</span></span></span>
 <span><span class="co">#&gt;   .pred_output_1_a .pred_output_1_b .pred_output_2_x .pred_output_2_y</span></span>
 <span><span class="co">#&gt;              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            0.540            0.460            0.295            0.377</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            0.447            0.553            0.283            0.364</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            0.406            0.594            0.345            0.428</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            0.649            0.351            0.234            0.340</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            0.545            0.455            0.296            0.358</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            0.550            0.450            0.273            0.363</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            0.633            0.367            0.197            0.429</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            0.634            0.366            0.222            0.414</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            0.579            0.421            0.178            0.339</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            0.554            0.446            0.235            0.290</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: .pred_output_2_z &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>Predicted class columns are named
 <code>.pred_class_&lt;output name&gt;</code>, and predicted probability
