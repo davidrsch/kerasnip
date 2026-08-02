@@ -52,5 +52,6 @@ Suggests:
     ggplot2,
     mgcv,
     probably,
+    tailor,
     tidyr
 VignetteBuilder: knitr
