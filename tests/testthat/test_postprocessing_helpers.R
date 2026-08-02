@@ -34,7 +34,12 @@ test_that("keras_postprocess_numeric handles single output (named list)", {
   processed <- keras_postprocess_numeric(results, mock_object_multi_output)
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), ".pred")
-  expect_equal(processed$.pred, matrix(c(0.1, 0.2, 0.3), ncol = 1))
+  # A plain numeric, not a matrix/array: tibble::as_tibble() on a list of
+  # single-column matrices doesn't always simplify the matrix class away on
+  # its own (notably for a single row), so keras_postprocess_numeric()
+  # flattens each element explicitly.
+  expect_equal(processed$.pred, c(0.1, 0.2, 0.3))
+  expect_false(is.matrix(processed$.pred))
 })
 
 
@@ -63,9 +68,10 @@ test_that("keras_postprocess_numeric handles multi-output (named list)", {
   processed <- keras_postprocess_numeric(results, mock_object_multi_output)
   expect_s3_class(processed, "tbl_df")
   expect_equal(names(processed), c(".pred_output1", ".pred_output2"))
-  # Change expected values to 1-column matrices
-  expect_equal(processed$.pred_output1, matrix(c(0.1, 0.2), ncol = 1))
-  expect_equal(processed$.pred_output2, matrix(c(0.4, 0.5), ncol = 1))
+  expect_equal(processed$.pred_output1, c(0.1, 0.2))
+  expect_equal(processed$.pred_output2, c(0.4, 0.5))
+  expect_false(is.matrix(processed$.pred_output1))
+  expect_false(is.matrix(processed$.pred_output2))
 })
 
 # --- Tests for keras_postprocess_probs ---
