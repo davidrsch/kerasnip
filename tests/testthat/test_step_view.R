@@ -11,7 +11,12 @@
 # columns are).
 # =============================================================================
 
-make_step_view_fit <- function(model_name, n = 120, timesteps = 8, horizon = 3) {
+make_step_view_fit <- function(
+  model_name,
+  n = 120,
+  timesteps = 8,
+  horizon = 3
+) {
   set.seed(42)
   dat <- tibble::tibble(value = sin(seq_len(n) / 10) + rnorm(n, sd = 0.05))
 
@@ -40,7 +45,11 @@ make_step_view_fit <- function(model_name, n = 120, timesteps = 8, horizon = 3) 
     mode = "regression"
   )
 
-  spec <- get(model_name)(output_units = horizon, fit_epochs = 5, fit_verbose = 0) |>
+  spec <- get(model_name)(
+    output_units = horizon,
+    fit_epochs = 5,
+    fit_verbose = 0
+  ) |>
     set_engine("keras")
 
   wf <- workflow(rec, spec)
@@ -109,7 +118,11 @@ test_that("kerasnip_step_view: predict() matches the raw nested .pred column", {
   expect_equal(names(view_preds), ".pred")
   expect_equal(nrow(view_preds), nrow(raw_preds))
 
-  expected <- vapply(raw_preds$.pred, function(tbl) tbl$.pred[tbl$.step == 2], numeric(1))
+  expected <- vapply(
+    raw_preds$.pred,
+    function(tbl) tbl$.pred[tbl$.step == 2],
+    numeric(1)
+  )
   expect_equal(view_preds$.pred, expected)
 })
 
@@ -155,7 +168,8 @@ test_that("kerasnip_step_view: manual tailor::adjust_numeric_calibration works p
   cal_tbl <- tibble::tibble(truth = truth, .pred = preds$.pred)
   cal_tbl <- cal_tbl[stats::complete.cases(cal_tbl), ]
 
-  tlr <- tailor::tailor() |> tailor::adjust_numeric_calibration(method = "linear")
+  tlr <- tailor::tailor() |>
+    tailor::adjust_numeric_calibration(method = "linear")
   tlr_fit <- fit(tlr, cal_tbl, outcome = truth, estimate = .pred)
 
   result <- predict(tlr_fit, cal_tbl)
@@ -214,8 +228,12 @@ test_that("kerasnip_step_view: probably::int_conformal_full works per step", {
   input_block <- function(input_shape) {
     keras3::layer_input(shape = input_shape, name = "window_input")
   }
-  lstm_block <- function(tensor, units = 8) tensor |> keras3::layer_lstm(units = units)
-  output_block <- function(tensor, units = 1) tensor |> keras3::layer_dense(units = units)
+  lstm_block <- function(tensor, units = 8) {
+    tensor |> keras3::layer_lstm(units = units)
+  }
+  output_block <- function(tensor, units = 1) {
+    tensor |> keras3::layer_dense(units = units)
+  }
 
   create_keras_functional_spec(
     model_name = model_name,
@@ -227,7 +245,11 @@ test_that("kerasnip_step_view: probably::int_conformal_full works per step", {
     mode = "regression"
   )
 
-  spec <- get(model_name)(output_units = horizon, fit_epochs = 5, fit_verbose = 0) |>
+  spec <- get(model_name)(
+    output_units = horizon,
+    fit_epochs = 5,
+    fit_verbose = 0
+  ) |>
     set_engine("keras")
   wf <- workflow(rec, spec)
 
@@ -241,10 +263,17 @@ test_that("kerasnip_step_view: probably::int_conformal_full works per step", {
   conformal <- probably::int_conformal_full(
     view_1,
     train_data = train_dat,
-    control = probably::control_conformal_full(method = "grid", trial_points = 8)
+    control = probably::control_conformal_full(
+      method = "grid",
+      trial_points = 8
+    )
   )
   new_data <- test_dat[seq_len(timesteps + 2), , drop = FALSE]
-  result <- suppressWarnings(predict(conformal, new_data = new_data, level = 0.90))
+  result <- suppressWarnings(predict(
+    conformal,
+    new_data = new_data,
+    level = 0.90
+  ))
 
   expect_s3_class(result, "tbl_df")
   expect_true(all(c(".pred_lower", ".pred_upper") %in% names(result)))
@@ -277,8 +306,12 @@ test_that("kerasnip_step_view: int_conformal_full errors when step_lead()/step_s
   input_block <- function(input_shape) {
     keras3::layer_input(shape = input_shape, name = "window_input")
   }
-  lstm_block <- function(tensor, units = 8) tensor |> keras3::layer_lstm(units = units)
-  output_block <- function(tensor, units = 1) tensor |> keras3::layer_dense(units = units)
+  lstm_block <- function(tensor, units = 8) {
+    tensor |> keras3::layer_lstm(units = units)
+  }
+  output_block <- function(tensor, units = 1) {
+    tensor |> keras3::layer_dense(units = units)
+  }
 
   create_keras_functional_spec(
     model_name = model_name,
@@ -290,7 +323,11 @@ test_that("kerasnip_step_view: int_conformal_full errors when step_lead()/step_s
     mode = "regression"
   )
 
-  spec <- get(model_name)(output_units = horizon, fit_epochs = 1, fit_verbose = 0) |>
+  spec <- get(model_name)(
+    output_units = horizon,
+    fit_epochs = 1,
+    fit_verbose = 0
+  ) |>
     set_engine("keras")
   fit_obj <- fit(workflow(rec, spec), data = dat)
   view_1 <- kerasnip_step_view(fit_obj, step = 1)

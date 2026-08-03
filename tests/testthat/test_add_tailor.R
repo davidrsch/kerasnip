@@ -13,8 +13,12 @@ make_add_tailor_reg_blocks <- function() {
   dense_block <- function(tensor, units = 8) {
     tensor |> keras3::layer_dense(units = units, activation = "relu")
   }
-  output_1 <- function(tensor) keras3::layer_dense(tensor, units = 1, name = "output_1")
-  output_2 <- function(tensor) keras3::layer_dense(tensor, units = 1, name = "output_2")
+  output_1 <- function(tensor) {
+    keras3::layer_dense(tensor, units = 1, name = "output_1")
+  }
+  output_2 <- function(tensor) {
+    keras3::layer_dense(tensor, units = 1, name = "output_2")
+  }
   list(
     main_input = input_block,
     dense = inp_spec(dense_block, "main_input"),
@@ -39,10 +43,20 @@ make_add_tailor_class_blocks <- function() {
     tensor |> keras3::layer_dense(units = units, activation = "relu")
   }
   output_1 <- function(tensor, num_classes) {
-    keras3::layer_dense(tensor, units = num_classes, activation = "softmax", name = "output_1")
+    keras3::layer_dense(
+      tensor,
+      units = num_classes,
+      activation = "softmax",
+      name = "output_1"
+    )
   }
   output_2 <- function(tensor, num_classes) {
-    keras3::layer_dense(tensor, units = num_classes, activation = "softmax", name = "output_2")
+    keras3::layer_dense(
+      tensor,
+      units = num_classes,
+      activation = "softmax",
+      name = "output_2"
+    )
   }
   list(
     main_input = input_block,
@@ -85,7 +99,8 @@ test_that("kerasnip_add_tailor: numeric calibration on one output of a regressio
   train_dat <- rsample::training(split)
   cal_dat <- rsample::testing(split)
 
-  tlr <- tailor::tailor() |> tailor::adjust_numeric_calibration(method = "linear")
+  tlr <- tailor::tailor() |>
+    tailor::adjust_numeric_calibration(method = "linear")
   tailored_wf <- kerasnip_add_tailor(wf, tlr, output = "output_2")
 
   fit_obj <- fit(tailored_wf, data = train_dat, data_calibration = cal_dat)
@@ -161,8 +176,12 @@ test_that("kerasnip_add_tailor: numeric calibration on one step of a multistep w
   input_block <- function(input_shape) {
     keras3::layer_input(shape = input_shape, name = "window_input")
   }
-  lstm_block <- function(tensor, units = 8) tensor |> keras3::layer_lstm(units = units)
-  output_block <- function(tensor, units = 1) tensor |> keras3::layer_dense(units = units)
+  lstm_block <- function(tensor, units = 8) {
+    tensor |> keras3::layer_lstm(units = units)
+  }
+  output_block <- function(tensor, units = 1) {
+    tensor |> keras3::layer_dense(units = units)
+  }
 
   create_keras_functional_spec(
     model_name = model_name,
@@ -174,11 +193,16 @@ test_that("kerasnip_add_tailor: numeric calibration on one step of a multistep w
     mode = "regression"
   )
 
-  spec <- add_tailor_step(output_units = horizon, fit_epochs = 5, fit_verbose = 0) |>
+  spec <- add_tailor_step(
+    output_units = horizon,
+    fit_epochs = 5,
+    fit_verbose = 0
+  ) |>
     set_engine("keras")
   wf <- workflow(rec, spec)
 
-  tlr <- tailor::tailor() |> tailor::adjust_numeric_calibration(method = "linear")
+  tlr <- tailor::tailor() |>
+    tailor::adjust_numeric_calibration(method = "linear")
   tailored_wf <- kerasnip_add_tailor(wf, tlr, step = 2)
 
   fit_obj <- fit(tailored_wf, data = dat)

@@ -151,7 +151,13 @@ kerasnip_step_var_col <- function(step_tbl, var) {
 #' predict(fit_obj, new_data = test_data)
 #' }
 #' @export
-kerasnip_add_tailor <- function(x, tailor, output = NULL, step = NULL, var = NULL) {
+kerasnip_add_tailor <- function(
+  x,
+  tailor,
+  output = NULL,
+  step = NULL,
+  var = NULL
+) {
   rlang::check_installed(c("workflows", "tailor"))
   if (!inherits(x, "workflow")) {
     rlang::abort("`x` must be a `workflow`.")
@@ -160,7 +166,13 @@ kerasnip_add_tailor <- function(x, tailor, output = NULL, step = NULL, var = NUL
     rlang::abort("Exactly one of `output` or `step` must be supplied.")
   }
   structure(
-    list(workflow = x, tailor = tailor, output = output, step = step, var = var),
+    list(
+      workflow = x,
+      tailor = tailor,
+      output = output,
+      step = step,
+      var = var
+    ),
     class = "kerasnip_tailored_workflow"
   )
 }
@@ -182,7 +194,12 @@ kerasnip_add_tailor <- function(x, tailor, output = NULL, step = NULL, var = NUL
 #' @return A `kerasnip_tailored_fit`, to be used with `predict()`.
 #' @keywords internal
 #' @exportS3Method generics::fit
-fit.kerasnip_tailored_workflow <- function(object, data, ..., data_calibration = NULL) {
+fit.kerasnip_tailored_workflow <- function(
+  object,
+  data,
+  ...,
+  data_calibration = NULL
+) {
   fit_obj <- fit(object$workflow, data = data, ...)
   is_step <- !is.null(object$step)
   view <- if (is_step) {
@@ -199,7 +216,11 @@ fit.kerasnip_tailored_workflow <- function(object, data, ..., data_calibration =
     n_dropped <- nrow(cal_data) - nrow(cal_preds)
     cal_data_aligned <- cal_data[(n_dropped + 1):nrow(cal_data), , drop = FALSE]
     truth_col <- stats::setNames(list(truth), view$outcome_col)
-    cal_preds <- dplyr::bind_cols(cal_preds, tibble::as_tibble(truth_col), cal_data_aligned)
+    cal_preds <- dplyr::bind_cols(
+      cal_preds,
+      tibble::as_tibble(truth_col),
+      cal_data_aligned
+    )
     outcome_sym <- rlang::sym(view$outcome_col)
   } else {
     cal_preds <- kerasnip_view_predictions(view, cal_data)

@@ -41,7 +41,9 @@ kerasnip_output_view <- function(x, output) {
     rlang::abort(c(
       "`x` does not look like a multi-output model.",
       i = paste0(
-        "It has a single outcome (`", outcome_names, "`); ",
+        "It has a single outcome (`",
+        outcome_names,
+        "`); ",
         "use its predictions directly instead of a view."
       )
     ))
@@ -104,7 +106,9 @@ predict.kerasnip_output_view <- function(object, new_data, type = NULL, ...) {
       prob_cols <- grep(paste0("^", prefix), names(preds), value = TRUE)
       if (length(prob_cols) == 0) {
         rlang::abort(paste0(
-          "Could not find probability columns for output `", output, "`."
+          "Could not find probability columns for output `",
+          output,
+          "`."
         ))
       }
       cols <- preds[prob_cols]
@@ -263,7 +267,11 @@ kerasnip_var_model <- function(view, train_data) {
   train_res$resid <- train_data[[y_name]] - train_res$.pred
   train_res$sq <- train_res$resid^2
   var_mod <- try(
-    mgcv::gam(sq ~ s(.pred), data = train_res, family = stats::Gamma(link = "log")),
+    mgcv::gam(
+      sq ~ s(.pred),
+      data = train_res,
+      family = stats::Gamma(link = "log")
+    ),
     silent = TRUE
   )
   if (inherits(var_mod, "try-error")) {
@@ -348,11 +356,21 @@ kerasnip_compute_bound <- function(x, predicted) {
 #'   itself failed.
 #' @keywords internal
 #' @noRd
-kerasnip_trial_fit_output_view <- function(trial, trial_data, view, level, y_name) {
+kerasnip_trial_fit_output_view <- function(
+  trial,
+  trial_data,
+  view,
+  level,
+  y_name
+) {
   trial_data[[y_name]][nrow(trial_data)] <- trial
   tmp_fit <- try(fit(view$workflow, trial_data), silent = TRUE)
   if (inherits(tmp_fit, "try-error")) {
-    return(tibble::tibble(quantile = NA_real_, trial = trial, .abs_resid = NA_real_))
+    return(tibble::tibble(
+      quantile = NA_real_,
+      trial = trial,
+      .abs_resid = NA_real_
+    ))
   }
   tmp_view <- kerasnip_output_view(tmp_fit, y_name)
   tmp_preds <- predict(tmp_view, new_data = trial_data)
@@ -387,11 +405,20 @@ kerasnip_trial_fit_output_view <- function(trial, trial_data, view, level, y_nam
 #' @return A one-row tibble with `.pred_lower`/`.pred_upper`.
 #' @keywords internal
 #' @noRd
-kerasnip_grid_one_output_view <- function(new_data_row, view, train_data, level, ctrl) {
+kerasnip_grid_one_output_view <- function(
+  new_data_row,
+  view,
+  train_data,
+  level,
+  ctrl
+) {
   y_name <- view$output
   pred_val <- new_data_row$.pred
   bound <- new_data_row$.bound
-  row_predictors <- new_data_row[, setdiff(names(new_data_row), c(".pred", ".bound")), drop = FALSE]
+  row_predictors <- new_data_row[,
+    setdiff(names(new_data_row), c(".pred", ".bound")),
+    drop = FALSE
+  ]
 
   # Placeholder for the other output(s): see the design note above.
   full_preds <- predict(view$workflow, new_data = row_predictors)
@@ -402,7 +429,11 @@ kerasnip_grid_one_output_view <- function(new_data_row, view, train_data, level,
   row_predictors[[y_name]] <- NA_real_
 
   trial_data <- dplyr::bind_rows(train_data, row_predictors)
-  trial_vals <- seq(pred_val - bound, pred_val + bound, length.out = ctrl$trial_points)
+  trial_vals <- seq(
+    pred_val - bound,
+    pred_val + bound,
+    length.out = ctrl$trial_points
+  )
   res <- purrr::map_dfr(
     trial_vals,
     kerasnip_trial_fit_output_view,
@@ -477,7 +508,12 @@ int_conformal_full.kerasnip_output_view <- function(
 #'   row of `new_data`.
 #' @keywords internal
 #' @exportS3Method stats::predict
-predict.kerasnip_conformal_full <- function(object, new_data, level = 0.95, ...) {
+predict.kerasnip_conformal_full <- function(
+  object,
+  new_data,
+  level = 0.95,
+  ...
+) {
   rlang::check_dots_empty()
   new_pred <- kerasnip_setup_new_data(
     object$wflow,

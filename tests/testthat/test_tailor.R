@@ -85,7 +85,8 @@ test_that("tailor: adjust_probability_threshold works on kerasnip classification
 
   # Threshold near 1: the event probability is (almost surely) never this
   # high, so every row must be classified as the second level.
-  tlr_hi <- tailor::tailor() |> tailor::adjust_probability_threshold(0.999999999)
+  tlr_hi <- tailor::tailor() |>
+    tailor::adjust_probability_threshold(0.999999999)
   tlr_hi_fit <- fit(
     tlr_hi,
     pred_data,
@@ -158,7 +159,8 @@ test_that("tailor: adjust_numeric_calibration works on single-output kerasnip re
   cal_preds <- predict(fit_obj, new_data = cal_dat)
   cal_data <- dplyr::bind_cols(mpg = cal_dat$mpg, cal_preds)
 
-  tlr <- tailor::tailor() |> tailor::adjust_numeric_calibration(method = "linear")
+  tlr <- tailor::tailor() |>
+    tailor::adjust_numeric_calibration(method = "linear")
   tlr_fit <- fit(tlr, cal_data, outcome = mpg, estimate = .pred)
 
   new_preds <- predict(fit_obj, new_data = cal_dat)
@@ -189,7 +191,11 @@ test_that("tailor: full regression workflow with add_tailor() numeric calibratio
 
   create_keras_sequential_spec(
     model_name = model_name,
-    layer_blocks = list(input = input_block, dense = dense_block, output = output_block),
+    layer_blocks = list(
+      input = input_block,
+      dense = dense_block,
+      output = output_block
+    ),
     mode = "regression"
   )
 
@@ -202,7 +208,8 @@ test_that("tailor: full regression workflow with add_tailor() numeric calibratio
   train_dat <- rsample::training(split)
   cal_dat <- rsample::testing(split)
 
-  tlr <- tailor::tailor() |> tailor::adjust_numeric_calibration(method = "linear")
+  tlr <- tailor::tailor() |>
+    tailor::adjust_numeric_calibration(method = "linear")
   wf <- workflow(rec, spec) |> workflows::add_tailor(tlr)
 
   fit_obj <- fit(wf, data = train_dat, data_calibration = cal_dat)
@@ -259,5 +266,7 @@ test_that("probably: cal_estimate_isotonic + cal_apply calibrates kerasnip class
   expect_s3_class(calibrated, "tbl_df")
   expect_true(all(c(".pred_Class1", ".pred_Class2") %in% names(calibrated)))
   expect_equal(nrow(calibrated), nrow(cal_dat))
-  expect_true(all(abs(rowSums(calibrated[c(".pred_Class1", ".pred_Class2")]) - 1) < 1e-5))
+  expect_true(all(
+    abs(rowSums(calibrated[c(".pred_Class1", ".pred_Class2")]) - 1) < 1e-5
+  ))
 })

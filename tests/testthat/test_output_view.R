@@ -15,8 +15,12 @@ make_view_reg_blocks <- function() {
   dense_block <- function(tensor, units = 8) {
     tensor |> keras3::layer_dense(units = units, activation = "relu")
   }
-  output_1 <- function(tensor) keras3::layer_dense(tensor, units = 1, name = "output_1")
-  output_2 <- function(tensor) keras3::layer_dense(tensor, units = 1, name = "output_2")
+  output_1 <- function(tensor) {
+    keras3::layer_dense(tensor, units = 1, name = "output_1")
+  }
+  output_2 <- function(tensor) {
+    keras3::layer_dense(tensor, units = 1, name = "output_2")
+  }
   list(
     main_input = input_block,
     dense = inp_spec(dense_block, "main_input"),
@@ -31,10 +35,20 @@ make_view_class_blocks <- function() {
     tensor |> keras3::layer_dense(units = units, activation = "relu")
   }
   output_1 <- function(tensor, num_classes) {
-    keras3::layer_dense(tensor, units = num_classes, activation = "softmax", name = "output_1")
+    keras3::layer_dense(
+      tensor,
+      units = num_classes,
+      activation = "softmax",
+      name = "output_1"
+    )
   }
   output_2 <- function(tensor, num_classes) {
-    keras3::layer_dense(tensor, units = num_classes, activation = "softmax", name = "output_2")
+    keras3::layer_dense(
+      tensor,
+      units = num_classes,
+      activation = "softmax",
+      name = "output_2"
+    )
   }
   list(
     main_input = input_block,
@@ -183,7 +197,8 @@ test_that("kerasnip_output_view: manual tailor::adjust_numeric_calibration works
   cal_preds <- predict(view_2, new_data = cal_dat)
   cal_data <- dplyr::bind_cols(output_2 = cal_dat$output_2, cal_preds)
 
-  tlr <- tailor::tailor() |> tailor::adjust_numeric_calibration(method = "linear")
+  tlr <- tailor::tailor() |>
+    tailor::adjust_numeric_calibration(method = "linear")
   tlr_fit <- fit(tlr, cal_data, outcome = output_2, estimate = .pred)
 
   new_preds <- predict(view_2, new_data = cal_dat)
@@ -256,9 +271,16 @@ test_that("kerasnip_output_view: probably::int_conformal_full works per output",
   conformal <- probably::int_conformal_full(
     view_1,
     train_data = data,
-    control = probably::control_conformal_full(method = "grid", trial_points = 10)
+    control = probably::control_conformal_full(
+      method = "grid",
+      trial_points = 10
+    )
   )
-  result <- suppressWarnings(predict(conformal, new_data = new_data, level = 0.90))
+  result <- suppressWarnings(predict(
+    conformal,
+    new_data = new_data,
+    level = 0.90
+  ))
 
   expect_s3_class(result, "tbl_df")
   expect_true(all(c(".pred_lower", ".pred_upper") %in% names(result)))
@@ -326,7 +348,11 @@ test_that("kerasnip_output_view: manual tailor::adjust_probability_threshold wor
 
   preds_class <- predict(view_1, new_data = new_data, type = "class")
   preds_prob <- predict(view_1, new_data = new_data, type = "prob")
-  pred_data <- dplyr::bind_cols(output_1 = new_data$output_1, preds_class, preds_prob)
+  pred_data <- dplyr::bind_cols(
+    output_1 = new_data$output_1,
+    preds_class,
+    preds_prob
+  )
 
   lvls <- levels(new_data$output_1)
 

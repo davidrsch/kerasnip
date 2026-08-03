@@ -103,7 +103,12 @@ kerasnip_step_view <- function(x, step, var = NULL) {
   }
 
   structure(
-    list(workflow = x, step = step, var = var, outcome_col = outcome_names[idx]),
+    list(
+      workflow = x,
+      step = step,
+      var = var,
+      outcome_col = outcome_names[idx]
+    ),
     class = "kerasnip_step_view"
   )
 }
@@ -133,7 +138,11 @@ kerasnip_step_extract <- function(row, var, prefix) {
     return(row[[prefix]])
   }
   rlang::abort(paste0(
-    "Could not find a `", prefix, "` column for variable `", var, "`."
+    "Could not find a `",
+    prefix,
+    "` column for variable `",
+    var,
+    "`."
   ))
 }
 
@@ -153,7 +162,12 @@ kerasnip_step_extract <- function(row, var, prefix) {
 #'   `.pred_lower`/`.pred_upper` (`"conf_int"`/`"pred_int"`).
 #' @keywords internal
 #' @exportS3Method stats::predict
-predict.kerasnip_step_view <- function(object, new_data, type = "numeric", ...) {
+predict.kerasnip_step_view <- function(
+  object,
+  new_data,
+  type = "numeric",
+  ...
+) {
   preds <- predict(object$workflow, new_data = new_data, type = type, ...)
 
   prefixes <- switch(
@@ -171,7 +185,9 @@ predict.kerasnip_step_view <- function(object, new_data, type = "numeric", ...) 
         row <- step_tbl[step_tbl$.step == object$step, , drop = FALSE]
         if (nrow(row) != 1) {
           rlang::abort(paste0(
-            "Step ", object$step, " not present in the forecast horizon."
+            "Step ",
+            object$step,
+            " not present in the forecast horizon."
           ))
         }
         kerasnip_step_extract(row, object$var, prefix)
@@ -298,7 +314,9 @@ kerasnip_step_recipe_step <- function(view, subclass) {
   matches <- Filter(function(s) inherits(s, subclass), rec$steps)
   if (length(matches) != 1) {
     rlang::abort(paste0(
-      "Could not find a unique `", subclass, "` step in the recipe."
+      "Could not find a unique `",
+      subclass,
+      "` step in the recipe."
     ))
   }
   matches[[1]]
@@ -327,7 +345,11 @@ kerasnip_step_var_model <- function(view, train_data) {
   train_res$sq <- train_res$resid^2
   train_res <- train_res[stats::complete.cases(train_res[c(".pred", "sq")]), ]
   var_mod <- try(
-    mgcv::gam(sq ~ s(.pred), data = train_res, family = stats::Gamma(link = "log")),
+    mgcv::gam(
+      sq ~ s(.pred),
+      data = train_res,
+      family = stats::Gamma(link = "log")
+    ),
     silent = TRUE
   )
   if (inherits(var_mod, "try-error")) {
@@ -379,7 +401,11 @@ kerasnip_trial_fit_step_view <- function(
   trial_data[[raw_col]][target_row_idx] <- trial
   tmp_fit <- try(fit(view$workflow, trial_data), silent = TRUE)
   if (inherits(tmp_fit, "try-error")) {
-    return(tibble::tibble(quantile = NA_real_, trial = trial, .abs_resid = NA_real_))
+    return(tibble::tibble(
+      quantile = NA_real_,
+      trial = trial,
+      .abs_resid = NA_real_
+    ))
   }
   tmp_view <- kerasnip_step_view(tmp_fit, view$step, view$var)
   tmp_preds <- predict(tmp_view, new_data = trial_data)
@@ -459,10 +485,16 @@ kerasnip_grid_one_step_view <- function(
 
   trial_data <- dplyr::bind_rows(train_data, window_raw_rows, future_raw_rows)
   target_idx_in_future <- which(steps == view$step)
-  target_row_idx <- nrow(train_data) + nrow(window_raw_rows) + target_idx_in_future
+  target_row_idx <- nrow(train_data) +
+    nrow(window_raw_rows) +
+    target_idx_in_future
   target_position <- nrow(train_data) + nrow(window_raw_rows) - (timesteps - 1)
 
-  trial_vals <- seq(pred_val - bound, pred_val + bound, length.out = ctrl$trial_points)
+  trial_vals <- seq(
+    pred_val - bound,
+    pred_val + bound,
+    length.out = ctrl$trial_points
+  )
   res <- purrr::map_dfr(
     trial_vals,
     kerasnip_trial_fit_step_view,
@@ -517,7 +549,10 @@ int_conformal_full.kerasnip_step_view <- function(
 
   seq_info <- kerasnip_step_recipe_step(object, "step_sequence")
   lead_info <- kerasnip_step_recipe_step(object, "step_lead")
-  if (length(seq_info$columns) != 1 || !identical(seq_info$columns, lead_info$columns)) {
+  if (
+    length(seq_info$columns) != 1 ||
+      !identical(seq_info$columns, lead_info$columns)
+  ) {
     rlang::abort(c(
       "int_conformal_full() for a step view requires `step_lead()` and",
       "`step_sequence()` to share a single source column.",
@@ -562,10 +597,19 @@ int_conformal_full.kerasnip_step_view <- function(
 #'   window that survives `step_sequence()`'s history requirement.
 #' @keywords internal
 #' @exportS3Method stats::predict
-predict.kerasnip_conformal_full_step <- function(object, new_data, level = 0.95, ...) {
+predict.kerasnip_conformal_full_step <- function(
+  object,
+  new_data,
+  level = 0.95,
+  ...
+) {
   rlang::check_dots_empty()
   view <- object$wflow
-  new_pred <- kerasnip_setup_new_data(view, new_data, object$control$var_multiplier)
+  new_pred <- kerasnip_setup_new_data(
+    view,
+    new_data,
+    object$control$var_multiplier
+  )
   full_pred <- predict(view$workflow, new_data = new_data)
   purrr::map_dfr(
     seq_len(nrow(new_pred)),
