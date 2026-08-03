@@ -243,7 +243,29 @@ conformal_step <- int_conformal_split(step_2_view, cal_data = train_series)
 predict(conformal_step, new_data = preview_data, level = 0.90)
 ```
 
-`probably::int_conformal_full()` is **not** supported for step views: its refit-per-candidate design would need to substitute a candidate value into the single *raw* column `step_lead()` derives every step's truth from, which then shifts every nearby row's target — a materially different (and more involved) problem than the single-column substitution `kerasnip_output_view()` uses for genuine multi-output models.
+`probably::int_conformal_full()` is also supported for step views, with a different design from the multi-output case: a multistep model's step targets are not independent raw columns — every `lead_k_value` column is derived from the *same* single raw column by `step_lead()`. Testing a candidate value for one step means writing that candidate into the raw column at the appropriate future offset, which also (partially) supplies the targets for the *other* steps forecast from the same origin; those other steps' placeholders are the current model's own forecast, the same idea as the multi-output case's "other output(s)" placeholder. This is only supported when `step_lead()` and `step_sequence()` share a single source column, true of the model built above (and every multistep example in this package).
+
+```{r step-view-conformal-full}
+# Small subset to keep runtime reasonable in this vignette, but wide enough
+# for the residual-variance model to see a representative range of
+# predictions — too narrow a range makes it extrapolate wildly for new
+# observations outside it. small_new needs at least `timesteps` rows of
+# leading context, same as preview_data above.
+small_train <- train_series[1:80, , drop = FALSE]
+small_new <- test_series[seq_len(timesteps + 2), , drop = FALSE]
+
+fit_small <- fit(step_wflow, data = small_train)
+step_2_view_small <- kerasnip_step_view(fit_small, step = 2)
+
+conformal_step_full <- int_conformal_full(
+  step_2_view_small,
+  train_data = small_train,
+  control = control_conformal_full(method = "grid", trial_points = 10)
+)
+predict(conformal_step_full, new_data = small_new, level = 0.90)
+```
+
+As with the multi-output case, only `method = "grid"` is supported.
 
 ### `kerasnip_add_tailor()` for one forecast step
 
