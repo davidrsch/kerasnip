@@ -258,11 +258,17 @@ test_that("kerasnip_output_view: probably::int_conformal_full works per output",
     mode = "regression"
   )
 
-  spec <- view_reg_conformal_full(fit_epochs = 3) |> set_engine("keras")
+  spec <- view_reg_conformal_full(fit_epochs = 5) |> set_engine("keras")
   # Kept small: int_conformal_full refits the whole multi-output model once
-  # per candidate value of every new observation.
-  data <- make_view_reg_data(n = 15)
-  new_data <- make_view_reg_data(n = 17)[16:17, ]
+  # per candidate value of every new observation. `n` needs to be large
+  # enough that the residual-variance model (an mgcv::gam()) sees a
+  # representative range of `.pred` values during training — too narrow a
+  # range (small n) makes it extrapolate wildly for new observations
+  # outside it, producing all-NA bounds (this is what happened in CI with
+  # n = 15: see the analogous fix in
+  # vignettes/multi_output_postprocessing.Rmd.orig).
+  data <- make_view_reg_data(n = 80)
+  new_data <- make_view_reg_data(n = 82)[81:82, ]
   rec <- recipe(output_1 + output_2 ~ x1 + x2, data = data)
 
   fit_obj <- fit(workflow(rec, spec), data = data)

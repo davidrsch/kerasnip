@@ -213,9 +213,14 @@ test_that("kerasnip_step_view: probably::int_conformal_full works per step", {
   on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
 
   # Kept small: int_conformal_full refits the whole model once per candidate
-  # value of every new observation.
+  # value of every new observation. `n` needs to be large enough that the
+  # residual-variance model (an mgcv::gam()) sees a representative range of
+  # `.pred` values during training — too narrow a range (small n) makes it
+  # extrapolate wildly for new observations outside it, producing all-NA
+  # bounds (this is what happened in CI with n = 40: see the analogous fix
+  # in vignettes/multi_output_postprocessing.Rmd.orig).
   set.seed(42)
-  n <- 40
+  n <- 150
   timesteps <- 5
   horizon <- 2
   dat <- tibble::tibble(value = sin(seq_len(n) / 10) + rnorm(n, sd = 0.05))
@@ -247,7 +252,7 @@ test_that("kerasnip_step_view: probably::int_conformal_full works per step", {
 
   spec <- get(model_name)(
     output_units = horizon,
-    fit_epochs = 5,
+    fit_epochs = 8,
     fit_verbose = 0
   ) |>
     set_engine("keras")
