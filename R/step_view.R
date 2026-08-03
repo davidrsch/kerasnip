@@ -22,12 +22,14 @@
 #' raw data, which is what [int_conformal_split()][probably::int_conformal_split]
 #' uses internally for this class.
 #'
-#' `probably::int_conformal_full()` is not supported for step views: its
-#' refit-per-candidate design would need to substitute a candidate value
-#' into the single *raw* column that `step_lead()` derives every step's
-#' truth from, which then shifts every nearby row's target — a materially
-#' different (and more involved) problem than the single-column substitution
-#' [kerasnip_output_view()] uses, and is not implemented here.
+#' `probably::int_conformal_full()` is also supported (see
+#' `int_conformal_full.kerasnip_step_view()`), with a materially different
+#' design from [kerasnip_output_view()]'s: refitting for a candidate value
+#' at this step means substituting it into the single *raw* column
+#' `step_lead()` derives every step's truth from, which shifts every nearby
+#' row's target too. It is only supported when `step_lead()` and
+#' `step_sequence()` share a single source column, matching all of
+#' kerasnip's own multistep examples.
 #'
 #' @param x A fitted (trained) `workflow` whose model is a multistep
 #'   regression model (see `create_keras_sequential_spec()`/
@@ -269,4 +271,313 @@ int_conformal_split.kerasnip_step_view <- function(object, cal_data, ...) {
   )
   class(res) <- c("conformal_reg_split", "int_conformal_split")
   res
+}
+
+# int_conformal_full() for one forecast step of a multistep fit
+#
+# Unlike kerasnip_output_view() (see the design note in R/output_view.R),
+# a multistep model's step targets are not independent raw columns — every
+# `lead_k_<var>` column is derived from the *same* single raw column by
+# `step_lead()`. Testing a candidate value for one step therefore means
+# writing that candidate into the raw column at the appropriate future
+# offset, which also supplies (part of) the targets for every *other* step
+# forecast from the same origin. Those other steps' placeholder values (the
+# current model's own forecast, same idea as kerasnip_output_view()'s
+# "other output(s)" placeholder) are written to the raw column at their own
+# offsets; the target step's offset is then overwritten with each trial
+# value in turn and the whole (now longer) raw series is refit.
+#
+# This only works when `step_lead()` and `step_sequence()) draw on the same
+# single raw column, which is required and validated in
+# `int_conformal_full.kerasnip_step_view()`. Only `control$method = "grid"`
+# is supported, same restriction as kerasnip_output_view().
+
+kerasnip_step_recipe_step <- function(view, subclass) {
+  rlang::check_installed("workflows")
+  rec <- workflows::extract_recipe(view$workflow, estimated = TRUE)
+  matches <- Filter(function(s) inherits(s, subclass), rec$steps)
+  if (length(matches) != 1) {
+    rlang::abort(paste0(
+      "Could not find a unique `", subclass, "` step in the recipe."
+    ))
+  }
+  matches[[1]]
+}
+
+#' Fit the Residual-Variance Model for a Step View's `int_conformal_full()`
+#'
+#' @description
+#' Fits an `mgcv::gam()` predicting squared training residuals from the
+#' point prediction, used to size the per-observation candidate-value search
+#' range. Mirrors `kerasnip_var_model()` (`R/output_view.R`), built from a
+#' step view's [predict()]/[kerasnip_step_truth()] instead of an output
+#' view's `predict()`/raw truth column.
+#'
+#' @param view A `kerasnip_step_view`.
+#' @param train_data The raw training data used to fit `view`'s underlying
+#'   model.
+#' @return A fitted `mgcv::gam()` object.
+#' @keywords internal
+#' @noRd
+kerasnip_step_var_model <- function(view, train_data) {
+  rlang::check_installed("mgcv")
+  train_res <- predict(view, new_data = train_data)
+  truth <- kerasnip_step_truth(view, train_data)
+  train_res$resid <- truth - train_res$.pred
+  train_res$sq <- train_res$resid^2
+  train_res <- train_res[stats::complete.cases(train_res[c(".pred", "sq")]), ]
+  var_mod <- try(
+    mgcv::gam(sq ~ s(.pred), data = train_res, family = stats::Gamma(link = "log")),
+    silent = TRUE
+  )
+  if (inherits(var_mod, "try-error")) {
+    rlang::abort(c(
+      "The model to estimate the possible interval length failed.",
+      i = conditionMessage(attr(var_mod, "condition"))
+    ))
+  }
+  var_mod
+}
+
+#' Refit and Score One Candidate Value for a Step View's `int_conformal_full()`
+#'
+#' @description
+#' Sets `raw_col` at `target_row_idx` (the future raw row supplying the
+#' target step's truth) to `trial`, refits `view`'s workflow on the whole
+#' (training + new window + placeholder future) raw series, and compares
+#' the target window's residual to the quantile of every other window's
+#' residual under the refit model. Mirrors
+#' `kerasnip_trial_fit_output_view()` (`R/output_view.R`).
+#'
+#' @param trial Scalar, the candidate value to test.
+#' @param trial_data The full raw series to refit on: training data, the new
+#'   observation's window, and `horizon` placeholder future rows (real
+#'   value at `target_row_idx` pending this call's substitution).
+#' @param view A `kerasnip_step_view` (only used for `view$workflow`,
+#'   `view$step`, `view$var`; a fresh view of the refit model is built to
+#'   compute predictions/truth).
+#' @param level The conformal level, passed to `stats::quantile()`.
+#' @param raw_col The raw column `step_lead()`/`step_sequence()` share.
+#' @param target_row_idx Integer, `trial_data`'s row index to write `trial`
+#'   into.
+#' @param target_position Integer, the target window's row index in
+#'   `predict()`'s (row-dropped) output.
+#' @return A one-row tibble with `quantile`, `trial`, `.abs_resid`, and
+#'   `difference` (`.abs_resid - quantile`); `NA` columns if the refit
+#'   itself failed.
+#' @keywords internal
+#' @noRd
+kerasnip_trial_fit_step_view <- function(
+  trial,
+  trial_data,
+  view,
+  level,
+  raw_col,
+  target_row_idx,
+  target_position
+) {
+  trial_data[[raw_col]][target_row_idx] <- trial
+  tmp_fit <- try(fit(view$workflow, trial_data), silent = TRUE)
+  if (inherits(tmp_fit, "try-error")) {
+    return(tibble::tibble(quantile = NA_real_, trial = trial, .abs_resid = NA_real_))
+  }
+  tmp_view <- kerasnip_step_view(tmp_fit, view$step, view$var)
+  tmp_preds <- predict(tmp_view, new_data = trial_data)
+  truth <- kerasnip_step_truth(tmp_view, trial_data)
+  abs_resid <- abs(truth - tmp_preds$.pred)
+  quant_val <- stats::quantile(
+    abs_resid[-target_position],
+    probs = level,
+    na.rm = TRUE
+  )
+  res <- tibble::tibble(
+    quantile = unname(quant_val),
+    trial = trial,
+    .abs_resid = abs_resid[target_position]
+  )
+  res$difference <- res$.abs_resid - res$quantile
+  res
+}
+
+#' Grid-Search Conformal Interval for One New Observation (Step View)
+#'
+#' @description
+#' Builds the raw-series augmentation for one new observation (a window
+#' ending at `new_data` row `row_idx`'s position): the window's own raw
+#' context, plus `horizon` placeholder future rows (the current model's own
+#' forecast for every step, at the raw offset each step's `step_lead()`
+#' target reads from). Refits the model for every candidate value of the
+#' target step via `kerasnip_trial_fit_step_view()`, and resolves the
+#' interval via `kerasnip_compute_bound()` (`R/output_view.R`). Assumes
+#' `new_data` is a raw continuation of `train_data` (so the combined series
+#' is a single valid sequence for `step_lead()`/`step_sequence()`).
+#'
+#' @param row_idx Integer, the row of `new_pred`/`full_pred` (and the
+#'   corresponding window in `new_data`) to build an interval for.
+#' @param view A `kerasnip_step_view`.
+#' @param train_data The raw training data used to fit `view`'s underlying
+#'   model.
+#' @param new_data The raw data `new_pred`/`full_pred` were predicted from.
+#' @param full_pred `predict(view$workflow, new_data)`: every step's
+#'   forecast, for placeholder values at steps other than `view$step`.
+#' @param new_pred `kerasnip_setup_new_data(view, new_data, ...)`: `view`'s
+#'   own step's point prediction (`.pred`) and search bound (`.bound`).
+#' @param level The conformal level.
+#' @param ctrl A `probably::control_conformal_full()` object.
+#' @param seq_info The fitted `step_sequence()` step (for `$timesteps`).
+#' @param raw_col The raw column `step_lead()`/`step_sequence()` share.
+#' @return A one-row tibble with `.pred_lower`/`.pred_upper`.
+#' @keywords internal
+#' @noRd
+kerasnip_grid_one_step_view <- function(
+  row_idx,
+  view,
+  train_data,
+  new_data,
+  full_pred,
+  new_pred,
+  level,
+  ctrl,
+  seq_info,
+  raw_col
+) {
+  pred_val <- new_pred$.pred[row_idx]
+  bound <- new_pred$.bound[row_idx]
+  timesteps <- seq_info$timesteps
+
+  window_end_idx <- timesteps - 1 + row_idx
+  window_raw_rows <- new_data[seq_len(window_end_idx), , drop = FALSE]
+
+  step_tbl <- full_pred$.pred[[row_idx]]
+  steps <- step_tbl$.step
+  var_col <- kerasnip_step_var_col(step_tbl, view$var)
+  placeholder_vals <- step_tbl[[var_col]]
+
+  last_row <- window_raw_rows[nrow(window_raw_rows), , drop = FALSE]
+  future_raw_rows <- last_row[rep(1L, length(steps)), , drop = FALSE]
+  future_raw_rows[[raw_col]] <- placeholder_vals
+
+  trial_data <- dplyr::bind_rows(train_data, window_raw_rows, future_raw_rows)
+  target_idx_in_future <- which(steps == view$step)
+  target_row_idx <- nrow(train_data) + nrow(window_raw_rows) + target_idx_in_future
+  target_position <- nrow(train_data) + nrow(window_raw_rows) - (timesteps - 1)
+
+  trial_vals <- seq(pred_val - bound, pred_val + bound, length.out = ctrl$trial_points)
+  res <- purrr::map_dfr(
+    trial_vals,
+    kerasnip_trial_fit_step_view,
+    trial_data = trial_data,
+    view = view,
+    level = level,
+    raw_col = raw_col,
+    target_row_idx = target_row_idx,
+    target_position = target_position
+  )
+  kerasnip_compute_bound(res, pred_val)
+}
+
+#' Full Conformal Inference Method for `kerasnip_step_view` Objects
+#'
+#' @description
+#' Full (refit-per-candidate) conformal intervals for one forecast step of a
+#' multistep fit. Requires `step_lead()` and `step_sequence()` to share a
+#' single source column (true of every multistep model built with this
+#' package's own examples/vignette); see the design note above
+#' `kerasnip_step_recipe_step()`. Only `control$method = "grid"` is
+#' supported.
+#'
+#' @param object A `kerasnip_step_view`.
+#' @param train_data The raw training data used to fit `object`'s underlying
+#'   model.
+#' @param ... Not used.
+#' @param control A `probably::control_conformal_full()` object; defaults to
+#'   `method = "grid"` if not supplied.
+#' @return A `kerasnip_conformal_full_step`/`int_conformal_full` object;
+#'   call `predict()` on it to get intervals for new data (a raw
+#'   continuation of `train_data`).
+#' @keywords internal
+#' @exportS3Method probably::int_conformal_full
+int_conformal_full.kerasnip_step_view <- function(
+  object,
+  train_data,
+  ...,
+  control = NULL
+) {
+  rlang::check_dots_empty()
+  rlang::check_installed("probably")
+  if (is.null(control)) {
+    control <- probably::control_conformal_full(method = "grid")
+  }
+  if (!identical(control$method, "grid")) {
+    rlang::abort(c(
+      "Only `\"grid\"` is supported for a multistep kerasnip step view.",
+      i = "Pass `control = probably::control_conformal_full(method = \"grid\")`."
+    ))
+  }
+
+  seq_info <- kerasnip_step_recipe_step(object, "step_sequence")
+  lead_info <- kerasnip_step_recipe_step(object, "step_lead")
+  if (length(seq_info$columns) != 1 || !identical(seq_info$columns, lead_info$columns)) {
+    rlang::abort(c(
+      "int_conformal_full() for a step view requires `step_lead()` and",
+      "`step_sequence()` to share a single source column.",
+      i = paste0(
+        "Found step_lead() column(s): ",
+        paste(lead_info$columns, collapse = ", ")
+      ),
+      i = paste0(
+        "and step_sequence() column(s): ",
+        paste(seq_info$columns, collapse = ", ")
+      )
+    ))
+  }
+
+  var_mod <- kerasnip_step_var_model(object, train_data)
+  object$.var_model <- var_mod
+  structure(
+    list(
+      wflow = object,
+      training = train_data,
+      control = control,
+      seq_info = seq_info,
+      raw_col = seq_info$columns
+    ),
+    class = c("kerasnip_conformal_full_step", "int_conformal_full")
+  )
+}
+
+#' Predict Method for `kerasnip_conformal_full_step` Objects
+#'
+#' @description
+#' Computes full-conformal intervals for `new_data` (a raw continuation of
+#' the training data), one grid search per surviving window via
+#' `kerasnip_grid_one_step_view()`.
+#'
+#' @param object A `kerasnip_conformal_full_step` object, from
+#'   `int_conformal_full.kerasnip_step_view()`.
+#' @param new_data Raw data continuing the training series.
+#' @param level The conformal level.
+#' @param ... Not used.
+#' @return A tibble with `.pred_lower`/`.pred_upper` columns, one row per
+#'   window that survives `step_sequence()`'s history requirement.
+#' @keywords internal
+#' @exportS3Method stats::predict
+predict.kerasnip_conformal_full_step <- function(object, new_data, level = 0.95, ...) {
+  rlang::check_dots_empty()
+  view <- object$wflow
+  new_pred <- kerasnip_setup_new_data(view, new_data, object$control$var_multiplier)
+  full_pred <- predict(view$workflow, new_data = new_data)
+  purrr::map_dfr(
+    seq_len(nrow(new_pred)),
+    kerasnip_grid_one_step_view,
+    view = view,
+    train_data = object$training,
+    new_data = new_data,
+    full_pred = full_pred,
+    new_pred = new_pred,
+    level = level,
+    ctrl = object$control,
+    seq_info = object$seq_info,
+    raw_col = object$raw_col
+  )
 }

@@ -41,12 +41,14 @@ the true future value at a given step by re-baking the fitted recipe on
 raw data, which is what \link[probably:int_conformal_split]{int_conformal_split()}
 uses internally for this class.
 
-\code{probably::int_conformal_full()} is not supported for step views: its
-refit-per-candidate design would need to substitute a candidate value
-into the single \emph{raw} column that \code{step_lead()} derives every step's
-truth from, which then shifts every nearby row's target — a materially
-different (and more involved) problem than the single-column substitution
-\code{\link[=kerasnip_output_view]{kerasnip_output_view()}} uses, and is not implemented here.
+\code{probably::int_conformal_full()} is also supported (see
+\code{int_conformal_full.kerasnip_step_view()}), with a materially different
+design from \code{\link[=kerasnip_output_view]{kerasnip_output_view()}}'s: refitting for a candidate value
+at this step means substituting it into the single \emph{raw} column
+\code{step_lead()} derives every step's truth from, which shifts every nearby
+row's target too. It is only supported when \code{step_lead()} and
+\code{step_sequence()} share a single source column, matching all of
+kerasnip's own multistep examples.
 }
 \examples{
 \dontrun{
