@@ -454,7 +454,11 @@ test_that("kerasnip_step_view: int_conformal_full only supports control$method =
 test_that("kerasnip_step_extract resolves the right column and errors when missing", {
   row_single_var <- tibble::tibble(.pred = 5)
   expect_equal(
-    kerasnip:::kerasnip_step_extract(row_single_var, var = NULL, prefix = ".pred"),
+    kerasnip:::kerasnip_step_extract(
+      row_single_var,
+      var = NULL,
+      prefix = ".pred"
+    ),
     5
   )
 
