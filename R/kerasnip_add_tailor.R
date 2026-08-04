@@ -5,22 +5,21 @@
 # Used by both `kerasnip_add_tailor()` and (indirectly) by manual
 # `kerasnip_output_view()`/`kerasnip_step_view()` usage.
 
-#' Standard-Shape Predictions from an Output or Step View
+#' Standard-Shape Predictions from an Output View
 #'
 #' @description
 #' Predicts from `view` in the shape `kerasnip_add_tailor()` needs to fit or
-#' apply a `tailor`: `.pred` for a step view or a regression output view, or
-#' `.pred_class` + `.pred_<level>` columns for a classification output view.
+#' apply a `tailor`: `.pred` for a regression output view, or `.pred_class`
+#' + `.pred_<level>` columns for a classification output view. Only used
+#' for the multi-output path; the multistep path calls `predict()` on its
+#' `kerasnip_step_view` directly (it only ever needs `type = "numeric"`).
 #'
-#' @param view A `kerasnip_output_view` or `kerasnip_step_view`.
+#' @param view A `kerasnip_output_view`.
 #' @param data A data frame of predictors.
 #' @return A tibble in the standard single-output prediction shape.
 #' @keywords internal
 #' @noRd
 kerasnip_view_predictions <- function(view, data) {
-  if (inherits(view, "kerasnip_step_view")) {
-    return(predict(view, new_data = data, type = "numeric"))
-  }
   if (view$mode == "classification") {
     preds_class <- predict(view, new_data = data, type = "class")
     preds_prob <- predict(view, new_data = data, type = "prob")
@@ -34,11 +33,12 @@ kerasnip_view_predictions <- function(view, data) {
 #'
 #' @description
 #' Inverse of the renaming `predict.kerasnip_output_view()` does: maps
-#' `.pred`/`.pred_class`/`.pred_lower`/`.pred_upper`/`.pred_<level>` back to
-#' `.pred_<output>`/`.pred_class_<output>`/`.pred_lower_<output>`/
-#' `.pred_upper_<output>`/`.pred_<output>_<level>`, so tailor-adjusted
-#' predictions can be spliced back into the full multi-output prediction
-#' tibble.
+#' `.pred`/`.pred_class`/`.pred_<level>` back to
+#' `.pred_<output>`/`.pred_class_<output>`/`.pred_<output>_<level>`, so
+#' tailor-adjusted predictions can be spliced back into the full
+#' multi-output prediction tibble. `kerasnip_add_tailor()` only ever
+#' produces `"numeric"`/`"class"`/`"prob"`-shaped predictions (never
+#' `conf_int`/`pred_int`), so `.pred_lower`/`.pred_upper` never appear here.
 #'
 #' @param preds A tibble in the standard single-output prediction shape.
 #' @param output A string, the output name to suffix columns with.
@@ -57,17 +57,9 @@ kerasnip_rename_view_columns_back <- function(preds, output) {
       if (n == ".pred_class") {
         return(paste0(".pred_class_", output))
       }
-      if (n == ".pred_lower") {
-        return(paste0(".pred_lower_", output))
-      }
-      if (n == ".pred_upper") {
-        return(paste0(".pred_upper_", output))
-      }
-      if (startsWith(n, ".pred_")) {
-        level <- substring(n, nchar(".pred_") + 1)
-        return(paste0(".pred_", output, "_", level))
-      }
-      n
+      # Probability columns: .pred_<level> -> .pred_<output>_<level>
+      level <- substring(n, nchar(".pred_") + 1)
+      paste0(".pred_", output, "_", level)
     },
     character(1),
     USE.NAMES = FALSE

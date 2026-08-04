@@ -82,6 +82,16 @@ make_view_class_data <- function(n = 80) {
 # Constructor validation
 # =============================================================================
 
+test_that("kerasnip_output_view: errors when x is not a fitted workflow", {
+  skip_if_no_keras()
+
+  expect_error(kerasnip_output_view(list(), "output_1"), "workflow")
+  expect_error(
+    kerasnip_output_view(workflows::workflow(), "output_1"),
+    "workflow"
+  )
+})
+
 test_that("kerasnip_output_view: errors on a single-output fit", {
   skip_if_no_keras()
 
@@ -167,6 +177,23 @@ test_that("kerasnip_output_view: predict() matches the raw multi-output column",
   expect_s3_class(view_preds, "tbl_df")
   expect_equal(names(view_preds), ".pred")
   expect_equal(view_preds$.pred, raw_preds$.pred_output_1)
+
+  # hardhat::extract_mold() slices the wrapped workflow's mold down to this
+  # output's single column (what probably::int_conformal_split() relies on).
+  mold <- hardhat::extract_mold(view_1)
+  expect_equal(names(mold$outcomes), "output_1")
+
+  # type = "conf_int" forwards through to the underlying Laplace intervals,
+  # sliced down to this output like every other prediction type.
+  raw_conf_int <- predict(fit_obj, new_data = data[1:5, ], type = "conf_int")
+  view_conf_int <- predict(view_1, new_data = data[1:5, ], type = "conf_int")
+  expect_equal(
+    names(view_conf_int),
+    c(".pred", ".pred_lower", ".pred_upper")
+  )
+  expect_equal(view_conf_int$.pred, raw_conf_int$.pred_output_1)
+  expect_equal(view_conf_int$.pred_lower, raw_conf_int$.pred_lower_output_1)
+  expect_equal(view_conf_int$.pred_upper, raw_conf_int$.pred_upper_output_1)
 })
 
 test_that("kerasnip_output_view: manual tailor::adjust_numeric_calibration works per output", {
@@ -293,6 +320,46 @@ test_that("kerasnip_output_view: probably::int_conformal_full works per output",
   expect_equal(nrow(result), nrow(new_data))
   expect_true(any(!is.na(result$.pred_lower)))
   expect_true(all(result$.pred_lower <= result$.pred_upper, na.rm = TRUE))
+
+  # control defaults to method = "grid" when not supplied.
+  conformal_default <- probably::int_conformal_full(view_1, train_data = data)
+  expect_equal(conformal_default$control$method, "grid")
+
+  # Any other method is rejected up front (before fitting the variance
+  # model), since only "grid" is implemented for a multi-output view.
+  expect_error(
+    probably::int_conformal_full(
+      view_1,
+      train_data = data,
+      control = probably::control_conformal_full()
+    ),
+    "grid"
+  )
+})
+
+test_that("kerasnip_output_view: int_conformal_full errors for a classification view", {
+  skip_if_no_keras()
+  skip_if_not_installed("probably")
+
+  model_name <- "view_class_conformal_full_guard"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = make_view_class_blocks(),
+    mode = "classification"
+  )
+
+  spec <- view_class_conformal_full_guard(fit_epochs = 1) |> set_engine("keras")
+  data <- make_view_class_data(n = 20)
+  rec <- recipe(output_1 + output_2 ~ x1 + x2, data = data)
+  fit_obj <- fit(workflow(rec, spec), data = data)
+  view_1 <- kerasnip_output_view(fit_obj, "output_1")
+
+  expect_error(
+    probably::int_conformal_full(view_1, train_data = data),
+    "regression"
+  )
 })
 
 # =============================================================================
@@ -329,6 +396,18 @@ test_that("kerasnip_output_view: predict(type = 'prob'/'class') matches the raw 
   expect_equal(sort(names(view_prob)), c(".pred_no", ".pred_yes"))
   expect_equal(view_prob$.pred_no, raw_prob$.pred_output_1_no)
   expect_equal(view_prob$.pred_yes, raw_prob$.pred_output_1_yes)
+
+  # A view built (bypassing kerasnip_output_view()'s own name check) for an
+  # output the real fit doesn't have: none of its real `.pred_<level>`
+  # columns carry a matching `output_3` suffix.
+  bad_view <- structure(
+    list(workflow = fit_obj, output = "output_3", mode = "classification"),
+    class = "kerasnip_output_view"
+  )
+  expect_error(
+    predict(bad_view, new_data = data[1:5, ], type = "prob"),
+    "Could not find probability columns"
+  )
 })
 
 test_that("kerasnip_output_view: manual tailor::adjust_probability_threshold works per output", {
@@ -374,4 +453,37 @@ test_that("kerasnip_output_view: manual tailor::adjust_probability_threshold wor
   # `probabilities[1]` (.pred_no) is the reference column; a near-zero
   # threshold means everyone clears it.
   expect_true(all(result_lo$.pred_class == lvls[1]))
+})
+
+# =============================================================================
+# Internal helpers: direct/mocked unit tests (no model training needed)
+# =============================================================================
+
+test_that("kerasnip_compute_bound warns and returns NA when no bound is found", {
+  res <- tibble::tibble(trial = c(1, 2, 3), difference = c(-1, -2, -3))
+  expect_warning(
+    out <- kerasnip:::kerasnip_compute_bound(res, predicted = 2),
+    "Could not determine bounds"
+  )
+  expect_true(is.na(out$.pred_lower))
+  expect_true(is.na(out$.pred_upper))
+})
+
+test_that("kerasnip_trial_fit_output_view returns an NA row when refit fails", {
+  # A real but incomplete workflow (no preprocessor, no spec) genuinely
+  # errors on fit(); no need to fake a failure to exercise the guard.
+  view <- structure(
+    list(workflow = workflows::workflow(), output = "y"),
+    class = "kerasnip_output_view"
+  )
+  trial_data <- tibble::tibble(y = c(1, 2, NA_real_))
+  res <- kerasnip:::kerasnip_trial_fit_output_view(
+    5,
+    trial_data,
+    view,
+    0.9,
+    "y"
+  )
+  expect_true(is.na(res$quantile))
+  expect_true(is.na(res$.abs_resid))
 })

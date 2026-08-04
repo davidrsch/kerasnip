@@ -76,6 +76,20 @@ make_add_tailor_class_data <- function(n = 80) {
   )
 }
 
+test_that("kerasnip_add_tailor: validates its arguments", {
+  skip_if_not_installed("tailor")
+
+  tlr <- tailor::tailor() |> tailor::adjust_numeric_calibration()
+  wf <- workflows::workflow()
+
+  expect_error(kerasnip_add_tailor(list(), tlr, output = "y"), "workflow")
+  expect_error(kerasnip_add_tailor(wf, tlr), "Exactly one")
+  expect_error(
+    kerasnip_add_tailor(wf, tlr, output = "y", step = 1),
+    "Exactly one"
+  )
+})
+
 test_that("kerasnip_add_tailor: numeric calibration on one output of a regression workflow", {
   skip_if_no_keras()
   skip_if_not_installed("tailor")
@@ -226,4 +240,21 @@ test_that("kerasnip_add_tailor: numeric calibration on one step of a multistep w
       raw_preds$.pred[[i]]$.pred[c(1, 3)]
     )
   }
+})
+
+test_that("kerasnip_step_var_col resolves the right column name", {
+  step_tbl_multi <- tibble::tibble(.step = 1L, .pred_value = 5, .pred_other = 9)
+  expect_equal(
+    kerasnip:::kerasnip_step_var_col(step_tbl_multi, "value"),
+    ".pred_value"
+  )
+
+  step_tbl_single <- tibble::tibble(.step = 1L, .pred = 5)
+  expect_equal(kerasnip:::kerasnip_step_var_col(step_tbl_single, NULL), ".pred")
+
+  # `var` supplied but not present as a column -> falls back to ".pred"
+  expect_equal(
+    kerasnip:::kerasnip_step_var_col(step_tbl_single, "missing"),
+    ".pred"
+  )
 })

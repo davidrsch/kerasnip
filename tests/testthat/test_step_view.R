@@ -15,7 +15,8 @@ make_step_view_fit <- function(
   model_name,
   n = 120,
   timesteps = 8,
-  horizon = 3
+  horizon = 3,
+  fit_epochs = 5
 ) {
   set.seed(42)
   dat <- tibble::tibble(value = sin(seq_len(n) / 10) + rnorm(n, sd = 0.05))
@@ -47,7 +48,7 @@ make_step_view_fit <- function(
 
   spec <- get(model_name)(
     output_units = horizon,
-    fit_epochs = 5,
+    fit_epochs = fit_epochs,
     fit_verbose = 0
   ) |>
     set_engine("keras")
@@ -57,6 +58,13 @@ make_step_view_fit <- function(
 
   list(fit_obj = fit_obj, dat = dat, timesteps = timesteps, horizon = horizon)
 }
+
+test_that("kerasnip_step_view: errors when x is not a fitted workflow", {
+  skip_if_no_keras()
+
+  expect_error(kerasnip_step_view(list(), step = 1), "workflow")
+  expect_error(kerasnip_step_view(workflows::workflow(), step = 1), "workflow")
+})
 
 test_that("kerasnip_step_view: errors when the model is not multistep", {
   skip_if_no_keras()
@@ -101,6 +109,64 @@ test_that("kerasnip_step_view: errors on an out-of-range step", {
   )
 })
 
+test_that("kerasnip_step_view: multi-variable forecasts require `var`, and validate it", {
+  skip_if_no_keras()
+
+  model_name <- "step_view_multi_var"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  set.seed(7)
+  n <- 40
+  timesteps <- 5
+  horizon <- 2
+  dat <- tibble::tibble(
+    value1 = sin(seq_len(n) / 10) + rnorm(n, sd = 0.05),
+    value2 = cos(seq_len(n) / 10) + rnorm(n, sd = 0.05)
+  )
+
+  rec <- recipe(dat) |>
+    step_lead(value1, value2, lead = seq_len(horizon), prefix = "lead_") |>
+    step_naomit(starts_with("lead_")) |>
+    step_sequence(value1, value2, timesteps = timesteps, new_col = "window")
+
+  input_block <- function(input_shape) {
+    keras3::layer_input(shape = input_shape, name = "window_input")
+  }
+  lstm_block <- function(tensor, units = 8) {
+    tensor |> keras3::layer_lstm(units = units)
+  }
+  output_block <- function(tensor, units = 1) {
+    tensor |> keras3::layer_dense(units = units)
+  }
+
+  create_keras_functional_spec(
+    model_name = model_name,
+    layer_blocks = list(
+      window = input_block,
+      lstm = inp_spec(lstm_block, "window"),
+      output = inp_spec(output_block, "lstm")
+    ),
+    mode = "regression"
+  )
+
+  spec <- get(model_name)(
+    output_units = horizon * 2,
+    fit_epochs = 1,
+    fit_verbose = 0
+  ) |>
+    set_engine("keras")
+  fit_obj <- fit(workflow(rec, spec), data = dat)
+
+  expect_error(
+    kerasnip_step_view(fit_obj, step = 1),
+    "Multiple forecasted variables found"
+  )
+  expect_error(
+    kerasnip_step_view(fit_obj, step = 1, var = "nonexistent"),
+    "must be one of"
+  )
+})
+
 test_that("kerasnip_step_view: predict() matches the raw nested .pred column", {
   skip_if_no_keras()
 
@@ -124,6 +190,18 @@ test_that("kerasnip_step_view: predict() matches the raw nested .pred column", {
     numeric(1)
   )
   expect_equal(view_preds$.pred, expected)
+
+  # A view built (bypassing kerasnip_step_view()'s own range check) for a
+  # step beyond the real fit's forecast horizon: the real nested `.pred`
+  # tibbles genuinely have no matching `.step` row.
+  bad_view <- structure(
+    list(workflow = built$fit_obj, step = built$horizon + 1, var = NULL),
+    class = "kerasnip_step_view"
+  )
+  expect_error(
+    predict(bad_view, new_data = new_data),
+    "not present in the forecast horizon"
+  )
 })
 
 test_that("kerasnip_step_truth: recovers the correct future value", {
@@ -341,4 +419,75 @@ test_that("kerasnip_step_view: int_conformal_full errors when step_lead()/step_s
     probably::int_conformal_full(view_1, train_data = dat),
     "single source column"
   )
+})
+
+test_that("kerasnip_step_view: int_conformal_full only supports control$method = \"grid\"", {
+  skip_if_no_keras()
+  skip_if_not_installed("probably")
+
+  model_name <- "step_view_conformal_full_no_grid"
+  on.exit(suppressMessages(remove_keras_spec(model_name)), add = TRUE)
+
+  built <- make_step_view_fit(
+    model_name,
+    n = 40,
+    timesteps = 5,
+    horizon = 2,
+    fit_epochs = 1
+  )
+  view_1 <- kerasnip_step_view(built$fit_obj, step = 1)
+
+  expect_error(
+    probably::int_conformal_full(
+      view_1,
+      train_data = built$dat,
+      control = probably::control_conformal_full(method = "iterative")
+    ),
+    "Only.*grid.*is supported"
+  )
+})
+
+# =============================================================================
+# Internal helpers: direct/mocked unit tests (no model training needed)
+# =============================================================================
+
+test_that("kerasnip_step_extract resolves the right column and errors when missing", {
+  row_single_var <- tibble::tibble(.pred = 5)
+  expect_equal(
+    kerasnip:::kerasnip_step_extract(row_single_var, var = NULL, prefix = ".pred"),
+    5
+  )
+
+  row_multi_var <- tibble::tibble(.pred_value = 7, .pred_other = 9)
+  expect_equal(
+    kerasnip:::kerasnip_step_extract(row_multi_var, var = "value", prefix = ".pred"),
+    7
+  )
+
+  row_missing <- tibble::tibble(.pred_other = 9)
+  expect_error(
+    kerasnip:::kerasnip_step_extract(row_missing, var = "value", prefix = ".pred"),
+    "Could not find"
+  )
+})
+
+test_that("kerasnip_trial_fit_step_view returns an NA row when refit fails", {
+  # A real but incomplete workflow (no preprocessor, no spec) genuinely
+  # errors on fit(); no need to fake a failure to exercise the guard.
+  view <- structure(
+    list(workflow = workflows::workflow(), step = 1, var = NULL),
+    class = "kerasnip_step_view"
+  )
+  trial_data <- tibble::tibble(value = c(1, 2, 3))
+  res <- kerasnip:::kerasnip_trial_fit_step_view(
+    trial = 5,
+    trial_data = trial_data,
+    view = view,
+    level = 0.9,
+    raw_col = "value",
+    target_row_idx = 3,
+    target_position = 1
+  )
+  expect_true(is.na(res$quantile))
+  expect_true(is.na(res$.abs_resid))
 })
