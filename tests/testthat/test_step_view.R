@@ -474,7 +474,11 @@ test_that("kerasnip_step_extract resolves the right column and errors when missi
 
   row_missing <- tibble::tibble(.pred_other = 9)
   expect_error(
-    kerasnip:::kerasnip_step_extract(row_missing, var = "value", prefix = ".pred"),
+    kerasnip:::kerasnip_step_extract(
+      row_missing,
+      var = "value",
+      prefix = ".pred"
+    ),
     "Could not find"
   )
 })
