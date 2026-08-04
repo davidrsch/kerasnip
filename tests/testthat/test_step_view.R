@@ -464,7 +464,11 @@ test_that("kerasnip_step_extract resolves the right column and errors when missi
 
   row_multi_var <- tibble::tibble(.pred_value = 7, .pred_other = 9)
   expect_equal(
-    kerasnip:::kerasnip_step_extract(row_multi_var, var = "value", prefix = ".pred"),
+    kerasnip:::kerasnip_step_extract(
+      row_multi_var,
+      var = "value",
+      prefix = ".pred"
+    ),
     7
   )
 
