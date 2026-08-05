@@ -1,0 +1,289 @@
+---
+title: "Post-Processing Multi-Output and Multistep Models with tailor and probably"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Post-Processing Multi-Output and Multistep Models with tailor and probably}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = reticulate::py_module_available("keras")
+)
+options(keras.fit_verbose = 0)
+set.seed(123)
+```
+
+## Why single-output models "just work" and multi-output/multistep models don't
+
+`tailor` and `probably` are the tidymodels tools for post-processing model predictions: calibrating probabilities, adjusting classification thresholds, and building conformal prediction intervals. Both packages are built around a single assumption: **one outcome column, one estimate column**. `tailor::fit()` selects them with `[[`, which requires exactly one column each.
+
+For a kerasnip model with a single outcome, this is exactly what `predict()` already produces (`.pred` for regression; `.pred_class`/`.pred_<level>` for classification), so `tailor` and `probably` work unmodified — see the [Prediction Intervals with Conformal Inference](conformal_intervals.html) vignette for `probably`, and the examples below for `tailor`.
+
+kerasnip also supports two shapes that go beyond a single outcome, and neither fits `tailor`/`probably`'s assumption:
+
+* **Multi-output models** (a recipe like `output_1 + output_2 ~ .`, each outcome its own Keras head) produce `.pred_output_1`, `.pred_output_2`, ... — this is the standard `parsnip::maybe_multivariate()` shape for multivariate regression, not something kerasnip invented, but downstream post-processing tooling hasn't caught up to it for *any* engine yet.
+* **Multistep forecasting models** (see `vignette("multistep_forecasting")`) produce a nested `.pred` list-column: one inner tibble per row, holding `.step` and the forecasted value at each step. `tailor::check_variable_type()` requires `is.numeric()` on the outcome/estimate columns, which a list-column fails outright.
+
+kerasnip cannot make `workflows::add_tailor()` work directly on either shape — `tailor::fit()`'s single-column selection is baked into its own code, not something kerasnip's prediction format can work around. Instead, kerasnip provides:
+
+* `kerasnip_output_view()` / `kerasnip_step_view()`: present one output (or one forecast step) as an ordinary single-output fit, so you can use `tailor`/`probably` exactly as documented, one output/step at a time.
+* `kerasnip_add_tailor()`: a `workflows::add_tailor()`-alike built on top of the views, for when you want the tailor trained and applied automatically as part of `fit()`/`predict()`.
+
+## Setup
+
+```{r setup}
+library(kerasnip)
+library(tidymodels)
+library(tailor)
+library(probably)
+```
+
+---
+
+## Multi-output models
+
+### Defining a multi-output regression workflow
+
+```{r define-multi-output-spec}
+input_block <- function(input_shape) keras3::layer_input(shape = input_shape)
+dense_block <- function(tensor, units = 16) {
+  tensor |> keras3::layer_dense(units = units, activation = "relu")
+}
+output_1_block <- function(tensor) keras3::layer_dense(tensor, units = 1, name = "temperature")
+output_2_block <- function(tensor) keras3::layer_dense(tensor, units = 1, name = "humidity")
+
+create_keras_functional_spec(
+  model_name = "climate_mlp",
+  layer_blocks = list(
+    main_input = input_block,
+    dense      = inp_spec(dense_block, "main_input"),
+    temperature = inp_spec(output_1_block, "dense"),
+    humidity    = inp_spec(output_2_block, "dense")
+  ),
+  mode = "regression"
+)
+
+spec <- climate_mlp(dense_units = 16, fit_epochs = 30) |>
+  set_engine("keras")
+
+set.seed(1)
+n <- 300
+climate_data <- tibble(
+  pressure    = rnorm(n),
+  wind_speed  = rnorm(n),
+  temperature = pressure + rnorm(n, sd = 0.2),
+  humidity    = -0.5 * wind_speed + rnorm(n, sd = 0.2)
+)
+
+rec <- recipe(temperature + humidity ~ pressure + wind_speed, data = climate_data)
+
+split <- initial_split(climate_data, prop = 0.7)
+train_dat <- training(split)
+cal_dat   <- testing(split)
+
+wflow <- workflow(rec, spec)
+fit_obj <- fit(wflow, data = train_dat)
+
+predict(fit_obj, new_data = cal_dat[1:5, ])
+```
+
+Both outcomes come back from a single `predict()` call, `.pred_temperature`/`.pred_humidity` — exactly parsnip's own convention for multivariate regression, and exactly what breaks `tailor`/`probably`, which need one estimate column to work with.
+
+### `kerasnip_output_view()`: one output as a standard single-output fit
+
+```{r output-view}
+temp_view <- kerasnip_output_view(fit_obj, "temperature")
+predict(temp_view, new_data = cal_dat[1:5, ])
+```
+
+`temp_view` behaves like an ordinary single-output fit to anything that calls `predict()` on it. That is enough for manual `tailor` usage:
+
+```{r output-view-tailor}
+cal_preds <- predict(temp_view, new_data = cal_dat)
+cal_data_for_tailor <- bind_cols(temperature = cal_dat$temperature, cal_preds)
+
+tlr <- tailor() |> adjust_numeric_calibration(method = "linear")
+tlr_fit <- fit(tlr, cal_data_for_tailor, outcome = temperature, estimate = .pred)
+
+new_preds <- predict(temp_view, new_data = cal_dat[1:5, ])
+predict(tlr_fit, new_preds)
+```
+
+It is also enough for `probably`'s conformal methods, because `kerasnip_output_view()` implements `hardhat::extract_mold()` and `generics::augment()` for the view, which is all `probably::int_conformal_split()` needs:
+
+```{r output-view-conformal}
+conformal <- int_conformal_split(temp_view, cal_data = cal_dat)
+predict(conformal, new_data = cal_dat[1:5, ], level = 0.90)
+```
+
+### `probably::int_conformal_full()`: supported, with one documented assumption
+
+`int_conformal_full()` refits the model once per candidate value of every new observation. For a multi-output model, refitting means retraining the *whole* multi-head network — so what should the *other* output(s) be during that refit, for a row where they were never observed in the first place? `kerasnip_output_view()`'s `int_conformal_full()` support substitutes the model's own current point-prediction for the other output(s) as a placeholder. Because the placeholder equals what that head already predicts, its loss contribution for that one synthetic row is ~zero, so it should not be measurably disturbed while the target head still responds to the candidate value under test. This is a reasonable choice, not a proven one — treat the resulting intervals accordingly.
+
+```{r output-view-conformal-full}
+# Small subset to keep runtime reasonable in this vignette.
+small_train <- train_dat[1:40, ]
+small_new   <- cal_dat[1:3, ]
+
+fit_small <- fit(wflow, data = small_train)
+temp_view_small <- kerasnip_output_view(fit_small, "temperature")
+
+conformal_full <- int_conformal_full(
+  temp_view_small,
+  train_data = small_train,
+  control = control_conformal_full(method = "grid", trial_points = 15)
+)
+predict(conformal_full, new_data = small_new, level = 0.90)
+```
+
+Only `method = "grid"` is supported; `"iterative"` relies on `probably`'s private root-finding internals and is out of scope.
+
+### `kerasnip_add_tailor()`: attach and forget
+
+For routine use, `kerasnip_add_tailor()` wraps the view + fit + splice-back steps into the same `add_tailor()`-style workflow you would use for a single-output model — except it targets one named output, and every other output's columns pass through untouched:
+
+```{r add-tailor-multi-output}
+tlr2 <- tailor() |> adjust_numeric_calibration(method = "linear")
+tailored_wf <- kerasnip_add_tailor(wflow, tlr2, output = "temperature")
+
+tailored_fit <- fit(tailored_wf, data = train_dat, data_calibration = cal_dat)
+predict(tailored_fit, new_data = cal_dat[1:5, ])
+```
+
+`.pred_temperature` is calibrated; `.pred_humidity` is exactly what a plain, un-tailored `predict()` would have returned.
+
+---
+
+## Multistep forecasting models
+
+A multistep model (see `vignette("multistep_forecasting")`) has a *single* outcome conceptually — but `predict()` returns it as a nested `.pred` list-column (one row per sample, one inner tibble per row holding `.step` and the forecasted value), which `tailor`'s `is.numeric()` check rejects just as firmly as a genuine multi-output shape, for an unrelated reason.
+
+```{r define-multistep-spec}
+set.seed(42)
+n_steps <- 200
+timesteps <- 12
+horizon <- 4
+series <- tibble(value = sin(seq_len(n_steps) / 10) + rnorm(n_steps, sd = 0.05))
+
+rec_step <- recipe(series) |>
+  step_lead(value, lead = seq_len(horizon), prefix = "lead_") |>
+  step_naomit(starts_with("lead_")) |>
+  step_sequence(value, timesteps = timesteps, new_col = "window")
+
+window_input <- function(input_shape) keras3::layer_input(shape = input_shape, name = "window_input")
+lstm_block   <- function(tensor, units = 16) tensor |> keras3::layer_lstm(units = units)
+step_output  <- function(tensor, units = 1) tensor |> keras3::layer_dense(units = units)
+
+create_keras_functional_spec(
+  model_name = "forecast_lstm",
+  layer_blocks = list(
+    window = window_input,
+    lstm   = inp_spec(lstm_block, "window"),
+    output = inp_spec(step_output, "lstm")
+  ),
+  mode = "regression"
+)
+
+step_spec <- forecast_lstm(lstm_units = 16, output_units = horizon, fit_epochs = 30) |>
+  set_engine("keras")
+
+split_step <- initial_time_split(series, prop = 0.8)
+train_series <- training(split_step)
+test_series  <- testing(split_step)
+
+step_wflow <- workflow(rec_step, step_spec)
+step_fit <- fit(step_wflow, data = train_series)
+
+# step_sequence() needs `timesteps` rows of leading history to produce a
+# single prediction, so a preview slice must include at least that much
+# context; this gives 6 rows with a full window.
+preview_data <- test_series[seq_len(timesteps + 5), , drop = FALSE]
+
+predict(step_fit, new_data = preview_data)
+```
+
+### `kerasnip_step_view()`: one forecast step as a standard single-output fit
+
+```{r step-view}
+step_2_view <- kerasnip_step_view(step_fit, step = 2)
+predict(step_2_view, new_data = preview_data)
+```
+
+Unlike a multi-output model, a multistep model's per-step outcome columns (`lead_2_value`, ...) are recipe-*engineered* from a single raw column by `step_lead()` — they do not exist in raw data the way `output_1`/`output_2` do for a genuine multi-output model. `kerasnip_step_truth()` recovers the true future value at a given step by re-baking the fitted recipe:
+
+```{r step-view-truth}
+truth <- kerasnip_step_truth(step_2_view, test_series)
+head(truth)
+```
+
+That is enough to calibrate manually, same as the multi-output case:
+
+```{r step-view-tailor}
+preds_step <- predict(step_2_view, new_data = train_series)
+truth_step <- kerasnip_step_truth(step_2_view, train_series)
+
+cal_tbl <- tibble(truth = truth_step, .pred = preds_step$.pred) |>
+  filter(!is.na(truth))
+
+tlr_step <- tailor() |> adjust_numeric_calibration(method = "linear")
+tlr_step_fit <- fit(tlr_step, cal_tbl, outcome = truth, estimate = .pred)
+
+new_preds_step <- predict(step_2_view, new_data = preview_data)
+predict(tlr_step_fit, new_preds_step)
+```
+
+...and enough for `probably::int_conformal_split()`, exactly as with a multi-output view:
+
+```{r step-view-conformal}
+conformal_step <- int_conformal_split(step_2_view, cal_data = train_series)
+predict(conformal_step, new_data = preview_data, level = 0.90)
+```
+
+`probably::int_conformal_full()` is also supported for step views, with a different design from the multi-output case: a multistep model's step targets are not independent raw columns — every `lead_k_value` column is derived from the *same* single raw column by `step_lead()`. Testing a candidate value for one step means writing that candidate into the raw column at the appropriate future offset, which also (partially) supplies the targets for the *other* steps forecast from the same origin; those other steps' placeholders are the current model's own forecast, the same idea as the multi-output case's "other output(s)" placeholder. This is only supported when `step_lead()` and `step_sequence()` share a single source column, true of the model built above (and every multistep example in this package).
+
+```{r step-view-conformal-full}
+# Small subset to keep runtime reasonable in this vignette, but wide enough
+# for the residual-variance model to see a representative range of
+# predictions — too narrow a range makes it extrapolate wildly for new
+# observations outside it. small_new needs at least `timesteps` rows of
+# leading context, same as preview_data above.
+small_train <- train_series[1:80, , drop = FALSE]
+small_new <- test_series[seq_len(timesteps + 2), , drop = FALSE]
+
+fit_small <- fit(step_wflow, data = small_train)
+step_2_view_small <- kerasnip_step_view(fit_small, step = 2)
+
+conformal_step_full <- int_conformal_full(
+  step_2_view_small,
+  train_data = small_train,
+  control = control_conformal_full(method = "grid", trial_points = 10)
+)
+predict(conformal_step_full, new_data = small_new, level = 0.90)
+```
+
+As with the multi-output case, only `method = "grid"` is supported.
+
+### `kerasnip_add_tailor()` for one forecast step
+
+```{r add-tailor-step}
+tlr_step2 <- tailor() |> adjust_numeric_calibration(method = "linear")
+tailored_step_wf <- kerasnip_add_tailor(step_wflow, tlr_step2, step = 2)
+
+tailored_step_fit <- fit(tailored_step_wf, data = train_series)
+predict(tailored_step_fit, new_data = preview_data)
+```
+
+Step 2's forecasted value is calibrated in every row's nested tibble; every other step is left exactly as a plain `predict()` would have returned it.
+
+---
+
+## Cleanup
+
+```{r cleanup}
+remove_keras_spec("climate_mlp")
+remove_keras_spec("forecast_lstm")
+```

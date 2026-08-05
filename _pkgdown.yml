@@ -27,6 +27,7 @@ guides:
       - autoplot_uniqueness
       - conformal_intervals
       - multistep_forecasting
+      - multi_output_postprocessing
 
 # examples:
 
@@ -71,6 +72,17 @@ reference:
       - step_sequence
       - step_lead
 
+  - title: "Post-Processing multi-output/multistep models"
+    desc: >
+      Adapters that present one output (or forecast step) of a
+      multi-output/multistep fit as an ordinary single-output fit, so it can
+      be post-processed with `tailor`/`probably`.
+    contents:
+      - kerasnip_output_view
+      - kerasnip_step_view
+      - kerasnip_step_truth
+      - kerasnip_add_tailor
+
 development:
   mode: release
 
@@ -114,6 +126,9 @@ navbar:
         - text: "Forecasting"
         - text: "Multi-Step Time Series Forecasting"
           href: articles/multistep_forecasting.html
+        - text: "Post-Processing"
+        - text: "Multi-Output and Multistep Post-Processing"
+          href: articles/multi_output_postprocessing.html
     github:
       icon: fa-github
       aria-label: "GitHub repository"

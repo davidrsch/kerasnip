@@ -228,9 +228,14 @@ register_fit_predict <- function(model_name, mode, layer_blocks, functional) {
 #' @noRd
 keras_postprocess_numeric <- function(results, object) {
   if (is.list(results) && !is.null(names(results))) {
-    # Multi-output case: results is a named list of arrays/matrices
-    # Combine them into a single tibble with appropriate column names
-    combined_preds <- tibble::as_tibble(results)
+    # Multi-output case: results is a named list of arrays/matrices.
+    # Combine them into a single tibble with appropriate column names.
+    # Each element must be flattened with as.vector() first: for a single
+    # row of predictions, tibble::as_tibble() on a (1, 1) matrix keeps its
+    # matrix/array class instead of simplifying it to a length-1 numeric,
+    # which breaks anything downstream expecting a plain numeric column
+    # (e.g. re-fitting on data that includes such a prediction as a value).
+    combined_preds <- tibble::as_tibble(lapply(results, as.vector))
     # Rename columns to .pred_output_name if there are multiple outputs
     if (length(results) > 1) {
       colnames(combined_preds) <- paste0(".pred_", names(results))

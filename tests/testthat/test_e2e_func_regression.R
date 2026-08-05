@@ -225,4 +225,20 @@ test_that("E2E: Multi-input, multi-output functional regression works", {
   expect_equal(nrow(preds), 5)
   expect_true(is.numeric(preds$.pred_output_1))
   expect_true(is.numeric(preds$.pred_output_2))
+
+  # Regression test: predicting a single row used to leave `.pred_<output>`
+  # as a 1x1 matrix/array (tibble::as_tibble() on a list of single-column
+  # matrices doesn't simplify a 1-row matrix element the way it does for
+  # more rows), which broke anything downstream expecting a plain numeric
+  # (e.g. binding the prediction back in as a value for a re-fit).
+  single_row_df <- tibble::tibble(
+    input_a = list(matrix(rnorm(5), ncol = 5)),
+    input_b = list(matrix(rnorm(3), ncol = 3))
+  )
+  single_preds <- predict(fit_obj, new_data = single_row_df)
+  expect_equal(nrow(single_preds), 1)
+  expect_false(is.matrix(single_preds$.pred_output_1))
+  expect_false(is.matrix(single_preds$.pred_output_2))
+  expect_true(is.numeric(single_preds$.pred_output_1))
+  expect_true(is.numeric(single_preds$.pred_output_2))
 })

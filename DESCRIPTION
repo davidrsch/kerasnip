@@ -52,5 +52,7 @@ Suggests:
     ggplot2,
     mgcv,
     probably,
+    tailor,
+    hardhat,
     tidyr
 VignetteBuilder: knitr
