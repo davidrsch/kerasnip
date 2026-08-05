@@ -290,6 +290,27 @@ Custom stpes for recipe which uses kerasnip models specifications
 - [`step_lead()`](https://davidrsch.github.io/kerasnip/reference/step_lead.md)
   : Create a Lead Predictor
 
+## Post-Processing multi-output/multistep models
+
+Adapters that present one output (or forecast step) of a
+multi-output/multistep fit as an ordinary single-output fit, so it can
+be post-processed with `tailor`/`probably`.
+
+- [`kerasnip_output_view()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_output_view.md)
+  : View a Single Output of a Multi-Output kerasnip Fit
+
+- [`kerasnip_step_view()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_step_view.md)
+  : View a Single Forecast Step of a Multistep kerasnip Fit
+
+- [`kerasnip_step_truth()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_step_truth.md)
+  : Recover Truth Values for a Multistep Forecast Step
+
+- [`kerasnip_add_tailor()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_add_tailor.md)
+  :
+
+  Attach a `tailor` Post-Processor to One Output or Step of a
+  Multi-Output or Multistep Workflow
+
 # Articles
 
 ### All vignettes
@@ -304,6 +325,8 @@ Custom stpes for recipe which uses kerasnip models specifications
   kerasnip](https://davidrsch.github.io/kerasnip/articles/functional_api.md):
 - [Getting Started with
   kerasnip](https://davidrsch.github.io/kerasnip/articles/getting_started.md):
+- [Post-Processing Multi-Output and Multistep Models with tailor and
+  probably](https://davidrsch.github.io/kerasnip/articles/multi_output_postprocessing.md):
 - [Multi-Step Time Series Forecasting with
   kerasnip](https://davidrsch.github.io/kerasnip/articles/multistep_forecasting.md):
 - [Saving and Reloading Fitted Kerasnip

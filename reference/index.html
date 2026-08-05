@@ -35,6 +35,8 @@
     <li><a class="dropdown-item" href="../articles/conformal_intervals.html">Conformal Inference</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>Forecasting</h6></li>
     <li><a class="dropdown-item" href="../articles/multistep_forecasting.html">Multi-Step Time Series Forecasting</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Post-Processing</h6></li>
+    <li><a class="dropdown-item" href="../articles/multi_output_postprocessing.html">Multi-Output and Multistep Post-Processing</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -213,6 +215,43 @@
 
         </dt>
         <dd>Create a Lead Predictor</dd>
+      </dl></div><div class="section level2">
+      <h2 id="post-processing-multi-output-multistep-models">Post-Processing multi-output/multistep models<a class="anchor" aria-label="anchor" href="#post-processing-multi-output-multistep-models"></a></h2>
+
+      <div class="section-desc"><p>Adapters that present one output (or forecast step) of a multi-output/multistep fit as an ordinary single-output fit, so it can be post-processed with <code>tailor</code>/<code>probably</code>.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="kerasnip_output_view.html">kerasnip_output_view()</a></code>
+
+        </dt>
+        <dd>View a Single Output of a Multi-Output kerasnip Fit</dd>
+
+        <dt>
+
+          <code><a href="kerasnip_step_view.html">kerasnip_step_view()</a></code>
+
+        </dt>
+        <dd>View a Single Forecast Step of a Multistep kerasnip Fit</dd>
+
+        <dt>
+
+          <code><a href="kerasnip_step_truth.html">kerasnip_step_truth()</a></code>
+
+        </dt>
+        <dd>Recover Truth Values for a Multistep Forecast Step</dd>
+
+        <dt>
+
+          <code><a href="kerasnip_add_tailor.html">kerasnip_add_tailor()</a></code>
+
+        </dt>
+        <dd>Attach a <code>tailor</code> Post-Processor to One Output or Step of a Multi-Output or Multistep Workflow</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

@@ -192,7 +192,7 @@ spec <- multistep_lstm_spec(
 
 wf <- workflow(rec, spec)
 fit_obj <- fit(wf, data = train_data)
-#> 10/10 - 0s - 34ms/step
+#> 10/10 - 0s - 19ms/step
 ```
 
 [`predict()`](https://rdrr.io/r/stats/predict.html) returns a nested
@@ -206,7 +206,7 @@ time.
 ``` r
 
 preds <- predict(fit_obj, new_data = test_data)
-#> 2/2 - 0s - 89ms/step
+#> 2/2 - 0s - 90ms/step
 preds
 #> # A tibble: 57 × 1
 #>    .pred           
@@ -227,12 +227,12 @@ preds$.pred[[1]]
 #> # A tibble: 6 × 2
 #>   .step .pred
 #>   <int> <dbl>
-#> 1     1 0.851
-#> 2     2 0.764
-#> 3     3 0.635
-#> 4     4 0.588
-#> 5     5 0.452
-#> 6     6 0.326
+#> 1     1 0.786
+#> 2     2 0.727
+#> 3     3 0.601
+#> 4     4 0.546
+#> 5     5 0.387
+#> 6     6 0.266
 ```
 
 ## Step 5: Visualize the Forecast
@@ -284,9 +284,9 @@ preds_ci <- predict(fit_obj, new_data = test_data, type = "conf_int")
 #> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 12ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 13ms/step
+#> 2/2 - 0s - 12ms/step
 
 comparison_ci <- preds_ci |>
   dplyr::slice(1) |>
@@ -349,16 +349,16 @@ one_row_draws
 #> # A tibble: 1,200 × 3
 #>    .draw .step .pred
 #>    <int> <int> <dbl>
-#>  1     1     1 0.859
-#>  2     2     1 0.799
-#>  3     3     1 0.877
-#>  4     4     1 0.859
-#>  5     5     1 0.773
-#>  6     6     1 0.932
-#>  7     7     1 0.683
-#>  8     8     1 0.779
-#>  9     9     1 0.839
-#> 10    10     1 0.787
+#>  1     1     1 0.794
+#>  2     2     1 0.732
+#>  3     3     1 0.812
+#>  4     4     1 0.794
+#>  5     5     1 0.706
+#>  6     6     1 0.869
+#>  7     7     1 0.615
+#>  8     8     1 0.712
+#>  9     9     1 0.774
+#> 10    10     1 0.721
 #> # ℹ 1,190 more rows
 
 # Draws at different steps are correlated, unlike the marginal intervals above.
@@ -367,8 +367,8 @@ one_row_draws |>
   dplyr::select(step_1, step_2) |>
   cor()
 #>           step_1    step_2
-#> step_1 1.0000000 0.4075878
-#> step_2 0.4075878 1.0000000
+#> step_1 1.0000000 0.4283961
+#> step_2 0.4283961 1.0000000
 ```
 
 A handful of individual sampled trajectories, plotted alongside the

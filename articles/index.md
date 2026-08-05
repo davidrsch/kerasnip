@@ -12,6 +12,8 @@
   kerasnip](https://davidrsch.github.io/kerasnip/articles/functional_api.md):
 - [Getting Started with
   kerasnip](https://davidrsch.github.io/kerasnip/articles/getting_started.md):
+- [Post-Processing Multi-Output and Multistep Models with tailor and
+  probably](https://davidrsch.github.io/kerasnip/articles/multi_output_postprocessing.md):
 - [Multi-Step Time Series Forecasting with
   kerasnip](https://davidrsch.github.io/kerasnip/articles/multistep_forecasting.md):
 - [Saving and Reloading Fitted Kerasnip

@@ -21,6 +21,64 @@
   `.draw` columns.
 - Added the `multistep_forecasting` vignette demonstrating LSTM-based
   multi-step forecasting end to end, including uncertainty intervals.
+- Added `tailor` to Suggests and verified `tailor`/`probably`
+  post-processing (calibration, probability thresholding, conformal
+  inference) works on kerasnip’s standard single-output prediction
+  tibbles.
+- Added
+  [`kerasnip_output_view()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_output_view.md),
+  presenting one output of a multi-output fit as an ordinary
+  single-output fit ([`predict()`](https://rdrr.io/r/stats/predict.html)
+  returns plain `.pred`/`.pred_class`/`.pred_<level>` columns), so it
+  can be calibrated with `tailor`/`probably` one output at a time.
+  [`probably::int_conformal_split()`](https://probably.tidymodels.org/reference/int_conformal_split.html)
+  and
+  [`probably::int_conformal_full()`](https://probably.tidymodels.org/reference/int_conformal_full.html)
+  work directly against a view;
+  [`int_conformal_full()`](https://probably.tidymodels.org/reference/int_conformal_full.html)‘s
+  refit loop substitutes the other output(s)’ own point-prediction as a
+  placeholder for the (otherwise unobserved) value on each candidate row
+  — a reasonable but unproven assumption, documented on the function.
+- Added
+  [`kerasnip_step_view()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_step_view.md)
+  and
+  [`kerasnip_step_truth()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_step_truth.md)
+  for the same purpose on multistep forecasting models: flattens one
+  forecast step’s nested `.pred` entry down to a standard `.pred`
+  column, and recovers the true future value at that step by re-baking
+  the fitted recipe (per-step outcome columns are recipe-engineered via
+  [`step_lead()`](https://davidrsch.github.io/kerasnip/reference/step_lead.md),
+  not present in raw data).
+  [`probably::int_conformal_split()`](https://probably.tidymodels.org/reference/int_conformal_split.html)
+  and
+  [`probably::int_conformal_full()`](https://probably.tidymodels.org/reference/int_conformal_full.html)
+  both work directly against a step view.
+  [`int_conformal_full()`](https://probably.tidymodels.org/reference/int_conformal_full.html)‘s
+  refit loop needs a candidate value written into the single *raw*
+  column
+  [`step_lead()`](https://davidrsch.github.io/kerasnip/reference/step_lead.md)
+  derives every step’s truth from, which also shifts every other step’s
+  target forecast from the same origin — those other steps’ placeholders
+  come from the current model’s own forecast (the same idea as the
+  multi-output case). Only supported when
+  [`step_lead()`](https://davidrsch.github.io/kerasnip/reference/step_lead.md)
+  and
+  [`step_sequence()`](https://davidrsch.github.io/kerasnip/reference/step_sequence.md)
+  share a single source column, true of every multistep model this
+  package’s own examples build.
+- Added
+  [`kerasnip_add_tailor()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_add_tailor.md),
+  a
+  [`workflows::add_tailor()`](https://workflows.tidymodels.org/reference/add_tailor.html)-alike
+  for multi-output and multistep models: attaches a `tailor`
+  post-processor to a single output or forecast step and splices the
+  adjusted values back into the full prediction, leaving every other
+  output/step untouched.
+  [`workflows::add_tailor()`](https://workflows.tidymodels.org/reference/add_tailor.html)
+  itself cannot be used directly on these models —
+  [`tailor::fit()`](https://generics.r-lib.org/reference/fit.html)
+  requires a single, flat, numeric outcome/estimate column pair, which
+  neither shape provides.
 
 ### Bug Fixes
 
@@ -36,6 +94,16 @@
 - Fixed `conf_int`/`pred_int` for multi-output classification returning
   garbled column names; factor levels are now sliced per output instead
   of passing the whole named list to every output.
+- Fixed multi-output regression predictions keeping `matrix`/`array`
+  class on a single-row `.pred_<output>` column instead of a plain
+  numeric
+  ([`tibble::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+  on a list of single-column matrices doesn’t simplify a 1-row matrix
+  element the way it does for more rows). This silently broke anything
+  re-using a single-row prediction as a plain value, such as
+  [`kerasnip_output_view()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_output_view.md)’s
+  [`probably::int_conformal_full()`](https://probably.tidymodels.org/reference/int_conformal_full.html)
+  support.
 
 ## kerasnip 0.1.2
 

@@ -64,3 +64,24 @@ Custom stpes for recipe which uses kerasnip models specifications
   : Build a Sliding Window of Predictors for Sequence Models
 - [`step_lead()`](https://davidrsch.github.io/kerasnip/reference/step_lead.md)
   : Create a Lead Predictor
+
+## Post-Processing multi-output/multistep models
+
+Adapters that present one output (or forecast step) of a
+multi-output/multistep fit as an ordinary single-output fit, so it can
+be post-processed with `tailor`/`probably`.
+
+- [`kerasnip_output_view()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_output_view.md)
+  : View a Single Output of a Multi-Output kerasnip Fit
+
+- [`kerasnip_step_view()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_step_view.md)
+  : View a Single Forecast Step of a Multistep kerasnip Fit
+
+- [`kerasnip_step_truth()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_step_truth.md)
+  : Recover Truth Values for a Multistep Forecast Step
+
+- [`kerasnip_add_tailor()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_add_tailor.md)
+  :
+
+  Attach a `tailor` Post-Processor to One Output or Step of a
+  Multi-Output or Multistep Workflow
