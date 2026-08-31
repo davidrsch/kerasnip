@@ -30,6 +30,11 @@ This vignette provides a comprehensive example of how to tune these arguments wi
 *   **`compile_loss`**: The loss function used for training.
 *   **`learn_rate`**: The learning rate for the optimizer.
 
+Fit arguments can be written either with the `fit_` prefix (`fit_epochs`) or
+without it (`epochs`), matching the names used by other tidymodels
+neural-network engines. When both are supplied, the `fit_` version takes
+precedence.
+
 ## Setup
 
 First, we load the necessary packages.
