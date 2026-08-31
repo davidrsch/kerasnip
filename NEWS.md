@@ -20,18 +20,8 @@
 
 ## Documentation
 
-- Corrected model-spec examples and wording to use `fit_epochs` rather than `epochs`, matching the generated model arguments.
-- Fixed a typo in the `keras_evaluate()` description and a "stpes" typo in the pkgdown reference index.
-
-## Testing
-
-- Added an end-to-end integration test for `stacks` ensembles (#48) and added `stacks` to `Suggests`.
-
-## Maintenance
-
-- Applied the Air formatter and tidyverse style: wrapped long lines, removed an unnecessary explicit return, used short-circuit `&&`, renamed an over-long internal helper, and removed a duplicated comment.
-- Simplified `get_model_env()` to delegate to the exported `parsnip::get_model_env()`.
-- `skip_if_no_keras()` now also skips when no Keras Python backend is available.
+- Corrected model-spec examples and wording to use `fit_epochs` consistently with the generated arguments.
+- Fixed a typo in the `keras_evaluate()` description and a typo in the pkgdown reference index.
 
 # kerasnip 0.1.2
 
