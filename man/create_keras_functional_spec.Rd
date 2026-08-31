@@ -53,7 +53,8 @@ networks with multiple inputs/outputs or residual connections.
 The function inspects the arguments of your \code{layer_blocks} functions and
 makes them available as tunable parameters in the generated model
 specification, prefixed with the block's name (e.g., \code{dense_units}).
-Common training parameters such as \code{epochs} and \code{learn_rate} are also added.
+Common training parameters such as \code{fit_epochs} and \code{learn_rate} are also
+added.
 }
 \section{Model Graph Connectivity}{
 
@@ -158,7 +159,7 @@ if (requireNamespace("keras3", quietly = TRUE)) {
 
   # 3. Use the newly created specification function!
   # The `dense_path_units` argument was created automatically.
-  model_spec <- my_resnet_spec(dense_path_units = 64, epochs = 10)
+  model_spec <- my_resnet_spec(dense_path_units = 64, fit_epochs = 10)
 
   # You could also tune the number of dense layers since it has a single
   # input:
@@ -171,6 +172,6 @@ if (requireNamespace("keras3", quietly = TRUE)) {
 }
 }
 \seealso{
-\code{\link[=remove_keras_spec]{remove_keras_spec()}}, \code{\link[parsnip:add_on_exports]{parsnip::new_model_spec()}},
+\code{\link[=remove_keras_spec]{remove_keras_spec()}}, \code{\link[parsnip:new_model_spec]{parsnip::new_model_spec()}},
 \code{\link[=create_keras_sequential_spec]{create_keras_sequential_spec()}}
 }

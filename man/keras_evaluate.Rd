@@ -22,7 +22,7 @@ A named list containing the evaluation results (e.g., \code{loss},
 with.
 }
 \description{
-This function provides an \code{kera_evaluate()} method for \code{model_fit} objects
+This function provides an \code{keras_evaluate()} method for \code{model_fit} objects
 created by \code{kerasnip}. It preprocesses the new data into the format expected
 by Keras and then calls \code{keras3::evaluate()} on the underlying model to
 compute the loss and any other metrics.

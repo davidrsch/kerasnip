@@ -120,7 +120,7 @@
 #' model_spec <- my_mlp_seq_spec(
 #'   num_hidden = 2,
 #'   hidden_units = 64,
-#'   epochs = 10,
+#'   fit_epochs = 10,
 #'   learn_rate = 0.01
 #' )
 #'

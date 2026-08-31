@@ -66,7 +66,7 @@ reference:
 
   - title: "Custom recipe steps"
     desc: >
-      Custom stpes for recipe which uses kerasnip models specifications
+      Custom steps for recipe which uses kerasnip models specifications
     contents:
       - step_collapse
       - step_sequence

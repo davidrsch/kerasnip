@@ -18,6 +18,21 @@
 - Fixed `conf_int`/`pred_int` for multi-output classification returning garbled column names; factor levels are now sliced per output instead of passing the whole named list to every output.
 - Fixed multi-output regression predictions keeping `matrix`/`array` class on a single-row `.pred_<output>` column instead of a plain numeric (`tibble::as_tibble()` on a list of single-column matrices doesn't simplify a 1-row matrix element the way it does for more rows). This silently broke anything re-using a single-row prediction as a plain value, such as `kerasnip_output_view()`'s `probably::int_conformal_full()` support.
 
+## Documentation
+
+- Corrected model-spec examples and wording to use `fit_epochs` rather than `epochs`, matching the generated model arguments.
+- Fixed a typo in the `keras_evaluate()` description and a "stpes" typo in the pkgdown reference index.
+
+## Testing
+
+- Added an end-to-end integration test for `stacks` ensembles (#48) and added `stacks` to `Suggests`.
+
+## Maintenance
+
+- Applied the Air formatter and tidyverse style: wrapped long lines, removed an unnecessary explicit return, used short-circuit `&&`, renamed an over-long internal helper, and removed a duplicated comment.
+- Simplified `get_model_env()` to delegate to the exported `parsnip::get_model_env()`.
+- `skip_if_no_keras()` now also skips when no Keras Python backend is available.
+
 # kerasnip 0.1.2
 
 ## Bug Fixes

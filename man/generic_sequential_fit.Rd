@@ -61,7 +61,7 @@ architecture based on the provided \code{layer_blocks} and hyperparameters.
 (\code{y}) data into the format expected by Keras.
 \item \strong{Fit Model:} It calls \code{keras3::fit()} with the compiled model
 and processed data, passing along any fitting-specific arguments (e.g.,
-\code{epochs}, \code{batch_size}, \code{callbacks}).
+\code{fit_epochs}, \code{fit_batch_size}, \code{fit_callbacks}).
 }
 }
 \examples{
