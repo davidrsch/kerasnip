@@ -46,7 +46,7 @@ kerasnip_view_predictions <- function(view, data) {
 #'   form.
 #' @keywords internal
 #' @noRd
-kerasnip_rename_view_columns_back <- function(preds, output) {
+kerasnip_rename_view_cols_back <- function(preds, output) {
   nm <- names(preds)
   new_nm <- vapply(
     nm,
@@ -285,7 +285,7 @@ predict.kerasnip_tailored_fit <- function(object, new_data, ...) {
   view_preds <- kerasnip_view_predictions(view, new_data)
 
   adjusted <- predict(object$tailor_fit, view_preds)
-  adjusted_renamed <- kerasnip_rename_view_columns_back(adjusted, object$output)
+  adjusted_renamed <- kerasnip_rename_view_cols_back(adjusted, object$output)
 
   full_type <- if (object$mode == "classification") "prob" else "numeric"
   full_preds <- predict(object$fit_obj, new_data = new_data, type = full_type)

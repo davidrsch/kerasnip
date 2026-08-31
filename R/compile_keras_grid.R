@@ -115,9 +115,11 @@ compile_keras_grid <- function(spec, grid, x, y) {
     stop("`grid` must be a data frame or tibble.")
   }
   if (nrow(grid) == 0L) {
-    stop(
-      "`grid` must have at least one row. Use `tibble::tibble(.rows = 1)` to build the model with the spec's current arguments and no hyperparameter variation."
-    )
+    stop(paste0(
+      "`grid` must have at least one row. Use `tibble::tibble(.rows = 1)` ",
+      "to build the model with the spec's current arguments and no ",
+      "hyperparameter variation."
+    ))
   }
 
   model_env <- get_model_env()

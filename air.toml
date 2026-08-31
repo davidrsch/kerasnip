@@ -1,0 +1,7 @@
+# Air (R formatter) configuration.
+#
+# Intentionally empty so Air uses its defaults (80-char line width, 2-space
+# indentation, spaces, auto line endings, arrow assignment). Keeping this file
+# at the project root is recommended by the Air docs even when using defaults:
+# it prevents configuration discovery from walking up the directory tree and
+# signals to contributors that the project is formatted with Air.
