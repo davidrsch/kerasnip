@@ -24,10 +24,22 @@ test_that("stacks ensemble works end-to-end with kerasnip models (#48)", {
     mode = "regression"
   )
 
-  tune_spec <- stacks_mlp(dense_units = tune(), fit_epochs = 3L) |>
+  tune_spec <- stacks_mlp(dense_units = tune(), fit_epochs = 5L) |>
     parsnip::set_engine("keras")
 
-  rec <- recipes::recipe(mpg ~ ., data = mtcars) |>
+  # Synthetic data with a clear signal so the candidate models are meaningful
+  # and the blend keeps at least one member.
+  set.seed(123)
+  keras3::set_random_seed(123)
+
+  n <- 150L
+  train_dat <- data.frame(x1 = rnorm(n), x2 = rnorm(n), x3 = rnorm(n))
+  train_dat$y <- with(
+    train_dat,
+    3 * x1 - 2 * x2 + 0.5 * x3 + rnorm(n, sd = 0.5)
+  )
+
+  rec <- recipes::recipe(y ~ ., data = train_dat) |>
     recipes::step_normalize(recipes::all_numeric_predictors())
   wf <- workflows::workflow(rec, tune_spec)
 
@@ -35,8 +47,8 @@ test_that("stacks ensemble works end-to-end with kerasnip models (#48)", {
     update(dense_units = dials::hidden_units(c(4L, 16L)))
   grid <- dials::grid_regular(params, levels = 2)
 
-  set.seed(123)
-  folds <- rsample::vfold_cv(mtcars, v = 2)
+  set.seed(456)
+  folds <- rsample::vfold_cv(train_dat, v = 2)
 
   tune_res <- tune::tune_grid(
     wf,
@@ -55,7 +67,7 @@ test_that("stacks ensemble works end-to-end with kerasnip models (#48)", {
   ) |>
     stacks::fit_members()
 
-  preds <- predict(model_stack, new_data = mtcars[1:5, ])
+  preds <- predict(model_stack, new_data = train_dat[1:5, ])
 
   expect_s3_class(preds, "tbl_df")
   expect_equal(nrow(preds), 5L)
