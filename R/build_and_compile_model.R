@@ -298,7 +298,6 @@ build_compile_func_model <- function(
     )
 
     # Add special engine-supplied arguments if the block can accept them
-    # Add special engine-supplied arguments if the block can accept them
     # This is primarily for output layers that might need num_classes
     if ("num_classes" %in% block_fml_names) {
       # Check if this block is an output block and if it's a classification task

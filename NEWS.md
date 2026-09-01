@@ -22,6 +22,10 @@
 
 - Added an end-to-end integration test for `stacks` ensembles (#48) and added `stacks` to `Suggests`.
 
+## Maintenance
+
+- Aligned code style with the Air formatter and tidyverse conventions.
+
 # kerasnip 0.1.2
 
 ## Bug Fixes

@@ -13,8 +13,8 @@
 #' @param verbose Logical. Print information about memory released and
 #'   disabled functions. Default is `FALSE`.
 #' @param ... Not used.
-#' @return An axed `kerasnip_model_fit` object with the `butcher_kerasnip_model_fit`
-#'   class prepended.
+#' @return An axed `kerasnip_model_fit` object with the
+#'   `butcher_kerasnip_model_fit` class prepended.
 #' @name axe-kerasnip_model_fit
 NULL
 
@@ -60,9 +60,9 @@ axe_fitted.kerasnip_model_fit <- function(x, verbose = FALSE, ...) {
   add_butcher_attributes(x, x, verbose = verbose)
 }
 
-# Copied from tidymodels/butcher R/ui.R (internal, not exported by that package).
-# Using ::: on unexported functions is disallowed by CRAN policy, so these
-# helpers are reproduced here under butcher's MIT licence.
+# Copied from tidymodels/butcher R/ui.R (internal, not exported by that
+# package). Using ::: on unexported functions is disallowed by CRAN policy,
+# so these helpers are reproduced here under butcher's MIT licence.
 #' @importFrom lobstr obj_size
 #' @importFrom cli cli_alert_info cli_alert_success cli_alert_danger
 
@@ -74,9 +74,10 @@ get_object_size <- function(x, attempts = 5) {
     }
   }
   if (inherits(res, "try-error")) {
-    cli::cli_inform(
-      "{.fn lobstr::obj_size} failed after {attempts} attempts. Falling back on {.fn object.size}."
-    )
+    cli::cli_inform(paste0(
+      "{.fn lobstr::obj_size} failed after {attempts} attempts. ",
+      "Falling back on {.fn object.size}."
+    ))
     res <- utils::object.size(x)
   }
 
@@ -100,14 +101,14 @@ memory_released <- function(og, butchered) {
   old <- get_object_size(og)
   new <- get_object_size(butchered)
   rel <- old - new
-  if (length(rel) == 1) {
-    if (isTRUE(all.equal(old, new))) {
-      return(NULL)
-    }
-    return(rel)
-  } else {
+
+  if (length(rel) != 1L) {
     return(NULL)
   }
+  if (isTRUE(all.equal(old, new))) {
+    return(NULL)
+  }
+  rel
 }
 
 #' @noRd
@@ -120,9 +121,10 @@ assess_object <- function(og, butchered) {
   } else {
     abs_mem <- format(abs(mem), big.mark = ",", scientific = FALSE)
     if (mem < 0) {
-      cli::cli_alert_danger(
-        "The butchered object is {.field {abs_mem}} larger than the original. Do not butcher."
-      )
+      cli::cli_alert_danger(paste0(
+        "The butchered object is {.field {abs_mem}} larger than the ",
+        "original. Do not butcher."
+      ))
     } else {
       cli::cli_alert_success("Memory released: {.field {abs_mem}}")
       if (!is.null(disabled)) {
@@ -168,7 +170,7 @@ add_butcher_attributes <- function(
       x <- add_butcher_class(x)
     }
   }
-  if (verbose & !missing(old)) {
+  if (verbose && !missing(old)) {
     assess_object(old, x)
   }
   x
