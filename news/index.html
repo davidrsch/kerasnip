@@ -74,6 +74,10 @@
 <li>Fixed <code>conf_int</code>/<code>pred_int</code> for multi-output classification returning garbled column names; factor levels are now sliced per output instead of passing the whole named list to every output.</li>
 <li>Fixed multi-output regression predictions keeping <code>matrix</code>/<code>array</code> class on a single-row <code>.pred_&lt;output&gt;</code> column instead of a plain numeric (<code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> on a list of single-column matrices doesn’t simplify a 1-row matrix element the way it does for more rows). This silently broke anything re-using a single-row prediction as a plain value, such as <code><a href="../reference/kerasnip_output_view.html">kerasnip_output_view()</a></code>’s <code><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">probably::int_conformal_full()</a></code> support.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="maintenance-development-version">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-development-version"></a></h3>
+<ul><li>Aligned code style with the Air formatter and tidyverse conventions.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="kerasnip-012">kerasnip 0.1.2<a class="anchor" aria-label="anchor" href="#kerasnip-012"></a></h2><p class="text-muted">CRAN release: 2026-05-02</p>

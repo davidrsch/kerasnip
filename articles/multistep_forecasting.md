@@ -54,19 +54,20 @@ of splitting them.
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
-#> ✔ broom        1.0.13     ✔ recipes      1.3.3 
+#> ✔ broom        1.0.13     ✔ recipes      1.4.0 
 #> ✔ dials        1.4.4      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
 #> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
 #> ✔ infer        1.1.0      ✔ tune         2.1.0 
-#> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
+#> ✔ modeldata    1.6.0      ✔ workflows    1.3.0 
 #> ✔ parsnip      1.6.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
-#> ✖ purrr::discard() masks scales::discard()
-#> ✖ dplyr::filter()  masks stats::filter()
-#> ✖ dplyr::lag()     masks stats::lag()
-#> ✖ recipes::step()  masks stats::step()
+#> ✖ purrr::discard()         masks scales::discard()
+#> ✖ dplyr::filter()          masks stats::filter()
+#> ✖ parsnip::get_model_env() masks kerasnip::get_model_env()
+#> ✖ dplyr::lag()             masks stats::lag()
+#> ✖ recipes::step()          masks stats::step()
 library(keras3)
 #> 
 #> Attaching package: 'keras3'
@@ -192,7 +193,7 @@ spec <- multistep_lstm_spec(
 
 wf <- workflow(rec, spec)
 fit_obj <- fit(wf, data = train_data)
-#> 10/10 - 0s - 19ms/step
+#> 10/10 - 0s - 20ms/step
 ```
 
 [`predict()`](https://rdrr.io/r/stats/predict.html) returns a nested
@@ -206,7 +207,7 @@ time.
 ``` r
 
 preds <- predict(fit_obj, new_data = test_data)
-#> 2/2 - 0s - 90ms/step
+#> 2/2 - 0s - 91ms/step
 preds
 #> # A tibble: 57 × 1
 #>    .pred           
@@ -227,12 +228,12 @@ preds$.pred[[1]]
 #> # A tibble: 6 × 2
 #>   .step .pred
 #>   <int> <dbl>
-#> 1     1 0.786
-#> 2     2 0.727
-#> 3     3 0.601
-#> 4     4 0.546
-#> 5     5 0.387
-#> 6     6 0.266
+#> 1     1 0.851
+#> 2     2 0.733
+#> 3     3 0.631
+#> 4     4 0.538
+#> 5     5 0.423
+#> 6     6 0.276
 ```
 
 ## Step 5: Visualize the Forecast
@@ -285,8 +286,8 @@ preds_ci <- predict(fit_obj, new_data = test_data, type = "conf_int")
 #> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 12ms/step
-#> 2/2 - 0s - 13ms/step
 #> 2/2 - 0s - 12ms/step
+#> 2/2 - 0s - 11ms/step
 
 comparison_ci <- preds_ci |>
   dplyr::slice(1) |>
@@ -349,16 +350,16 @@ one_row_draws
 #> # A tibble: 1,200 × 3
 #>    .draw .step .pred
 #>    <int> <int> <dbl>
-#>  1     1     1 0.794
-#>  2     2     1 0.732
-#>  3     3     1 0.812
-#>  4     4     1 0.794
-#>  5     5     1 0.706
-#>  6     6     1 0.869
-#>  7     7     1 0.615
-#>  8     8     1 0.712
-#>  9     9     1 0.774
-#> 10    10     1 0.721
+#>  1     1     1 0.860
+#>  2     2     1 0.795
+#>  3     3     1 0.875
+#>  4     4     1 0.860
+#>  5     5     1 0.770
+#>  6     6     1 0.935
+#>  7     7     1 0.685
+#>  8     8     1 0.776
+#>  9     9     1 0.838
+#> 10    10     1 0.790
 #> # ℹ 1,190 more rows
 
 # Draws at different steps are correlated, unlike the marginal intervals above.
@@ -367,8 +368,8 @@ one_row_draws |>
   dplyr::select(step_1, step_2) |>
   cor()
 #>           step_1    step_2
-#> step_1 1.0000000 0.4283961
-#> step_2 0.4283961 1.0000000
+#> step_1 1.0000000 0.3708039
+#> step_2 0.3708039 1.0000000
 ```
 
 A handful of individual sampled trajectories, plotted alongside the

@@ -63,19 +63,20 @@ provides:
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
-#> ✔ broom        1.0.13     ✔ recipes      1.3.3 
+#> ✔ broom        1.0.13     ✔ recipes      1.4.0 
 #> ✔ dials        1.4.4      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
 #> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
 #> ✔ infer        1.1.0      ✔ tune         2.1.0 
-#> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
+#> ✔ modeldata    1.6.0      ✔ workflows    1.3.0 
 #> ✔ parsnip      1.6.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
-#> ✖ purrr::discard() masks scales::discard()
-#> ✖ dplyr::filter()  masks stats::filter()
-#> ✖ dplyr::lag()     masks stats::lag()
-#> ✖ recipes::step()  masks stats::step()
+#> ✖ purrr::discard()         masks scales::discard()
+#> ✖ dplyr::filter()          masks stats::filter()
+#> ✖ parsnip::get_model_env() masks kerasnip::get_model_env()
+#> ✖ dplyr::lag()             masks stats::lag()
+#> ✖ recipes::step()          masks stats::step()
 library(tailor)
 library(probably)
 #> 
@@ -131,19 +132,19 @@ cal_dat   <- testing(split)
 
 wflow <- workflow(rec, spec)
 fit_obj <- fit(wflow, data = train_dat)
-#> 7/7 - 0s - 7ms/step
-#> 7/7 - 0s - 7ms/step
+#> 7/7 - 0s - 8ms/step
+#> 7/7 - 0s - 8ms/step
 
 predict(fit_obj, new_data = cal_dat[1:5, ])
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 44ms/step
 #> # A tibble: 5 × 2
 #>   .pred_temperature .pred_humidity
 #>               <dbl>          <dbl>
-#> 1             0.356         -0.880
-#> 2            -0.869         -0.842
-#> 3             0.553          0.499
-#> 4             0.480         -0.106
-#> 5             0.781          0.623
+#> 1             0.356        -0.810 
+#> 2            -0.882        -0.783 
+#> 3             0.565         0.530 
+#> 4             0.437        -0.0227
+#> 5             0.818         0.665
 ```
 
 Both outcomes come back from a single
@@ -158,15 +159,15 @@ for multivariate regression, and exactly what breaks
 
 temp_view <- kerasnip_output_view(fit_obj, "temperature")
 predict(temp_view, new_data = cal_dat[1:5, ])
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 24ms/step
 #> # A tibble: 5 × 1
 #>    .pred
 #>    <dbl>
 #> 1  0.356
-#> 2 -0.869
-#> 3  0.553
-#> 4  0.480
-#> 5  0.781
+#> 2 -0.882
+#> 3  0.565
+#> 4  0.437
+#> 5  0.818
 ```
 
 `temp_view` behaves like an ordinary single-output fit to anything that
@@ -176,7 +177,7 @@ enough for manual `tailor` usage:
 ``` r
 
 cal_preds <- predict(temp_view, new_data = cal_dat)
-#> 3/3 - 0s - 13ms/step
+#> 3/3 - 0s - 16ms/step
 cal_data_for_tailor <- bind_cols(temperature = cal_dat$temperature, cal_preds)
 
 tlr <- tailor() |> adjust_numeric_calibration(method = "linear")
@@ -186,16 +187,16 @@ tlr_fit <- fit(tlr, cal_data_for_tailor, outcome = temperature, estimate = .pred
 #>   as.character.dev_topic generics
 
 new_preds <- predict(temp_view, new_data = cal_dat[1:5, ])
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 23ms/step
 predict(tlr_fit, new_preds)
 #> # A tibble: 5 × 1
 #>    .pred
 #>    <dbl>
-#> 1  0.340
-#> 2 -0.828
-#> 3  0.515
-#> 4  0.450
-#> 5  0.722
+#> 1  0.347
+#> 2 -0.853
+#> 3  0.537
+#> 4  0.420
+#> 5  0.768
 ```
 
 It is also enough for `probably`’s conformal methods, because
@@ -211,17 +212,17 @@ needs:
 ``` r
 
 conformal <- int_conformal_split(temp_view, cal_data = cal_dat)
-#> 3/3 - 0s - 7ms/step
+#> 3/3 - 0s - 8ms/step
 predict(conformal, new_data = cal_dat[1:5, ], level = 0.90)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 23ms/step
 #> # A tibble: 5 × 3
 #>    .pred .pred_lower .pred_upper
 #>    <dbl>       <dbl>       <dbl>
-#> 1  0.356     -0.0456       0.757
-#> 2 -0.869     -1.27        -0.467
-#> 3  0.553      0.152        0.954
-#> 4  0.480      0.0790       0.882
-#> 5  0.781      0.379        1.18
+#> 1  0.356     -0.0552       0.767
+#> 2 -0.882     -1.29        -0.471
+#> 3  0.565      0.154        0.976
+#> 4  0.437      0.0255       0.848
+#> 5  0.818      0.407        1.23
 ```
 
 ### `probably::int_conformal_full()`: supported, with one documented assumption
@@ -248,8 +249,8 @@ small_train <- train_dat[1:40, ]
 small_new   <- cal_dat[1:3, ]
 
 fit_small <- fit(wflow, data = small_train)
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 29ms/step
 temp_view_small <- kerasnip_output_view(fit_small, "temperature")
 
 conformal_full <- int_conformal_full(
@@ -257,153 +258,153 @@ conformal_full <- int_conformal_full(
   train_data = small_train,
   control = control_conformal_full(method = "grid", trial_points = 15)
 )
-#> 2/2 - 0s - 26ms/step
-predict(conformal_full, new_data = small_new, level = 0.90)
-#> 1/1 - 0s - 21ms/step
-#> 1/1 - 0s - 20ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 32ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
+predict(conformal_full, new_data = small_new, level = 0.90)
+#> 1/1 - 0s - 23ms/step
+#> 1/1 - 0s - 23ms/step
 #> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 24ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 32ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 31ms/step
 #> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 31ms/step
+#> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 29ms/step
 #> 1/1 - 0s - 21ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 27ms/step
 #> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 31ms/step
 #> 2/2 - 0s - 29ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 26ms/step
-#> 1/1 - 0s - 21ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 34ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 23ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 26ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 25ms/step
-#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 34ms/step
 #> 2/2 - 0s - 28ms/step
-#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 35ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 34ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 34ms/step
+#> 1/1 - 0s - 23ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 35ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 33ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 26ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 29ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 25ms/step
 #> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 28ms/step
 #> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 24ms/step
-#> 2/2 - 0s - 27ms/step
-#> 2/2 - 0s - 23ms/step
-#> 2/2 - 0s - 23ms/step
+#> 2/2 - 0s - 32ms/step
 #> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 32ms/step
+#> 2/2 - 0s - 26ms/step
+#> 2/2 - 0s - 27ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 30ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 25ms/step
+#> 2/2 - 0s - 29ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 24ms/step
+#> 2/2 - 0s - 28ms/step
 #> # A tibble: 3 × 2
 #>   .pred_lower .pred_upper
 #>         <dbl>       <dbl>
-#> 1      -0.544       1.11 
-#> 2      -1.41        0.241
-#> 3       0.180       1.21
+#> 1     -0.0336       1.13 
+#> 2     -1.37        -0.277
+#> 3     -0.205        0.969
 ```
 
 Only `method = "grid"` is supported; `"iterative"` relies on
@@ -424,20 +425,20 @@ tlr2 <- tailor() |> adjust_numeric_calibration(method = "linear")
 tailored_wf <- kerasnip_add_tailor(wflow, tlr2, output = "temperature")
 
 tailored_fit <- fit(tailored_wf, data = train_dat, data_calibration = cal_dat)
-#> 7/7 - 0s - 8ms/step
+#> 7/7 - 0s - 7ms/step
 #> 7/7 - 0s - 7ms/step
 #> 3/3 - 0s - 18ms/step
 predict(tailored_fit, new_data = cal_dat[1:5, ])
-#> 1/1 - 0s - 22ms/step
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 5 × 2
 #>   .pred_temperature .pred_humidity
 #>               <dbl>          <dbl>
-#> 1             0.267        -0.877 
-#> 2            -0.760        -0.772 
-#> 3             0.478         0.435 
-#> 4             0.454        -0.0522
-#> 5             0.686         0.556
+#> 1             0.344         -0.814
+#> 2            -0.782         -0.770
+#> 3             0.491          0.509
+#> 4             0.434         -0.112
+#> 5             0.725          0.648
 ```
 
 `.pred_temperature` is calibrated; `.pred_humidity` is exactly what a
@@ -493,7 +494,7 @@ test_series  <- testing(split_step)
 
 step_wflow <- workflow(rec_step, step_spec)
 step_fit <- fit(step_wflow, data = train_series)
-#> 5/5 - 0s - 36ms/step
+#> 5/5 - 0s - 37ms/step
 
 # step_sequence() needs `timesteps` rows of leading history to produce a
 # single prediction, so a preview slice must include at least that much
@@ -501,7 +502,7 @@ step_fit <- fit(step_wflow, data = train_series)
 preview_data <- test_series[seq_len(timesteps + 5), , drop = FALSE]
 
 predict(step_fit, new_data = preview_data)
-#> 1/1 - 0s - 95ms/step
+#> 1/1 - 0s - 97ms/step
 #> # A tibble: 6 × 1
 #>   .pred           
 #>   <list>          
@@ -519,16 +520,16 @@ predict(step_fit, new_data = preview_data)
 
 step_2_view <- kerasnip_step_view(step_fit, step = 2)
 predict(step_2_view, new_data = preview_data)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 1
 #>    .pred
 #>    <dbl>
-#> 1 -0.957
-#> 2 -0.978
-#> 3 -0.941
-#> 4 -0.893
-#> 5 -0.855
-#> 6 -0.835
+#> 1 -0.950
+#> 2 -0.960
+#> 3 -0.928
+#> 4 -0.883
+#> 5 -0.846
+#> 6 -0.817
 ```
 
 Unlike a multi-output model, a multistep model’s per-step outcome
@@ -553,7 +554,7 @@ That is enough to calibrate manually, same as the multi-output case:
 ``` r
 
 preds_step <- predict(step_2_view, new_data = train_series)
-#> 5/5 - 0s - 20ms/step
+#> 5/5 - 0s - 22ms/step
 truth_step <- kerasnip_step_truth(step_2_view, train_series)
 
 cal_tbl <- tibble(truth = truth_step, .pred = preds_step$.pred) |>
@@ -568,12 +569,12 @@ predict(tlr_step_fit, new_preds_step)
 #> # A tibble: 6 × 1
 #>    .pred
 #>    <dbl>
-#> 1 -0.963
-#> 2 -0.984
-#> 3 -0.947
-#> 4 -0.899
-#> 5 -0.861
-#> 6 -0.841
+#> 1 -0.950
+#> 2 -0.961
+#> 3 -0.928
+#> 4 -0.884
+#> 5 -0.847
+#> 6 -0.818
 ```
 
 …and enough for
@@ -585,16 +586,16 @@ exactly as with a multi-output view:
 conformal_step <- int_conformal_split(step_2_view, cal_data = train_series)
 #> 5/5 - 0s - 5ms/step
 predict(conformal_step, new_data = preview_data, level = 0.90)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 3
 #>    .pred .pred_lower .pred_upper
 #>    <dbl>       <dbl>       <dbl>
-#> 1 -0.957      -1.05       -0.860
-#> 2 -0.978      -1.08       -0.880
-#> 3 -0.941      -1.04       -0.843
-#> 4 -0.893      -0.991      -0.796
-#> 5 -0.855      -0.953      -0.758
-#> 6 -0.835      -0.932      -0.737
+#> 1 -0.950      -1.05       -0.849
+#> 2 -0.960      -1.06       -0.859
+#> 3 -0.928      -1.03       -0.827
+#> 4 -0.883      -0.984      -0.782
+#> 5 -0.846      -0.947      -0.746
+#> 6 -0.817      -0.918      -0.716
 ```
 
 [`probably::int_conformal_full()`](https://probably.tidymodels.org/reference/int_conformal_full.html)
@@ -626,7 +627,7 @@ small_train <- train_series[1:80, , drop = FALSE]
 small_new <- test_series[seq_len(timesteps + 2), , drop = FALSE]
 
 fit_small <- fit(step_wflow, data = small_train)
-#> 3/3 - 0s - 60ms/step
+#> 3/3 - 0s - 63ms/step
 step_2_view_small <- kerasnip_step_view(fit_small, step = 2)
 
 conformal_step_full <- int_conformal_full(
@@ -634,76 +635,76 @@ conformal_step_full <- int_conformal_full(
   train_data = small_train,
   control = control_conformal_full(method = "grid", trial_points = 10)
 )
-#> 3/3 - 0s - 58ms/step
-predict(conformal_step_full, new_data = small_new, level = 0.90)
-#> 1/1 - 0s - 23ms/step
-#> 1/1 - 0s - 21ms/step
-#> 3/3 - 0s - 58ms/step
-#> 3/3 - 0s - 57ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 58ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 58ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 58ms/step
-#> 3/3 - 0s - 63ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 61ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 58ms/step
-#> 3/3 - 0s - 58ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 61ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 58ms/step
-#> 3/3 - 1s - 401ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 60ms/step
-#> 3/3 - 0s - 58ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 63ms/step
-#> 3/3 - 0s - 59ms/step
-#> 3/3 - 0s - 61ms/step
-#> 3/3 - 0s - 59ms/step
 #> 3/3 - 0s - 62ms/step
+predict(conformal_step_full, new_data = small_new, level = 0.90)
+#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 22ms/step
 #> 3/3 - 0s - 61ms/step
-#> 3/3 - 0s - 61ms/step
-#> 3/3 - 0s - 59ms/step
+#> 3/3 - 0s - 64ms/step
+#> 3/3 - 0s - 62ms/step
+#> 3/3 - 0s - 62ms/step
+#> 3/3 - 0s - 62ms/step
+#> 3/3 - 0s - 62ms/step
+#> 3/3 - 0s - 62ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 69ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 69ms/step
+#> 3/3 - 0s - 65ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 65ms/step
+#> 3/3 - 0s - 65ms/step
+#> 3/3 - 0s - 65ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 69ms/step
+#> 3/3 - 0s - 65ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 64ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 1s - 407ms/step
+#> 3/3 - 0s - 71ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 69ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 69ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 67ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 66ms/step
+#> 3/3 - 0s - 68ms/step
+#> 3/3 - 0s - 67ms/step
 #> # A tibble: 3 × 2
 #>   .pred_lower .pred_upper
 #>         <dbl>       <dbl>
-#> 1       -1.26      -0.659
-#> 2       -1.29      -0.698
-#> 3       -1.25      -0.646
+#> 1       -1.19      -0.494
+#> 2       -1.44      -0.514
+#> 3       -1.19      -0.496
 ```
 
 As with the multi-output case, only `method = "grid"` is supported.
@@ -716,11 +717,11 @@ tlr_step2 <- tailor() |> adjust_numeric_calibration(method = "linear")
 tailored_step_wf <- kerasnip_add_tailor(step_wflow, tlr_step2, step = 2)
 
 tailored_step_fit <- fit(tailored_step_wf, data = train_series)
-#> 5/5 - 0s - 39ms/step
-#> 5/5 - 0s - 36ms/step
+#> 5/5 - 0s - 40ms/step
+#> 5/5 - 0s - 40ms/step
 predict(tailored_step_fit, new_data = preview_data)
 #> 1/1 - 0s - 24ms/step
-#> 1/1 - 0s - 23ms/step
+#> 1/1 - 0s - 25ms/step
 #> # A tibble: 6 × 1
 #>   .pred           
 #>   <list>          

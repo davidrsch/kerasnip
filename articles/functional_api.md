@@ -63,19 +63,20 @@ First, we load the necessary packages.
 library(kerasnip)
 library(tidymodels)
 #> ── Attaching packages ────────────────────────────────────── tidymodels 1.5.0 ──
-#> ✔ broom        1.0.13     ✔ recipes      1.3.3 
+#> ✔ broom        1.0.13     ✔ recipes      1.4.0 
 #> ✔ dials        1.4.4      ✔ rsample      1.3.2 
 #> ✔ dplyr        1.2.1      ✔ tailor       0.1.0 
 #> ✔ ggplot2      4.0.3      ✔ tidyr        1.3.2 
 #> ✔ infer        1.1.0      ✔ tune         2.1.0 
-#> ✔ modeldata    1.5.1      ✔ workflows    1.3.0 
+#> ✔ modeldata    1.6.0      ✔ workflows    1.3.0 
 #> ✔ parsnip      1.6.0      ✔ workflowsets 1.1.1 
 #> ✔ purrr        1.2.2      ✔ yardstick    1.4.0
 #> ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
-#> ✖ purrr::discard() masks scales::discard()
-#> ✖ dplyr::filter()  masks stats::filter()
-#> ✖ dplyr::lag()     masks stats::lag()
-#> ✖ recipes::step()  masks stats::step()
+#> ✖ purrr::discard()         masks scales::discard()
+#> ✖ dplyr::filter()          masks stats::filter()
+#> ✖ parsnip::get_model_env() masks kerasnip::get_model_env()
+#> ✖ dplyr::lag()             masks stats::lag()
+#> ✖ recipes::step()          masks stats::step()
 library(keras3)
 #> 
 #> Attaching package: 'keras3'
@@ -250,8 +251,8 @@ wf <- workflow() |>
   add_model(spec)
 
 fit_obj <- fit(wf, data = train_df)
-#> 4/4 - 0s - 24ms/step
-#> 4/4 - 0s - 23ms/step
+#> 4/4 - 0s - 28ms/step
+#> 4/4 - 0s - 28ms/step
 
 # Predict on new data
 new_data_df <- tibble::tibble(
@@ -259,15 +260,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 54ms/step
+#> 1/1 - 0s - 63ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>            <dbl>          <dbl>
-#> 1          0.477          0.484
-#> 2          0.369          0.446
-#> 3          0.369          0.287
-#> 4          0.414          0.464
-#> 5          0.463          0.537
+#> 1          0.843          0.568
+#> 2          0.434          0.371
+#> 3          0.300          0.326
+#> 4          0.375          0.556
+#> 5          0.578          0.608
 ```
 
 ## Example 2: A Two-Input, Two-Output Classification Model
@@ -388,8 +389,8 @@ wf <- workflow() |>
   add_model(spec)
 
 fit_obj <- fit(wf, data = train_df)
-#> 4/4 - 0s - 18ms/step
-#> 4/4 - 0s - 18ms/step
+#> 4/4 - 0s - 21ms/step
+#> 4/4 - 0s - 21ms/step
 
 new_data_df <- tibble::tibble(
   input_1 = lapply(seq_len(5), function(i) matrix(runif(5), ncol = 5)),
@@ -397,25 +398,25 @@ new_data_df <- tibble::tibble(
 )
 
 predict(fit_obj, new_data = new_data_df, type = "class")
-#> 1/1 - 0s - 48ms/step
+#> 1/1 - 0s - 235ms/step
 #> # A tibble: 5 × 2
 #>   .pred_class_output_1 .pred_class_output_2
 #>   <fct>                <fct>               
 #> 1 a                    z                   
-#> 2 a                    z                   
-#> 3 a                    y                   
+#> 2 a                    y                   
+#> 3 a                    z                   
 #> 4 a                    z                   
 #> 5 a                    z
 predict(fit_obj, new_data = new_data_df, type = "prob")
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 24ms/step
 #> # A tibble: 5 × 5
 #>   .pred_output_1_a .pred_output_1_b .pred_output_2_x .pred_output_2_y
 #>              <dbl>            <dbl>            <dbl>            <dbl>
-#> 1            0.546            0.454            0.190            0.347
-#> 2            0.552            0.448            0.198            0.319
-#> 3            0.621            0.379            0.257            0.393
-#> 4            0.539            0.461            0.190            0.282
-#> 5            0.548            0.452            0.297            0.298
+#> 1            0.566            0.434            0.293            0.343
+#> 2            0.506            0.494            0.171            0.416
+#> 3            0.553            0.447            0.230            0.385
+#> 4            0.585            0.415            0.192            0.309
+#> 5            0.569            0.431            0.344            0.239
 #> # ℹ 1 more variable: .pred_output_2_z <dbl>
 ```
 

@@ -105,6 +105,10 @@
   [`probably::int_conformal_full()`](https://probably.tidymodels.org/reference/int_conformal_full.html)
   support.
 
+### Maintenance
+
+- Aligned code style with the Air formatter and tidyverse conventions.
+
 ## kerasnip 0.1.2
 
 CRAN release: 2026-05-02
