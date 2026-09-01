@@ -2,6 +2,7 @@
 
 ## New Features
 
+- Fit arguments can now be written without the `fit_` prefix (e.g. `epochs` for `fit_epochs`), matching other tidymodels neural-network engines. The `fit_` form takes precedence when both are supplied.
 - Added `step_sequence()` and `step_lead()` recipe steps for building the windowed inputs and multi-step-ahead targets a recurrent forecasting model needs.
 - Added support for multi-step (vector-valued) regression outputs: a single `output` block can now predict several future steps at once (`units = horizon`), with `predict()` returning point forecasts and `conf_int`/`pred_int` nested by forecast step.
 - Added `predict(..., type = "pred_int", joint = TRUE)` for correlated multi-step prediction intervals, sampled from the jointly-estimated residual covariance across steps and returned as tidybayes-style `.draw` columns.
