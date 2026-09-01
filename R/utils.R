@@ -527,8 +527,7 @@ process_y_sequential <- function(
 #' @keywords internal
 #' @export
 get_model_env <- function() {
-  current <- utils::getFromNamespace("parsnip", ns = "parsnip")
-  current
+  parsnip::get_model_env()
 }
 
 #' Check if a Kerasnip Model Specification Exists

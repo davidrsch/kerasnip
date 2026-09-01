@@ -478,7 +478,10 @@ int_conformal_full.kerasnip_output_view <- function(
   if (!identical(control$method, "grid")) {
     rlang::abort(c(
       "Only `\"grid\"` is supported for a multi-output kerasnip view.",
-      i = "Pass `control = probably::control_conformal_full(method = \"grid\")`."
+      i = paste0(
+        "Pass `control = probably::control_conformal_full(",
+        "method = \"grid\")`."
+      )
     ))
   }
   if (!identical(object$mode, "regression")) {
