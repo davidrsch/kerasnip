@@ -19,6 +19,11 @@
 - Fixed `conf_int`/`pred_int` for multi-output classification returning garbled column names; factor levels are now sliced per output instead of passing the whole named list to every output.
 - Fixed multi-output regression predictions keeping `matrix`/`array` class on a single-row `.pred_<output>` column instead of a plain numeric (`tibble::as_tibble()` on a list of single-column matrices doesn't simplify a 1-row matrix element the way it does for more rows). This silently broke anything re-using a single-row prediction as a plain value, such as `kerasnip_output_view()`'s `probably::int_conformal_full()` support.
 
+## Documentation
+
+- Corrected model-spec examples and wording to use `fit_epochs` consistently with the generated arguments.
+- Fixed a typo in the `keras_evaluate()` description and a typo in the pkgdown reference index.
+
 ## Testing
 
 - Added an end-to-end integration test for `stacks` ensembles (#48) and added `stacks` to `Suggests`.

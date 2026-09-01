@@ -29,7 +29,8 @@
 #' The function inspects the arguments of your `layer_blocks` functions and
 #' makes them available as tunable parameters in the generated model
 #' specification, prefixed with the block's name (e.g., `dense_units`).
-#' Common training parameters such as `epochs` and `learn_rate` are also added.
+#' Common training parameters such as `fit_epochs` and `learn_rate` are also
+#' added.
 #'
 #' @section Model Graph Connectivity:
 #' `kerasnip` builds the model's directed acyclic graph by inspecting the
@@ -140,7 +141,7 @@
 #'
 #'   # 3. Use the newly created specification function!
 #'   # The `dense_path_units` argument was created automatically.
-#'   model_spec <- my_resnet_spec(dense_path_units = 64, epochs = 10)
+#'   model_spec <- my_resnet_spec(dense_path_units = 64, fit_epochs = 10)
 #'
 #'   # You could also tune the number of dense layers since it has a single
 #'   # input:

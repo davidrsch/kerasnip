@@ -17,7 +17,7 @@
 #'     (`y`) data into the format expected by Keras.
 #'   \item \strong{Fit Model:} It calls `keras3::fit()` with the compiled model
 #'     and processed data, passing along any fitting-specific arguments (e.g.,
-#'     `epochs`, `batch_size`, `callbacks`).
+#'     `fit_epochs`, `fit_batch_size`, `fit_callbacks`).
 #' }
 #'
 #' @param x A data frame of predictors, passed down from `parsnip`'s

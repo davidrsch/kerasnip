@@ -18,7 +18,7 @@
 #'   match other block names are considered graph connections (inputs) and are
 #'   ignored. The remaining arguments are treated as tunable hyperparameters.
 #'
-#' In both cases, it also adds global training parameters (like `epochs`) and
+#' In both cases, it also adds global training parameters (like `fit_epochs`) and
 #' filters out special engine-supplied arguments (`input_shape`, `num_classes`).
 #'
 #' @param layer_blocks A named list of functions defining Keras layer blocks.

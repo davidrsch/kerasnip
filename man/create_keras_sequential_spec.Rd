@@ -135,7 +135,7 @@ model_name = "my_mlp_seq_spec",
 model_spec <- my_mlp_seq_spec(
   num_hidden = 2,
   hidden_units = 64,
-  epochs = 10,
+  fit_epochs = 10,
   learn_rate = 0.01
 )
 
@@ -145,6 +145,6 @@ remove_keras_spec("my_mlp_seq_spec")
 }
 }
 \seealso{
-\code{\link[=remove_keras_spec]{remove_keras_spec()}}, \code{\link[parsnip:add_on_exports]{parsnip::new_model_spec()}},
+\code{\link[=remove_keras_spec]{remove_keras_spec()}}, \code{\link[parsnip:new_model_spec]{parsnip::new_model_spec()}},
 \code{\link[=create_keras_functional_spec]{create_keras_functional_spec()}}
 }

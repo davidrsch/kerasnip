@@ -17,7 +17,7 @@
 #'       \item Block-specific hyperparameters (e.g., `dense_units`),
 #'          introspecting `layer_blocks` to find default values.
 #'       \item Architecture parameters (e.g., `num_dense`).
-#'       \item Global training parameters (e.g., `epochs`, `learn_rate`).
+#'       \item Global training parameters (e.g., `fit_epochs`, `learn_rate`).
 #'       \item Compilation override parameters (e.g., `compile_loss`).
 #'     }
 #'   \item \strong{Sections (`@section`):} It creates dedicated sections for:

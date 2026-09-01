@@ -19,7 +19,6 @@ License: MIT + file LICENSE
 URL: https://davidrsch.github.io/kerasnip/, https://github.com/davidrsch/kerasnip
 BugReports: https://github.com/davidrsch/kerasnip/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Imports:
     abind,
     generics,
@@ -57,3 +56,4 @@ Suggests:
     hardhat,
     tidyr
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0

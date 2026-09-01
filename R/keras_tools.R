@@ -2,7 +2,7 @@
 #'
 #' @title Evaluate a Kerasnip Model
 #' @description
-#' This function provides an `kera_evaluate()` method for `model_fit` objects
+#' This function provides an `keras_evaluate()` method for `model_fit` objects
 #' created by `kerasnip`. It preprocesses the new data into the format expected
 #' by Keras and then calls `keras3::evaluate()` on the underlying model to
 #' compute the loss and any other metrics.
