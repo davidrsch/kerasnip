@@ -2,6 +2,7 @@
 
 ## New Features
 
+- Fit arguments can now be written without the `fit_` prefix (e.g. `epochs` for `fit_epochs`), matching other tidymodels neural-network engines. The `fit_` form takes precedence when both are supplied.
 - Added `step_sequence()` and `step_lead()` recipe steps for building the windowed inputs and multi-step-ahead targets a recurrent forecasting model needs.
 - Added support for multi-step (vector-valued) regression outputs: a single `output` block can now predict several future steps at once (`units = horizon`), with `predict()` returning point forecasts and `conf_int`/`pred_int` nested by forecast step.
 - Added `predict(..., type = "pred_int", joint = TRUE)` for correlated multi-step prediction intervals, sampled from the jointly-estimated residual covariance across steps and returned as tidybayes-style `.draw` columns.
@@ -22,6 +23,14 @@
 
 - Corrected model-spec examples and wording to use `fit_epochs` consistently with the generated arguments.
 - Fixed a typo in the `keras_evaluate()` description and a typo in the pkgdown reference index.
+
+## Testing
+
+- Added an end-to-end integration test for `stacks` ensembles (#48) and added `stacks` to `Suggests`.
+
+## Maintenance
+
+- Aligned code style with the Air formatter and tidyverse conventions.
 
 # kerasnip 0.1.2
 

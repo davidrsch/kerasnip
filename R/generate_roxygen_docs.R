@@ -262,6 +262,8 @@ generate_roxygen_docs <- function(
     "#' @section Model Fitting:",
     "#' The model is fit using `keras3::fit()`. You can pass any",
     "#' argument to this function by prefixing it with `fit_`.",
+    "#' Fit arguments can also be passed without the `fit_` prefix",
+    "#' (e.g. `epochs` for `fit_epochs`); the `fit_` form takes precedence.",
     "#' For example, to add Keras callbacks, you can pass",
     "#' `fit_callbacks = list(callback_early_stopping())`.",
     "#' Common arguments include `fit_epochs`, `fit_batch_size`,",

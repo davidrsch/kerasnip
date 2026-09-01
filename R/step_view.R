@@ -4,9 +4,9 @@
 #' A kerasnip multistep (vector-valued) regression model returns a nested
 #' `.pred` list-column: one inner tibble per row, with a `.step` column plus
 #' one prediction column per forecasted variable. `tailor`/`probably` expect
-#' a single flat numeric `.pred` column instead — `tailor::check_variable_type()`
-#' requires `is.numeric()` on the outcome/estimate columns, which a
-#' list-column fails outright.
+#' a single flat numeric `.pred` column instead —
+#' `tailor::check_variable_type()` requires `is.numeric()` on the
+#' outcome/estimate columns, which a list-column fails outright.
 #'
 #' `kerasnip_step_view()` wraps a fitted multistep workflow together with
 #' one forecast step (and, if more than one variable is forecast, which
@@ -19,8 +19,9 @@
 #' column via `step_lead()` — they are not present in a user's raw data the
 #' way genuine multi-output columns are. [kerasnip_step_truth()] recovers
 #' the true future value at a given step by re-baking the fitted recipe on
-#' raw data, which is what [int_conformal_split()][probably::int_conformal_split]
-#' uses internally for this class.
+#' raw data, which is what
+#' [int_conformal_split()][probably::int_conformal_split] uses internally for
+#' this class.
 #'
 #' `probably::int_conformal_full()` is also supported (see
 #' `int_conformal_full.kerasnip_step_view()`), with a materially different
@@ -543,7 +544,10 @@ int_conformal_full.kerasnip_step_view <- function(
   if (!identical(control$method, "grid")) {
     rlang::abort(c(
       "Only `\"grid\"` is supported for a multistep kerasnip step view.",
-      i = "Pass `control = probably::control_conformal_full(method = \"grid\")`."
+      i = paste0(
+        "Pass `control = probably::control_conformal_full(",
+        "method = \"grid\")`."
+      )
     ))
   }
 

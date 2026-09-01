@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.claude$
 ^\.github$
 ^\.vscode$
 ^README\.Rmd$

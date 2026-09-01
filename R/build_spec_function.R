@@ -57,13 +57,35 @@ build_spec_function <- function(
   captured_layer_blocks <- layer_blocks
   captured_functional <- functional
 
+  # Fit arguments can be passed either bare or with the `fit_` prefix, matching
+  # other tidymodels neural-network engines (e.g. `epochs` for `fit_epochs`).
+  # `verbose` is handled directly by the fit engine, so it is not aliased.
+  bare_fit_aliases <- setdiff(keras_fit_arg_names, "verbose")
+
   body <- rlang::expr({
     # Capture both explicit args and ... to pass to the fit impl
     # Named arguments are captured into a list of quosures.
     main_args <- rlang::list2(!!!quos_exprs)
     # ... arguments are captured into a separate list of quosures.
     dot_args <- !!quos_call
-    args <- c(main_args, dot_args)
+    dot_names <- names(dot_args)
+    if (!is.null(dot_names)) {
+      is_alias <- dot_names %in% !!bare_fit_aliases
+      if (any(is_alias)) {
+        names(dot_args)[is_alias] <- paste0("fit_", dot_names[is_alias])
+      }
+    }
+
+    args <- main_args
+    if (length(dot_args) > 0) {
+      for (nm in names(dot_args)) {
+        cur <- args[[nm]]
+        if (is.null(cur) || inherits(rlang::get_expr(cur), "rlang_zap")) {
+          args[[nm]] <- dot_args[[nm]]
+        }
+      }
+    }
+
     result <- parsnip::new_model_spec(
       !!model_name,
       args = args,
