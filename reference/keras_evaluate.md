@@ -1,6 +1,6 @@
 # Evaluate a Kerasnip Model
 
-This function provides an `kera_evaluate()` method for `model_fit`
+This function provides an `keras_evaluate()` method for `model_fit`
 objects created by `kerasnip`. It preprocesses the new data into the
 format expected by Keras and then calls
 [`keras3::evaluate()`](https://rdrr.io/pkg/tensorflow/man/evaluate.html)
@@ -106,7 +106,7 @@ remove_keras_spec("my_mlp_tools")
 #> [1] 0.54
 #> 
 #> $loss
-#> [1] 0.8146725
+#> [1] 0.7463425
 #> 
 #> Model: "sequential_9"
 #> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓

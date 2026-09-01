@@ -162,7 +162,7 @@ model_name = "my_mlp_seq_spec",
 model_spec <- my_mlp_seq_spec(
   num_hidden = 2,
   hidden_units = 64,
-  epochs = 10,
+  fit_epochs = 10,
   learn_rate = 0.01
 )
 
@@ -178,7 +178,7 @@ remove_keras_spec("my_mlp_seq_spec")
 #>   hidden_units = 64
 #>   learn_rate = 0.01
 #>   fit_batch_size = structure(list(), class = "rlang_zap")
-#>   fit_epochs = structure(list(), class = "rlang_zap")
+#>   fit_epochs = 10
 #>   fit_callbacks = structure(list(), class = "rlang_zap")
 #>   fit_validation_split = structure(list(), class = "rlang_zap")
 #>   fit_validation_data = structure(list(), class = "rlang_zap")
@@ -201,7 +201,6 @@ remove_keras_spec("my_mlp_seq_spec")
 #>   compile_steps_per_execution = structure(list(), class = "rlang_zap")
 #>   compile_jit_compile = structure(list(), class = "rlang_zap")
 #>   compile_auto_scale_loss = structure(list(), class = "rlang_zap")
-#>   epochs = 10
 #> 
 #> Removed from parsnip registry objects: my_mlp_seq_spec, my_mlp_seq_spec_args, my_mlp_seq_spec_encoding, my_mlp_seq_spec_fit, my_mlp_seq_spec_modes, my_mlp_seq_spec_pkgs, my_mlp_seq_spec_predict
 #> Removed 'my_mlp_seq_spec' from parsnip:::get_model_env()$models

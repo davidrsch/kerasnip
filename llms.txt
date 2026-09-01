@@ -281,7 +281,7 @@ trained Keras models.
 
 ## Custom recipe steps
 
-Custom stpes for recipe which uses kerasnip models specifications
+Custom steps for recipe which uses kerasnip models specifications
 
 - [`step_collapse()`](https://davidrsch.github.io/kerasnip/reference/step_collapse.md)
   : Collapse Predictors into a single list-column

@@ -79,8 +79,8 @@ process:
 3.  **Fit Model:** It calls
     [`keras3::fit()`](https://generics.r-lib.org/reference/fit.html)
     with the compiled model and processed data, passing along any
-    fitting-specific arguments (e.g., `epochs`, `batch_size`,
-    `callbacks`).
+    fitting-specific arguments (e.g., `fit_epochs`, `fit_batch_size`,
+    `fit_callbacks`).
 
 ## Examples
 

@@ -213,7 +213,7 @@ stored on the spec.</p>
 <span class="r-in"><span><span class="va">model_spec</span> <span class="op">&lt;-</span> <span class="fu">my_mlp_seq_spec</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  num_hidden <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  hidden_units <span class="op">=</span> <span class="fl">64</span>,</span></span>
-<span class="r-in"><span>  epochs <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>  fit_epochs <span class="op">=</span> <span class="fl">10</span>,</span></span>
 <span class="r-in"><span>  learn_rate <span class="op">=</span> <span class="fl">0.01</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -229,7 +229,7 @@ stored on the spec.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   hidden_units = 64</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   learn_rate = 0.01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fit_batch_size = structure(list(), class = "rlang_zap")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_epochs = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_epochs = 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fit_callbacks = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_split = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_data = structure(list(), class = "rlang_zap")</span>
@@ -252,7 +252,6 @@ stored on the spec.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   compile_steps_per_execution = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   compile_jit_compile = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   compile_auto_scale_loss = structure(list(), class = "rlang_zap")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   epochs = 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed from parsnip registry objects: my_mlp_seq_spec, my_mlp_seq_spec_args, my_mlp_seq_spec_encoding, my_mlp_seq_spec_fit, my_mlp_seq_spec_modes, my_mlp_seq_spec_pkgs, my_mlp_seq_spec_predict</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 'my_mlp_seq_spec' from parsnip:::get_model_env()$models</span>

@@ -4,6 +4,10 @@
 
 ### New Features
 
+- Fit arguments can now be written without the `fit_` prefix
+  (e.g. `epochs` for `fit_epochs`), matching other tidymodels
+  neural-network engines. The `fit_` form takes precedence when both are
+  supplied.
 - Added
   [`step_sequence()`](https://davidrsch.github.io/kerasnip/reference/step_sequence.md)
   and
@@ -104,6 +108,20 @@
   [`kerasnip_output_view()`](https://davidrsch.github.io/kerasnip/reference/kerasnip_output_view.md)’s
   [`probably::int_conformal_full()`](https://probably.tidymodels.org/reference/int_conformal_full.html)
   support.
+
+### Documentation
+
+- Corrected model-spec examples and wording to use `fit_epochs`
+  consistently with the generated arguments.
+- Fixed a typo in the
+  [`keras_evaluate()`](https://davidrsch.github.io/kerasnip/reference/keras_evaluate.md)
+  description and a typo in the pkgdown reference index.
+
+### Testing
+
+- Added an end-to-end integration test for `stacks` ensembles
+  ([\#48](https://github.com/davidrsch/kerasnip/issues/48)) and added
+  `stacks` to `Suggests`.
 
 ### Maintenance
 

@@ -263,7 +263,7 @@ pass.</p>
 <span></span>
 <span><span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">spec</span><span class="op">)</span></span>
 <span><span class="va">fit_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wf</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 10/10 - 0s - 20ms/step</span></span></code></pre></div>
+<span><span class="co">#&gt; 10/10 - 0s - 19ms/step</span></span></code></pre></div>
 <p><code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> returns a nested <code>.pred</code>
 list-column: one row per input sample, each holding a small tibble of
 <code>.step</code> (1 to <code>horizon</code>) and <code>.pred</code>
@@ -274,7 +274,7 @@ per row (<code>.pred</code> / <code>.eval_time</code> /
 evaluation time.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">test_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 91ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 90ms/step</span></span>
 <span><span class="va">preds</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 57 × 1</span></span></span>
 <span><span class="co">#&gt;    .pred           </span></span>
@@ -295,12 +295,12 @@ evaluation time.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   .step .pred</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 0.851</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 0.733</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 0.631</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 0.538</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     5 0.423</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     6 0.276</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 0.762</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 0.719</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 0.600</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 0.456</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     5 0.365</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     6 0.245</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="step-5-visualize-the-forecast">Step 5: Visualize the Forecast<a class="anchor" aria-label="anchor" href="#step-5-visualize-the-forecast"></a>
@@ -346,10 +346,10 @@ single pooled width applied to every step alike.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">test_data</span>, type <span class="op">=</span> <span class="st">"conf_int"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 12ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 12ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 12ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 12ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 12ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span></span>
 <span><span class="va">comparison_ci</span> <span class="op">&lt;-</span> <span class="va">preds_ci</span> <span class="op">|&gt;</span></span>
@@ -402,23 +402,23 @@ need with standard <code>dplyr</code>/<code>tidyr</code> tools.</p>
 <span>  joint <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_draws <span class="op">=</span> <span class="fl">200</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 12ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 11ms/step</span></span>
 <span></span>
 <span><span class="va">one_row_draws</span> <span class="op">&lt;-</span> <span class="va">preds_joint</span><span class="op">$</span><span class="va">.pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">one_row_draws</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,200 × 3</span></span></span>
 <span><span class="co">#&gt;    .draw .step .pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1     1 0.860</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2     1 0.795</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3     1 0.875</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4     1 0.860</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5     1 0.770</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6     1 0.935</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7     1 0.685</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8     1 0.776</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9     1 0.838</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10     1 0.790</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1     1 0.771</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2     1 0.706</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3     1 0.786</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4     1 0.771</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5     1 0.681</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6     1 0.846</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7     1 0.595</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8     1 0.687</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9     1 0.749</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10     1 0.701</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,190 more rows</span></span></span>
 <span></span>
 <span><span class="co"># Draws at different steps are correlated, unlike the marginal intervals above.</span></span>
@@ -426,9 +426,9 @@ need with standard <code>dplyr</code>/<code>tidyr</code> tools.</p>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">.step</span>, values_from <span class="op">=</span> <span class="va">.pred</span>, names_prefix <span class="op">=</span> <span class="st">"step_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">step_1</span>, <span class="va">step_2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           step_1    step_2</span></span>
-<span><span class="co">#&gt; step_1 1.0000000 0.3708039</span></span>
-<span><span class="co">#&gt; step_2 0.3708039 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt;          step_1   step_2</span></span>
+<span><span class="co">#&gt; step_1 1.000000 0.354673</span></span>
+<span><span class="co">#&gt; step_2 0.354673 1.000000</span></span></code></pre></div>
 <p>A handful of individual sampled trajectories, plotted alongside the
 marginal band from Step 6, shows what the correlation buys you: real
 trajectories tend to stay consistently above or below the mean forecast

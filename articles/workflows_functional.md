@@ -415,10 +415,11 @@ combinations performed best.
 
 # Show the best performing models based on RMSE
 show_best(ames_tune_results, metric = "rmse", n = 5)
-#> # A tibble: 1 × 10
+#> # A tibble: 2 × 10
 #>   processed_numerical_units processed_neighborhood_units processed_bldg_units
 #>                       <int>                        <int>                <int>
 #> 1                       128                           64                   64
+#> 2                       128                           64                   40
 #> # ℹ 7 more variables: processed_condition_units <int>, .metric <chr>,
 #> #   .estimator <chr>, mean <dbl>, n <int>, std_err <dbl>, .config <chr>
 
@@ -505,12 +506,12 @@ print(final_ames_fit)
 #>  Optimizer params: 9,092 (35.52 KB)
 #> 
 #> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 12 1b 55 12 40 00 00 00 40 00
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 a6 1e 9a 5c 40 00 00 00 40 00
 #>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
 #>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 35 2e 31 22 2c 20 22
 #>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 39 2d 30 31
-#>    [97] 40 30 38 3a 32 34 3a 33 39 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 75 0f bf 4b 1c 21 00 00 1c 21 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>    [97] 40 31 37 3a 34 34 3a 30 30 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 53 4f 83 3c 1c 21 00 00 1c 21 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
 #>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 2e 73 72
 #>   [169] 63 2e 6d 6f 64 65 6c 73 2e 66 75 6e 63 74 69 6f 6e 61 6c 22 2c 20 22 63
 #>   [193] 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 46 75 6e 63 74 69 6f 6e 61 6c 22
@@ -604,7 +605,7 @@ model’s performance.
 
 # Make predictions on the test set
 ames_test_pred <- predict(final_ames_fit, new_data = ames_test)
-#> 19/19 - 0s - 9ms/step
+#> 19/19 - 0s - 8ms/step
 
 # Combine predictions with actuals
 ames_results <- tibble::tibble(
@@ -616,12 +617,12 @@ print(head(ames_results))
 #> # A tibble: 6 × 2
 #>   Sale_Price   .pred
 #>        <int>   <dbl>
-#> 1     105000  96795.
-#> 2     172000 161898.
-#> 3     189900 193337.
-#> 4     115000 127274.
-#> 5     395192 269046.
-#> 6     214000 212862.
+#> 1     105000  98854.
+#> 2     172000 157773.
+#> 3     189900 191663.
+#> 4     115000 128527.
+#> 5     395192 265824.
+#> 6     214000 211154.
 
 # Evaluate performance using yardstick metrics
 metrics_results <- metric_set(
@@ -638,9 +639,9 @@ print(metrics_results)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard   50945.   
-#> 2 mae     standard   31028.   
-#> 3 rsq     standard       0.783
+#> 1 rmse    standard   50691.   
+#> 2 mae     standard   30788.   
+#> 3 rsq     standard       0.788
 ```
 
 ## Saving and Reloading Your Model
@@ -663,16 +664,16 @@ final_ames_fit_loaded <- readRDS("ames_model.rds")
 
 # Make predictions again to prove it works
 predict(final_ames_fit_loaded, new_data = ames_test) |> head()
-#> 19/19 - 0s - 9ms/step
+#> 19/19 - 0s - 8ms/step
 #> # A tibble: 6 × 1
 #>     .pred
 #>     <dbl>
-#> 1  96795.
-#> 2 161898.
-#> 3 193337.
-#> 4 127274.
-#> 5 269046.
-#> 6 212862.
+#> 1  98854.
+#> 2 157773.
+#> 3 191663.
+#> 4 128527.
+#> 5 265824.
+#> 6 211154.
 ```
 
 If you need a fully self-contained bundle suitable for deployment with
@@ -694,16 +695,16 @@ library(bundle)
 final_ames_fit_loaded <- unbundle(readRDS("ames_model_bundle.rds"))
 
 predict(final_ames_fit_loaded, new_data = ames_test) |> head()
-#> 19/19 - 0s - 9ms/step
+#> 19/19 - 0s - 8ms/step
 #> # A tibble: 6 × 1
 #>     .pred
 #>     <dbl>
-#> 1  96795.
-#> 2 161898.
-#> 3 193337.
-#> 4 127274.
-#> 5 269046.
-#> 6 212862.
+#> 1  98854.
+#> 2 157773.
+#> 3 191663.
+#> 4 128527.
+#> 5 265824.
+#> 6 211154.
 ```
 
 See

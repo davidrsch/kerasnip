@@ -130,7 +130,8 @@ networks with multiple inputs/outputs or residual connections.</p>
 <p>The function inspects the arguments of your <code>layer_blocks</code> functions and
 makes them available as tunable parameters in the generated model
 specification, prefixed with the block's name (e.g., <code>dense_units</code>).
-Common training parameters such as <code>epochs</code> and <code>learn_rate</code> are also added.</p>
+Common training parameters such as <code>fit_epochs</code> and <code>learn_rate</code> are also
+added.</p>
     </div>
     <div class="section level2">
     <h2 id="model-graph-connectivity">Model Graph Connectivity<a class="anchor" aria-label="anchor" href="#model-graph-connectivity"></a></h2>
@@ -232,7 +233,7 @@ stored on the spec.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># 3. Use the newly created specification function!</span></span></span>
 <span class="r-in"><span>  <span class="co"># The `dense_path_units` argument was created automatically.</span></span></span>
-<span class="r-in"><span>  <span class="va">model_spec</span> <span class="op">&lt;-</span> <span class="fu">my_resnet_spec</span><span class="op">(</span>dense_path_units <span class="op">=</span> <span class="fl">64</span>, epochs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">model_spec</span> <span class="op">&lt;-</span> <span class="fu">my_resnet_spec</span><span class="op">(</span>dense_path_units <span class="op">=</span> <span class="fl">64</span>, fit_epochs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># You could also tune the number of dense layers since it has a single</span></span></span>
 <span class="r-in"><span>  <span class="co"># input:</span></span></span>
@@ -252,7 +253,7 @@ stored on the spec.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   dense_path_units = 64</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   learn_rate = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fit_batch_size = structure(list(), class = "rlang_zap")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_epochs = structure(list(), class = "rlang_zap")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fit_epochs = 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fit_callbacks = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_split = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fit_validation_data = structure(list(), class = "rlang_zap")</span>
@@ -275,7 +276,6 @@ stored on the spec.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   compile_steps_per_execution = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   compile_jit_compile = structure(list(), class = "rlang_zap")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   compile_auto_scale_loss = structure(list(), class = "rlang_zap")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   epochs = 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed from parsnip registry objects: my_resnet_spec, my_resnet_spec_args, my_resnet_spec_encoding, my_resnet_spec_fit, my_resnet_spec_modes, my_resnet_spec_pkgs, my_resnet_spec_predict</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 'my_resnet_spec' from parsnip:::get_model_env()$models</span>

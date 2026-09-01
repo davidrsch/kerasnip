@@ -67,8 +67,8 @@ as networks with multiple inputs/outputs or residual connections.
 The function inspects the arguments of your `layer_blocks` functions and
 makes them available as tunable parameters in the generated model
 specification, prefixed with the block's name (e.g., `dense_units`).
-Common training parameters such as `epochs` and `learn_rate` are also
-added.
+Common training parameters such as `fit_epochs` and `learn_rate` are
+also added.
 
 ## Model Graph Connectivity
 
@@ -184,7 +184,7 @@ if (requireNamespace("keras3", quietly = TRUE)) {
 
   # 3. Use the newly created specification function!
   # The `dense_path_units` argument was created automatically.
-  model_spec <- my_resnet_spec(dense_path_units = 64, epochs = 10)
+  model_spec <- my_resnet_spec(dense_path_units = 64, fit_epochs = 10)
 
   # You could also tune the number of dense layers since it has a single
   # input:
@@ -204,7 +204,7 @@ if (requireNamespace("keras3", quietly = TRUE)) {
 #>   dense_path_units = 64
 #>   learn_rate = structure(list(), class = "rlang_zap")
 #>   fit_batch_size = structure(list(), class = "rlang_zap")
-#>   fit_epochs = structure(list(), class = "rlang_zap")
+#>   fit_epochs = 10
 #>   fit_callbacks = structure(list(), class = "rlang_zap")
 #>   fit_validation_split = structure(list(), class = "rlang_zap")
 #>   fit_validation_data = structure(list(), class = "rlang_zap")
@@ -227,7 +227,6 @@ if (requireNamespace("keras3", quietly = TRUE)) {
 #>   compile_steps_per_execution = structure(list(), class = "rlang_zap")
 #>   compile_jit_compile = structure(list(), class = "rlang_zap")
 #>   compile_auto_scale_loss = structure(list(), class = "rlang_zap")
-#>   epochs = 10
 #> 
 #> Removed from parsnip registry objects: my_resnet_spec, my_resnet_spec_args, my_resnet_spec_encoding, my_resnet_spec_fit, my_resnet_spec_modes, my_resnet_spec_pkgs, my_resnet_spec_predict
 #> Removed 'my_resnet_spec' from parsnip:::get_model_env()$models
