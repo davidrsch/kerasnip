@@ -146,12 +146,15 @@ test_that("conformal: int_conformal_full works with sequential kerasnip workflow
   )
 
   spec <- conf_full_seq(fit_epochs = 2) |> set_engine("keras")
+  # Seed Keras so the two-epoch model produces varied predictions and the
+  # interval-length GAM in probably::int_conformal_full() can be fitted.
+  keras3::set_random_seed(123)
   # Use a small subset to keep the number of model refits manageable in CI.
   # int_conformal_full refits the model for every candidate value of every
   # new test observation, so dataset and new_data size directly controls
   # total training cycles.
-  data <- mtcars[1:15, ]
-  new_data <- mtcars[16:17, ]
+  data <- mtcars[1:30, ]
+  new_data <- mtcars[31:32, ]
   rec <- recipe(mpg ~ ., data = data)
   wf <- workflow(rec, spec)
 
@@ -252,8 +255,9 @@ test_that("conformal: int_conformal_full works with functional kerasnip workflow
   )
 
   spec <- conf_full_func(fit_epochs = 2) |> set_engine("keras")
-  data <- mtcars[1:15, ]
-  new_data <- mtcars[16:17, ]
+  keras3::set_random_seed(123)
+  data <- mtcars[1:30, ]
+  new_data <- mtcars[31:32, ]
   rec <- recipe(mpg ~ ., data = data)
   wf <- workflow(rec, spec)
 
