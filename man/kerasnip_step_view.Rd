@@ -23,9 +23,9 @@ A \code{kerasnip_step_view} object.
 A kerasnip multistep (vector-valued) regression model returns a nested
 \code{.pred} list-column: one inner tibble per row, with a \code{.step} column plus
 one prediction column per forecasted variable. \code{tailor}/\code{probably} expect
-a single flat numeric \code{.pred} column instead — \code{tailor::check_variable_type()}
-requires \code{is.numeric()} on the outcome/estimate columns, which a
-list-column fails outright.
+a single flat numeric \code{.pred} column instead —
+\code{tailor::check_variable_type()} requires \code{is.numeric()} on the
+outcome/estimate columns, which a list-column fails outright.
 
 \code{kerasnip_step_view()} wraps a fitted multistep workflow together with
 one forecast step (and, if more than one variable is forecast, which
@@ -38,8 +38,9 @@ columns (e.g. \code{lead_1_value}) are recipe-\emph{engineered} from a single ra
 column via \code{step_lead()} — they are not present in a user's raw data the
 way genuine multi-output columns are. \code{\link[=kerasnip_step_truth]{kerasnip_step_truth()}} recovers
 the true future value at a given step by re-baking the fitted recipe on
-raw data, which is what \link[probably:int_conformal_split]{int_conformal_split()}
-uses internally for this class.
+raw data, which is what
+\link[probably:int_conformal_split]{int_conformal_split()} uses internally for
+this class.
 
 \code{probably::int_conformal_full()} is also supported (see
 \code{int_conformal_full.kerasnip_step_view()}), with a materially different

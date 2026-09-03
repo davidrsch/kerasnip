@@ -28,8 +28,8 @@ disabled functions. Default is \code{FALSE}.}
 \item{...}{Not used.}
 }
 \value{
-An axed \code{kerasnip_model_fit} object with the \code{butcher_kerasnip_model_fit}
-class prepended.
+An axed \code{kerasnip_model_fit} object with the
+\code{butcher_kerasnip_model_fit} class prepended.
 }
 \description{
 These methods allow \code{butcher::butcher()} to reduce the memory footprint of

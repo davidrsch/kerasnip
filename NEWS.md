@@ -1,8 +1,9 @@
-# kerasnip (development version)
+# kerasnip 0.2.0
 
 ## New Features
 
 - Fit arguments can now be written without the `fit_` prefix (e.g. `epochs` for `fit_epochs`), matching other tidymodels neural-network engines. The `fit_` form takes precedence when both are supplied.
+- Added native `predict(..., type = "conf_int")` and `type = "pred_int"` for kerasnip regression and classification models, computed from a last-layer Laplace approximation (the last layer's weight posterior via the diagonal Generalised Gauss-Newton, epistemic variance propagated through the penultimate features). Exposed through the exported (internal) prediction hooks `laplace_conf_int_reg()`, `laplace_pred_int_reg()`, `laplace_conf_int_cls()`, and `laplace_pred_int_cls()`.
 - Added `step_sequence()` and `step_lead()` recipe steps for building the windowed inputs and multi-step-ahead targets a recurrent forecasting model needs.
 - Added support for multi-step (vector-valued) regression outputs: a single `output` block can now predict several future steps at once (`units = horizon`), with `predict()` returning point forecasts and `conf_int`/`pred_int` nested by forecast step.
 - Added `predict(..., type = "pred_int", joint = TRUE)` for correlated multi-step prediction intervals, sampled from the jointly-estimated residual covariance across steps and returned as tidybayes-style `.draw` columns.
