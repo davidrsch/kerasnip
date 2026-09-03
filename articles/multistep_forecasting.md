@@ -193,7 +193,7 @@ spec <- multistep_lstm_spec(
 
 wf <- workflow(rec, spec)
 fit_obj <- fit(wf, data = train_data)
-#> 10/10 - 0s - 19ms/step
+#> 10/10 - 0s - 15ms/step
 ```
 
 [`predict()`](https://rdrr.io/r/stats/predict.html) returns a nested
@@ -207,7 +207,7 @@ time.
 ``` r
 
 preds <- predict(fit_obj, new_data = test_data)
-#> 2/2 - 0s - 90ms/step
+#> 2/2 - 0s - 65ms/step
 preds
 #> # A tibble: 57 × 1
 #>    .pred           
@@ -228,12 +228,12 @@ preds$.pred[[1]]
 #> # A tibble: 6 × 2
 #>   .step .pred
 #>   <int> <dbl>
-#> 1     1 0.762
-#> 2     2 0.719
-#> 3     3 0.600
-#> 4     4 0.456
-#> 5     5 0.365
-#> 6     6 0.245
+#> 1     1 0.868
+#> 2     2 0.776
+#> 3     3 0.667
+#> 4     4 0.598
+#> 5     5 0.469
+#> 6     6 0.335
 ```
 
 ## Step 5: Visualize the Forecast
@@ -282,12 +282,12 @@ applied to every step alike.
 ``` r
 
 preds_ci <- predict(fit_obj, new_data = test_data, type = "conf_int")
-#> 2/2 - 0s - 12ms/step
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 10ms/step
 
 comparison_ci <- preds_ci |>
   dplyr::slice(1) |>
@@ -343,23 +343,23 @@ preds_joint <- predict(
   joint = TRUE,
   n_draws = 200
 )
-#> 2/2 - 0s - 11ms/step
+#> 2/2 - 0s - 10ms/step
 
 one_row_draws <- preds_joint$.pred[[1]]
 one_row_draws
 #> # A tibble: 1,200 × 3
 #>    .draw .step .pred
 #>    <int> <int> <dbl>
-#>  1     1     1 0.771
-#>  2     2     1 0.706
-#>  3     3     1 0.786
-#>  4     4     1 0.771
-#>  5     5     1 0.681
-#>  6     6     1 0.846
-#>  7     7     1 0.595
-#>  8     8     1 0.687
-#>  9     9     1 0.749
-#> 10    10     1 0.701
+#>  1     1     1 0.876
+#>  2     2     1 0.815
+#>  3     3     1 0.892
+#>  4     4     1 0.876
+#>  5     5     1 0.790
+#>  6     6     1 0.949
+#>  7     7     1 0.703
+#>  8     8     1 0.795
+#>  9     9     1 0.856
+#> 10    10     1 0.806
 #> # ℹ 1,190 more rows
 
 # Draws at different steps are correlated, unlike the marginal intervals above.
@@ -367,9 +367,9 @@ one_row_draws |>
   tidyr::pivot_wider(names_from = .step, values_from = .pred, names_prefix = "step_") |>
   dplyr::select(step_1, step_2) |>
   cor()
-#>          step_1   step_2
-#> step_1 1.000000 0.354673
-#> step_2 0.354673 1.000000
+#>           step_1    step_2
+#> step_1 1.0000000 0.3808804
+#> step_2 0.3808804 1.0000000
 ```
 
 A handful of individual sampled trajectories, plotted alongside the

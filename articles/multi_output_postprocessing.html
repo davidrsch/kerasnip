@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -222,19 +222,19 @@ of <code><a href="https://generics.r-lib.org/reference/fit.html" class="external
 <span></span>
 <span><span class="va">wflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">spec</span><span class="op">)</span></span>
 <span><span class="va">fit_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wflow</span>, data <span class="op">=</span> <span class="va">train_dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 7/7 - 0s - 7ms/step</span></span>
-<span><span class="co">#&gt; 7/7 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 7/7 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 7/7 - 0s - 5ms/step</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_obj</span>, new_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 39ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 29ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_temperature .pred_humidity</span></span>
 <span><span class="co">#&gt;               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             0.333        -<span style="color: #BB0000;">0.849</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            -<span style="color: #BB0000;">0.901</span>        -<span style="color: #BB0000;">0.742</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             0.585         0.522 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             0.484        -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>             0.841         0.634</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             0.288        -<span style="color: #BB0000;">0.849</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            -<span style="color: #BB0000;">0.839</span>        -<span style="color: #BB0000;">0.779</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             0.514         0.490 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             0.367        -<span style="color: #BB0000;">0.018</span><span style="color: #BB0000; text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>             0.786         0.611</span></span></code></pre></div>
 <p>Both outcomes come back from a single <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> call,
 <code>.pred_temperature</code>/<code>.pred_humidity</code> — exactly
 parsnip’s own convention for multivariate regression, and exactly what
@@ -249,21 +249,21 @@ single-output fit<a class="anchor" aria-label="anchor" href="#kerasnip_output_vi
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_view</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kerasnip_output_view.html">kerasnip_output_view</a></span><span class="op">(</span><span class="va">fit_obj</span>, <span class="st">"temperature"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">temp_view</span>, new_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 1</span></span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  0.333</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.901</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  0.585</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  0.484</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  0.841</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  0.288</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.839</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  0.514</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  0.367</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  0.786</span></span></code></pre></div>
 <p><code>temp_view</code> behaves like an ordinary single-output fit to
 anything that calls <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> on it. That is enough for
 manual <code>tailor</code> usage:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cal_preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">temp_view</span>, new_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 13ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 10ms/step</span></span>
 <span><span class="va">cal_data_for_tailor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html" class="external-link">bind_cols</a></span><span class="op">(</span>temperature <span class="op">=</span> <span class="va">cal_dat</span><span class="op">$</span><span class="va">temperature</span>, <span class="va">cal_preds</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tlr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tailor.tidymodels.org/reference/tailor.html" class="external-link">tailor</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tailor.tidymodels.org/reference/adjust_numeric_calibration.html" class="external-link">adjust_numeric_calibration</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"linear"</span><span class="op">)</span></span>
@@ -273,16 +273,16 @@ manual <code>tailor</code> usage:</p>
 <span><span class="co">#&gt;   as.character.dev_topic generics</span></span>
 <span></span>
 <span><span class="va">new_preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">temp_view</span>, new_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">tlr_fit</span>, <span class="va">new_preds</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 1</span></span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  0.307</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.862</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  0.525</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  0.437</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  0.752</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  0.305</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.772</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  0.493</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  0.371</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  0.715</span></span></code></pre></div>
 <p>It is also enough for <code>probably</code>’s conformal methods,
 because <code><a href="../reference/kerasnip_output_view.html">kerasnip_output_view()</a></code> implements
 <code><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html" class="external-link">hardhat::extract_mold()</a></code> and
@@ -290,17 +290,17 @@ because <code><a href="../reference/kerasnip_output_view.html">kerasnip_output_v
 <code><a href="https://probably.tidymodels.org/reference/int_conformal_split.html" class="external-link">probably::int_conformal_split()</a></code> needs:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">conformal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_split.html" class="external-link">int_conformal_split</a></span><span class="op">(</span><span class="va">temp_view</span>, cal_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 8ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 6ms/step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal</span>, new_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
 <span><span class="co">#&gt;    .pred .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  0.333     -<span style="color: #BB0000;">0.112</span>        0.779</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.901</span>     -<span style="color: #BB0000;">1.35</span>        -<span style="color: #BB0000;">0.455</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  0.585      0.140        1.03 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  0.484      0.038<span style="text-decoration: underline;">7</span>       0.930</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  0.841      0.396        1.29</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  0.288     -<span style="color: #BB0000;">0.142</span>        0.717</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.839</span>     -<span style="color: #BB0000;">1.27</span>        -<span style="color: #BB0000;">0.409</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  0.514      0.085<span style="text-decoration: underline;">0</span>       0.944</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  0.367     -<span style="color: #BB0000;">0.062</span><span style="color: #BB0000; text-decoration: underline;">6</span>       0.796</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  0.786      0.356        1.22</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="probablyint_conformal_full-supported-with-one-documented-assumption">
@@ -326,8 +326,8 @@ accordingly.</p>
 <span><span class="va">small_new</span>   <span class="op">&lt;-</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span>
 <span></span>
 <span><span class="va">fit_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wflow</span>, data <span class="op">=</span> <span class="va">small_train</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
 <span><span class="va">temp_view_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kerasnip_output_view.html">kerasnip_output_view</a></span><span class="op">(</span><span class="va">fit_small</span>, <span class="st">"temperature"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">conformal_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
@@ -335,153 +335,153 @@ accordingly.</p>
 <span>  train_data <span class="op">=</span> <span class="va">small_train</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/control_conformal_full.html" class="external-link">control_conformal_full</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"grid"</span>, trial_points <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_full</span>, new_data <span class="op">=</span> <span class="va">small_new</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
 <span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 25ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 26ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 23ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 28ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 36ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 29ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 36ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 36ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 31ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 33ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 35ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 32ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 30ms/step</span></span>
-<span><span class="co">#&gt; 2/2 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 19ms/step</span></span>
+<span><span class="co">#&gt; 2/2 - 0s - 20ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      -<span style="color: #BB0000;">0.195</span>       0.765</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      -<span style="color: #BB0000;">1.78</span>        0.212</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      -<span style="color: #BB0000;">0.212</span>       1.24</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     -<span style="color: #BB0000;">0.028</span><span style="color: #BB0000; text-decoration: underline;">5</span>       0.903</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     -<span style="color: #BB0000;">1.13</span>        -<span style="color: #BB0000;">0.467</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     -<span style="color: #BB0000;">0.143</span>        1.08</span></span></code></pre></div>
 <p>Only <code>method = "grid"</code> is supported;
 <code>"iterative"</code> relies on <code>probably</code>’s private
 root-finding internals and is out of scope.</p>
@@ -500,20 +500,20 @@ untouched:</p>
 <span><span class="va">tailored_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kerasnip_add_tailor.html">kerasnip_add_tailor</a></span><span class="op">(</span><span class="va">wflow</span>, <span class="va">tlr2</span>, output <span class="op">=</span> <span class="st">"temperature"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tailored_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">tailored_wf</span>, data <span class="op">=</span> <span class="va">train_dat</span>, data_calibration <span class="op">=</span> <span class="va">cal_dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 7/7 - 0s - 9ms/step</span></span>
-<span><span class="co">#&gt; 7/7 - 0s - 9ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; 7/7 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 7/7 - 0s - 6ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 14ms/step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">tailored_fit</span>, new_data <span class="op">=</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 24ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_temperature .pred_humidity</span></span>
 <span><span class="co">#&gt;               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             0.277        -<span style="color: #BB0000;">0.823</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            -<span style="color: #BB0000;">0.752</span>        -<span style="color: #BB0000;">0.806</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             0.497         0.457 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             0.415        -<span style="color: #BB0000;">0.066</span><span style="color: #BB0000; text-decoration: underline;">2</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>             0.734         0.563</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             0.354        -<span style="color: #BB0000;">0.849</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            -<span style="color: #BB0000;">0.750</span>        -<span style="color: #BB0000;">0.810</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             0.435         0.533 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             0.437        -<span style="color: #BB0000;">0.094</span><span style="color: #BB0000; text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>             0.659         0.639</span></span></code></pre></div>
 <p><code>.pred_temperature</code> is calibrated;
 <code>.pred_humidity</code> is exactly what a plain, un-tailored
 <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> would have returned.</p>
@@ -565,7 +565,7 @@ firmly as a genuine multi-output shape, for an unrelated reason.</p>
 <span></span>
 <span><span class="va">step_wflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="va">rec_step</span>, <span class="va">step_spec</span><span class="op">)</span></span>
 <span><span class="va">step_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">step_wflow</span>, data <span class="op">=</span> <span class="va">train_series</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 5/5 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 5/5 - 0s - 27ms/step</span></span>
 <span></span>
 <span><span class="co"># step_sequence() needs `timesteps` rows of leading history to produce a</span></span>
 <span><span class="co"># single prediction, so a preview slice must include at least that much</span></span>
@@ -573,7 +573,7 @@ firmly as a genuine multi-output shape, for an unrelated reason.</p>
 <span><span class="va">preview_data</span> <span class="op">&lt;-</span> <span class="va">test_series</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">timesteps</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">step_fit</span>, new_data <span class="op">=</span> <span class="va">preview_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 104ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 75ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 1</span></span></span>
 <span><span class="co">#&gt;   .pred           </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          </span></span>
@@ -591,16 +591,16 @@ single-output fit<a class="anchor" aria-label="anchor" href="#kerasnip_step_view
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">step_2_view</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kerasnip_step_view.html">kerasnip_step_view</a></span><span class="op">(</span><span class="va">step_fit</span>, step <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">step_2_view</span>, new_data <span class="op">=</span> <span class="va">preview_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 24ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 19ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 1</span></span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.952</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.944</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.922</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">0.874</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">0.834</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">0.802</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.960</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.982</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.946</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">0.905</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">0.876</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">0.858</span></span></span></code></pre></div>
 <p>Unlike a multi-output model, a multistep model’s per-step outcome
 columns (<code>lead_2_value</code>, …) are recipe-<em>engineered</em>
 from a single raw column by <code><a href="../reference/step_lead.html">step_lead()</a></code> — they do not exist
@@ -616,7 +616,7 @@ recipe:</p>
 case:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">step_2_view</span>, new_data <span class="op">=</span> <span class="va">train_series</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 5/5 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; 5/5 - 0s - 17ms/step</span></span>
 <span><span class="va">truth_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kerasnip_step_truth.html">kerasnip_step_truth</a></span><span class="op">(</span><span class="va">step_2_view</span>, <span class="va">train_series</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">cal_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">truth_step</span>, .pred <span class="op">=</span> <span class="va">preds_step</span><span class="op">$</span><span class="va">.pred</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -626,33 +626,33 @@ case:</p>
 <span><span class="va">tlr_step_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">tlr_step</span>, <span class="va">cal_tbl</span>, outcome <span class="op">=</span> <span class="va">truth</span>, estimate <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">new_preds_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">step_2_view</span>, new_data <span class="op">=</span> <span class="va">preview_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 27ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 23ms/step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">tlr_step_fit</span>, <span class="va">new_preds_step</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 1</span></span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.949</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.942</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.919</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">0.871</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">0.831</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">0.798</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.946</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.969</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.932</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">0.890</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">0.860</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">0.842</span></span></span></code></pre></div>
 <p>…and enough for <code><a href="https://probably.tidymodels.org/reference/int_conformal_split.html" class="external-link">probably::int_conformal_split()</a></code>, exactly
 as with a multi-output view:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">conformal_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_split.html" class="external-link">int_conformal_split</a></span><span class="op">(</span><span class="va">step_2_view</span>, cal_data <span class="op">=</span> <span class="va">train_series</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 5/5 - 0s - 7ms/step</span></span>
+<span><span class="co">#&gt; 5/5 - 0s - 5ms/step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_step</span>, new_data <span class="op">=</span> <span class="va">preview_data</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 26ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;    .pred .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.952</span>      -<span style="color: #BB0000;">1.05</span>       -<span style="color: #BB0000;">0.849</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.944</span>      -<span style="color: #BB0000;">1.05</span>       -<span style="color: #BB0000;">0.841</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.922</span>      -<span style="color: #BB0000;">1.02</span>       -<span style="color: #BB0000;">0.819</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">0.874</span>      -<span style="color: #BB0000;">0.977</span>      -<span style="color: #BB0000;">0.772</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">0.834</span>      -<span style="color: #BB0000;">0.937</span>      -<span style="color: #BB0000;">0.731</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">0.802</span>      -<span style="color: #BB0000;">0.904</span>      -<span style="color: #BB0000;">0.699</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.960</span>      -<span style="color: #BB0000;">1.08</span>       -<span style="color: #BB0000;">0.840</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.982</span>      -<span style="color: #BB0000;">1.10</span>       -<span style="color: #BB0000;">0.862</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.946</span>      -<span style="color: #BB0000;">1.07</span>       -<span style="color: #BB0000;">0.826</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">0.905</span>      -<span style="color: #BB0000;">1.02</span>       -<span style="color: #BB0000;">0.786</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">0.876</span>      -<span style="color: #BB0000;">0.996</span>      -<span style="color: #BB0000;">0.756</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">0.858</span>      -<span style="color: #BB0000;">0.978</span>      -<span style="color: #BB0000;">0.738</span></span></span></code></pre></div>
 <p><code><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">probably::int_conformal_full()</a></code> is also supported for
 step views, with a different design from the multi-output case: a
 multistep model’s step targets are not independent raw columns — every
@@ -676,7 +676,7 @@ multistep example in this package).</p>
 <span><span class="va">small_new</span> <span class="op">&lt;-</span> <span class="va">test_series</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">timesteps</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">fit_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">step_wflow</span>, data <span class="op">=</span> <span class="va">small_train</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 74ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 46ms/step</span></span>
 <span><span class="va">step_2_view_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kerasnip_step_view.html">kerasnip_step_view</a></span><span class="op">(</span><span class="va">fit_small</span>, step <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">conformal_step_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
@@ -684,76 +684,76 @@ multistep example in this package).</p>
 <span>  train_data <span class="op">=</span> <span class="va">small_train</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/control_conformal_full.html" class="external-link">control_conformal_full</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"grid"</span>, trial_points <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 73ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_step_full</span>, new_data <span class="op">=</span> <span class="va">small_new</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 27ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 72ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 71ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 74ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 72ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 71ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 71ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 71ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 74ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 70ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 68ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 71ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 69ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 71ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 68ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 72ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 69ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 71ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 69ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 70ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 67ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 73ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 69ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 70ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 68ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 71ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 70ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 69ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 68ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 59ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 59ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 62ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 64ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 1s - 412ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 65ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 63ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 62ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 61ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 59ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
-<span><span class="co">#&gt; 3/3 - 0s - 60ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 53ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 47ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 47ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 45ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 45ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 46ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 49ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 1s - 276ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 58ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 46ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 45ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 48ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 46ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 45ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 44ms/step</span></span>
+<span><span class="co">#&gt; 3/3 - 0s - 43ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       -<span style="color: #BB0000;">1.29</span>      -<span style="color: #BB0000;">0.638</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>       -<span style="color: #BB0000;">1.32</span>      -<span style="color: #BB0000;">0.658</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>       -<span style="color: #BB0000;">1.26</span>      -<span style="color: #BB0000;">0.620</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       -<span style="color: #BB0000;">1.17</span>      -<span style="color: #BB0000;">0.548</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>       -<span style="color: #BB0000;">1.40</span>      -<span style="color: #BB0000;">0.575</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>       -<span style="color: #BB0000;">1.15</span>      -<span style="color: #BB0000;">0.537</span></span></span></code></pre></div>
 <p>As with the multi-output case, only <code>method = "grid"</code> is
 supported.</p>
 </div>
@@ -766,11 +766,11 @@ supported.</p>
 <span><span class="va">tailored_step_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kerasnip_add_tailor.html">kerasnip_add_tailor</a></span><span class="op">(</span><span class="va">step_wflow</span>, <span class="va">tlr_step2</span>, step <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tailored_step_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">tailored_step_wf</span>, data <span class="op">=</span> <span class="va">train_series</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 5/5 - 0s - 36ms/step</span></span>
-<span><span class="co">#&gt; 5/5 - 0s - 37ms/step</span></span>
+<span><span class="co">#&gt; 5/5 - 0s - 30ms/step</span></span>
+<span><span class="co">#&gt; 5/5 - 0s - 26ms/step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">tailored_step_fit</span>, new_data <span class="op">=</span> <span class="va">preview_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 22ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 1</span></span></span>
 <span><span class="co">#&gt;   .pred           </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          </span></span>

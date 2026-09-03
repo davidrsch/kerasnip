@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,10 +55,11 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="kerasnip-development-version">kerasnip (development version)<a class="anchor" aria-label="anchor" href="#kerasnip-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.0" id="kerasnip-020">kerasnip 0.2.0<a class="anchor" aria-label="anchor" href="#kerasnip-020"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <ul><li>Fit arguments can now be written without the <code>fit_</code> prefix (e.g. <code>epochs</code> for <code>fit_epochs</code>), matching other tidymodels neural-network engines. The <code>fit_</code> form takes precedence when both are supplied.</li>
+<li>Added native <code>predict(..., type = "conf_int")</code> and <code>type = "pred_int"</code> for kerasnip regression and classification models, computed from a last-layer Laplace approximation (the last layer’s weight posterior via the diagonal Generalised Gauss-Newton, epistemic variance propagated through the penultimate features). Exposed through the exported (internal) prediction hooks <code><a href="../reference/laplace_conf_int_reg.html">laplace_conf_int_reg()</a></code>, <code><a href="../reference/laplace_pred_int_reg.html">laplace_pred_int_reg()</a></code>, <code><a href="../reference/laplace_conf_int_cls.html">laplace_conf_int_cls()</a></code>, and <code><a href="../reference/laplace_pred_int_cls.html">laplace_pred_int_cls()</a></code>.</li>
 <li>Added <code><a href="../reference/step_sequence.html">step_sequence()</a></code> and <code><a href="../reference/step_lead.html">step_lead()</a></code> recipe steps for building the windowed inputs and multi-step-ahead targets a recurrent forecasting model needs.</li>
 <li>Added support for multi-step (vector-valued) regression outputs: a single <code>output</code> block can now predict several future steps at once (<code>units = horizon</code>), with <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> returning point forecasts and <code>conf_int</code>/<code>pred_int</code> nested by forecast step.</li>
 <li>Added <code>predict(..., type = "pred_int", joint = TRUE)</code> for correlated multi-step prediction intervals, sampled from the jointly-estimated residual covariance across steps and returned as tidybayes-style <code>.draw</code> columns.</li>
@@ -69,23 +70,23 @@
 <li>Added <code><a href="../reference/kerasnip_add_tailor.html">kerasnip_add_tailor()</a></code>, a <code><a href="https://workflows.tidymodels.org/reference/add_tailor.html" class="external-link">workflows::add_tailor()</a></code>-alike for multi-output and multistep models: attaches a <code>tailor</code> post-processor to a single output or forecast step and splices the adjusted values back into the full prediction, leaving every other output/step untouched. <code><a href="https://workflows.tidymodels.org/reference/add_tailor.html" class="external-link">workflows::add_tailor()</a></code> itself cannot be used directly on these models — <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">tailor::fit()</a></code> requires a single, flat, numeric outcome/estimate column pair, which neither shape provides.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<h3 id="bug-fixes-0-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h3>
 <ul><li>Fixed multi-output classification (multiple factor targets, each its own head) failing when fit through a <code><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow()</a></code>. parsnip’s internal formula reconstruction rebuilds multi-column outcomes via <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind()</a></code>, which silently discards factor levels; the fit interface is now <code>"data.frame"</code> instead of <code>"formula"</code> to avoid this.</li>
 <li>Fixed <code>predict(..., type = "class")</code> erroring for multi-output classification models.</li>
 <li>Fixed <code>conf_int</code>/<code>pred_int</code> for multi-output classification returning garbled column names; factor levels are now sliced per output instead of passing the whole named list to every output.</li>
 <li>Fixed multi-output regression predictions keeping <code>matrix</code>/<code>array</code> class on a single-row <code>.pred_&lt;output&gt;</code> column instead of a plain numeric (<code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> on a list of single-column matrices doesn’t simplify a 1-row matrix element the way it does for more rows). This silently broke anything re-using a single-row prediction as a plain value, such as <code><a href="../reference/kerasnip_output_view.html">kerasnip_output_view()</a></code>’s <code><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">probably::int_conformal_full()</a></code> support.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
+<h3 id="documentation-0-2-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-0"></a></h3>
 <ul><li>Corrected model-spec examples and wording to use <code>fit_epochs</code> consistently with the generated arguments.</li>
 <li>Fixed a typo in the <code><a href="../reference/keras_evaluate.html">keras_evaluate()</a></code> description and a typo in the pkgdown reference index.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="testing-development-version">Testing<a class="anchor" aria-label="anchor" href="#testing-development-version"></a></h3>
+<h3 id="testing-0-2-0">Testing<a class="anchor" aria-label="anchor" href="#testing-0-2-0"></a></h3>
 <ul><li>Added an end-to-end integration test for <code>stacks</code> ensembles (<a href="https://github.com/davidrsch/kerasnip/issues/48" class="external-link">#48</a>) and added <code>stacks</code> to <code>Suggests</code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="maintenance-development-version">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-development-version"></a></h3>
+<h3 id="maintenance-0-2-0">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-0-2-0"></a></h3>
 <ul><li>Aligned code style with the Air formatter and tidyverse conventions.</li>
 </ul></div>
 </div>

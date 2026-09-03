@@ -448,7 +448,7 @@ final_ames_wf <- finalize_workflow(ames_wf, best_functional_mlp_params)
 
 # Fit the final model on the full training data
 final_ames_fit <- fit(final_ames_wf, data = ames_train)
-#> 74/74 - 0s - 3ms/step
+#> 74/74 - 0s - 2ms/step
 
 print(final_ames_fit)
 #> ══ Workflow [trained] ══════════════════════════════════════════════════════════
@@ -506,12 +506,12 @@ print(final_ames_fit)
 #>  Optimizer params: 9,092 (35.52 KB)
 #> 
 #> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 a6 1e 9a 5c 40 00 00 00 40 00
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 38 7f 11 12 40 00 00 00 40 00
 #>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
 #>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 35 2e 31 22 2c 20 22
-#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 39 2d 30 31
-#>    [97] 40 31 37 3a 34 34 3a 30 30 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 53 4f 83 3c 1c 21 00 00 1c 21 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 39 2d 30 33
+#>    [97] 40 31 37 3a 34 33 3a 31 34 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 5a 10 31 b6 1c 21 00 00 1c 21 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
 #>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 2e 73 72
 #>   [169] 63 2e 6d 6f 64 65 6c 73 2e 66 75 6e 63 74 69 6f 6e 61 6c 22 2c 20 22 63
 #>   [193] 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 46 75 6e 63 74 69 6f 6e 61 6c 22
@@ -605,7 +605,7 @@ model’s performance.
 
 # Make predictions on the test set
 ames_test_pred <- predict(final_ames_fit, new_data = ames_test)
-#> 19/19 - 0s - 8ms/step
+#> 19/19 - 0s - 7ms/step
 
 # Combine predictions with actuals
 ames_results <- tibble::tibble(
@@ -664,7 +664,7 @@ final_ames_fit_loaded <- readRDS("ames_model.rds")
 
 # Make predictions again to prove it works
 predict(final_ames_fit_loaded, new_data = ames_test) |> head()
-#> 19/19 - 0s - 8ms/step
+#> 19/19 - 0s - 6ms/step
 #> # A tibble: 6 × 1
 #>     .pred
 #>     <dbl>
@@ -695,7 +695,7 @@ library(bundle)
 final_ames_fit_loaded <- unbundle(readRDS("ames_model_bundle.rds"))
 
 predict(final_ames_fit_loaded, new_data = ames_test) |> head()
-#> 19/19 - 0s - 8ms/step
+#> 19/19 - 0s - 6ms/step
 #> # A tibble: 6 × 1
 #>     .pred
 #>     <dbl>

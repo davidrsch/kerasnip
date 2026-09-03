@@ -251,8 +251,8 @@ wf <- workflow() |>
   add_model(spec)
 
 fit_obj <- fit(wf, data = train_df)
-#> 4/4 - 0s - 25ms/step
-#> 4/4 - 0s - 25ms/step
+#> 4/4 - 0s - 19ms/step
+#> 4/4 - 0s - 18ms/step
 
 # Predict on new data
 new_data_df <- tibble::tibble(
@@ -260,15 +260,15 @@ new_data_df <- tibble::tibble(
   input_2 = lapply(seq_len(5), function(i) matrix(runif(3), ncol = 3))
 )
 predict(fit_obj, new_data = new_data_df)
-#> 1/1 - 0s - 53ms/step
+#> 1/1 - 0s - 41ms/step
 #> # A tibble: 5 × 2
 #>   .pred_output_1 .pred_output_2
 #>            <dbl>          <dbl>
-#> 1          0.479          0.569
-#> 2          0.447          0.524
-#> 3          0.328          0.370
-#> 4          0.458          0.531
-#> 5          0.541          0.675
+#> 1          0.591          0.591
+#> 2          0.411          0.494
+#> 3          0.316          0.508
+#> 4          0.410          0.633
+#> 5          0.529          0.611
 ```
 
 ## Example 2: A Two-Input, Two-Output Classification Model
@@ -389,8 +389,8 @@ wf <- workflow() |>
   add_model(spec)
 
 fit_obj <- fit(wf, data = train_df)
-#> 4/4 - 0s - 18ms/step
-#> 4/4 - 0s - 18ms/step
+#> 4/4 - 0s - 14ms/step
+#> 4/4 - 0s - 14ms/step
 
 new_data_df <- tibble::tibble(
   input_1 = lapply(seq_len(5), function(i) matrix(runif(5), ncol = 5)),
@@ -398,25 +398,25 @@ new_data_df <- tibble::tibble(
 )
 
 predict(fit_obj, new_data = new_data_df, type = "class")
-#> 1/1 - 0s - 187ms/step
+#> 1/1 - 0s - 176ms/step
 #> # A tibble: 5 × 2
 #>   .pred_class_output_1 .pred_class_output_2
 #>   <fct>                <fct>               
 #> 1 a                    y                   
 #> 2 a                    y                   
-#> 3 a                    x                   
-#> 4 a                    z                   
+#> 3 a                    y                   
+#> 4 a                    y                   
 #> 5 a                    z
 predict(fit_obj, new_data = new_data_df, type = "prob")
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 19ms/step
 #> # A tibble: 5 × 5
 #>   .pred_output_1_a .pred_output_1_b .pred_output_2_x .pred_output_2_y
 #>              <dbl>            <dbl>            <dbl>            <dbl>
-#> 1            0.578            0.422            0.298            0.369
-#> 2            0.557            0.443            0.283            0.382
-#> 3            0.666            0.334            0.342            0.324
-#> 4            0.682            0.318            0.212            0.313
-#> 5            0.690            0.310            0.254            0.243
+#> 1            0.675            0.325            0.220            0.420
+#> 2            0.647            0.353            0.219            0.418
+#> 3            0.738            0.262            0.266            0.402
+#> 4            0.699            0.301            0.224            0.432
+#> 5            0.661            0.339            0.296            0.351
 #> # ℹ 1 more variable: .pred_output_2_z <dbl>
 ```
 

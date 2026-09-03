@@ -372,7 +372,7 @@ final_penguin_wf <- finalize_workflow(penguin_wf, best_mlp_params)
 
 # Fit the final model on the full training data
 final_penguin_fit <- fit(final_penguin_wf, data = penguin_train)
-#> 9/9 - 0s - 7ms/step
+#> 9/9 - 0s - 5ms/step
 
 print(final_penguin_fit)
 #> ══ Workflow [trained] ══════════════════════════════════════════════════════════
@@ -407,12 +407,12 @@ print(final_penguin_fit)
 #>  Optimizer params: 1,672 (6.54 KB)
 #> 
 #> $keras_bytes
-#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 0f c8 12 a7 40 00 00 00 40 00
+#>     [1] 50 4b 03 04 14 00 00 00 00 00 00 00 21 00 51 31 2f e7 40 00 00 00 40 00
 #>    [25] 00 00 0d 00 00 00 6d 65 74 61 64 61 74 61 2e 6a 73 6f 6e 7b 22 6b 65 72
 #>    [49] 61 73 5f 76 65 72 73 69 6f 6e 22 3a 20 22 33 2e 31 35 2e 31 22 2c 20 22
-#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 39 2d 30 31
-#>    [97] 40 31 38 3a 30 31 3a 34 39 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
-#>   [121] 00 91 a1 76 3e 96 11 00 00 96 11 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
+#>    [73] 64 61 74 65 5f 73 61 76 65 64 22 3a 20 22 32 30 32 36 2d 30 39 2d 30 33
+#>    [97] 40 31 37 3a 35 36 3a 31 36 22 7d 50 4b 03 04 14 00 00 00 00 00 00 00 21
+#>   [121] 00 6f 82 a5 01 96 11 00 00 96 11 00 00 0b 00 00 00 63 6f 6e 66 69 67 2e
 #>   [145] 6a 73 6f 6e 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73 22 2c 20
 #>   [169] 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20 22 53 65 71 75 65 6e 74 69 61
 #>   [193] 6c 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22
@@ -423,7 +423,7 @@ print(final_penguin_fit)
 #>   [313] 6f 6e 66 69 67 22 3a 20 7b 22 6e 61 6d 65 22 3a 20 22 66 6c 6f 61 74 33
 #>   [337] 32 22 7d 2c 20 22 72 65 67 69 73 74 65 72 65 64 5f 6e 61 6d 65 22 3a 20
 #>   [361] 6e 75 6c 6c 2c 20 22 73 68 61 72 65 64 5f 6f 62 6a 65 63 74 5f 69 64 22
-#>   [385] 3a 20 31 33 39 39 34 33 35 33 33 37 32 30 34 36 34 7d 2c 20 22 6c 61 79
+#>   [385] 3a 20 31 34 30 31 30 31 39 30 38 34 30 34 32 34 30 7d 2c 20 22 6c 61 79
 #>   [409] 65 72 73 22 3a 20 5b 7b 22 6d 6f 64 75 6c 65 22 3a 20 22 6b 65 72 61 73
 #>   [433] 2e 6c 61 79 65 72 73 22 2c 20 22 63 6c 61 73 73 5f 6e 61 6d 65 22 3a 20
 #>   [457] 22 49 6e 70 75 74 4c 61 79 65 72 22 2c 20 22 63 6f 6e 66 69 67 22 3a 20
@@ -506,13 +506,13 @@ model’s performance.
 
 # Make predictions on the test set
 penguin_test_pred <- predict(final_penguin_fit, new_data = penguin_test)
-#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 15ms/step
 penguin_test_prob <- predict(
   final_penguin_fit,
   new_data = penguin_test,
   type = "prob"
 )
-#> 3/3 - 0s - 7ms/step
+#> 3/3 - 0s - 6ms/step
 
 # Combine predictions with actuals
 penguin_results <- penguin_test |>
@@ -525,7 +525,7 @@ print(head(penguin_results))
 #>   <fct>   <fct>              <dbl>           <dbl>        <dbl>
 #> 1 Adelie  Adelie             1.000   0.0000000891      1.24e- 9
 #> 2 Adelie  Adelie             1.000   0.0000287         3.05e- 6
-#> 3 Adelie  Adelie             1.000   0.00000000769     2.08e-11
+#> 3 Adelie  Adelie             1       0.00000000769     2.08e-11
 #> 4 Adelie  Adelie             1.000   0.000000547       2.37e- 8
 #> 5 Adelie  Adelie             1.000   0.00000115        4.74e- 8
 #> 6 Adelie  Adelie             1.000   0.00000300        2.49e- 7
@@ -578,7 +578,7 @@ saveRDS(final_penguin_fit, "penguin_model.rds")
 final_penguin_fit_loaded <- readRDS("penguin_model.rds")
 
 predict(final_penguin_fit_loaded, new_data = penguin_test) |> head()
-#> 3/3 - 0s - 18ms/step
+#> 3/3 - 0s - 14ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -610,7 +610,7 @@ library(bundle)
 final_penguin_fit_loaded <- unbundle(readRDS("penguin_model_bundle.rds"))
 
 predict(final_penguin_fit_loaded, new_data = penguin_test) |> head()
-#> 3/3 - 0s - 19ms/step
+#> 3/3 - 0s - 14ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      

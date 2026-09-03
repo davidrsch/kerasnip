@@ -1,6 +1,6 @@
 # Changelog
 
-## kerasnip (development version)
+## kerasnip 0.2.0
 
 ### New Features
 
@@ -8,6 +8,17 @@
   (e.g. `epochs` for `fit_epochs`), matching other tidymodels
   neural-network engines. The `fit_` form takes precedence when both are
   supplied.
+- Added native `predict(..., type = "conf_int")` and `type = "pred_int"`
+  for kerasnip regression and classification models, computed from a
+  last-layer Laplace approximation (the last layer’s weight posterior
+  via the diagonal Generalised Gauss-Newton, epistemic variance
+  propagated through the penultimate features). Exposed through the
+  exported (internal) prediction hooks
+  [`laplace_conf_int_reg()`](https://davidrsch.github.io/kerasnip/reference/laplace_conf_int_reg.md),
+  [`laplace_pred_int_reg()`](https://davidrsch.github.io/kerasnip/reference/laplace_pred_int_reg.md),
+  [`laplace_conf_int_cls()`](https://davidrsch.github.io/kerasnip/reference/laplace_conf_int_cls.md),
+  and
+  [`laplace_pred_int_cls()`](https://davidrsch.github.io/kerasnip/reference/laplace_pred_int_cls.md).
 - Added
   [`step_sequence()`](https://davidrsch.github.io/kerasnip/reference/step_sequence.md)
   and

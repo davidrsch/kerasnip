@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kerasnip</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -236,16 +236,16 @@ reference distribution for deciding how wide to make the intervals.</p>
 <span><span class="co"># Predict intervals for new observations</span></span>
 <span><span class="va">new_obs</span> <span class="op">&lt;-</span> <span class="va">cal_dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_split</span>, new_data <span class="op">=</span> <span class="va">new_obs</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;    .pred .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">28</span>664.    -<span style="color: #BB0000; text-decoration: underline;">189</span><span style="color: #BB0000;">316.</span>     <span style="text-decoration: underline;">246</span>645.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">83</span>824.    -<span style="color: #BB0000; text-decoration: underline;">134</span><span style="color: #BB0000;">157.</span>     <span style="text-decoration: underline;">301</span>804.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">45</span>373.    -<span style="color: #BB0000; text-decoration: underline;">172</span><span style="color: #BB0000;">607.</span>     <span style="text-decoration: underline;">263</span>354.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">50</span>616.    -<span style="color: #BB0000; text-decoration: underline;">167</span><span style="color: #BB0000;">364.</span>     <span style="text-decoration: underline;">268</span>597.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> <span style="text-decoration: underline;">19</span>542.    -<span style="color: #BB0000; text-decoration: underline;">198</span><span style="color: #BB0000;">438.</span>     <span style="text-decoration: underline;">237</span>523.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">21</span>051.    -<span style="color: #BB0000; text-decoration: underline;">196</span><span style="color: #BB0000;">930.</span>     <span style="text-decoration: underline;">239</span>031.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">27</span>439.    -<span style="color: #BB0000; text-decoration: underline;">189</span><span style="color: #BB0000;">056.</span>     <span style="text-decoration: underline;">243</span>934.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">88</span>931.    -<span style="color: #BB0000; text-decoration: underline;">127</span><span style="color: #BB0000;">564.</span>     <span style="text-decoration: underline;">305</span>426.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">48</span>302.    -<span style="color: #BB0000; text-decoration: underline;">168</span><span style="color: #BB0000;">193.</span>     <span style="text-decoration: underline;">264</span>797.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">53</span>816.    -<span style="color: #BB0000; text-decoration: underline;">162</span><span style="color: #BB0000;">679.</span>     <span style="text-decoration: underline;">270</span>311.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  <span style="text-decoration: underline;">7</span>606.    -<span style="color: #BB0000; text-decoration: underline;">208</span><span style="color: #BB0000;">889.</span>     <span style="text-decoration: underline;">224</span>101.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">11</span>776.    -<span style="color: #BB0000; text-decoration: underline;">204</span><span style="color: #BB0000;">719.</span>     <span style="text-decoration: underline;">228</span>271.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when training cost is non-trivial
 and you can afford to set aside a calibration set. This is the
 recommended method for kerasnip models in most practical situations.</p>
@@ -286,15 +286,15 @@ intervals for new data.</li>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; 74/74 - 0s - 1ms/step</span></span>
-<span><span class="co">#&gt; 19/19 - 0s - 3ms/step</span></span>
+<span><span class="co">#&gt; 19/19 - 0s - 2ms/step</span></span>
 <span><span class="co">#&gt; 74/74 - 0s - 1ms/step</span></span>
-<span><span class="co">#&gt; 19/19 - 0s - 3ms/step</span></span>
+<span><span class="co">#&gt; 19/19 - 0s - 2ms/step</span></span>
 <span><span class="co">#&gt; 74/74 - 0s - 1ms/step</span></span>
-<span><span class="co">#&gt; 19/19 - 0s - 3ms/step</span></span>
-<span><span class="co">#&gt; 74/74 - 0s - 1ms/step</span></span>
-<span><span class="co">#&gt; 19/19 - 0s - 3ms/step</span></span>
-<span><span class="co">#&gt; 74/74 - 0s - 1ms/step</span></span>
-<span><span class="co">#&gt; 19/19 - 0s - 3ms/step</span></span>
+<span><span class="co">#&gt; 19/19 - 0s - 2ms/step</span></span>
+<span><span class="co">#&gt; 74/74 - 0s - 992us/step</span></span>
+<span><span class="co">#&gt; 19/19 - 0s - 2ms/step</span></span>
+<span><span class="co">#&gt; 74/74 - 0s - 989us/step</span></span>
+<span><span class="co">#&gt; 19/19 - 0s - 2ms/step</span></span>
 <span></span>
 <span><span class="co"># Build the conformal object from the resampling results</span></span>
 <span><span class="va">conformal_cv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_cv.html" class="external-link">int_conformal_cv</a></span><span class="op">(</span><span class="va">fitted_folds</span><span class="op">)</span></span>
@@ -308,20 +308,20 @@ intervals for new data.</li>
 <span><span class="co">#&gt; Use `predict(object, new_data, level)` to compute prediction intervals</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_cv</span>, new_data <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 20ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 17ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   .pred_lower  .pred .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">191</span><span style="color: #BB0000;">044.</span> <span style="text-decoration: underline;">27</span>339.     <span style="text-decoration: underline;">245</span>721.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">195</span><span style="color: #BB0000;">734.</span> <span style="text-decoration: underline;">22</span>649.     <span style="text-decoration: underline;">241</span>032.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">198</span><span style="color: #BB0000;">237.</span> <span style="text-decoration: underline;">20</span>146.     <span style="text-decoration: underline;">238</span>529.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">149</span><span style="color: #BB0000;">380.</span> <span style="text-decoration: underline;">69</span>003.     <span style="text-decoration: underline;">287</span>385.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">183</span><span style="color: #BB0000;">864.</span> <span style="text-decoration: underline;">34</span>518.     <span style="text-decoration: underline;">252</span>901.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">184</span><span style="color: #BB0000;">189.</span> <span style="text-decoration: underline;">34</span>194.     <span style="text-decoration: underline;">252</span>576.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">191</span><span style="color: #BB0000;">713.</span> <span style="text-decoration: underline;">26</span>729.     <span style="text-decoration: underline;">245</span>170.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">197</span><span style="color: #BB0000;">895.</span> <span style="text-decoration: underline;">20</span>547.     <span style="text-decoration: underline;">238</span>989.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">200</span><span style="color: #BB0000;">724.</span> <span style="text-decoration: underline;">17</span>718.     <span style="text-decoration: underline;">236</span>160.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">147</span><span style="color: #BB0000;">389.</span> <span style="text-decoration: underline;">71</span>053.     <span style="text-decoration: underline;">289</span>495.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">184</span><span style="color: #BB0000;">765.</span> <span style="text-decoration: underline;">33</span>677.     <span style="text-decoration: underline;">252</span>119.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">185</span><span style="color: #BB0000;">254.</span> <span style="text-decoration: underline;">33</span>188.     <span style="text-decoration: underline;">251</span>630.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when you do not want to reserve a
 separate calibration set and are already running cross-validation to
 evaluate your model. The cross-validation residuals tend to produce
@@ -365,7 +365,7 @@ rigour is required and training cost is acceptable.</p>
 <span><span class="va">new_obs_small</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">106</span>, <span class="op">]</span></span>
 <span></span>
 <span><span class="va">fit_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wflow</span>, data <span class="op">=</span> <span class="va">data_small</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 4/4 - 0s - 14ms/step</span></span>
+<span><span class="co">#&gt; 4/4 - 0s - 10ms/step</span></span>
 <span></span>
 <span><span class="va">conformal_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_full.html" class="external-link">int_conformal_full</a></span><span class="op">(</span></span>
 <span>  <span class="va">fit_small</span>,</span>
@@ -375,7 +375,7 @@ rigour is required and training cost is acceptable.</p>
 <span>    trial_points <span class="op">=</span> <span class="fl">20</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 4/4 - 0s - 13ms/step</span></span>
+<span><span class="co">#&gt; 4/4 - 0s - 9ms/step</span></span>
 <span><span class="va">conformal_full</span></span>
 <span><span class="co">#&gt; Conformal inference</span></span>
 <span><span class="co">#&gt; preprocessor: recipe </span></span>
@@ -385,16 +385,16 @@ rigour is required and training cost is acceptable.</p>
 <span><span class="co">#&gt; Use `predict(object, new_data, level)` to compute prediction intervals</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">conformal_full</span>, new_data <span class="op">=</span> <span class="va">new_obs_small</span>, level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 18ms/step</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">491</span><span style="color: #BB0000;">914.</span>     <span style="text-decoration: underline;">492</span>047.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">491</span><span style="color: #BB0000;">634.</span>     <span style="text-decoration: underline;">491</span>766.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">490</span><span style="color: #BB0000;">303.</span>     <span style="text-decoration: underline;">490</span>434.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">511</span><span style="color: #BB0000;">133.</span>     <span style="text-decoration: underline;">511</span>291.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">400</span><span style="color: #BB0000;">363.</span>     <span style="text-decoration: underline;">400</span>651.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">501</span><span style="color: #BB0000;">240.</span>     <span style="text-decoration: underline;">501</span>385.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    -<span style="color: #BB0000; text-decoration: underline;">337</span><span style="color: #BB0000;">392.</span>     <span style="text-decoration: underline;">337</span>502.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    -<span style="color: #BB0000; text-decoration: underline;">338</span><span style="color: #BB0000;">747.</span>     <span style="text-decoration: underline;">338</span>859.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    -<span style="color: #BB0000; text-decoration: underline;">338</span><span style="color: #BB0000;">905.</span>     <span style="text-decoration: underline;">339</span>018.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    -<span style="color: #BB0000; text-decoration: underline;">360</span><span style="color: #BB0000;">127.</span>     <span style="text-decoration: underline;">360</span>268.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    -<span style="color: #BB0000; text-decoration: underline;">364</span><span style="color: #BB0000;">540.</span>     <span style="text-decoration: underline;">364</span>687.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    -<span style="color: #BB0000; text-decoration: underline;">531</span><span style="color: #BB0000;">114.</span>     <span style="text-decoration: underline;">531</span>198.</span></span></code></pre></div>
 <p><strong>When to use this</strong>: when you need the strongest
 possible coverage guarantees and are willing to pay the training cost.
 For neural networks, prefer <code>int_conformal_split</code> unless you
