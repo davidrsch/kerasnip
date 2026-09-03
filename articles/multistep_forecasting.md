@@ -193,7 +193,7 @@ spec <- multistep_lstm_spec(
 
 wf <- workflow(rec, spec)
 fit_obj <- fit(wf, data = train_data)
-#> 10/10 - 0s - 15ms/step
+#> 10/10 - 0s - 16ms/step
 ```
 
 [`predict()`](https://rdrr.io/r/stats/predict.html) returns a nested
@@ -207,7 +207,7 @@ time.
 ``` r
 
 preds <- predict(fit_obj, new_data = test_data)
-#> 2/2 - 0s - 65ms/step
+#> 2/2 - 0s - 72ms/step
 preds
 #> # A tibble: 57 × 1
 #>    .pred           
@@ -228,12 +228,12 @@ preds$.pred[[1]]
 #> # A tibble: 6 × 2
 #>   .step .pred
 #>   <int> <dbl>
-#> 1     1 0.868
-#> 2     2 0.776
-#> 3     3 0.667
-#> 4     4 0.598
-#> 5     5 0.469
-#> 6     6 0.335
+#> 1     1 0.827
+#> 2     2 0.742
+#> 3     3 0.642
+#> 4     4 0.528
+#> 5     5 0.446
+#> 6     6 0.322
 ```
 
 ## Step 5: Visualize the Forecast
@@ -283,7 +283,7 @@ applied to every step alike.
 
 preds_ci <- predict(fit_obj, new_data = test_data, type = "conf_int")
 #> 2/2 - 0s - 11ms/step
-#> 2/2 - 0s - 10ms/step
+#> 2/2 - 0s - 11ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 10ms/step
 #> 2/2 - 0s - 10ms/step
@@ -350,16 +350,16 @@ one_row_draws
 #> # A tibble: 1,200 × 3
 #>    .draw .step .pred
 #>    <int> <int> <dbl>
-#>  1     1     1 0.876
-#>  2     2     1 0.815
-#>  3     3     1 0.892
-#>  4     4     1 0.876
-#>  5     5     1 0.790
-#>  6     6     1 0.949
-#>  7     7     1 0.703
-#>  8     8     1 0.795
-#>  9     9     1 0.856
-#> 10    10     1 0.806
+#>  1     1     1 0.837
+#>  2     2     1 0.771
+#>  3     3     1 0.851
+#>  4     4     1 0.837
+#>  5     5     1 0.746
+#>  6     6     1 0.912
+#>  7     7     1 0.663
+#>  8     8     1 0.752
+#>  9     9     1 0.815
+#> 10    10     1 0.768
 #> # ℹ 1,190 more rows
 
 # Draws at different steps are correlated, unlike the marginal intervals above.
@@ -368,8 +368,8 @@ one_row_draws |>
   dplyr::select(step_1, step_2) |>
   cor()
 #>           step_1    step_2
-#> step_1 1.0000000 0.3808804
-#> step_2 0.3808804 1.0000000
+#> step_1 1.0000000 0.4158505
+#> step_2 0.4158505 1.0000000
 ```
 
 A handful of individual sampled trajectories, plotted alongside the

@@ -179,18 +179,18 @@ wf_functional <- workflow() |>
 
 fit_functional <- fit(wf_functional, data = train_df_small)
 #> Downloading data from https://storage.googleapis.com/tensorflow/keras-applications/resnet/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
-#>        0/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step  417792/94765736 ━━━━━━━━━━━━━━━━━━━━ 11s 0us/step 3014656/94765736 ━━━━━━━━━━━━━━━━━━━━ 3s 0us/step 14458880/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step23871488/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step33742848/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step38944768/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step48398336/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step53248000/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step61710336/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step66969600/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step75423744/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step86335488/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step92594176/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step94765736/94765736 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step
-#> 16/16 - 2s - 132ms/step
+#>        0/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step 5775360/94765736 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step11476992/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step14409728/94765736 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step16703488/94765736 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step22568960/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step24567808/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step27648000/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step37240832/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step48717824/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step61431808/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step73883648/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step79290368/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step89808896/94765736 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step94765736/94765736 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step
+#> 16/16 - 2s - 140ms/step
 
 # Evaluate on the test set
 predictions <- predict(fit_functional, new_data = test_df_small)
-#> 4/4 - 2s - 432ms/step
+#> 4/4 - 2s - 498ms/step
 bind_cols(predictions, test_df_small) |>
   accuracy(truth = y, estimate = .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy multiclass      0.26
+#> 1 accuracy multiclass       0.1
 ```
 
 Even with a small dataset and few epochs, the pre-trained features from
